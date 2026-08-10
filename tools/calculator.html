@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>在线计算器 - 科学计算器 | 效率盒子</title>
+  <meta name="description" content="免费在线科学计算器，支持加减乘除、括号、幂运算、开方、百分比等复杂表达式计算。手机电脑均可使用。">
+  <meta name="keywords" content="在线计算器,科学计算器,网页计算器,表达式计算,免费计算器">
+  <meta property="og:title" content="在线计算器 - 科学计算器">
+  <meta property="og:description" content="免费在线科学计算器，支持复杂表达式。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .calc-display{background:#1e293b;color:#fff;padding:16px 20px;border-radius:8px;font-size:28px;text-align:right;min-height:64px;display:flex;align-items:center;justify-content:flex-end;word-break:break-all;margin-bottom:16px;font-family:"Courier New",monospace}
+    .calc-keys{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .calc-key{padding:16px;border:none;border-radius:8px;font-size:18px;cursor:pointer;transition:all .15s;background:#f1f5f9;color:#1e293b;font-weight:600}
+    .calc-key:hover{background:#e2e8f0}
+    .calc-key:active{transform:scale(0.95)}
+    .calc-key.op{background:#eef2ff;color:#4f46e5}
+    .calc-key.op:hover{background:#e0e7ff}
+    .calc-key.eq{background:#4f46e5;color:#fff}
+    .calc-key.eq:hover{background:#4338ca}
+    .calc-key.fn{background:#fef3c7;color:#92400e;font-size:14px}
+    .calc-key.fn:hover{background:#fde68a}
+    .calc-key.clear{background:#fee2e2;color:#dc2626}
+    .calc-key.clear:hover{background:#fecaca}
+    .calc-key.wide{grid-column:span 2}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>在线计算器</h1>
+      <p>科学计算器，支持复杂表达式运算</p>
+    </div>
+
+    <div class="tool-box" style="max-width:420px;margin:0 auto">
+      <div class="calc-display" id="display">0</div>
+      <div class="calc-keys">
+        <button class="calc-key clear" onclick="clearAll()">AC</button>
+        <button class="calc-key fn" onclick="backspace()">⌫</button>
+        <button class="calc-key fn" onclick="appendValue('%')">%</button>
+        <button class="calc-key op" onclick="appendValue('/')">÷</button>
+
+        <button class="calc-key" onclick="appendValue('7')">7</button>
+        <button class="calc-key" onclick="appendValue('8')">8</button>
+        <button class="calc-key" onclick="appendValue('9')">9</button>
+        <button class="calc-key op" onclick="appendValue('*')">×</button>
+
+        <button class="calc-key" onclick="appendValue('4')">4</button>
+        <button class="calc-key" onclick="appendValue('5')">5</button>
+        <button class="calc-key" onclick="appendValue('6')">6</button>
+        <button class="calc-key op" onclick="appendValue('-')">−</button>
+
+        <button class="calc-key" onclick="appendValue('1')">1</button>
+        <button class="calc-key" onclick="appendValue('2')">2</button>
+        <button class="calc-key" onclick="appendValue('3')">3</button>
+        <button class="calc-key op" onclick="appendValue('+')">+</button>
+
+        <button class="calc-key" onclick="appendValue('0')">0</button>
+        <button class="calc-key" onclick="appendValue('.')">.</button>
+        <button class="calc-key fn" onclick="appendValue('Math.sqrt(')">√</button>
+        <button class="calc-key fn" onclick="appendValue('Math.pow(')">x^y</button>
+
+        <button class="calc-key fn" onclick="appendValue('(')">(</button>
+        <button class="calc-key fn" onclick="appendValue(')')">)</button>
+        <button class="calc-key fn" onclick="appendValue('Math.PI')">π</button>
+        <button class="calc-key eq" onclick="calculate()">=</button>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "calculator");
+    let expression = "";
+    const display = document.getElementById("display");
+
+    function appendValue(val) {
+      expression += val;
+      display.textContent = expression;
+    }
+
+    function clearAll() {
+      expression = "";
+      display.textContent = "0";
+    }
+
+    function backspace() {
+      expression = expression.slice(0, -1);
+      display.textContent = expression || "0";
+    }
+
+    function calculate() {
+      try {
+        const result = eval(expression);
+        if (result === undefined || result === null || isNaN(result)) {
+          display.textContent = "Error";
+          expression = "";
+          return;
+        }
+        display.textContent = result;
+        expression = String(result);
+      } catch (e) {
+        display.textContent = "Error";
+        expression = "";
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (/[0-9+\-*/.()%]/.test(e.key)) appendValue(e.key);
+      else if (e.key === "Enter" || e.key === "=") calculate();
+      else if (e.key === "Backspace") backspace();
+      else if (e.key === "Escape") clearAll();
+    });
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

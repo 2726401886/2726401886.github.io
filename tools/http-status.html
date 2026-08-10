@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP状态码查询 - 状态码含义速查表 | 效率盒子</title>
+  <meta name="description" content="免费在线HTTP状态码查询工具，包含1xx信息、2xx成功、3xx重定向、4xx客户端错误、5xx服务端错误的完整含义说明，开发者必备速查表。">
+  <meta name="keywords" content="HTTP状态码,状态码查询,200,404,500,301,302,403,502,503,HTTP响应码">
+  <meta property="og:title" content="HTTP状态码查询">
+  <meta property="og:description" content="完整的HTTP状态码含义速查表。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .http-search{margin-bottom:20px}
+    .http-search input{width:100%;padding:12px 16px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px}
+    .http-search input:focus{border-color:#4f46e5;outline:none}
+    .http-categories{display:grid;gap:16px}
+    .http-category{background:#f8fafc;border-radius:12px;padding:20px}
+    .http-category h3{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .http-badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:13px;font-weight:600}
+    .http-badge.b1{background:#dbeafe;color:#1e40af}
+    .http-badge.b2{background:#dcfce7;color:#166534}
+    .http-badge.b3{background:#fef3c7;color:#92400e}
+    .http-badge.b4{background:#fee2e2;color:#dc2626}
+    .http-badge.b5{background:#fce7f3;color:#9d174d}
+    .http-list{display:grid;gap:8px}
+    .http-item{display:flex;gap:12px;padding:10px 12px;background:#fff;border-radius:8px;align-items:flex-start;transition:all .2s}
+    .http-item:hover{box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+    .http-code{font-weight:700;font-size:18px;min-width:60px;font-family:monospace}
+    .http-code.c1{color:#2563eb}
+    .http-code.c2{color:#16a34a}
+    .http-code.c3{color:#d97706}
+    .http-code.c4{color:#dc2626}
+    .http-code.c5{color:#db2777}
+    .http-desc{font-size:14px;color:#475569;line-height:1.5}
+    .http-name{font-weight:600;color:#1e293b;margin-bottom:2px}
+    .highlight{background:#fef08a !important}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>HTTP状态码查询</h1>
+      <p>完整的HTTP响应状态码含义速查表</p>
+    </div>
+
+    <div class="tool-box" style="max-width:760px;margin:0 auto">
+      <div class="http-search">
+        <input type="text" id="searchInput" placeholder="搜索状态码或关键词，如 404、Not Found、重定向..." oninput="filterStatus()">
+      </div>
+      <div class="http-categories" id="categories"></div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "http-status");
+
+    const STATUS_DATA = [
+      { cat: 1, title: '1xx 信息响应', badge: 'b1', code: 'c1', items: [
+        { code: 100, name: 'Continue', desc: '客户端应继续其请求。表示目前为止一切正常，客户端应继续发送请求其余部分。' },
+        { code: 101, name: 'Switching Protocols', desc: '服务器同意切换协议。客户端通过Upgrade请求头要求切换协议。' },
+        { code: 102, name: 'Processing', desc: '服务器已收到请求并正在处理，但尚未有响应返回。' }
+      ]},
+      { cat: 2, title: '2xx 成功响应', badge: 'b2', code: 'c2', items: [
+        { code: 200, name: 'OK', desc: '请求成功。标准成功响应。' },
+        { code: 201, name: 'Created', desc: '请求成功且服务器创建了新资源。通常用于POST或PUT请求。' },
+        { code: 202, name: 'Accepted', desc: '请求已接受但尚未处理完毕。异步处理时常见。' },
+        { code: 204, name: 'No Content', desc: '请求成功但无内容返回。通常用于DELETE或PUT成功后。' },
+        { code: 206, name: 'Partial Content', desc: '服务器成功处理了部分GET请求。用于断点续传或分片下载。' }
+      ]},
+      { cat: 3, title: '3xx 重定向', badge: 'b3', code: 'c3', items: [
+        { code: 301, name: 'Moved Permanently', desc: '资源已永久移动到新URL。搜索引擎会更新索引。' },
+        { code: 302, name: 'Found', desc: '资源临时移动到新URL。浏览器后续请求仍使用原URL。' },
+        { code: 304, name: 'Not Modified', desc: '资源自上次请求后未修改，客户端可使用缓存版本。' },
+        { code: 307, name: 'Temporary Redirect', desc: '临时重定向，但请求方法必须保持不变。' },
+        { code: 308, name: 'Permanent Redirect', desc: '永久重定向，请求方法必须保持不变。' }
+      ]},
+      { cat: 4, title: '4xx 客户端错误', badge: 'b4', code: 'c4', items: [
+        { code: 400, name: 'Bad Request', desc: '请求语法错误，服务器无法理解。常见于参数错误。' },
+        { code: 401, name: 'Unauthorized', desc: '未认证。需要登录或提供认证信息。' },
+        { code: 403, name: 'Forbidden', desc: '服务器拒绝请求。认证通过但无权限访问该资源。' },
+        { code: 404, name: 'Not Found', desc: '请求的资源不存在。最常见的客户端错误。' },
+        { code: 405, name: 'Method Not Allowed', desc: '请求方法不被允许。如对只支持GET的接口发POST请求。' },
+        { code: 408, name: 'Request Timeout', desc: '请求超时。客户端未在服务器等待时间内发送请求。' },
+        { code: 409, name: 'Conflict', desc: '请求冲突。如并发修改同一资源。' },
+        { code: 413, name: 'Payload Too Large', desc: '请求体过大，服务器拒绝处理。' },
+        { code: 429, name: 'Too Many Requests', desc: '请求过多，触发限流。通常伴随Retry-After响应头。' }
+      ]},
+      { cat: 5, title: '5xx 服务端错误', badge: 'b5', code: 'c5', items: [
+        { code: 500, name: 'Internal Server Error', desc: '服务器内部错误。最通用的服务端错误。' },
+        { code: 501, name: 'Not Implemented', desc: '服务器不支持请求所需的功能。' },
+        { code: 502, name: 'Bad Gateway', desc: '网关错误。代理服务器从上游收到无效响应。' },
+        { code: 503, name: 'Service Unavailable', desc: '服务不可用。服务器过载或维护中。' },
+        { code: 504, name: 'Gateway Timeout', desc: '网关超时。代理服务器等待上游响应超时。' },
+        { code: 511, name: 'Network Authentication Required', desc: '需要网络认证。常见于公共WiFi的强制门户。' }
+      ]}
+    ];
+
+    function renderStatus() {
+      const keyword = document.getElementById('searchInput').value.trim().toLowerCase();
+      const html = STATUS_DATA.map(cat => {
+        const filtered = keyword
+          ? cat.items.filter(item =>
+              String(item.code).includes(keyword) ||
+              item.name.toLowerCase().includes(keyword) ||
+              item.desc.toLowerCase().includes(keyword))
+          : cat.items;
+        if (filtered.length === 0) return '';
+        return `
+          <div class="http-category">
+            <h3><span class="http-badge ${cat.badge}">${cat.title.split(' ')[0]}</span> ${cat.title}</h3>
+            <div class="http-list">
+              ${filtered.map(item => `
+                <div class="http-item">
+                  <div class="http-code ${cat.code}">${item.code}</div>
+                  <div>
+                    <div class="http-name">${item.name}</div>
+                    <div class="http-desc">${item.desc}</div>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+      document.getElementById('categories').innerHTML = html || '<p style="text-align:center;color:#94a3b8;padding:40px">未找到匹配的状态码</p>';
+    }
+
+    function filterStatus() { renderStatus(); }
+    renderStatus();
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正则表达式在线测试 - Regex Tester | 效率盒子</title>
+  <meta name="description" content="免费在线正则表达式测试工具，支持全局匹配、忽略大小写、多行等标志。实时高亮匹配结果，是开发者调试正则的必备工具。">
+  <meta name="keywords" content="正则表达式,regex,正则测试,正则在线,regular expression,正则工具">
+  <meta property="og:title" content="正则表达式在线测试 - Regex Tester">
+  <meta property="og:description" content="在线正则表达式测试工具，实时高亮匹配。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .regex-pattern{display:flex;gap:8px;margin-bottom:12px}
+    .regex-pattern input{flex:1;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-family:"Courier New",monospace;font-size:15px}
+    .regex-pattern input:focus{border-color:#4f46e5;outline:none}
+    .regex-flags{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    .regex-flag{padding:6px 12px;border:2px solid #e2e8f0;border-radius:6px;cursor:pointer;font-size:13px;font-family:monospace;transition:all .15s}
+    .regex-flag.active{background:#4f46e5;color:#fff;border-color:#4f46e5}
+    .regex-textarea{width:100%;min-height:120px;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-family:"Courier New",monospace;font-size:14px;resize:vertical}
+    .regex-textarea:focus{border-color:#4f46e5;outline:none}
+    .regex-output{background:#1e293b;color:#e2e8f0;padding:16px;border-radius:8px;font-family:"Courier New",monospace;font-size:14px;min-height:100px;line-height:1.6;white-space:pre-wrap;word-break:break-all}
+    .regex-output mark{background:#fbbf24;color:#1e293b;padding:1px 2px;border-radius:2px}
+    .regex-stats{display:flex;gap:16px;margin:12px 0;font-size:13px;color:#64748b}
+    .regex-stats span{background:#f1f5f9;padding:4px 10px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>正则表达式测试</h1>
+      <p>在线测试正则表达式，实时高亮匹配结果</p>
+    </div>
+
+    <div class="tool-box">
+      <label style="display:block;margin-bottom:6px;font-weight:600;color:#475569">正则表达式</label>
+      <div class="regex-pattern">
+        <input type="text" id="pattern" placeholder="例如：\d+ 匹配数字" value="\d+" oninput="testRegex()">
+      </div>
+      <div class="regex-flags">
+        <span class="regex-flag active" data-flag="g" onclick="toggleFlag(this)">g 全局</span>
+        <span class="regex-flag" data-flag="i" onclick="toggleFlag(this)">i 忽略大小写</span>
+        <span class="regex-flag" data-flag="m" onclick="toggleFlag(this)">m 多行</span>
+        <span class="regex-flag" data-flag="s" onclick="toggleFlag(this)">s .匹配换行</span>
+      </div>
+
+      <label style="display:block;margin-bottom:6px;font-weight:600;color:#475569">测试文本</label>
+      <textarea class="regex-textarea" id="testText" oninput="testRegex()" placeholder="在此输入要测试的文本...">Hello 2026! Phone: 138-8888-9999, Code: 00742</textarea>
+
+      <div class="regex-stats" id="stats"></div>
+
+      <label style="display:block;margin:12px 0 6px;font-weight:600;color:#475569">匹配结果</label>
+      <div class="regex-output" id="output">等待输入...</div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "regex-tester");
+
+    function getFlags() {
+      let flags = "";
+      document.querySelectorAll(".regex-flag.active").forEach(el => {
+        flags += el.dataset.flag;
+      });
+      return flags;
+    }
+
+    function toggleFlag(el) {
+      el.classList.toggle("active");
+      testRegex();
+    }
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function testRegex() {
+      const pattern = document.getElementById("pattern").value;
+      const text = document.getElementById("testText").value;
+      const output = document.getElementById("output");
+      const stats = document.getElementById("stats");
+
+      if (!pattern) {
+        output.textContent = "请输入正则表达式";
+        stats.innerHTML = "";
+        return;
+      }
+
+      try {
+        const flags = getFlags();
+        const regex = new RegExp(pattern, flags);
+        const matches = [...text.matchAll(new RegExp(pattern, flags.includes("g") ? flags : flags + "g"))];
+        
+        if (matches.length === 0) {
+          output.innerHTML = escapeHtml(text) + "\n\n—— 无匹配 ——";
+          stats.innerHTML = `<span>匹配数：0</span>`;
+          return;
+        }
+
+        let highlighted = "";
+        let last = 0;
+        matches.forEach(m => {
+          highlighted += escapeHtml(text.slice(last, m.index));
+          highlighted += `<mark>${escapeHtml(m[0])}</mark>`;
+          last = m.index + m[0].length;
+        });
+        highlighted += escapeHtml(text.slice(last));
+        output.innerHTML = highlighted;
+
+        stats.innerHTML = `<span>匹配数：${matches.length}</span><span>标志：/${flags}/</span>`;
+      } catch (e) {
+        output.textContent = "正则表达式错误：" + e.message;
+        stats.innerHTML = `<span style="color:#dc2626">语法错误</span>`;
+      }
+    }
+
+    testRegex();
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

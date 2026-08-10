@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>解锁码生成器 · 开发者专用</title>
+<style>
+:root{--s1:#0f1320;--s2:#171c2e;--s3:#20283f;--bd:#2a3050;--ac:#42a5f5;--ac2:#1e88e5;--t1:#e8ecf5;--t2:#aab3c9;--t3:#6b7593;--gn:#4caf50;--rd:#ef5350;--r:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:linear-gradient(160deg,#0b0e18,#121726);color:var(--t1);font-family:'Noto Sans SC',system-ui,-apple-system,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.wrap{width:420px;max-width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:32px 28px;box-shadow:0 20px 60px rgba(0,0,0,.6);display:none}
+.wrap.show{display:block;animation:fi .3s ease}
+.badge{display:inline-block;font-size:11px;color:var(--ac);border:1px solid rgba(66,165,245,.4);border-radius:20px;padding:3px 12px;margin-bottom:14px}
+h1{font-size:19px;font-weight:700;margin-bottom:6px}
+.sub{font-size:12px;color:var(--t3);line-height:1.7;margin-bottom:22px}
+.fg{margin-bottom:16px}
+.fg label{display:block;font-size:12px;color:var(--t2);margin-bottom:6px}
+.fg input{width:100%;background:var(--s3);border:1px solid var(--bd);border-radius:8px;padding:13px 14px;color:var(--t1);font-size:15px;outline:none;font-family:'JetBrains Mono',monospace;letter-spacing:1px;box-sizing:border-box}
+.fg input:focus{border-color:var(--ac)}
+.fg input.err{border-color:var(--rd)}
+.btn{width:100%;padding:13px 0;border:none;border-radius:8px;font-size:13.5px;font-weight:600;cursor:pointer;background:var(--ac);color:#fff;transition:background .2s;font-family:'Noto Sans SC',sans-serif}
+.btn:hover{background:var(--ac2)}
+.btn.g{background:var(--gn);margin-top:10px}
+.btn.g:hover{background:#43a047}
+.out{margin-top:18px;background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:14px;display:none}
+.out.show{display:block;animation:fi .3s ease}
+.out .lab{font-size:11px;color:var(--t3);margin-bottom:6px}
+.out .code{font-size:17px;font-weight:700;color:var(--gn);font-family:'JetBrains Mono',monospace;letter-spacing:1px;word-break:break-all}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.note{font-size:10.5px;color:var(--t3);line-height:1.7;margin-top:20px;border-top:1px solid var(--bd);padding-top:14px}
+.warn{font-size:11px;color:var(--rd);margin-top:12px;display:none}
+.warn.show{display:block}
+/* ===== 密码门 ===== */
+.gate{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#0b0e18,#121726);display:flex;align-items:center;justify-content:center;padding:24px}
+.gate.hide{display:none}
+.gate-card{width:360px;max-width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:16px;padding:34px 28px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.gate-card .lock{font-size:34px;margin-bottom:10px}
+.gate-card h2{font-size:18px;font-weight:700;margin-bottom:6px}
+.gate-card .hint{font-size:12px;color:var(--t3);line-height:1.7;margin-bottom:20px}
+.gate-card input{width:100%;background:var(--s3);border:1px solid var(--bd);border-radius:8px;padding:13px 14px;color:var(--t1);font-size:15px;outline:none;text-align:center;letter-spacing:2px;box-sizing:border-box;font-family:'JetBrains Mono',monospace}
+.gate-card input:focus{border-color:var(--ac)}
+.gate-card input.err{border-color:var(--rd)}
+.gate-msg{font-size:11px;color:var(--rd);margin-top:10px;min-height:14px}
+</style>
+</head>
+<body>
+<!-- 密码门 -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <div class="lock">🔐</div>
+    <h2>开发者专属</h2>
+    <div class="hint">请输入打开密码以进入解锁码生成器</div>
+    <input type="password" id="gatePass" placeholder="请输入打开密码" autocomplete="off" onkeydown="if(event.key==='Enter')checkPass()">
+    <button class="btn" style="margin-top:14px" onclick="checkPass()">进入</button>
+    <div class="gate-msg" id="gateMsg"></div>
+  </div>
+</div>
+<!-- 主内容 -->
+<div class="wrap" id="app">
+  <span class="badge">🔐 开发者专用</span>
+  <h1>解锁码生成器</h1>
+  <div class="sub">输入打赏者的手机号，生成对应的解锁码，通过微信发送给对方。<br>解锁码格式：<b style="color:var(--t1)">手机号-8位校验码</b>（如 13800138000-A1B2C3D4）。</div>
+  <div class="fg">
+    <label>打赏者手机号</label>
+    <input type="tel" id="gPhone" placeholder="请输入11位手机号" maxlength="11" inputmode="numeric">
+  </div>
+  <button class="btn" onclick="genCode()">生成解锁码</button>
+  <div class="out" id="gOutBox">
+    <div class="lab">解锁码（点击复制）</div>
+    <div class="code" id="gOut" onclick="copyCode()" title="点击复制"></div>
+    <button class="btn g" onclick="copyCode()">📋 复制解锁码</button>
+  </div>
+  <div class="warn" id="gWarn">当前环境不支持加密接口，请通过线上 https 地址打开本工具（如 https://2726401886.github.io/tools/unlock-code-generator.html）。</div>
+    <!-- 网站数据（全站） -->
+    <div class="stats" style="margin-top:18px;border-top:1px solid var(--bd);padding-top:16px">
+      <div style="font-size:13px;color:var(--t2);margin-bottom:10px">📊 网站数据（全站）</div>
+      <div style="display:flex;gap:12px">
+        <div style="flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:12px;text-align:center">
+          <div id="dev-pv" style="font-size:22px;font-weight:700;color:var(--ac)">-</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">总访问量</div>
+        </div>
+        <div style="flex:1;background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:12px;text-align:center">
+          <div id="dev-uv" style="font-size:22px;font-weight:700;color:var(--ac)">-</div>
+          <div style="font-size:11px;color:var(--t3);margin-top:4px">总访客数</div>
+        </div>
+      </div>
+    </div>
+  <div class="note">提示：解锁码内含手机号明文，请通过微信等安全渠道发送。本工具与线上用户端共用同一密钥算法，请勿向他人泄露完整算法逻辑。<br>如需修改打开密码，将 PASS_HASH 改为 sha256(你的新密码) 的十六进制小写值即可。</div>
+</div>
+<script>
+const SECRET=atob('ZWZmYm94LXVubG9jay0yMDI2LXhxcg=='); // 与 used-car-eval.html 共用
+const PASS_HASH='c82b8b4fa1792e1e27c6bbebc363b37e41de4dfde26ec1e9dca8a4f4c1193bc3'; // 打开密码SHA-256哈希（源码不含明文密码）
+function sha256hex(str){
+  if(!crypto||!crypto.subtle){throw new Error('no subtle')}
+  return crypto.subtle.digest('SHA-256',new TextEncoder().encode(str)).then(buf=>[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join(''));
+}
+// 密码门
+function unlockGate(){document.getElementById('gate').classList.add('hide');document.getElementById('app').classList.add('show');try{localStorage.setItem('effbox_gate','1')}catch(e){}}
+async function checkPass(){
+  const i=document.getElementById('gatePass');
+  const msg=document.getElementById('gateMsg');
+  const v=i.value;
+  if(!v){i.classList.add('err');return;}
+  let h;try{h=await sha256hex(v);}catch(e){return;}
+  if(h===PASS_HASH){unlockGate();}
+  else{i.classList.add('err');i.value='';msg.textContent='密码错误，请重试';i.focus();}
+}
+// 加载时若已解锁则直接进
+(function(){let opened=false;try{opened=localStorage.getItem('effbox_gate')==='1'}catch(e){}if(opened){document.getElementById('gate').classList.add('hide');document.getElementById('app').classList.add('show');}})();
+// 生成器
+async function genCode(){
+  const p=document.getElementById('gPhone');
+  const box=document.getElementById('gOutBox');
+  const phone=p.value.trim();
+  if(!/^1\d{10}$/.test(phone)){p.classList.add('err');p.focus();box.classList.remove('show');return;}
+  p.classList.remove('err');
+  let raw;
+  try{raw=await sha256hex(phone+'|'+SECRET);}catch(e){document.getElementById('gWarn').classList.add('show');return;}
+  const code=phone+'-'+raw.slice(0,8).toUpperCase();
+  document.getElementById('gOut').textContent=code;
+  box.classList.add('show');
+}
+function copyCode(){
+  const t=document.getElementById('gOut').textContent;
+  if(!t)return;
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>flash('已复制'));}
+  else{const r=document.createRange();r.selectNode(document.getElementById('gOut'));const s=getSelection();s.removeAllRanges();s.addRange(r);try{document.execCommand('copy')}catch(e){}s.removeAllRanges();flash('已复制')}
+}
+function flash(t){const o=document.getElementById('gOut');const old=o.textContent;o.textContent=t;setTimeout(()=>o.textContent=old,800);}
+</script>
+
+<!-- 网站数据：不蒜子全站统计（隐藏计数 + 同步到上方卡片） -->
+<span id="busuanzi_container_site_pv" style="display:none">PV<span id="busuanzi_value_site_pv"></span></span>
+<span id="busuanzi_container_site_uv" style="display:none">UV<span id="busuanzi_value_site_uv"></span></span>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+(function(){
+  var t=setInterval(function(){
+    var pv=document.getElementById('busuanzi_value_site_pv');
+    var uv=document.getElementById('busuanzi_value_site_uv');
+    if(pv&&pv.textContent&&pv.textContent.trim()){
+      var dp=document.getElementById('dev-pv'),du=document.getElementById('dev-uv');
+      if(dp)dp.textContent=pv.textContent;
+      if(du)du.textContent=uv.textContent;
+      clearInterval(t);
+    }
+  },400);
+  setTimeout(function(){clearInterval(t)},15000);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>价格鉴证评估 - 价格鉴证报告辅助工具 | 效率盒子</title>
+  <meta name="description" content="免费在线价格鉴证评估辅助工具，支持市场法、成本法、收益法三种评估方法计算，提供鉴证项目信息录入、价值计算和价格鉴证报告要素清单。适用于涉诉讼资产、涉案财物、事故损失等价格鉴证场景。">
+  <meta name="keywords" content="价格鉴证,价格评估,资产评估,市场法,成本法,收益法,鉴证报告,涉诉资产,涉案财物,损失鉴定">
+  <meta property="og:title" content="价格鉴证评估工具">
+  <meta property="og:description" content="支持市场法/成本法/收益法三种评估方法，辅助生成价格鉴证报告。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .pa-tabs{display:flex;gap:0;margin-bottom:20px;border-radius:8px;overflow:hidden}
+    .pa-tabs button{flex:1;padding:12px;border:none;background:#e2e8f0;color:#64748b;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+    .pa-tabs button.active{background:#4f46e5;color:#fff}
+    .pa-section{background:#f8fafc;border-radius:12px;padding:24px;margin-bottom:16px}
+    .pa-section h3{font-size:16px;color:#475569;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .pa-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .pa-inputs-full{margin-bottom:16px}
+    .pa-inputs label,.pa-inputs-full label{display:block;margin-bottom:6px;font-weight:600;color:#475569;font-size:14px}
+    .pa-inputs input,.pa-inputs select,.pa-inputs-full input,.pa-inputs-full textarea,.pa-inputs-full select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px}
+    .pa-inputs input:focus,.pa-inputs select:focus,.pa-inputs-full input:focus,.pa-inputs-full textarea:focus,.pa-inputs-full select:focus{border-color:#4f46e5;outline:none}
+    .pa-inputs-full textarea{resize:vertical;min-height:80px;font-family:inherit}
+    .pa-result{background:#4f46e5;border-radius:12px;padding:24px;text-align:center;margin-bottom:16px}
+    .pa-result .label{font-size:14px;color:rgba(255,255,255,.8)}
+    .pa-result .value{font-size:36px;font-weight:700;color:#fff;margin:8px 0}
+    .pa-result .unit{font-size:16px;color:rgba(255,255,255,.8)}
+    .pa-comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+    .pa-comp-item{padding:12px;background:#fff;border-radius:8px;text-align:center}
+    .pa-comp-item input{border:2px solid #e2e8f0;border-radius:6px;padding:8px;width:100%;text-align:center;font-size:15px}
+    .pa-checklist{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .pa-checklist li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#475569;padding:8px;background:#fff;border-radius:8px}
+    .pa-checklist input{margin-top:2px;width:16px;height:16px}
+    .pa-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px;font-size:13px;color:#9a3412;line-height:1.6;margin-top:16px}
+    .pa-method-desc{font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;padding:12px;background:#eef2ff;border-radius:8px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>价格鉴证评估</h1>
+      <p>市场法 / 成本法 / 收益法 三种评估方法辅助计算，价格鉴证报告要素清单</p>
+    </div>
+
+    <div class="tool-box" style="max-width:680px;margin:0 auto">
+      <!-- 鉴证项目信息 -->
+      <div class="pa-section">
+        <h3>📋 鉴证项目信息</h3>
+        <div class="pa-inputs">
+          <div>
+            <label>委托方</label>
+            <input type="text" id="paClient" placeholder="如：XX人民法院">
+          </div>
+          <div>
+            <label>鉴证基准日</label>
+            <input type="date" id="paDate">
+          </div>
+        </div>
+        <div class="pa-inputs-full">
+          <label>鉴证标的</label>
+          <input type="text" id="paSubject" placeholder="如：二手轿车一辆（品牌型号）">
+        </div>
+        <div class="pa-inputs-full">
+          <label>鉴证目的</label>
+          <textarea id="paPurpose" placeholder="如：为法院审理机动车交通事故责任纠纷案提供价格参考依据"></textarea>
+        </div>
+      </div>
+
+      <!-- 评估方法选择 -->
+      <div class="pa-tabs">
+        <button class="active" id="btn-market" onclick="switchMethod('market')">市场法</button>
+        <button id="btn-cost" onclick="switchMethod('cost')">成本法</button>
+        <button id="btn-income" onclick="switchMethod('income')">收益法</button>
+      </div>
+
+      <!-- 市场法 -->
+      <div class="pa-section" id="panel-market">
+        <div class="pa-method-desc">市场法：选取与鉴证标的相同或类似的可比实例，调整差异后求取鉴证值。适用于市场活跃、交易案例丰富的标的。</div>
+        <div class="pa-comp-grid">
+          <div class="pa-comp-item"><div style="font-size:12px;color:#94a3b8;margin-bottom:6px">可比实例一（元）</div><input type="number" id="m1" placeholder="如：85000"></div>
+          <div class="pa-comp-item"><div style="font-size:12px;color:#94a3b8;margin-bottom:6px">可比实例二（元）</div><input type="number" id="m2" placeholder="如：82000"></div>
+          <div class="pa-comp-item"><div style="font-size:12px;color:#94a3b8;margin-bottom:6px">可比实例三（元）</div><input type="number" id="m3" placeholder="如：88000"></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="calcMarket()">计算鉴证值</button>
+        <div class="pa-result" id="marketResult" style="display:none">
+          <div class="label">鉴证值（算术平均）</div>
+          <div class="value" id="marketValue">--</div>
+          <div class="unit">元</div>
+        </div>
+      </div>
+
+      <!-- 成本法 -->
+      <div class="pa-section" id="panel-cost" style="display:none">
+        <div class="pa-method-desc">成本法：以重新构建标的所需的现时成本为基础，扣除损耗（成新率）确定鉴证值。适用于专用设备、在建工程等缺少交易案例的标的。</div>
+        <div class="pa-inputs">
+          <div>
+            <label>重置成本（元）</label>
+            <input type="number" id="cReset" placeholder="如：150000">
+          </div>
+          <div>
+            <label>成新率（%）</label>
+            <input type="number" id="cRate" placeholder="如：65" min="0" max="100">
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="calcCost()">计算鉴证值</button>
+        <div class="pa-result" id="costResult" style="display:none">
+          <div class="label">鉴证值</div>
+          <div class="value" id="costValue">--</div>
+          <div class="unit">元</div>
+        </div>
+      </div>
+
+      <!-- 收益法 -->
+      <div class="pa-section" id="panel-income" style="display:none">
+        <div class="pa-method-desc">收益法：将标的未来预期收益按适当折现率资本化或折现，求取鉴证值。适用于有稳定收益的不动产、无形资产等。</div>
+        <div class="pa-inputs">
+          <div>
+            <label>年净收益（元）</label>
+            <input type="number" id="iAnnual" placeholder="如：30000">
+          </div>
+          <div>
+            <label>折现率（%）</label>
+            <input type="number" id="iRate" placeholder="如：8" step="0.1">
+          </div>
+        </div>
+        <div class="pa-inputs-full">
+          <label>收益年限（年）</label>
+          <input type="number" id="iYears" placeholder="如：10">
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="calcIncome()">计算鉴证值</button>
+        <div class="pa-result" id="incomeResult" style="display:none">
+          <div class="label">鉴证值（收益现值）</div>
+          <div class="value" id="incomeValue">--</div>
+          <div class="unit">元</div>
+        </div>
+      </div>
+
+      <!-- 报告要素清单 -->
+      <div class="pa-section">
+        <h3>📑 价格鉴证报告要素清单</h3>
+        <ul class="pa-checklist">
+          <li><input type="checkbox"> 价格鉴证机构资质证书</li>
+          <li><input type="checkbox"> 鉴证人员执业资格证书</li>
+          <li><input type="checkbox"> 委托方基本情况</li>
+          <li><input type="checkbox"> 鉴证标的概况描述</li>
+          <li><input type="checkbox"> 价格鉴证目的</li>
+          <li><input type="checkbox"> 价格鉴证基准日</li>
+          <li><input type="checkbox"> 价格定义与假设条件</li>
+          <li><input type="checkbox"> 鉴证依据（法律法规）</li>
+          <li><input type="checkbox"> 选用的评估方法</li>
+          <li><input type="checkbox"> 鉴证过程与计算说明</li>
+          <li><input type="checkbox"> 鉴证结论（金额）</li>
+          <li><input type="checkbox"> 特别事项说明</li>
+          <li><input type="checkbox"> 报告有效期</li>
+          <li><input type="checkbox"> 机构签章与日期</li>
+        </ul>
+      </div>
+
+      <div class="pa-note">
+        <strong>免责声明：</strong>本工具仅提供计算辅助与要素参考，不能替代专业价格鉴证机构出具的正式《价格鉴证报告》。正式报告须由具备资质的价格鉴证机构及人员依法出具。
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "price-assessment");
+
+    // 设置默认日期为今天
+    document.getElementById('paDate').value = new Date().toISOString().split('T')[0];
+
+    let currentMethod = 'market';
+    function switchMethod(m) {
+      currentMethod = m;
+      document.getElementById('btn-market').classList.toggle('active', m === 'market');
+      document.getElementById('btn-cost').classList.toggle('active', m === 'cost');
+      document.getElementById('btn-income').classList.toggle('active', m === 'income');
+      document.getElementById('panel-market').style.display = m === 'market' ? 'block' : 'none';
+      document.getElementById('panel-cost').style.display = m === 'cost' ? 'block' : 'none';
+      document.getElementById('panel-income').style.display = m === 'income' ? 'block' : 'none';
+    }
+
+    function calcMarket() {
+      const v1 = parseFloat(document.getElementById('m1').value);
+      const v2 = parseFloat(document.getElementById('m2').value);
+      const v3 = parseFloat(document.getElementById('m3').value);
+      const vals = [v1, v2, v3].filter(v => !isNaN(v) && v > 0);
+      if (vals.length === 0) { alert('请输入至少一个有效的可比实例价格'); return; }
+      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      document.getElementById('marketValue').textContent = avg.toLocaleString('zh-CN', {maximumFractionDigits: 2});
+      document.getElementById('marketResult').style.display = 'block';
+    }
+
+    function calcCost() {
+      const reset = parseFloat(document.getElementById('cReset').value);
+      const rate = parseFloat(document.getElementById('cRate').value);
+      if (!reset || !rate || reset <= 0 || rate < 0 || rate > 100) { alert('请输入有效的重置成本和成新率（0-100）'); return; }
+      const value = reset * rate / 100;
+      document.getElementById('costValue').textContent = value.toLocaleString('zh-CN', {maximumFractionDigits: 2});
+      document.getElementById('costResult').style.display = 'block';
+    }
+
+    function calcIncome() {
+      const annual = parseFloat(document.getElementById('iAnnual').value);
+      const rate = parseFloat(document.getElementById('iRate').value);
+      const years = parseInt(document.getElementById('iYears').value);
+      if (!annual || !rate || !years || annual <= 0 || rate <= 0 || years <= 0) { alert('请输入有效的年净收益、折现率和收益年限'); return; }
+      const r = rate / 100;
+      let pv = 0;
+      for (let t = 1; t <= years; t++) {
+        pv += annual / Math.pow(1 + r, t);
+      }
+      document.getElementById('incomeValue').textContent = pv.toLocaleString('zh-CN', {maximumFractionDigits: 2});
+      document.getElementById('incomeResult').style.display = 'block';
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

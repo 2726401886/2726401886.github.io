@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>二维码生成器 - 在线生成自定义二维码 | 效率盒子</title>
+  <meta name="description" content="免费在线二维码生成工具，支持自定义内容、尺寸和颜色。可生成网址、文本、邮箱等类型的二维码，一键下载PNG图片。">
+  <meta name="keywords" content="二维码生成,QR码生成,在线二维码,二维码制作,免费二维码">
+  <meta property="og:title" content="二维码生成器 - 在线生成自定义二维码">
+  <meta property="og:description" content="免费在线生成二维码，支持自定义尺寸和颜色，一键下载。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>二维码生成器</h1>
+      <p>输入文本或网址，一键生成二维码，支持自定义尺寸和颜色</p>
+    </div>
+
+    <div class="tool-box">
+      <div class="form-group">
+        <label for="qr-text">二维码内容</label>
+        <textarea id="qr-text" placeholder="输入网址或文本，如 https://example.com"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="qr-size">尺寸 <span class="range-value" id="size-value">256</span> px</label>
+          <input type="range" id="qr-size" min="128" max="512" value="256" step="32">
+        </div>
+        <div class="form-group">
+          <label for="qr-color">前景色</label>
+          <input type="color" id="qr-color" value="#000000" style="width: 100%; height: 40px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;">
+        </div>
+        <div class="form-group">
+          <label for="qr-bg">背景色</label>
+          <input type="color" id="qr-bg" value="#ffffff" style="width: 100%; height: 40px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;">
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <button class="btn btn-primary" onclick="generateQR()">生成二维码</button>
+        <button class="btn btn-success" id="download-btn" onclick="downloadQR()" style="display: none;">下载 PNG</button>
+      </div>
+
+      <div id="qrcode"></div>
+    </div>
+
+    <div class="ad-zone">
+      <span class="ad-zone-label">广告位</span>
+    </div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <!-- QRCode.js library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "qr-generator");
+
+    let qrInstance = null;
+
+    document.getElementById("qr-size").addEventListener("input", function() {
+      document.getElementById("size-value").textContent = this.value;
+    });
+
+    function generateQR() {
+      const text = document.getElementById("qr-text").value.trim();
+      if (!text) {
+        showToast("请输入二维码内容");
+        return;
+      }
+
+      const size = parseInt(document.getElementById("qr-size").value);
+      const color = document.getElementById("qr-color").value;
+      const bg = document.getElementById("qr-bg").value;
+
+      const container = document.getElementById("qrcode");
+      container.innerHTML = "";
+
+      qrInstance = new QRCode(container, {
+        text: text,
+        width: size,
+        height: size,
+        colorDark: color,
+        colorLight: bg,
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      document.getElementById("download-btn").style.display = "inline-flex";
+    }
+
+    function downloadQR() {
+      const canvas = document.querySelector("#qrcode canvas");
+      if (!canvas) {
+        showToast("请先生成二维码");
+        return;
+      }
+
+      const link = document.createElement("a");
+      link.download = "qrcode.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      showToast("二维码已下载");
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

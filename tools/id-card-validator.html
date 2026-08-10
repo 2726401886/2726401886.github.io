@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>身份证校验 - 身份证号码验证与信息提取 | 效率盒子</title>
+  <meta name="description" content="免费在线身份证号码校验工具，验证身份证号码是否有效，提取出生日期、性别、归属地信息。支持18位和15位身份证。">
+  <meta name="keywords" content="身份证校验,身份证查询,身份证号码验证,归属地查询,出生日期提取,性别判断">
+  <meta property="og:title" content="身份证校验工具">
+  <meta property="og:description" content="验证身份证号码有效性，提取出生日期、性别、归属地。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .id-input-area{margin-bottom:16px}
+    .id-input-area label{display:block;margin-bottom:6px;font-weight:600;color:#475569;font-size:14px}
+    .id-input-area input{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px;letter-spacing:1px}
+    .id-input-area input:focus{border-color:#4f46e5;outline:none}
+    .id-result{background:#f8fafc;border-radius:12px;padding:24px;margin-bottom:16px}
+    .id-status{text-align:center;margin-bottom:16px;padding:12px;border-radius:8px;font-size:18px;font-weight:700}
+    .id-status.valid{background:#dcfce7;color:#166534}
+    .id-status.invalid{background:#fee2e2;color:#dc2626}
+    .id-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .id-info-item{padding:12px;background:#fff;border-radius:8px}
+    .id-info-item .label{font-size:12px;color:#94a3b8;margin-bottom:4px}
+    .id-info-item .value{font-size:16px;font-weight:600;color:#1e293b}
+    .privacy-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px;font-size:13px;color:#9a3412;line-height:1.6;margin-top:16px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>身份证校验</h1>
+      <p>验证身份证号码有效性，提取出生日期、性别、归属地</p>
+    </div>
+
+    <div class="tool-box" style="max-width:520px;margin:0 auto">
+      <div class="id-input-area">
+        <label>身份证号码</label>
+        <input type="text" id="idNumber" placeholder="请输入18位身份证号码" maxlength="18">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="validateId()">校验身份证</button>
+
+      <div id="resultArea" style="display:none;margin-top:20px">
+        <div class="id-result">
+          <div class="id-status" id="statusBar">--</div>
+          <div class="id-info-grid" id="infoGrid"></div>
+        </div>
+      </div>
+
+      <div class="privacy-note">
+        <strong>隐私提示：</strong>本工具完全在您的浏览器本地运行，不会上传或存储任何身份证信息。请放心使用。
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "id-card-validator");
+
+    // 省份代码表
+    const PROVINCES = {
+      11:'北京市',12:'天津市',13:'河北省',14:'山西省',15:'内蒙古自治区',
+      21:'辽宁省',22:'吉林省',23:'黑龙江省',31:'上海市',32:'江苏省',
+      33:'浙江省',34:'安徽省',35:'福建省',36:'江西省',37:'山东省',
+      41:'河南省',42:'湖北省',43:'湖南省',44:'广东省',45:'广西壮族自治区',
+      46:'海南省',50:'重庆市',51:'四川省',52:'贵州省',53:'云南省',
+      54:'西藏自治区',61:'陕西省',62:'甘肃省',63:'青海省',64:'宁夏回族自治区',
+      65:'新疆维吾尔自治区',71:'台湾省',81:'香港特别行政区',82:'澳门特别行政区'
+    };
+
+    function validateId() {
+      const id = document.getElementById('idNumber').value.trim().toUpperCase();
+      if (!id) { alert('请输入身份证号码'); return; }
+
+      let isValid = false;
+      let info = {};
+
+      if (id.length === 18) {
+        // 18位校验
+        const regex = /^\d{17}[\dX]$/;
+        if (!regex.test(id)) { showInvalid('格式错误：18位身份证应为17位数字+1位数字或X'); return; }
+
+        // 省份
+        const provCode = id.substring(0, 2);
+        info.province = PROVINCES[provCode] || '未知地区';
+
+        // 出生日期
+        const year = parseInt(id.substring(6, 10));
+        const month = parseInt(id.substring(10, 12));
+        const day = parseInt(id.substring(12, 14));
+        const birthDate = new Date(year, month - 1, day);
+        if (birthDate.getFullYear() !== year || birthDate.getMonth() !== month - 1 || birthDate.getDate() !== day) {
+          showInvalid('出生日期无效'); return;
+        }
+        info.birthday = `${year}年${month}月${day}日`;
+        info.age = calcAge(birthDate);
+
+        // 性别
+        const genderNum = parseInt(id.charAt(16));
+        info.gender = genderNum % 2 === 0 ? '女' : '男';
+
+        // 校验码
+        const weights = [7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2];
+        const checkCodes = ['1','0','X','9','8','7','6','5','4','3','2'];
+        let sum = 0;
+        for (let i = 0; i < 17; i++) sum += parseInt(id.charAt(i)) * weights[i];
+        const checkCode = checkCodes[sum % 11];
+        if (checkCode !== id.charAt(17)) { showInvalid('校验码错误，身份证号码无效'); return; }
+
+        isValid = true;
+      } else if (id.length === 15) {
+        const regex = /^\d{15}$/;
+        if (!regex.test(id)) { showInvalid('格式错误：15位身份证应全为数字'); return; }
+
+        const provCode = id.substring(0, 2);
+        info.province = PROVINCES[provCode] || '未知地区';
+
+        const year = 1900 + parseInt(id.substring(6, 8));
+        const month = parseInt(id.substring(8, 10));
+        const day = parseInt(id.substring(10, 12));
+        info.birthday = `${year}年${month}月${day}日`;
+        const birthDate = new Date(year, month - 1, day);
+        info.age = calcAge(birthDate);
+
+        const genderNum = parseInt(id.charAt(14));
+        info.gender = genderNum % 2 === 0 ? '女' : '男';
+        isValid = true;
+      } else {
+        showInvalid('身份证号码长度应为15位或18位'); return;
+      }
+
+      if (isValid) {
+        document.getElementById('statusBar').className = 'id-status valid';
+        document.getElementById('statusBar').textContent = '校验通过 - 身份证号码有效';
+        document.getElementById('infoGrid').innerHTML = `
+          <div class="id-info-item"><div class="label">归属省份</div><div class="value">${info.province}</div></div>
+          <div class="id-info-item"><div class="label">出生日期</div><div class="value">${info.birthday}</div></div>
+          <div class="id-info-item"><div class="label">性别</div><div class="value">${info.gender}</div></div>
+          <div class="id-info-item"><div class="label">当前年龄</div><div class="value">${info.age}岁</div></div>
+        `;
+        document.getElementById('resultArea').style.display = 'block';
+      }
+    }
+
+    function showInvalid(msg) {
+      document.getElementById('statusBar').className = 'id-status invalid';
+      document.getElementById('statusBar').textContent = '校验失败 - ' + msg;
+      document.getElementById('infoGrid').innerHTML = '';
+      document.getElementById('resultArea').style.display = 'block';
+    }
+
+    function calcAge(birth) {
+      const now = new Date();
+      let age = now.getFullYear() - birth.getFullYear();
+      if (now.getMonth() < birth.getMonth() || (now.getMonth() === birth.getMonth() && now.getDate() < birth.getDate())) age--;
+      return age;
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

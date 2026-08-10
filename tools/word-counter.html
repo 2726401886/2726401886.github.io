@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字数统计器 - 在线字符/单词/行数统计 | 效率盒子</title>
+  <meta name="description" content="免费在线字数统计工具，支持中文字数、英文字数、字符数、单词数、行数、段落数统计。适用于论文写作、文章排版、社交媒体字数限制等场景。">
+  <meta name="keywords" content="字数统计,字符统计,单词计数,行数统计,在线字数统计,论文字数统计">
+  <meta property="og:title" content="字数统计器 - 在线字符/单词/行数统计">
+  <meta property="og:description" content="免费在线字数统计，支持中文、英文、字符、单词、行数统计。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>字数统计器</h1>
+      <p>实时统计中文字数、英文字数、字符数、单词数、行数和段落数</p>
+    </div>
+
+    <div class="tool-box">
+      <div class="form-group">
+        <label for="input-text">输入文本</label>
+        <textarea id="input-text" placeholder="在此输入或粘贴文本..."></textarea>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-value" id="stat-chars">0</div>
+          <div class="stat-label">字符数（含空格）</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-chars-no-space">0</div>
+          <div class="stat-label">字符数（不含空格）</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-words">0</div>
+          <div class="stat-label">单词数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-chinese">0</div>
+          <div class="stat-label">中文字数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-lines">0</div>
+          <div class="stat-label">行数</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value" id="stat-paragraphs">0</div>
+          <div class="stat-label">段落数</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <button class="btn btn-secondary" onclick="clearText()">清空</button>
+      </div>
+    </div>
+
+    <div class="ad-zone">
+      <span class="ad-zone-label">广告位</span>
+    </div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "word-counter");
+
+    const input = document.getElementById("input-text");
+
+    input.addEventListener("input", updateStats);
+
+    function updateStats() {
+      const text = input.value;
+
+      document.getElementById("stat-chars").textContent = text.length;
+      document.getElementById("stat-chars-no-space").textContent = text.replace(/\s/g, "").length;
+
+      // 单词数（英文单词 + 中文字符各算一个）
+      const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
+      const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+      document.getElementById("stat-words").textContent = englishWords + chineseChars;
+      document.getElementById("stat-chinese").textContent = chineseChars;
+
+      // 行数
+      const lines = text === "" ? 0 : text.split("\n").length;
+      document.getElementById("stat-lines").textContent = lines;
+
+      // 段落数
+      const paragraphs = text.trim() === "" ? 0 : text.trim().split(/\n\s*\n/).filter(p => p.trim()).length;
+      document.getElementById("stat-paragraphs").textContent = paragraphs;
+    }
+
+    function clearText() {
+      input.value = "";
+      updateStats();
+      input.focus();
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>房贷计算器 - 等额本息/等额本金月供计算 | 效率盒子</title>
+  <meta name="description" content="免费在线房贷计算器，支持等额本息和等额本金两种还款方式，计算每月月供、利息总额、还款总额。支持商业贷款、公积金贷款。">
+  <meta name="keywords" content="房贷计算器,等额本息,等额本金,月供计算,贷款计算,公积金贷款,商业贷款">
+  <meta property="og:title" content="房贷计算器 - 在线月供计算">
+  <meta property="og:description" content="支持等额本息/等额本金，计算月供、利息总额、还款总额。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .loan-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .loan-inputs label,.loan-inputs-full label{display:block;margin-bottom:6px;font-weight:600;color:#475569;font-size:14px}
+    .loan-inputs input,.loan-inputs select,.loan-inputs-full input,.loan-inputs-full select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px}
+    .loan-inputs input:focus,.loan-inputs select:focus,.loan-inputs-full input:focus,.loan-inputs-full select:focus{border-color:#4f46e5;outline:none}
+    .loan-inputs-full{margin-bottom:16px}
+    .method-tabs{display:flex;gap:0;margin-bottom:20px;border-radius:8px;overflow:hidden}
+    .method-tabs button{flex:1;padding:12px;border:none;background:#e2e8f0;color:#64748b;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+    .method-tabs button.active{background:#4f46e5;color:#fff}
+    .result-card{background:#f8fafc;border-radius:12px;padding:24px;margin-bottom:16px}
+    .result-highlight{text-align:center;margin-bottom:20px}
+    .result-highlight .label{font-size:14px;color:#64748b}
+    .result-highlight .value{font-size:36px;font-weight:700;color:#4f46e5;margin:4px 0}
+    .result-highlight .unit{font-size:16px;color:#64748b}
+    .result-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+    .result-item{text-align:center;padding:12px;background:#fff;border-radius:8px}
+    .result-item .label{font-size:12px;color:#94a3b8;margin-bottom:4px}
+    .result-item .value{font-size:18px;font-weight:700;color:#1e293b}
+    .schedule-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:16px}
+    .schedule-table th{background:#4f46e5;color:#fff;padding:8px;text-align:center;font-weight:600}
+    .schedule-table td{padding:8px;text-align:center;border-bottom:1px solid #e2e8f0}
+    .schedule-table tr:hover{background:#f1f5f9}
+    .schedule-wrap{max-height:400px;overflow-y:auto;border-radius:8px;border:1px solid #e2e8f0}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>房贷计算器</h1>
+      <p>支持等额本息/等额本金，计算月供、利息总额、还款明细</p>
+    </div>
+
+    <div class="tool-box" style="max-width:600px;margin:0 auto">
+      <div class="method-tabs">
+        <button class="active" id="btn-benxi" onclick="switchMethod('benxi')">等额本息</button>
+        <button id="btn-benjin" onclick="switchMethod('benjin')">等额本金</button>
+      </div>
+
+      <div class="loan-inputs">
+        <div>
+          <label>贷款金额（万元）</label>
+          <input type="number" id="loanAmount" placeholder="例如：100" value="100" step="0.1">
+        </div>
+        <div>
+          <label>贷款年限</label>
+          <select id="loanYears">
+            <option value="5">5年</option>
+            <option value="10">10年</option>
+            <option value="15">15年</option>
+            <option value="20">20年</option>
+            <option value="25">25年</option>
+            <option value="30" selected>30年</option>
+          </select>
+        </div>
+      </div>
+      <div class="loan-inputs-full">
+        <label>年利率（%）</label>
+        <input type="number" id="interestRate" placeholder="例如：4.2" value="4.2" step="0.01">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="calcLoan()">开始计算</button>
+
+      <div id="resultArea" style="display:none;margin-top:20px">
+        <div class="result-card">
+          <div class="result-highlight">
+            <div class="label">每月还款</div>
+            <div class="value" id="monthlyPay">--</div>
+            <div class="unit">元/月</div>
+          </div>
+          <div class="result-grid">
+            <div class="result-item">
+              <div class="label">还款总额</div>
+              <div class="value" id="totalPay">--</div>
+            </div>
+            <div class="result-item">
+              <div class="label">利息总额</div>
+              <div class="value" id="totalInterest">--</div>
+            </div>
+            <div class="result-item">
+              <div class="label">还款月数</div>
+              <div class="value" id="totalMonths">--</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin:16px 0 8px;font-size:16px;color:#475569">还款明细（前12期）</h3>
+        <div class="schedule-wrap">
+          <table class="schedule-table">
+            <thead>
+              <tr><th>期数</th><th>月供(元)</th><th>本金(元)</th><th>利息(元)</th><th>剩余本金(元)</th></tr>
+            </thead>
+            <tbody id="scheduleBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "mortgage-calculator");
+    let currentMethod = 'benxi';
+
+    function switchMethod(m) {
+      currentMethod = m;
+      document.getElementById('btn-benxi').classList.toggle('active', m === 'benxi');
+      document.getElementById('btn-benjin').classList.toggle('active', m === 'benjin');
+    }
+
+    function calcLoan() {
+      const amount = parseFloat(document.getElementById('loanAmount').value) * 10000;
+      const years = parseInt(document.getElementById('loanYears').value);
+      const annualRate = parseFloat(document.getElementById('interestRate').value);
+      if (!amount || !years || !annualRate || amount <= 0 || years <= 0 || annualRate <= 0) {
+        alert('请输入有效的贷款参数');
+        return;
+      }
+      const months = years * 12;
+      const monthlyRate = annualRate / 100 / 12;
+      let schedule = [];
+
+      if (currentMethod === 'benxi') {
+        // 等额本息
+        const monthlyPay = amount * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1);
+        let remaining = amount;
+        for (let i = 1; i <= months; i++) {
+          const interest = remaining * monthlyRate;
+          const principal = monthlyPay - interest;
+          remaining -= principal;
+          schedule.push({ month: i, pay: monthlyPay, principal, interest, remaining: Math.max(0, remaining) });
+        }
+        const totalPay = monthlyPay * months;
+        const totalInterest = totalPay - amount;
+        showResult(monthlyPay, totalPay, totalInterest, months, schedule);
+      } else {
+        // 等额本金
+        const monthlyPrincipal = amount / months;
+        let totalInterest = 0;
+        let remaining = amount;
+        for (let i = 1; i <= months; i++) {
+          const interest = remaining * monthlyRate;
+          const pay = monthlyPrincipal + interest;
+          remaining -= monthlyPrincipal;
+          totalInterest += interest;
+          schedule.push({ month: i, pay, principal: monthlyPrincipal, interest, remaining: Math.max(0, remaining) });
+        }
+        const totalPay = amount + totalInterest;
+        showResult(schedule[0].pay, totalPay, totalInterest, months, schedule);
+      }
+    }
+
+    function showResult(monthlyPay, totalPay, totalInterest, months, schedule) {
+      document.getElementById('monthlyPay').textContent = monthlyPay.toFixed(2);
+      document.getElementById('totalPay').textContent = (totalPay / 10000).toFixed(2) + '万';
+      document.getElementById('totalInterest').textContent = (totalInterest / 10000).toFixed(2) + '万';
+      document.getElementById('totalMonths').textContent = months + '期';
+
+      const tbody = document.getElementById('scheduleBody');
+      tbody.innerHTML = schedule.slice(0, 12).map(s => `
+        <tr>
+          <td>${s.month}</td>
+          <td>${s.pay.toFixed(2)}</td>
+          <td>${s.principal.toFixed(2)}</td>
+          <td>${s.interest.toFixed(2)}</td>
+          <td>${s.remaining.toFixed(2)}</td>
+        </tr>
+      `).join('');
+
+      document.getElementById('resultArea').style.display = 'block';
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

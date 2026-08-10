@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日期计算器 - 天数计算/日期加减 | 效率盒子</title>
+  <meta name="description" content="免费在线日期计算器，计算两个日期之间的天数、周数、月数，支持日期加减天数。适用于项目排期、倒计时、年龄计算等场景。">
+  <meta name="keywords" content="日期计算器,天数计算,日期差,倒计时,年龄计算,日期加减">
+  <meta property="og:title" content="日期计算器 - 天数计算/日期加减">
+  <meta property="og:description" content="在线日期计算器，计算天数差和日期加减。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .date-section{background:#f8fafc;border-radius:12px;padding:20px;margin-bottom:16px}
+    .date-section h3{margin:0 0 14px;font-size:16px;color:#1e293b}
+    .date-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+    .date-inputs label{display:block;margin-bottom:4px;font-size:13px;font-weight:600;color:#475569}
+    .date-inputs input{width:100%;padding:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:15px}
+    .date-inputs input:focus{border-color:#4f46e5;outline:none}
+    .date-result{background:#eef2ff;border-radius:8px;padding:16px;margin-top:12px}
+    .date-result-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #e2e8f0}
+    .date-result-row:last-child{border-bottom:none}
+    .date-result-label{color:#64748b;font-size:14px}
+    .date-result-value{font-weight:700;color:#4f46e5}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>日期计算器</h1>
+      <p>计算两个日期之间的天数，或日期加减天数</p>
+    </div>
+
+    <div class="tool-box" style="max-width:520px;margin:0 auto">
+      <div class="date-section">
+        <h3>📅 计算两个日期之间的差值</h3>
+        <div class="date-inputs">
+          <div>
+            <label>开始日期</label>
+            <input type="date" id="date1">
+          </div>
+          <div>
+            <label>结束日期</label>
+            <input type="date" id="date2">
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="calcDiff()">计算差值</button>
+        <div class="date-result" id="diffResult" style="display:none"></div>
+      </div>
+
+      <div class="date-section">
+        <h3>➕ 日期加减天数</h3>
+        <div class="date-inputs" style="grid-template-columns:1fr 1fr 1fr">
+          <div>
+            <label>基准日期</label>
+            <input type="date" id="baseDate">
+          </div>
+          <div>
+            <label>天数（可负数）</label>
+            <input type="number" id="addDays" value="30">
+          </div>
+          <div>
+            <label>&nbsp;</label>
+            <button class="btn btn-primary" style="width:100%" onclick="calcAdd()">计算</button>
+          </div>
+        </div>
+        <div class="date-result" id="addResult" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "date-calculator");
+
+    const today = new Date().toISOString().split("T")[0];
+    document.getElementById("date1").value = today;
+    document.getElementById("date2").value = today;
+    document.getElementById("baseDate").value = today;
+
+    function calcDiff() {
+      const d1 = new Date(document.getElementById("date1").value);
+      const d2 = new Date(document.getElementById("date2").value);
+      if (isNaN(d1) || isNaN(d2)) { alert("请选择有效日期"); return; }
+      const ms = Math.abs(d2 - d1);
+      const days = Math.floor(ms / 86400000);
+      const weeks = Math.floor(days / 7);
+      const hours = days * 24;
+      const result = document.getElementById("diffResult");
+      result.innerHTML = `
+        <div class="date-result-row"><span class="date-result-label">相差天数</span><span class="date-result-value">${days} 天</span></div>
+        <div class="date-result-row"><span class="date-result-label">相差周数</span><span class="date-result-value">${weeks} 周 ${days % 7} 天</span></div>
+        <div class="date-result-row"><span class="date-result-label">相差小时</span><span class="date-result-value">${hours.toLocaleString()} 小时</span></div>
+      `;
+      result.style.display = "block";
+    }
+
+    function calcAdd() {
+      const base = new Date(document.getElementById("baseDate").value);
+      const days = parseInt(document.getElementById("addDays").value);
+      if (isNaN(base) || isNaN(days)) { alert("请输入有效数据"); return; }
+      const result = new Date(base);
+      result.setDate(result.getDate() + days);
+      const weekday = ["日","一","二","三","四","五","六"][result.getDay()];
+      const resultEl = document.getElementById("addResult");
+      resultEl.innerHTML = `
+        <div class="date-result-row"><span class="date-result-label">基准日期</span><span class="date-result-value">${base.toLocaleDateString("zh-CN")}</span></div>
+        <div class="date-result-row"><span class="date-result-label">加 ${days} 天后</span><span class="date-result-value">${result.toLocaleDateString("zh-CN")} 星期${weekday}</span></div>
+      `;
+      resultEl.style.display = "block";
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

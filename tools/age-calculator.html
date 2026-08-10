@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>年龄计算器 - 精确到天/月的年龄计算 | 效率盒子</title>
+  <meta name="description" content="免费在线年龄计算器，输入出生日期即可精确计算年龄，显示年月日、总天数、总小时、星座、生肖。支持两个日期间的时间差计算。">
+  <meta name="keywords" content="年龄计算器,出生日期计算,精确年龄,时间差计算,星座查询,生肖查询,天数计算">
+  <meta property="og:title" content="年龄计算器 - 精确计算">
+  <meta property="og:description" content="输入出生日期，精确计算年龄到天。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .age-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .age-inputs label{display:block;margin-bottom:6px;font-weight:600;color:#475569;font-size:14px}
+    .age-inputs input{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px}
+    .age-inputs input:focus{border-color:#4f46e5;outline:none}
+    .age-result{background:#f8fafc;border-radius:12px;padding:24px;margin-bottom:16px}
+    .age-main{text-align:center;margin-bottom:20px}
+    .age-main .value{font-size:42px;font-weight:700;color:#4f46e5;margin:4px 0}
+    .age-detail{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+    .age-item{text-align:center;padding:12px;background:#fff;border-radius:8px}
+    .age-item .label{font-size:12px;color:#94a3b8;margin-bottom:4px}
+    .age-item .value{font-size:18px;font-weight:700;color:#1e293b}
+    .age-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+    .age-tag{padding:6px 16px;border-radius:20px;font-size:14px;font-weight:600}
+    .tag-zodiac{background:#fef3c7;color:#92400e}
+    .tag-constellation{background:#dbeafe;color:#1e40af}
+    .tag-generation{background:#dcfce7;color:#166534}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>年龄计算器</h1>
+      <p>精确计算年龄到天，含星座、生肖、代际归属</p>
+    </div>
+
+    <div class="tool-box" style="max-width:520px;margin:0 auto">
+      <div class="age-inputs">
+        <div>
+          <label>出生日期</label>
+          <input type="date" id="birthDate" value="1990-01-01">
+        </div>
+        <div>
+          <label>目标日期（默认今天）</label>
+          <input type="date" id="targetDate">
+        </div>
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="calcAge()">计算年龄</button>
+
+      <div id="resultArea" style="display:none;margin-top:20px">
+        <div class="age-result">
+          <div class="age-main">
+            <div style="font-size:14px;color:#64748b">您的年龄</div>
+            <div class="value" id="ageText">--</div>
+          </div>
+          <div class="age-detail">
+            <div class="age-item"><div class="label">总天数</div><div class="value" id="totalDays">--</div></div>
+            <div class="age-item"><div class="label">总小时</div><div class="value" id="totalHours">--</div></div>
+            <div class="age-item"><div class="label">距下次生日</div><div class="value" id="nextBirthday">--</div></div>
+          </div>
+          <div class="age-tags" id="tagsArea"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "age-calculator");
+
+    const today = new Date();
+    document.getElementById('targetDate').value = today.toISOString().split('T')[0];
+
+    const ZODIAC = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+    const CONSTELLATIONS = [
+      { name:'摩羯座', start:[12,22], end:[1,19] },
+      { name:'水瓶座', start:[1,20], end:[2,18] },
+      { name:'双鱼座', start:[2,19], end:[3,20] },
+      { name:'白羊座', start:[3,21], end:[4,19] },
+      { name:'金牛座', start:[4,20], end:[5,20] },
+      { name:'双子座', start:[5,21], end:[6,21] },
+      { name:'巨蟹座', start:[6,22], end:[7,22] },
+      { name:'狮子座', start:[7,23], end:[8,22] },
+      { name:'处女座', start:[8,23], end:[9,22] },
+      { name:'天秤座', start:[9,23], end:[10,23] },
+      { name:'天蝎座', start:[10,24], end:[11,22] },
+      { name:'射手座', start:[11,23], end:[12,21] }
+    ];
+
+    function getConstellation(month, day) {
+      for (const c of CONSTELLATIONS) {
+        const [sm, sd] = c.start;
+        const [em, ed] = c.end;
+        if (sm === 12) {
+          if ((month === 12 && day >= sd) || (month === 1 && day <= ed)) return c.name;
+        } else {
+          if ((month === sm && day >= sd) || (month === em && day <= ed)) return c.name;
+        }
+      }
+      return '未知';
+    }
+
+    function getGeneration(year) {
+      if (year >= 2010) return '10后';
+      if (year >= 2000) return '00后';
+      if (year >= 1990) return '90后';
+      if (year >= 1980) return '80后';
+      if (year >= 1970) return '70后';
+      if (year >= 1960) return '60后';
+      return year + '年代';
+    }
+
+    function calcAge() {
+      const birth = new Date(document.getElementById('birthDate').value);
+      const target = new Date(document.getElementById('targetDate').value);
+      if (isNaN(birth) || isNaN(target)) { alert('请选择有效日期'); return; }
+      if (birth > target) { alert('出生日期不能晚于目标日期'); return; }
+
+      let years = target.getFullYear() - birth.getFullYear();
+      let months = target.getMonth() - birth.getMonth();
+      let days = target.getDate() - birth.getDate();
+      if (days < 0) { months--; days += new Date(target.getFullYear(), target.getMonth(), 0).getDate(); }
+      if (months < 0) { years--; months += 12; }
+
+      const totalMs = target - birth;
+      const totalDays = Math.floor(totalMs / 86400000);
+      const totalHours = Math.floor(totalMs / 3600000);
+
+      // 下次生日
+      let nextBday = new Date(target.getFullYear(), birth.getMonth(), birth.getDate());
+      if (nextBday < target) nextBday = new Date(target.getFullYear() + 1, birth.getMonth(), birth.getDate());
+      const daysToBday = Math.ceil((nextBday - target) / 86400000);
+
+      const zodiac = ZODIAC[(birth.getFullYear() - 4) % 12];
+      const constellation = getConstellation(birth.getMonth() + 1, birth.getDate());
+      const generation = getGeneration(birth.getFullYear());
+
+      document.getElementById('ageText').textContent = `${years}岁${months}个月${days}天`;
+      document.getElementById('totalDays').textContent = totalDays.toLocaleString() + '天';
+      document.getElementById('totalHours').textContent = totalHours.toLocaleString() + '时';
+      document.getElementById('nextBirthday').textContent = daysToBday + '天';
+
+      document.getElementById('tagsArea').innerHTML = `
+        <span class="age-tag tag-zodiac">生肖：${zodiac}</span>
+        <span class="age-tag tag-constellation">星座：${constellation}</span>
+        <span class="age-tag tag-generation">${generation}</span>
+      `;
+      document.getElementById('resultArea').style.display = 'block';
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

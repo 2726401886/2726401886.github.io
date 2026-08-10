@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个税计算器 - 个人所得税在线计算 | 效率盒子</title>
+  <meta name="description" content="免费在线个税计算器，支持2024年个人所得税累进税率计算，输入税前工资即可计算应纳税额、税后工资。支持五险一金扣除、专项附加扣除。">
+  <meta name="keywords" content="个税计算器,个人所得税,税后工资,税率表,五险一金,专项附加扣除,累计预扣法">
+  <meta property="og:title" content="个税计算器 - 个人所得税在线计算">
+  <meta property="og:description" content="输入税前工资即可计算应纳税额和税后工资。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .tax-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .tax-inputs label,.tax-full label{display:block;margin-bottom:6px;font-weight:600;color:#475569;font-size:14px}
+    .tax-inputs input,.tax-full input{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px}
+    .tax-inputs input:focus,.tax-full input:focus{border-color:#4f46e5;outline:none}
+    .tax-full{margin-bottom:16px}
+    .tax-result{background:#f8fafc;border-radius:12px;padding:24px;margin-bottom:16px}
+    .tax-highlight{text-align:center;margin-bottom:20px}
+    .tax-highlight .label{font-size:14px;color:#64748b}
+    .tax-highlight .value{font-size:36px;font-weight:700;color:#4f46e5;margin:4px 0}
+    .tax-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .tax-item{padding:12px;background:#fff;border-radius:8px;text-align:center}
+    .tax-item .label{font-size:12px;color:#94a3b8;margin-bottom:4px}
+    .tax-item .value{font-size:18px;font-weight:700;color:#1e293b}
+    .tax-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:16px}
+    .tax-table th{background:#4f46e5;color:#fff;padding:8px;text-align:center}
+    .tax-table td{padding:8px;text-align:center;border-bottom:1px solid #e2e8f0}
+    .tax-table .active-row{background:#eef2ff;font-weight:600}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>个税计算器</h1>
+      <p>2024年个人所得税累进税率，支持五险一金和专项附加扣除</p>
+    </div>
+
+    <div class="tool-box" style="max-width:560px;margin:0 auto">
+      <div class="tax-inputs">
+        <div>
+          <label>税前月薪（元）</label>
+          <input type="number" id="salary" placeholder="例如：15000" value="15000">
+        </div>
+        <div>
+          <label>五险一金（元）</label>
+          <input type="number" id="insurance" placeholder="例如：2000" value="2000">
+        </div>
+      </div>
+      <div class="tax-full">
+        <label>专项附加扣除（元）</label>
+        <input type="number" id="specialDeduction" placeholder="例如：2000（子女教育、房贷等）" value="0">
+      </div>
+      <div class="tax-full">
+        <label>累计月份（第几个月）</label>
+        <input type="number" id="monthNum" placeholder="1-12" value="1" min="1" max="12">
+      </div>
+      <button class="btn btn-primary" style="width:100%" onclick="calcTax()">计算个税</button>
+
+      <div id="resultArea" style="display:none;margin-top:20px">
+        <div class="tax-result">
+          <div class="tax-highlight">
+            <div class="label">本月应纳税额</div>
+            <div class="value" id="taxAmount">--</div>
+            <div class="label" style="margin-top:4px">元</div>
+          </div>
+          <div class="tax-grid">
+            <div class="tax-item">
+              <div class="label">税后到手</div>
+              <div class="value" id="afterTax">--</div>
+            </div>
+            <div class="tax-item">
+              <div class="label">有效税率</div>
+              <div class="value" id="taxRate">--</div>
+            </div>
+            <div class="tax-item">
+              <div class="label">累计应纳税</div>
+              <div class="value" id="cumTax">--</div>
+            </div>
+            <div class="tax-item">
+              <div class="label">累计税后收入</div>
+              <div class="value" id="cumIncome">--</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin:16px 0 8px;font-size:16px;color:#475569">适用税率表</h3>
+        <table class="tax-table">
+          <thead>
+            <tr><th>级数</th><th>累计预扣预缴所得额</th><th>税率</th><th>速算扣除数</th></tr>
+          </thead>
+          <tbody id="taxTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "tax-calculator");
+
+    // 2024年个税累进税率表（年度累计）
+    const TAX_BRACKETS = [
+      { max: 36000, rate: 3, deduction: 0 },
+      { max: 144000, rate: 10, deduction: 2520 },
+      { max: 300000, rate: 20, deduction: 16920 },
+      { max: 420000, rate: 25, deduction: 31920 },
+      { max: 660000, rate: 30, deduction: 52920 },
+      { max: 960000, rate: 35, deduction: 85920 },
+      { max: Infinity, rate: 45, deduction: 181920 }
+    ];
+
+    function calcTax() {
+      const salary = parseFloat(document.getElementById('salary').value);
+      const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+      const special = parseFloat(document.getElementById('specialDeduction').value) || 0;
+      const monthNum = parseInt(document.getElementById('monthNum').value) || 1;
+
+      if (!salary || salary <= 0) { alert('请输入有效工资'); return; }
+
+      const monthlyTaxable = salary - insurance - special - 5000;
+      if (monthlyTaxable <= 0) {
+        document.getElementById('taxAmount').textContent = '0.00';
+        document.getElementById('afterTax').textContent = (salary - insurance).toFixed(2);
+        document.getElementById('taxRate').textContent = '0%';
+        document.getElementById('cumTax').textContent = '0.00';
+        document.getElementById('cumIncome').textContent = ((salary - insurance) * monthNum).toFixed(2);
+        document.getElementById('resultArea').style.display = 'block';
+        renderTaxTable(0);
+        return;
+      }
+
+      // 累计预扣法
+      const cumTaxable = monthlyTaxable * monthNum;
+      let cumTax = 0;
+      let activeLevel = 0;
+
+      for (let i = 0; i < TAX_BRACKETS.length; i++) {
+        if (cumTaxable <= TAX_BRACKETS[i].max) {
+          cumTax = cumTaxable * TAX_BRACKETS[i].rate / 100 - TAX_BRACKETS[i].deduction;
+          activeLevel = i;
+          break;
+        }
+      }
+      cumTax = Math.max(0, cumTax);
+
+      // 之前月份累计已缴税
+      const prevCumTaxable = monthlyTaxable * (monthNum - 1);
+      let prevCumTax = 0;
+      if (prevCumTaxable > 0) {
+        for (let i = 0; i < TAX_BRACKETS.length; i++) {
+          if (prevCumTaxable <= TAX_BRACKETS[i].max) {
+            prevCumTax = Math.max(0, prevCumTaxable * TAX_BRACKETS[i].rate / 100 - TAX_BRACKETS[i].deduction);
+            break;
+          }
+        }
+      }
+
+      const thisMonthTax = cumTax - prevCumTax;
+      const afterTax = salary - insurance - thisMonthTax;
+      const effectiveRate = (thisMonthTax / salary * 100).toFixed(2);
+      const cumIncome = (salary - insurance) * monthNum - cumTax;
+
+      document.getElementById('taxAmount').textContent = thisMonthTax.toFixed(2);
+      document.getElementById('afterTax').textContent = afterTax.toFixed(2);
+      document.getElementById('taxRate').textContent = effectiveRate + '%';
+      document.getElementById('cumTax').textContent = cumTax.toFixed(2);
+      document.getElementById('cumIncome').textContent = cumIncome.toFixed(2);
+      document.getElementById('resultArea').style.display = 'block';
+      renderTaxTable(activeLevel);
+    }
+
+    function renderTaxTable(activeIdx) {
+      const tbody = document.getElementById('taxTableBody');
+      const ranges = ['不超过3.6万', '3.6万-14.4万', '14.4万-30万', '30万-42万', '42万-66万', '66万-96万', '超过96万'];
+      tbody.innerHTML = TAX_BRACKETS.map((b, i) => `
+        <tr class="${i === activeIdx ? 'active-row' : ''}">
+          <td>${i + 1}</td>
+          <td>${ranges[i]}</td>
+          <td>${b.rate}%</td>
+          <td>${b.deduction.toLocaleString()}</td>
+        </tr>
+      `).join('');
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

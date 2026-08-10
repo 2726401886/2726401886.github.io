@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON格式化工具 - 在线JSON美化/压缩/验证 | 效率盒子</title>
+  <meta name="description" content="免费在线JSON格式化工具，支持JSON美化、压缩、验证。一键格式化JSON数据，自动检测语法错误，适用于开发调试和数据处理。">
+  <meta name="keywords" content="JSON格式化,JSON美化,JSON压缩,JSON验证,JSON在线工具">
+  <meta property="og:title" content="JSON格式化工具 - 在线JSON美化/压缩/验证">
+  <meta property="og:description" content="免费JSON格式化、压缩、验证工具。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>JSON 格式化工具</h1>
+      <p>JSON美化、压缩、验证，自动检测语法错误</p>
+    </div>
+
+    <div class="tool-box">
+      <div class="form-group">
+        <label for="json-input">输入 JSON</label>
+        <textarea id="json-input" placeholder='{"name":"效率盒子","tools":["字数统计","二维码"],"free":true}'></textarea>
+      </div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+        <button class="btn btn-primary" onclick="formatJSON()">格式化</button>
+        <button class="btn btn-secondary" onclick="minifyJSON()">压缩</button>
+        <button class="btn btn-secondary" onclick="validateJSON()">验证</button>
+        <button class="btn btn-secondary" onclick="clearAll()">清空</button>
+      </div>
+
+      <div class="form-group">
+        <label for="json-output">输出结果</label>
+        <textarea id="json-output" readonly placeholder="格式化后的JSON将显示在这里..."></textarea>
+      </div>
+
+      <button class="btn btn-success btn-sm" onclick="copyResult()" id="copy-btn">复制结果</button>
+    </div>
+
+    <div class="ad-zone">
+      <span class="ad-zone-label">广告位</span>
+    </div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "json-formatter");
+
+    function formatJSON() {
+      const input = document.getElementById("json-input").value.trim();
+      if (!input) {
+        showToast("请输入JSON");
+        return;
+      }
+      try {
+        const parsed = JSON.parse(input);
+        document.getElementById("json-output").value = JSON.stringify(parsed, null, 2);
+        showToast("格式化成功");
+      } catch (e) {
+        document.getElementById("json-output").value = "JSON语法错误: " + e.message;
+      }
+    }
+
+    function minifyJSON() {
+      const input = document.getElementById("json-input").value.trim();
+      if (!input) {
+        showToast("请输入JSON");
+        return;
+      }
+      try {
+        const parsed = JSON.parse(input);
+        document.getElementById("json-output").value = JSON.stringify(parsed);
+        showToast("压缩成功");
+      } catch (e) {
+        document.getElementById("json-output").value = "JSON语法错误: " + e.message;
+      }
+    }
+
+    function validateJSON() {
+      const input = document.getElementById("json-input").value.trim();
+      if (!input) {
+        showToast("请输入JSON");
+        return;
+      }
+      try {
+        JSON.parse(input);
+        showToast("JSON格式正确");
+      } catch (e) {
+        showToast("JSON格式错误: " + e.message);
+      }
+    }
+
+    function clearAll() {
+      document.getElementById("json-input").value = "";
+      document.getElementById("json-output").value = "";
+    }
+
+    function copyResult() {
+      const output = document.getElementById("json-output").value;
+      if (!output || output.startsWith("JSON语法错误")) {
+        showToast("没有可复制的结果");
+        return;
+      }
+      copyToClipboard(output, document.getElementById("copy-btn"));
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

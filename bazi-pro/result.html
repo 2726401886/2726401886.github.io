@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>八字详批结果 - 知命八字馆</title>
+  <meta name="description" content="八字详批结果：四柱原盘、学业学问解析、大运十年运程、流年逐年明细、性格事业感情、用神化解方案。">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">知命八字馆</a>
+      <nav class="nav-links">
+        <a href="index.html">免费排盘</a>
+        <a href="result.html" class="active">详批结果</a>
+        <a href="xuetang.html">八字学堂</a>
+        <a href="../tools/zeri.html">红白择日</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="flex:1;padding:16px">
+    <div class="breadcrumb">
+      <a href="index.html">首页</a><span>›</span>八字详批
+    </div>
+
+    <!-- 模式切换 -->
+    <div class="mode-toggle">
+      <button class="active" onclick="switchMode('simple',this)">📖 通俗白话模式</button>
+      <button onclick="switchMode('pro',this)">📜 专业典籍模式</button>
+    </div>
+
+    <!-- 加载状态 -->
+    <div class="loading show" id="loading">
+      <div class="spinner"></div>
+      <p style="margin-top:12px;color:var(--text-light)">正在排盘计算中...</p>
+    </div>
+
+    <!-- 结果区域 -->
+    <div id="resultArea" style="display:none">
+
+      <!-- 基本信息栏 -->
+      <div class="card" id="basicInfo"></div>
+
+      <!-- TAB 导航 -->
+      <div class="tab-nav" id="tabNav">
+        <button class="tab-btn active" onclick="switchTab(0,this)">四柱原盘</button>
+        <button class="tab-btn" onclick="switchTab(1,this)">学业学问</button>
+        <button class="tab-btn" onclick="switchTab(2,this)">大运十年</button>
+        <button class="tab-btn" onclick="switchTab(3,this)">流年明细</button>
+        <button class="tab-btn" onclick="switchTab(4,this)">性格事业</button>
+        <button class="tab-btn" onclick="switchTab(5,this)">用神化解</button>
+      </div>
+
+      <!-- TAB1: 四柱原盘 -->
+      <div class="tab-content active" id="tab0"></div>
+      <!-- TAB2: 学业学问 -->
+      <div class="tab-content" id="tab1"></div>
+      <!-- TAB3: 大运十年 -->
+      <div class="tab-content" id="tab2"></div>
+      <!-- TAB4: 流年明细 -->
+      <div class="tab-content" id="tab3"></div>
+      <!-- TAB5: 性格事业感情 -->
+      <div class="tab-content" id="tab4"></div>
+      <!-- TAB6: 用神化解 -->
+      <div class="tab-content" id="tab5"></div>
+
+    </div>
+
+    <!-- 免责声明 -->
+    <div class="disclaimer" style="margin-top:24px">
+      <strong>⚠️ 免责声明：</strong>
+      本八字测算基于传统民俗国学文化，仅作娱乐参考与传统文化研究。人生发展取决于个人选择、努力与现实环境，请勿过度迷信。
+    </div>
+  </main>
+
+  <!-- 流年详情弹窗 -->
+  <div class="modal-overlay" id="lnModal" onclick="if(event.target===this)closeModal()">
+    <div class="modal-box">
+      <span class="modal-close" onclick="closeModal()">✕</span>
+      <div id="lnModalContent"></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 知命八字馆 · 中国传说</p>
+      <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+    </div>
+  </footer>
+
+  <script src="js/bazi-engine.js"></script>
+  <script>
+  /* ===== 渲染引擎 ===== */
+  var baziResult = null;
+  var currentMode = 'simple';
+
+  // 初始化
+  function init(){
+    var params = JSON.parse(sessionStorage.getItem('baziParams') || '{}');
+    if(!params.year){
+      // 没有参数，显示默认提示
+      document.getElementById('loading').innerHTML = '<p style="color:var(--text-light)">请先从<a href="index.html">首页</a>录入生辰信息</p>';
+      return;
+    }
+
+    var hour = params.hour >= 0 ? params.hour * 2 : 12; // 时辰索引转小时
+    baziResult = calculateBazi(params.year, params.month, params.day, hour, params.gender, params.isLunar);
+
+    setTimeout(function(){
+      document.getElementById('loading').classList.remove('show');
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('resultArea').style.display = 'block';
+
+      renderBasicInfo();
+      renderTab0();
+      renderTab1();
+      renderTab2();
+      renderTab3();
+      renderTab4();
+      renderTab5();
+    }, 300);
+  }
+
+  function switchTab(idx, btn){
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(function(c){c.classList.remove('active');});
+    document.getElementById('tab'+idx).classList.add('active');
+  }
+
+  function switchMode(mode, btn){
+    currentMode = mode;
+    document.querySelectorAll('.mode-toggle button').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    document.body.className = mode === 'simple' ? 'simple-mode' : 'pro-mode';
+  }
+
+  // ===== 基本信息栏 =====
+  function renderBasicInfo(){
+    var r = baziResult;
+    var info = r.birthInfo;
+    var genderText = info.gender === 'male' ? '男' : '女';
+    var hourText = info.hour >= 0 ? SHI_CHEN[Math.floor((info.hour+1)/2)%12] : '时辰不详';
+
+    var html = '<div class="card-title"><span class="icon">👤</span> 命主基本信息</div>';
+    html += '<div style="display:flex;flex-wrap:wrap;gap:16px;font-size:14px;color:var(--text-light)">';
+    html += '<span>性别：<strong style="color:var(--text)">'+genderText+'</strong></span>';
+    html += '<span>公历：<strong style="color:var(--text)">'+info.year+'年'+info.month+'月'+info.day+'日</strong></span>';
+    html += '<span>农历：<strong style="color:var(--text)">'+r.lunar.year+'年'+r.lunar.monthStr+r.lunar.day+'日</strong></span>';
+    html += '<span>时辰：<strong style="color:var(--text)">'+hourText+'</strong></span>';
+    html += '<span>生肖：<strong style="color:var(--text)">'+r.shengxiao+'</strong></span>';
+    html += '<span>日主：<strong style="color:var(--qindai)">'+TG[r.dayGan]+WX[r.dayWx]+'命</strong></span>';
+    html += '<span>格局：<strong style="color:var(--qindai)">'+r.pattern.name+'</strong></span>';
+    html += '<span>旺衰：<strong style="color:var(--qindai)">'+r.prop.level+'（'+r.prop.desc+'）</strong></span>';
+    html += '</div>';
+    document.getElementById('basicInfo').innerHTML = html;
+  }
+
+  // ===== TAB0: 四柱原盘 =====
+  function renderTab0(){
+    var r = baziResult;
+    var labels = ['年柱','月柱','日柱','时柱'];
+    var wxClass = ['wx-wood','wx-fire','wx-earth','wx-metal','wx-water'];
+
+    var html = '<div class="card">';
+    html += '<div class="card-title"><span class="icon">☯</span> 四柱八字盘面</div>';
+
+    // 四柱卡片
+    html += '<div class="pillars-container">';
+    for(var i=0;i<4;i++){
+      var p = r.pillars[i];
+      var isDay = (i===2);
+      html += '<div class="pillar-card'+(isDay?' day-master':'')+'">';
+      html += '<div class="pillar-label">'+labels[i]+'</div>';
+      html += '<div class="pillar-gan '+wxClass[TG_WX[p.gan]]+'">'+TG[p.gan]+'</div>';
+      html += '<div class="pillar-zhi '+wxClass[DZ_WX[p.zhi]]+'">'+DZ[p.zhi]+'</div>';
+      html += '<div class="pillar-shishen">'+r.tenGods[i]+'</div>';
+      html += '<div class="pillar-nayin">'+r.nayins[i]+'</div>';
+      // 藏干
+      var hs = r.hiddenStems[i];
+      if(hs.length > 0){
+        html += '<div class="pillar-hidden">';
+        html += hs.map(function(h){return h.name+'('+h.tenGod+')';}).join(' ');
+        html += '</div>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // 日主说明
+    html += '<p style="font-size:14px;color:var(--text);margin:12px 0;line-height:1.8">';
+    html += '日主为<strong style="color:var(--qindai)">'+TG[r.dayGan]+WX[r.dayWx]+'</strong>，生于'+r.prop.desc+'之月，'+r.prop.level+'。';
+    html += '本命生肖属'+r.shengxiao+'，'+r.pattern.name+'。</p>';
+
+    html += '</div>';
+
+    // 五行统计
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">📊</span> 五行量化统计</div>';
+    var total = r.wxCount.reduce(function(a,b){return a+b;},0);
+    // 条形图
+    html += '<div class="wx-bar">';
+    for(var i=0;i<5;i++){
+      if(r.wxCount[i]>0){
+        var pct = (r.wxCount[i]/total*100).toFixed(0);
+        html += '<div class="wx-bar-segment '+wxClass[i]+'" style="flex:'+r.wxCount[i]+';background:'+['#4a8a4a','#c44d4d','#b8860b','#7a7a7a','#4a6fa5'][i]+'">'+WX[i]+r.wxCount[i]+'</div>';
+      }
+    }
+    html += '</div>';
+    // 数值卡片
+    html += '<div class="wuxing-stats">';
+    for(var i=0;i<5;i++){
+      html += '<div class="wx-stat '+wxClass[i].replace('wx-','')+'">';
+      html += '<div class="num '+wxClass[i]+'">'+r.wxCount[i]+'</div>';
+      html += '<div class="label">'+WX[i]+'</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+    // 缺失提示
+    var missing = [];
+    for(var i=0;i<5;i++){if(r.wxCount[i]===0)missing.push(WX[i]);}
+    if(missing.length>0){
+      html += '<p style="color:var(--danger);font-size:13px;margin-top:8px">⚠️ 五行缺：'+missing.join('、')+'，对应方面需注意补益。</p>';
+    }
+    html += '</div>';
+
+    // 神煞
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">⭐</span> 神煞汇总</div>';
+    html += '<div class="shensha-list">';
+    r.shensha.forEach(function(s){
+      var cls = s.type==='auspicious'?'auspicious':(s.type==='highlight'?'highlight':'inauspicious');
+      var icon = s.type==='auspicious'?'✅':(s.type==='highlight'?'🌟':'⚠️');
+      html += '<span class="shensha-tag '+cls+'" title="'+s.desc+'">'+icon+' '+s.name+' <span style="font-size:11px;opacity:0.7">('+['年柱','月柱','日柱','时柱'][s.pos]+')</span></span>';
+    });
+    html += '</div>';
+    // 文昌星单独说明
+    var wc = r.shensha.find(function(s){return s.name==='文昌星';});
+    if(wc){
+      html += '<div style="background:rgba(191,165,123,0.1);border:1px solid var(--anjin);border-radius:8px;padding:12px;margin-top:12px">';
+      html += '<strong style="color:var(--anjin-dark)">🌟 文昌星（学业重点）：</strong>';
+      html += '<span style="font-size:14px;color:var(--text)">'+wc.desc+'</span></div>';
+    }
+    html += '</div>';
+
+    // 刑冲合害
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">🔗</span> 刑冲合害关系</div>';
+    if(r.relations.length === 0){
+      html += '<p style="color:var(--text-light);font-size:14px">原局四柱无明显刑冲合害，地支安定。</p>';
+    } else {
+      html += '<div class="relation-list">';
+      r.relations.forEach(function(rel){
+        var cls = 'badge-'+rel.type;
+        html += '<div class="relation-item">';
+        html += '<span class="relation-badge '+cls+'">'+rel.label+'</span>';
+        html += '<span>'+rel.desc+'</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+    html += '</div>';
+
+    document.getElementById('tab0').innerHTML = html;
+  }
+
+  // ===== TAB1: 学业学问 =====
+  function renderTab1(){
+    var r = baziResult;
+    var s = r.study;
+    var html = '<div class="card">';
+    html += '<div class="card-title"><span class="icon">📚</span> 先天学习天赋解读</div>';
+
+    // 印星食伤财星指标
+    html += '<div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">';
+    html += '<span class="study-tag '+(s.yinXing>=2?'strong':'weak')+'">印星：'+s.yinXing+'</span>';
+    html += '<span class="study-tag '+(s.shiShang>=2?'strong':'weak')+'">食伤：'+s.shiShang+'</span>';
+    html += '<span class="study-tag '+(s.caiXing>=2?'strong':'weak')+'">财星：'+s.caiXing+'</span>';
+    html += '<span class="study-tag '+(s.hasWenchang?'strong':'weak')+'">文昌星：'+(s.hasWenchang?'有':'无')+'</span>';
+    html += '</div>';
+
+    html += '<div class="study-section">';
+    html += '<h4>🌟 天赋优势</h4><p>'+s.talent+'</p>';
+    html += '</div>';
+
+    html += '<div class="study-section">';
+    html += '<h4>⚠️ 学习短板</h4><p>'+s.weakness+'</p>';
+    html += '</div>';
+
+    html += '<div class="study-section">';
+    html += '<h4>🎯 适合学科方向</h4><p>'+s.subject+'</p>';
+    html += '</div>';
+
+    html += '</div>';
+
+    // 文凭格局
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">🎓</span> 文凭格局定论</div>';
+    html += '<p style="font-size:16px;font-weight:600;color:var(--qindai);margin-bottom:8px">'+s.diploma+'</p>';
+    html += '</div>';
+
+    // 考试运
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">📝</span> 考试运规律与建议</div>';
+    html += '<p style="font-size:14px;line-height:1.8">'+s.examLuck+'</p>';
+    html += '<div style="background:rgba(46,94,78,0.05);border-radius:8px;padding:12px;margin-top:12px">';
+    html += '<strong style="color:var(--qindai);font-size:14px">💡 求学建议：</strong>';
+    html += '<ul style="font-size:13px;color:var(--text-light);margin:8px 0 0 20px;line-height:1.8">';
+    html += '<li>吉利方位：'+r.yongshen.jiDirection+'（利于读书学习的方向）</li>';
+    html += '<li>吉利颜色：'+r.yongshen.jiColor+'系（书桌、文具、穿搭用色）</li>';
+    html += '<li>逢印星流年（'+WX[(r.dayWx+4)%5]+'年）考试运最佳</li>';
+    html += '<li>逢食伤流年（'+WX[(r.dayWx+1)%5]+'年）思维最活跃，利创意类考试</li>';
+    html += '</ul></div>';
+    html += '</div>';
+
+    // 升学关键年份
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">📅</span> 升学关键阶段运势</div>';
+    html += '<div class="relation-list">';
+    s.keyYears.forEach(function(ky){
+      html += '<div class="relation-item"><span class="relation-badge badge-he">关键期</span><span>'+ky+'</span></div>';
+    });
+    html += '</div>';
+    html += '</div>';
+
+    document.getElementById('tab1').innerHTML = html;
+  }
+
+  // ===== TAB2: 大运十年 =====
+  function renderTab2(){
+    var r = baziResult;
+    var html = '<div class="card">';
+    html += '<div class="card-title"><span class="icon">🕐</span> 大运排盘（每步10年）</div>';
+
+    var currentYear = new Date().getFullYear();
+    var age = currentYear - r.birthInfo.year;
+
+    html += '<table class="dayun-table">';
+    html += '<tr><th>序号</th><th>大运干支</th><th>十神</th><th>起止年龄</th><th>起止年份</th><th>纳音</th></tr>';
+    r.dayuns.forEach(function(dy, i){
+      var isCurrent = age >= dy.startAge && age <= dy.endAge;
+      html += '<tr class="'+(isCurrent?'current':'')+'">';
+      html += '<td>'+(i+1)+'</td>';
+      html += '<td class="gz">'+dy.name+'</td>';
+      html += '<td>'+dy.tenGod+'</td>';
+      html += '<td>'+dy.startAge+'-'+dy.endAge+'岁</td>';
+      html += '<td>'+dy.startYear+'-'+dy.endYear+'</td>';
+      html += '<td style="font-size:12px;color:var(--text-lighter)">'+dy.nayin+'</td>';
+      html += '</tr>';
+    });
+    html += '</table>';
+
+    // 交运说明
+    html += '<p style="font-size:13px;color:var(--text-light);margin-top:12px">';
+    html += '💡 起运岁数约3岁，每步大运10年。当前年龄约'+age+'岁，';
+    var curDy = r.dayuns.find(function(dy){return age>=dy.startAge&&age<=dy.endAge;});
+    if(curDy){
+      html += '正处于第'+(r.dayuns.indexOf(curDy)+1)+'步大运<strong style="color:var(--qindai)">'+curDy.name+'</strong>（'+curDy.tenGod+'）之中。';
+    }
+    html += '</p>';
+    html += '</div>';
+
+    // 各步大运解读
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">📖</span> 大运运势解读</div>';
+    r.dayuns.forEach(function(dy, i){
+      var isCurrent = age >= dy.startAge && age <= dy.endAge;
+      var interpretation = getDaYunInterpretation(dy, r);
+      html += '<div style="border-bottom:1px solid var(--border-light);padding:12px 0'+(isCurrent?';background:rgba(191,165,123,0.05);padding:12px;border-radius:8px':'')+'">';
+      html += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">';
+      html += '<strong style="color:var(--qindai);font-size:16px">'+dy.name+'</strong>';
+      html += '<span style="font-size:12px;color:var(--anjin-dark)">'+dy.tenGod+'</span>';
+      html += '<span style="font-size:12px;color:var(--text-lighter)">'+dy.startAge+'-'+dy.endAge+'岁</span>';
+      if(isCurrent) html += '<span style="font-size:11px;background:var(--anjin);color:#fff;padding:2px 8px;border-radius:10px">当前大运</span>';
+      html += '</div>';
+      html += '<p style="font-size:13px;color:var(--text-light);line-height:1.7">'+interpretation+'</p>';
+      html += '</div>';
+    });
+    html += '</div>';
+
+    document.getElementById('tab2').innerHTML = html;
+  }
+
+  function getDaYunInterpretation(dy, r){
+    var tg = dy.tenGodIdx;
+    var interpretations = [
+      '比肩运：此运自身力量增强，利于独立发展、竞争进取。适合创业、跳槽、自立门户。需注意人际关系中的竞争和摩擦。',
+      '劫财运：此运竞争激烈，花销增大。利于交际应酬但需防破财。合作中需注意利益分配，不宜轻易借贷担保。',
+      '食神运：此运才华得以施展，衣食丰足，有福有寿。利于创作、学习、子女发展。心境平和，是积累成长的十年。',
+      '伤官运：此运思维活跃，变革冲动。利于创新突破但需注意口舌是非。不宜过于锋芒毕露，佩印可化解。',
+      '偏财运：此运财源广进但波动较大。利于投资经商但需见好就收。有意外之财但也不宜投机。',
+      '正财运：此运财源稳定，收入稳步增长。利于踏实工作、稳步积累。是适合置业安家的十年。',
+      '七杀运：此运压力与机遇并存，有权威有魄力。利于武职、管理岗位但需注意健康和人际关系。',
+      '正官运：此运事业顺利，有升职提拨之象。利于仕途公职，名声地位提升。需注意遵纪守法。',
+      '偏印运：此运思维独特，适合学习专业技术。利于研究、玄学、艺术。需注意情绪波动和孤僻。',
+      '正印运：此运学业有成，贵人提携。利于考试升学、进修深造、文书合同。心境安定，是学习成长的十年。'
+    ];
+    return interpretations[tg] || '此运平稳过渡，吉凶参半，需结合流年细断。';
+  }
+
+  // ===== TAB3: 流年明细 =====
+  function renderTab3(){
+    var r = baziResult;
+    var html = '<div class="card">';
+    html += '<div class="card-title"><span class="icon">📅</span> 逐年流年运势</div>';
+
+    // 筛选开关
+    html += '<div style="display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap">';
+    html += '<label style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-light);cursor:pointer">';
+    html += '<input type="checkbox" id="lnFutureOnly" onchange="filterLiuNian()"> 只看未来10年</label>';
+    html += '<label style="display:flex;align-items:center;gap:4px;font-size:13px;color:var(--text-light);cursor:pointer">';
+    html += '<input type="checkbox" id="lnHighlight" onchange="filterLiuNian()" checked> 高亮关键流年</label>';
+    html += '</div>';
+
+    // 流年卡片网格
+    html += '<div class="liunian-grid" id="lnGrid"></div>';
+    html += '</div>';
+
+    document.getElementById('tab3').innerHTML = html;
+    renderLiuNianCards();
+  }
+
+  function renderLiuNianCards(){
+    var r = baziResult;
+    var futureOnly = document.getElementById('lnFutureOnly') && document.getElementById('lnFutureOnly').checked;
+    var highlight = document.getElementById('lnHighlight') && document.getElementById('lnHighlight').checked;
+    var currentYear = new Date().getFullYear();
+
+    var lns = r.liunians;
+    if(futureOnly){
+      lns = lns.filter(function(l){return l.year >= currentYear && l.year <= currentYear+10;});
+    }
+
+    var html = '';
+    lns.forEach(function(ln){
+      var cls = '';
+      if(ln.isCurrent) cls += ' current';
+      if(ln.year === currentYear) cls += ' selected';
+      var tag = '';
+      if(highlight && ln.tag){
+        tag = '<span class="ln-tag">'+ln.tag+'</span>';
+      }
+      html += '<div class="ln-card'+cls+'" onclick="showLiuNianDetail('+ln.year+')">';
+      html += tag;
+      html += '<div class="ln-year">'+ln.year+'年</div>';
+      html += '<div class="ln-age">'+ln.age+'岁</div>';
+      html += '<div class="ln-gz">'+ln.name+'</div>';
+      html += '<div class="ln-ss">'+ln.tenGod+'</div>';
+      html += '</div>';
+    });
+
+    var grid = document.getElementById('lnGrid');
+    if(grid) grid.innerHTML = html;
+  }
+
+  function filterLiuNian(){ renderLiuNianCards(); }
+
+  function showLiuNianDetail(year){
+    var r = baziResult;
+    var ln = r.liunians.find(function(l){return l.year===year;});
+    if(!ln) return;
+
+    // 找当前大运
+    var age = year - r.birthInfo.year;
+    var curDy = r.dayuns.find(function(dy){return age>=dy.startAge&&age<=dy.endAge;});
+
+    var html = '<div class="modal-title">'+ln.year+'年（'+ln.age+'岁）流年详解</div>';
+    html += '<div style="text-align:center;margin:16px 0">';
+    html += '<div style="font-size:36px;font-weight:700;color:var(--qindai)">'+ln.name+'</div>';
+    html += '<div style="font-size:14px;color:var(--anjin-dark);margin-top:4px">流年十神：'+ln.tenGod+'</div>';
+    html += '<div style="font-size:13px;color:var(--text-lighter);margin-top:2px">纳音：'+ln.nayin+'</div>';
+    html += '</div>';
+
+    if(ln.tag){
+      html += '<div style="background:rgba(196,77,77,0.1);border:1px solid var(--danger);border-radius:8px;padding:10px;margin:12px 0;text-align:center">';
+      html += '<strong style="color:var(--danger)">⚠️ '+ln.tag+' — 需特别注意</strong></div>';
+    }
+
+    // 流年断语
+    var interpretation = getLiuNianInterpretation(ln, r);
+    html += '<div style="margin:12px 0">';
+    html += '<strong style="color:var(--qindai)">本年总断：</strong>';
+    html += '<p style="font-size:14px;color:var(--text);margin-top:4px;line-height:1.8">'+interpretation+'</p>';
+    html += '</div>';
+
+    // 大运联动
+    if(curDy){
+      html += '<div style="background:rgba(46,94,78,0.05);border-radius:8px;padding:12px;margin:12px 0">';
+      html += '<strong style="color:var(--qindai)">大运联动：</strong>';
+      html += '<span style="font-size:13px;color:var(--text-light)">当前处于'+curDy.name+'大运（'+curDy.tenGod+'），大运打底+流年引动，';
+      var dyGood = ['食神','正财','正官','正印','比肩'].indexOf(curDy.tenGod)>=0;
+      var lnGood = ['食神','正财','正官','正印','比肩'].indexOf(ln.tenGod)>=0;
+      if(dyGood && lnGood){
+        html += '大运流年皆为吉神，本年运势大吉，宜积极进取。</span></div>';
+      } else if(!dyGood && !lnGood){
+        html += '大运流年皆为凶神，本年需保守谨慎，不宜大动。</span></div>';
+      } else {
+        html += '大运流年一吉一凶，吉凶参半，需结合具体事项判断。</span></div>';
+      }
+    }
+
+    // 宜忌
+    html += '<div style="margin:12px 0">';
+    html += '<strong style="color:var(--qindai)">本年宜忌：</strong>';
+    html += '<div style="margin-top:4px;font-size:13px">';
+    var goodEvents = getLiuNianEvents(ln, r, true);
+    var badEvents = getLiuNianEvents(ln, r, false);
+    html += '<p style="color:var(--success)">✅ 宜：'+goodEvents+'</p>';
+    html += '<p style="color:var(--danger)">❌ 忌：'+badEvents+'</p>';
+    html += '</div></div>';
+
+    document.getElementById('lnModalContent').innerHTML = html;
+    document.getElementById('lnModal').classList.add('show');
+  }
+
+  function getLiuNianInterpretation(ln, r){
+    var tg = ln.tenGodIdx;
+    var interpretations = [
+      '比肩流年：竞争进取之年，利于独立发展、结交朋友。需注意破财和竞争压力。',
+      '劫财流年：花销增大之年，需防破财。社交活动增多但需谨慎投资借贷。',
+      '食神流年：有福有寿之年，才华得展，衣食丰足。利创作学习，心境平和。',
+      '伤官流年：变革创新之年，思维活跃。利突破但需防口舌是非和冲动决策。',
+      '偏财流年：财源广进之年但波动大。利投资经商但需见好就收。',
+      '正财流年：收入稳定之年，利于踏实工作和积累。适合置业安家。',
+      '七杀流年：压力动力并存之年，有升职机会但需注意健康和人际。',
+      '正官流年：事业顺利之年，有升职提拨之象。利仕途考试名声。',
+      '偏印流年：学习进修之年，思维独特。利技术研究和玄学艺术。',
+      '正印流年：学业贵人之年，利考试升学文书合同。心境安定。'
+    ];
+    return interpretations[tg] || '流年平稳，吉凶参半。';
+  }
+
+  function getLiuNianEvents(ln, r, isGood){
+    var tg = ln.tenGodIdx;
+    if(isGood){
+      var goodMap = ['合作竞争','社交拓展','创作学习','创新变革','投资理财','踏实工作','进取升职','考试求职','进修研究','学习考试'];
+      return goodMap[tg]+'、社交应酬、调整规划';
+    } else {
+      var badMap = ['破财担保','借贷投资','冲动消费','口舌是非','投机赌博','好高骛远','冒险冲动','违法乱纪','孤僻偏激','过度依赖'];
+      return badMap[tg]+'、大额投资、冲动决策';
+    }
+  }
+
+  function closeModal(){
+    document.getElementById('lnModal').classList.remove('show');
+  }
+
+  // ===== TAB4: 性格事业感情 =====
+  function renderTab4(){
+    var r = baziResult;
+    var l = r.life;
+    var html = '<div class="card">';
+    html += '<div class="card-title"><span class="icon">🧠</span> 心性性格</div>';
+    html += '<p style="font-size:14px;line-height:1.8">'+l.personality+'</p>';
+    html += '</div>';
+
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">💼</span> 事业方向</div>';
+    html += '<p style="font-size:14px;line-height:1.8">'+l.career+'</p>';
+    html += '<div style="background:rgba(46,94,78,0.05);border-radius:8px;padding:12px;margin-top:12px">';
+    html += '<strong style="color:var(--qindai)">适合行业：</strong>';
+    html += '<span style="font-size:13px;color:var(--text-light)">'+r.yongshen.jiProfession+'</span></div>';
+    html += '</div>';
+
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">💑</span> 感情婚姻</div>';
+    html += '<p style="font-size:14px;line-height:1.8">'+l.marriage+'</p>';
+    html += '</div>';
+
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">🏥</span> 健康预警</div>';
+    html += '<p style="font-size:14px;line-height:1.8">'+l.health+'</p>';
+    html += '</div>';
+
+    document.getElementById('tab4').innerHTML = html;
+  }
+
+  // ===== TAB5: 用神化解 =====
+  function renderTab5(){
+    var r = baziResult;
+    var ys = r.yongshen;
+    var html = '<div class="card">';
+    html += '<div class="card-title"><span class="icon">⚖️</span> 用神喜忌分析</div>';
+    html += '<div class="relation-list">';
+    html += '<div class="relation-item"><span class="relation-badge badge-he">用神</span><span>'+ys.yongshen+' — 命局最需要的五行，逢之则吉</span></div>';
+    html += '<div class="relation-item"><span class="relation-badge badge-he">喜神</span><span>'+ys.xishen+' — 辅助用神的五行，亦为吉利</span></div>';
+    html += '<div class="relation-item"><span class="relation-badge badge-chong">忌神</span><span>'+ys.jishen+' — 对命局不利的五行，逢之需谨慎</span></div>';
+    html += '<div class="relation-item"><span class="relation-badge badge-xing">仇神</span><span>'+ys.choushen+'</span></div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">🌈</span> 吉利五行与颜色方位</div>';
+    html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:14px">';
+    html += '<div><strong style="color:var(--text-light)">吉利五行：</strong><span style="color:var(--qindai);font-weight:600">'+ys.jiWx+'</span></div>';
+    html += '<div><strong style="color:var(--text-light)">吉利颜色：</strong><span style="color:'+ys.jiColor+';font-weight:600">'+ys.jiColor+'系</span></div>';
+    html += '<div><strong style="color:var(--text-light)">吉利方位：</strong><span style="color:var(--qindai);font-weight:600">'+ys.jiDirection+'</span></div>';
+    html += '<div><strong style="color:var(--text-light)">适合职业：</strong><span style="color:var(--text)">'+ys.jiProfession+'</span></div>';
+    html += '</div>';
+    html += '</div>';
+
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">💡</span> 日常化解建议</div>';
+    html += '<ul style="font-size:14px;color:var(--text);line-height:2;margin-left:20px">';
+    html += '<li>穿搭宜用'+ys.jiColor+'系衣物，增强吉利五行气场</li>';
+    html += '<li>居住或办公宜选'+ys.jiDirection+'方位，利于事业财运</li>';
+    html += '<li>行业选择宜偏向'+ys.jiProfession+'</li>';
+    html += '<li>日常可多接触'+ys.jiWx+'属性的事物（如颜色、方位、数字等）</li>';
+    html += '<li>逢用神流年（'+ys.jiWx+'年）宜积极进取，逢忌神流年宜保守稳定</li>';
+    html += '</ul>';
+    html += '</div>';
+
+    // 格局说明
+    html += '<div class="card">';
+    html += '<div class="card-title"><span class="icon">📋</span> 格局判定</div>';
+    html += '<p style="font-size:16px;font-weight:600;color:var(--qindai);margin-bottom:8px">'+r.pattern.name+'</p>';
+    html += '<p style="font-size:14px;color:var(--text-light);line-height:1.8">'+r.pattern.desc+'</p>';
+    html += '<p style="font-size:13px;color:var(--text-lighter);margin-top:12px">旺衰判定：'+r.prop.level+'（同类占比'+(r.prop.ratio*100).toFixed(0)+'%），'+r.prop.desc+'。大运喜走'+ys.yongshen+'运。</p>';
+    html += '</div>';
+
+    document.getElementById('tab5').innerHTML = html;
+  }
+
+  // 启动
+  init();
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

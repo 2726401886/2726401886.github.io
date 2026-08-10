@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片压缩 - 在线图片压缩工具 | 效率盒子</title>
+  <meta name="description" content="免费在线图片压缩工具，支持JPG、PNG、WebP格式压缩。可调节压缩质量，压缩前后对比预览。无需上传到服务器，本地浏览器完成压缩，保护隐私。">
+  <meta name="keywords" content="图片压缩,在线图片压缩,JPG压缩,PNG压缩,图片缩小,在线压缩图片,免费图片压缩">
+  <meta property="og:title" content="图片压缩 - 在线图片压缩工具">
+  <meta property="og:description" content="免费在线压缩JPG/PNG图片，本地处理保护隐私。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:40px;text-align:center;cursor:pointer;transition:all .2s;background:#fafbfc}
+    .upload-area:hover{border-color:var(--primary);background:var(--primary-bg)}
+    .upload-area.dragover{border-color:var(--primary);background:var(--primary-bg)}
+    .preview-container{display:flex;gap:20px;flex-wrap:wrap;margin-top:20px}
+    .preview-box{flex:1;min-width:200px;text-align:center}
+    .preview-box img{max-width:100%;border-radius:var(--radius-sm);border:1px solid var(--border)}
+    .preview-box .info{margin-top:8px;font-size:14px;color:var(--text-light)}
+    .quality-slider{margin:20px 0}
+    .quality-slider label{display:flex;justify-content:space-between;margin-bottom:8px}
+    .quality-slider input{width:100%;accent-color:var(--primary)}
+    .size-badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:600}
+    .size-badge.before{background:#fee2e2;color:#dc2626}
+    .size-badge.after{background:#d1fae5;color:#059669}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>图片压缩</h1>
+      <p>在线压缩JPG/PNG图片，本地处理，保护隐私</p>
+    </div>
+
+    <div class="tool-box">
+      <div class="upload-area" id="upload-area" onclick="document.getElementById('file-input').click()">
+        <p style="font-size:16px;margin-bottom:8px">📂 点击或拖拽图片到此处</p>
+        <p style="color:var(--text-light);font-size:14px">支持 JPG / PNG / WebP，最大 20MB</p>
+        <input type="file" id="file-input" accept="image/*" style="display:none" onchange="handleFile(this.files[0])">
+      </div>
+
+      <div id="controls" style="display:none">
+        <div class="quality-slider">
+          <label>
+            <span>压缩质量</span>
+            <span><span id="quality-val">70</span>%</span>
+          </label>
+          <input type="range" id="quality" min="10" max="100" value="70" oninput="document.getElementById('quality-val').textContent=this.value;compress()">
+        </div>
+
+        <div class="preview-container">
+          <div class="preview-box">
+            <h4>压缩前</h4>
+            <span class="size-badge before" id="before-size">-</span>
+            <img id="before-img" style="margin-top:10px">
+          </div>
+          <div class="preview-box">
+            <h4>压缩后</h4>
+            <span class="size-badge after" id="after-size">-</span>
+            <img id="after-img" style="margin-top:10px">
+          </div>
+        </div>
+
+        <div style="margin-top:20px;text-align:center">
+          <button class="btn btn-success" onclick="download()">下载压缩后的图片</button>
+          <button class="btn btn-secondary" onclick="reset()">重新选择</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "image-compressor");
+    let originalFile = null;
+    let compressedBlob = null;
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / 1048576).toFixed(2) + " MB";
+    }
+
+    function handleFile(file) {
+      if (!file) return;
+      if (!file.type.startsWith("image/")) { showToast("请选择图片文件"); return; }
+      if (file.size > 20 * 1048576) { showToast("图片不能超过20MB"); return; }
+      originalFile = file;
+      document.getElementById("before-size").textContent = formatSize(file.size);
+      document.getElementById("before-img").src = URL.createObjectURL(file);
+      document.getElementById("controls").style.display = "block";
+      compress();
+    }
+
+    function compress() {
+      if (!originalFile) return;
+      const quality = document.getElementById("quality").value / 100;
+      const img = new Image();
+      img.onload = function() {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        canvas.toBlob(function(blob) {
+          compressedBlob = blob;
+          document.getElementById("after-size").textContent = formatSize(blob.size);
+          document.getElementById("after-img").src = URL.createObjectURL(blob);
+          const ratio = ((1 - blob.size / originalFile.size) * 100).toFixed(1);
+          if (ratio > 0) showToast("压缩了 " + ratio + "%");
+        }, originalFile.type === "image/png" ? "image/png" : "image/jpeg", quality);
+      };
+      img.src = URL.createObjectURL(originalFile);
+    }
+
+    function download() {
+      if (!compressedBlob) { showToast("请先压缩图片"); return; }
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(compressedBlob);
+      const ext = originalFile.name.split(".").pop();
+      const name = originalFile.name.replace("." + ext, "_compressed." + ext);
+      a.download = name;
+      a.click();
+    }
+
+    function reset() {
+      originalFile = null;
+      compressedBlob = null;
+      document.getElementById("controls").style.display = "none";
+      document.getElementById("file-input").value = "";
+    }
+
+    const uploadArea = document.getElementById("upload-area");
+    uploadArea.addEventListener("dragover", e => { e.preventDefault(); uploadArea.classList.add("dragover"); });
+    uploadArea.addEventListener("dragleave", () => uploadArea.classList.remove("dragover"));
+    uploadArea.addEventListener("drop", e => {
+      e.preventDefault();
+      uploadArea.classList.remove("dragover");
+      if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+    });
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

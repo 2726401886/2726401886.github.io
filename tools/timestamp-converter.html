@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>时间戳转换器 - Unix时间戳与日期互转 | 效率盒子</title>
+  <meta name="description" content="免费在线时间戳转换工具，支持Unix时间戳转日期、日期转时间戳，毫秒级时间戳转换，自动获取当前时间戳。适用于开发调试。">
+  <meta name="keywords" content="时间戳转换,Unix时间戳,时间戳转日期,日期转时间戳,timestamp">
+  <meta property="og:title" content="时间戳转换器 - Unix时间戳与日期互转">
+  <meta property="og:description" content="Unix时间戳与日期时间互转工具。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>时间戳转换器</h1>
+      <p>Unix时间戳与日期时间互转，支持秒和毫秒</p>
+    </div>
+
+    <div class="tool-box">
+      <!-- 当前时间戳 -->
+      <div class="form-group">
+        <label>当前时间戳</label>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <input type="text" id="current-ts" readonly style="font-family: 'SF Mono', 'Consolas', monospace; font-size: 16px;">
+          <button class="btn btn-secondary btn-sm" onclick="copyCurrent()">复制</button>
+          <button class="btn btn-secondary btn-sm" onclick="refreshCurrent()">刷新</button>
+        </div>
+        <div id="current-date" style="margin-top: 8px; color: var(--text-light); font-size: 14px;"></div>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 24px 0;">
+
+      <!-- 时间戳转日期 -->
+      <div class="form-group">
+        <label for="ts-input">时间戳 &rarr; 日期</label>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <input type="text" id="ts-input" placeholder="如 1700000000" style="flex: 1; font-family: 'SF Mono', 'Consolas', monospace;">
+          <button class="btn btn-primary" onclick="tsToDate()">转换</button>
+        </div>
+        <div class="result-area empty" id="ts-result">输入时间戳后点击转换</div>
+      </div>
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 24px 0;">
+
+      <!-- 日期转时间戳 -->
+      <div class="form-group">
+        <label for="date-input">日期 &rarr; 时间戳</label>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <input type="text" id="date-input" placeholder="如 2026-01-01 12:00:00" style="flex: 1;">
+          <button class="btn btn-primary" onclick="dateToTs()">转换</button>
+        </div>
+        <div class="result-area empty" id="date-result">输入日期后点击转换</div>
+      </div>
+    </div>
+
+    <div class="ad-zone">
+      <span class="ad-zone-label">广告位</span>
+    </div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "timestamp-converter");
+
+    function pad(n) { return String(n).padStart(2, "0"); }
+
+    function formatDate(d) {
+      return d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate()) +
+        " " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + ":" + pad(d.getSeconds());
+    }
+
+    function refreshCurrent() {
+      const now = Math.floor(Date.now() / 1000);
+      document.getElementById("current-ts").value = now;
+      document.getElementById("current-date").textContent = formatDate(new Date());
+    }
+
+    refreshCurrent();
+    setInterval(refreshCurrent, 1000);
+
+    function tsToDate() {
+      const input = document.getElementById("ts-input").value.trim();
+      const result = document.getElementById("ts-result");
+      if (!input) { showToast("请输入时间戳"); return; }
+
+      let ts = parseInt(input);
+      if (isNaN(ts)) {
+        result.className = "result-area error";
+        result.textContent = "无效的时间戳";
+        return;
+      }
+
+      // 自动判断秒/毫秒
+      if (input.length > 10) ts = parseInt(input);
+      else ts = parseInt(input) * 1000;
+
+      const d = new Date(ts);
+      if (isNaN(d.getTime())) {
+        result.className = "result-area error";
+        result.textContent = "无效的时间戳";
+        return;
+      }
+
+      result.className = "result-area";
+      result.textContent = formatDate(d) + " (UTC" + (d.getTimezoneOffset() < 0 ? "+" : "-") + Math.abs(d.getTimezoneOffset()/60) + ")";
+    }
+
+    function dateToTs() {
+      const input = document.getElementById("date-input").value.trim();
+      const result = document.getElementById("date-result");
+      if (!input) { showToast("请输入日期"); return; }
+
+      // 尝试解析多种格式
+      const d = new Date(input.replace(/-/g, "/"));
+      if (isNaN(d.getTime())) {
+        result.className = "result-area error";
+        result.textContent = "无效的日期格式，请使用如 2026-01-01 12:00:00";
+        return;
+      }
+
+      result.className = "result-area";
+      result.textContent = "秒级: " + Math.floor(d.getTime() / 1000) + "  |  毫秒级: " + d.getTime();
+    }
+
+    function copyCurrent() {
+      copyToClipboard(document.getElementById("current-ts").value);
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>机动车使用年限计算器 - 车辆报废年限查询 | 效率盒子</title>
+  <meta name="description" content="免费在线机动车使用年限计算器，根据《机动车强制报废标准规定》查询各类车辆法定使用年限，计算已使用年限和剩余使用年限，提供报废预警。支持私家车、出租车、公交车、货车、摩托车等全部车型。">
+  <meta name="keywords" content="机动车使用年限,车辆报废年限,强制报废标准,汽车报废,车辆年限计算,私家车报废,出租车年限,货车报废年限,摩托车报废,校车年限">
+  <meta property="og:title" content="机动车使用年限计算器 - 车辆报废年限查询">
+  <meta property="og:description" content="根据《机动车强制报废标准规定》查询车辆法定使用年限，计算已使用年限和剩余年限。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .va-section{background:#f8fafc;border-radius:12px;padding:20px;margin-bottom:16px}
+    .va-section h3{margin:0 0 14px;font-size:16px;color:#1e293b}
+    .va-form{display:grid;gap:12px}
+    .va-form label{display:block;margin-bottom:4px;font-size:13px;font-weight:600;color:#475569}
+    .va-form select,.va-form input{width:100%;padding:10px;border:2px solid #e2e8f0;border-radius:8px;font-size:15px;background:#fff}
+    .va-form select:focus,.va-form input:focus{border-color:#4f46e5;outline:none}
+    .va-result{background:#eef2ff;border-radius:8px;padding:16px;margin-top:12px}
+    .va-result-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #e2e8f0;align-items:center}
+    .va-result-row:last-child{border-bottom:none}
+    .va-result-label{color:#64748b;font-size:14px}
+    .va-result-value{font-weight:700;color:#4f46e5;font-size:15px}
+    .va-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600}
+    .va-badge-safe{background:#dcfce7;color:#16a34a}
+    .va-badge-warn{background:#fef9c3;color:#ca8a04}
+    .va-badge-danger{background:#fee2e2;color:#dc2626}
+    .va-badge-unlimited{background:#e0e7ff;color:#4338ca}
+    .va-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:14px}
+    .va-table th,.va-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #e2e8f0}
+    .va-table th{background:#4f46e5;color:#fff;font-weight:600}
+    .va-table tr:hover{background:#f1f5f9}
+    .va-table .cat{font-weight:600;color:#1e293b}
+    .va-table .yr{text-align:center;font-weight:700;color:#4f46e5}
+    .va-table .unlimited{color:#16a34a}
+    .va-tabs{display:flex;gap:4px;margin-bottom:16px;background:#e2e8f0;padding:4px;border-radius:10px}
+    .va-tab{flex:1;padding:10px;text-align:center;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600;color:#64748b;transition:all .2s;background:transparent;border:none}
+    .va-tab.active{background:#4f46e5;color:#fff}
+    .va-panel{display:none}
+    .va-panel.active{display:block}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>机动车使用年限计算器</h1>
+      <p>查询车辆法定报废年限，计算已使用年限与剩余年限</p>
+    </div>
+
+    <!-- 法规依据信息框 -->
+    <div style="max-width:640px;margin:0 auto 16px;background:linear-gradient(135deg,#eff6ff,#e0f2fe);border:1px solid #bfdbfe;border-radius:12px;padding:16px 18px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <span style="font-size:20px">⚖️</span>
+        <div style="flex:1">
+          <div style="font-size:15px;font-weight:700;color:#1e40af;margin-bottom:6px">法规依据</div>
+          <div style="font-size:13px;color:#334155;line-height:1.8">
+            <strong>《机动车强制报废标准规定》</strong><br>
+            发布机关：商务部、国家发展和改革委员会、公安部、环境保护部<br>
+            文号：商务部、发改委、公安部、环境保护部令 <strong>2012年第12号</strong><br>
+            发布日期：2012年12月27日 ｜ 施行日期：2013年5月1日<br>
+            <span style="display:inline-block;margin-top:4px;padding:2px 8px;background:#dcfce7;color:#16a34a;border-radius:6px;font-size:12px;font-weight:600">✅ 现行有效</span>
+            <span style="display:inline-block;margin-top:4px;margin-left:4px;padding:2px 8px;background:#fef9c3;color:#ca8a04;border-radius:6px;font-size:12px;font-weight:600">📋 数据来源：第五条</span>
+          </div>
+          <div style="font-size:12px;color:#64748b;margin-top:8px;line-height:1.6">
+            本规定自2013年5月1日起施行，同时废止了1997年以来的多项旧报废标准。截至本页面更新时（2026年7月），该规定仍为全国统一执行的现行有效法规，各地公安交管部门均依据此规定办理机动车报废业务。商务部曾于2021年表示将修订本规定，但截至目前尚未发布新的修订版本，原有规定继续适用。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="va-tabs">
+      <button class="va-tab active" onclick="switchTab('calc')">🔧 已使用年限计算</button>
+      <button class="va-tab" onclick="switchTab('query')">📋 法定年限查询表</button>
+    </div>
+
+    <div class="tool-box" style="max-width:640px;margin:0 auto">
+
+      <!-- 计算面板 -->
+      <div class="va-panel active" id="panel-calc">
+        <div class="va-section">
+          <h3>🚗 输入车辆信息</h3>
+          <div class="va-form">
+            <div>
+              <label>车辆类型</label>
+              <select id="vehicleType" onchange="onTypeChange()"></select>
+            </div>
+            <div>
+              <label>具体车型</label>
+              <select id="vehicleModel" onchange="calcAge()"></select>
+            </div>
+            <div>
+              <label>初次注册登记日期（行驶证上的注册日期）</label>
+              <input type="date" id="regDate">
+            </div>
+            <button class="btn btn-primary" style="width:100%" onclick="calcAge()">计算已使用年限</button>
+          </div>
+          <div class="va-result" id="ageResult" style="display:none"></div>
+        </div>
+
+        <div class="va-note">
+          <strong>📌 计算说明（依据《机动车强制报废标准规定》第五条、第七条）：</strong><br>
+          1. 使用年限起始日期按<strong>注册登记日期</strong>计算；自出厂之日起超过2年未办理注册登记的，按<strong>出厂日期</strong>计算（第六条）。<br>
+          2. 小、微型非营运载客汽车（私家车）、大型非营运轿车、轮式专用机械车<strong>无使用年限限制</strong>，但行驶里程达60万公里后引导报废（第七条）。<br>
+          3. 使用年限的起算和终止以<strong>注册登记日期</strong>至规定年限届满之日为准。<br>
+          4. 本工具数据依据现行有效的《机动车强制报废标准规定》（商务部等四部门令2012年第12号，2013年5月1日施行），仅供参考，实际以当地车管所规定为准。
+        </div>
+      </div>
+
+      <!-- 查询表面板 -->
+      <div class="va-panel" id="panel-query">
+        <div class="va-section">
+          <h3>📖 各类机动车法定使用年限</h3>
+          <div style="font-size:13px;color:#475569;background:#f1f5f9;padding:8px 12px;border-radius:6px;margin-bottom:10px">
+            以下数据依据 <strong>《机动车强制报废标准规定》第五条</strong>（商务部、发改委、公安部、环境保护部令2012年第12号，2013年5月1日施行，<strong style="color:#16a34a">现行有效</strong>）
+          </div>
+          <table class="va-table" id="limitTable"></table>
+        </div>
+        <div class="va-note">
+          <strong>⚠️ 强制报废情形（依据第四条）：</strong><br>
+          除达到使用年限外，以下情形也会被强制报废：<br>
+          ① 经修理和调整仍不符合机动车安全技术国家标准；<br>
+          ② 经修理调整或采用控制技术后，排放污染物或噪声仍不达标；<br>
+          ③ 在检验有效期届满后连续3个机动车检验周期内未取得检验合格标志。<br><br>
+          <strong>📌 引导报废里程（依据第七条）：</strong>国家对达到一定行驶里程的机动车引导报废（非强制），如小微型非营运客车60万公里、公交客运40万公里、正三轮摩托车10万公里等。
+        </div>
+        <div style="background:#f8fafc;border-radius:8px;padding:14px;margin-top:12px;font-size:12px;color:#64748b;line-height:1.7">
+          <strong>📋 法规状态说明：</strong>《机动车强制报废标准规定》自2013年5月1日起施行至今，未出台修订或替代版本。2025年各地公安交管部门仍在依据此规定办理报废业务。商务部曾于2021年表示将加快修订，但截至本页面更新时（2026年7月）尚无新规发布，原规定继续适用。如有更新，本页面将同步修订。
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "vehicle-age");
+
+    // 车型数据：依据《机动车强制报废标准规定》第五条各款
+    // limit: 使用年限（年），0 表示无年限限制（引导报废）
+    // article: 对应第五条的款号
+    const vehicleData = {
+      "营运载客汽车": [
+        { name: "小、微型出租客运汽车", limit: 8, note: "出租车", article: "第五条第一款" },
+        { name: "中型出租客运汽车", limit: 10, note: "出租车", article: "第五条第一款" },
+        { name: "大型出租客运汽车", limit: 12, note: "出租车", article: "第五条第一款" },
+        { name: "租赁载客汽车", limit: 15, note: "租赁用车", article: "第五条第二款" },
+        { name: "其他小、微型营运载客汽车", limit: 10, note: "网约车等", article: "第五条第五款" },
+        { name: "大、中型营运载客汽车", limit: 15, note: "客运班车", article: "第五条第五款" }
+      ],
+      "教练载客汽车": [
+        { name: "小型教练载客汽车", limit: 10, article: "第五条第三款" },
+        { name: "中型教练载客汽车", limit: 12, article: "第五条第三款" },
+        { name: "大型教练载客汽车", limit: 15, article: "第五条第三款" }
+      ],
+      "公共交通": [
+        { name: "公交客运汽车", limit: 13, article: "第五条第四款" },
+        { name: "专用校车", limit: 15, article: "第五条第六款" }
+      ],
+      "非营运载客汽车": [
+        { name: "小、微型非营运载客汽车（私家车）", limit: 0, note: "无年限限制，60万公里引导报废", article: "第五条/第七条" },
+        { name: "大型非营运轿车", limit: 0, note: "无年限限制", article: "第五条/第七条" },
+        { name: "大、中型非营运载客汽车（大型轿车除外）", limit: 20, article: "第五条第七款" }
+      ],
+      "载货汽车": [
+        { name: "三轮汽车、装用单缸发动机的低速货车", limit: 9, article: "第五条第八款" },
+        { name: "装用多缸发动机的低速货车、微型载货汽车", limit: 12, article: "第五条第八款" },
+        { name: "危险品运输载货汽车", limit: 10, article: "第五条第八款" },
+        { name: "其他载货汽车（含半挂牵引车、全挂牵引车）", limit: 15, article: "第五条第八款" }
+      ],
+      "专项作业车": [
+        { name: "有载货功能的专项作业车", limit: 15, article: "第五条第九款" },
+        { name: "无载货功能的专项作业车", limit: 30, article: "第五条第九款" }
+      ],
+      "挂车": [
+        { name: "全挂车、危险品运输半挂车", limit: 10, article: "第五条第十款" },
+        { name: "集装箱半挂车", limit: 20, article: "第五条第十款" },
+        { name: "其他半挂车", limit: 15, article: "第五条第十款" }
+      ],
+      "摩托车": [
+        { name: "正三轮摩托车", limit: 12, article: "第五条第十一款" },
+        { name: "其他摩托车", limit: 13, article: "第五条第十一款" }
+      ],
+      "其他": [
+        { name: "轮式专用机械车", limit: 0, note: "无年限限制", article: "第五条/第七条" }
+      ]
+    };
+
+    // 初始化车型下拉框
+    const typeSelect = document.getElementById("vehicleType");
+    const modelSelect = document.getElementById("vehicleModel");
+    Object.keys(vehicleData).forEach(cat => {
+      const opt = document.createElement("option");
+      opt.value = cat;
+      opt.textContent = cat;
+      typeSelect.appendChild(opt);
+    });
+
+    function onTypeChange() {
+      const cat = typeSelect.value;
+      modelSelect.innerHTML = "";
+      vehicleData[cat].forEach(m => {
+        const opt = document.createElement("option");
+        opt.value = m.name;
+        opt.textContent = m.name + (m.limit === 0 ? "（无年限限制）" : "（" + m.limit + "年）");
+        opt.dataset.limit = m.limit;
+        opt.dataset.note = m.note || "";
+        opt.dataset.article = m.article || "";
+        modelSelect.appendChild(opt);
+      });
+      calcAge();
+    }
+
+    // 默认选中"非营运载客汽车" → 私家车
+    typeSelect.value = "非营运载客汽车";
+    onTypeChange();
+    modelSelect.value = "小、微型非营运载客汽车（私家车）";
+
+    // 默认日期：5年前
+    const defaultDate = new Date();
+    defaultDate.setFullYear(defaultDate.getFullYear() - 5);
+    document.getElementById("regDate").value = defaultDate.toISOString().split("T")[0];
+
+    function switchTab(tab) {
+      document.querySelectorAll(".va-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".va-panel").forEach(p => p.classList.remove("active"));
+      if (tab === "calc") {
+        document.querySelectorAll(".va-tab")[0].classList.add("active");
+        document.getElementById("panel-calc").classList.add("active");
+      } else {
+        document.querySelectorAll(".va-tab")[1].classList.add("active");
+        document.getElementById("panel-query").classList.add("active");
+        renderTable();
+      }
+    }
+
+    function calcAge() {
+      const regDateStr = document.getElementById("regDate").value;
+      const sel = modelSelect.options[modelSelect.selectedIndex];
+      if (!sel || !regDateStr) {
+        document.getElementById("ageResult").style.display = "none";
+        return;
+      }
+      const limit = parseInt(sel.dataset.limit);
+      const note = sel.dataset.note;
+      const article = sel.dataset.article;
+      const modelName = sel.value;
+      const regDate = new Date(regDateStr);
+      const now = new Date();
+
+      if (isNaN(regDate) || regDate > now) {
+        alert("请输入有效的注册登记日期（不能晚于今天）");
+        return;
+      }
+
+      // 计算已使用年限（精确到天）
+      let years = now.getFullYear() - regDate.getFullYear();
+      let months = now.getMonth() - regDate.getMonth();
+      let days = now.getDate() - regDate.getDate();
+      if (days < 0) { months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
+      if (months < 0) { years--; months += 12; }
+      const totalDays = Math.floor((now - regDate) / 86400000);
+      const usedYears = (totalDays / 365.25).toFixed(2);
+
+      let html = `<div class="va-result-row"><span class="va-result-label">车型</span><span class="va-result-value">${modelName}</span></div>`;
+      html += `<div class="va-result-row"><span class="va-result-label">注册登记日期</span><span class="va-result-value">${regDate.toLocaleDateString("zh-CN")}</span></div>`;
+      html += `<div class="va-result-row"><span class="va-result-label">已使用年限</span><span class="va-result-value">${years}年${months}月${days}天（约${usedYears}年）</span></div>`;
+      if (article) html += `<div class="va-result-row"><span class="va-result-label">法规依据</span><span class="va-result-value" style="font-size:13px;color:#6366f1">《机动车强制报废标准规定》${article}</span></div>`;
+
+      if (limit === 0) {
+        // 无年限限制
+        html += `<div class="va-result-row"><span class="va-result-label">法定使用年限</span><span class="va-result-value va-badge va-badge-unlimited">无年限限制</span></div>`;
+        if (note) html += `<div class="va-result-row"><span class="va-result-label">说明</span><span class="va-result-value" style="font-size:13px;font-weight:500">${note}</span></div>`;
+        html += `<div class="va-result-row"><span class="va-result-label">状态</span><span class="va-result-value va-badge va-badge-safe">不受年限限制</span></div>`;
+      } else {
+        // 有限制
+        const scrapDate = new Date(regDate);
+        scrapDate.setFullYear(scrapDate.getFullYear() + limit);
+        const remainMs = scrapDate - now;
+        const remainDays = Math.floor(remainMs / 86400000);
+        const remainYears = (remainDays / 365.25).toFixed(2);
+
+        html += `<div class="va-result-row"><span class="va-result-label">法定使用年限</span><span class="va-result-value">${limit} 年</span></div>`;
+        html += `<div class="va-result-row"><span class="va-result-label">预计强制报废日期</span><span class="va-result-value">${scrapDate.toLocaleDateString("zh-CN")}</span></div>`;
+
+        if (remainDays < 0) {
+          html += `<div class="va-result-row"><span class="va-result-label">剩余使用年限</span><span class="va-result-value" style="color:#dc2626">已超期 ${Math.abs(remainYears)} 年</span></div>`;
+          html += `<div class="va-result-row"><span class="va-result-label">状态</span><span class="va-result-value va-badge va-badge-danger">⚠️ 已超报废年限</span></div>`;
+        } else if (remainDays < 365) {
+          html += `<div class="va-result-row"><span class="va-result-label">剩余使用年限</span><span class="va-result-value" style="color:#ca8a04">${remainDays} 天（约${remainYears}年）</span></div>`;
+          html += `<div class="va-result-row"><span class="va-result-label">状态</span><span class="va-result-value va-badge va-badge-warn">⚠️ 即将到达报废期</span></div>`;
+        } else {
+          html += `<div class="va-result-row"><span class="va-result-label">剩余使用年限</span><span class="va-result-value">${remainDays} 天（约${remainYears}年）</span></div>`;
+          html += `<div class="va-result-row"><span class="va-result-label">状态</span><span class="va-result-value va-badge va-badge-safe">✅ 正常使用</span></div>`;
+        }
+      }
+
+      const result = document.getElementById("ageResult");
+      result.innerHTML = html;
+      result.style.display = "block";
+    }
+
+    // 渲染法定年限查询表
+    function renderTable() {
+      const tbl = document.getElementById("limitTable");
+      let html = `<thead><tr><th>类别</th><th>车型</th><th class="yr">使用年限</th><th style="font-size:12px">法条依据</th></tr></thead><tbody>`;
+      Object.keys(vehicleData).forEach(cat => {
+        vehicleData[cat].forEach((m, i) => {
+          html += `<tr>`;
+          if (i === 0) html += `<td class="cat" rowspan="${vehicleData[cat].length}">${cat}</td>`;
+          html += `<td>${m.name}${m.note ? '<br><span style="font-size:12px;color:#94a3b8">' + m.note + '</span>' : ''}</td>`;
+          if (m.limit === 0) {
+            html += `<td class="yr unlimited">无限制</td>`;
+          } else {
+            html += `<td class="yr">${m.limit} 年</td>`;
+          }
+          html += `<td style="font-size:11px;color:#6366f1">${m.article || ''}</td>`;
+          html += `</tr>`;
+        });
+      });
+      html += `</tbody>`;
+      tbl.innerHTML = html;
+    }
+
+    // 页面加载时默认计算一次
+    calcAge();
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

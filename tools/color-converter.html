@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>颜色转换器 - HEX/RGB/HSL颜色互转 | 效率盒子</title>
+  <meta name="description" content="免费在线颜色转换工具，支持HEX、RGB、HSL颜色格式互转，实时预览颜色效果，支持取色器。适用于前端开发、设计配色。">
+  <meta name="keywords" content="颜色转换,HEX转RGB,RGB转HEX,HSL转换,颜色选择器,颜色代码">
+  <meta property="og:title" content="颜色转换器 - HEX/RGB/HSL颜色互转">
+  <meta property="og:description" content="HEX、RGB、HSL颜色格式互转工具。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>颜色转换器</h1>
+      <p>HEX、RGB、HSL 颜色格式互转，实时预览</p>
+    </div>
+
+    <div class="tool-box">
+      <!-- 取色器 -->
+      <div class="form-group">
+        <label for="color-picker">选择颜色</label>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <input type="color" id="color-picker" value="#4f46e5" style="width: 60px; height: 40px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;">
+          <div class="color-preview" id="color-preview" style="flex: 1; margin-top: 0;"></div>
+        </div>
+      </div>
+
+      <!-- HEX -->
+      <div class="form-group">
+        <label for="hex-input">HEX</label>
+        <div style="display: flex; gap: 12px;">
+          <input type="text" id="hex-input" value="#4f46e5" style="font-family: 'SF Mono', 'Consolas', monospace;">
+          <button class="btn btn-secondary btn-sm" onclick="copyValue('hex-input')">复制</button>
+        </div>
+      </div>
+
+      <!-- RGB -->
+      <div class="form-group">
+        <label for="rgb-input">RGB</label>
+        <div style="display: flex; gap: 12px;">
+          <input type="text" id="rgb-input" value="rgb(79, 70, 229)" style="font-family: 'SF Mono', 'Consolas', monospace;">
+          <button class="btn btn-secondary btn-sm" onclick="copyValue('rgb-input')">复制</button>
+        </div>
+      </div>
+
+      <!-- HSL -->
+      <div class="form-group">
+        <label for="hsl-input">HSL</label>
+        <div style="display: flex; gap: 12px;">
+          <input type="text" id="hsl-input" value="hsl(244, 75%, 59%)" style="font-family: 'SF Mono', 'Consolas', monospace;">
+          <button class="btn btn-secondary btn-sm" onclick="copyValue('hsl-input')">复制</button>
+        </div>
+      </div>
+
+      <p style="color: var(--text-light); font-size: 13px; margin-top: 16px;">提示：使用上方取色器选择颜色，或在任意输入框中修改值后按回车。</p>
+    </div>
+
+    <div class="ad-zone">
+      <span class="ad-zone-label">广告位</span>
+    </div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "color-converter");
+
+    const picker = document.getElementById("color-picker");
+    const hexInput = document.getElementById("hex-input");
+    const rgbInput = document.getElementById("rgb-input");
+    const hslInput = document.getElementById("hsl-input");
+    const preview = document.getElementById("color-preview");
+
+    function hexToRgb(hex) {
+      hex = hex.replace("#", "");
+      if (hex.length === 3) hex = hex.split("").map(c => c + c).join("");
+      const r = parseInt(hex.substr(0, 2), 16);
+      const g = parseInt(hex.substr(2, 2), 16);
+      const b = parseInt(hex.substr(4, 2), 16);
+      return { r, g, b };
+    }
+
+    function rgbToHex(r, g, b) {
+      return "#" + [r, g, b].map(x => {
+        const h = x.toString(16);
+        return h.length === 1 ? "0" + h : h;
+      }).join("");
+    }
+
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+      if (max === min) { h = s = 0; }
+      else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+          case g: h = (b - r) / d + 2; break;
+          case b: h = (r - g) / d + 4; break;
+        }
+        h /= 6;
+      }
+      return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+    }
+
+    function updateAll(hex) {
+      hex = hex.replace("#", "");
+      if (hex.length === 3) hex = hex.split("").map(c => c + c).join("");
+      if (!/^[0-9a-fA-F]{6}$/.test(hex)) return;
+
+      const { r, g, b } = hexToRgb(hex);
+      const { h, s, l } = rgbToHsl(r, g, b);
+
+      const hexStr = "#" + hex.toLowerCase();
+      const rgbStr = "rgb(" + r + ", " + g + ", " + b + ")";
+      const hslStr = "hsl(" + h + ", " + s + "%, " + l + "%)";
+
+      hexInput.value = hexStr;
+      rgbInput.value = rgbStr;
+      hslInput.value = hslStr;
+      picker.value = hexStr;
+      preview.style.background = hexStr;
+    }
+
+    picker.addEventListener("input", function() {
+      updateAll(this.value);
+    });
+
+    hexInput.addEventListener("input", function() {
+      let val = this.value.trim();
+      if (!val.startsWith("#")) val = "#" + val;
+      if (/^#[0-9a-fA-F]{6}$/.test(val) || /^#[0-9a-fA-F]{3}$/.test(val)) {
+        updateAll(val);
+      }
+    });
+
+    rgbInput.addEventListener("input", function() {
+      const m = this.value.match(/(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+      if (m) {
+        const hex = rgbToHex(parseInt(m[1]), parseInt(m[2]), parseInt(m[3]));
+        updateAll(hex);
+      }
+    });
+
+    function copyValue(id) {
+      const val = document.getElementById(id).value;
+      copyToClipboard(val);
+    }
+
+    updateAll("#4f46e5");
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID生成器 - GUID在线生成 | 效率盒子</title>
+  <meta name="description" content="免费在线UUID/GUID生成器，支持批量生成UUID v4，可选大写、带连字符格式。一键复制，适用于开发者生成唯一标识符。">
+  <meta name="keywords" content="UUID生成器,GUID生成,UUID v4,唯一标识符,uuid online">
+  <meta property="og:title" content="UUID生成器 - GUID在线生成">
+  <meta property="og:description" content="在线批量生成UUID v4唯一标识符。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .uuid-options{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+    .uuid-options label{display:flex;align-items:center;gap:6px;font-size:14px;color:#475569;cursor:pointer}
+    .uuid-options input[type="number"]{width:70px;padding:6px;border:2px solid #e2e8f0;border-radius:6px;font-size:14px}
+    .uuid-list{background:#1e293b;border-radius:8px;padding:16px;min-height:120px;max-height:400px;overflow-y:auto}
+    .uuid-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #334155}
+    .uuid-item:last-child{border-bottom:none}
+    .uuid-text{color:#4ade80;font-family:"Courier New",monospace;font-size:14px;word-break:break-all;flex:1}
+    .uuid-copy{background:#4f46e5;color:#fff;border:none;padding:4px 12px;border-radius:4px;cursor:pointer;font-size:12px;margin-left:8px;white-space:nowrap}
+    .uuid-copy:hover{background:#4338ca}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>UUID生成器</h1>
+      <p>批量生成UUID v4唯一标识符，一键复制</p>
+    </div>
+
+    <div class="tool-box" style="max-width:640px;margin:0 auto">
+      <div class="uuid-options">
+        <label>数量 <input type="number" id="count" value="5" min="1" max="100"></label>
+        <label><input type="checkbox" id="upper" onchange="regenerate()"> 大写</label>
+        <label><input type="checkbox" id="noDash" onchange="regenerate()"> 去掉连字符</label>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-bottom:16px" onclick="generate()">生成 UUID</button>
+      <div class="uuid-list" id="uuidList"></div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "uuid-generator");
+
+    function uuidv4() {
+      if (crypto && crypto.randomUUID) return crypto.randomUUID();
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c === "x" ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function formatUUID(uuid) {
+      let result = uuid;
+      if (document.getElementById("noDash").checked) {
+        result = result.replace(/-/g, "");
+      }
+      if (document.getElementById("upper").checked) {
+        result = result.toUpperCase();
+      }
+      return result;
+    }
+
+    function generate() {
+      const count = Math.min(100, Math.max(1, parseInt(document.getElementById("count").value) || 5));
+      const list = document.getElementById("uuidList");
+      list.innerHTML = "";
+      for (let i = 0; i < count; i++) {
+        const uuid = formatUUID(uuidv4());
+        const item = document.createElement("div");
+        item.className = "uuid-item";
+        item.innerHTML = `<span class="uuid-text">${uuid}</span><button class="uuid-copy" onclick="copyUUID('${uuid}', this)">复制</button>`;
+        list.appendChild(item);
+      }
+    }
+
+    function regenerate() {
+      if (document.getElementById("uuidList").children.length > 0) generate();
+    }
+
+    function copyUUID(uuid, btn) {
+      navigator.clipboard.writeText(uuid).then(() => {
+        btn.textContent = "已复制 ✓";
+        setTimeout(() => btn.textContent = "复制", 1500);
+      }).catch(() => {
+        const ta = document.createElement("textarea");
+        ta.value = uuid;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        btn.textContent = "已复制 ✓";
+        setTimeout(() => btn.textContent = "复制", 1500);
+      });
+    }
+
+    generate();
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

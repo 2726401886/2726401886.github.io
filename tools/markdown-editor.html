@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Markdown编辑器 - 在线Markdown预览 | 效率盒子</title>
+  <meta name="description" content="免费在线Markdown编辑器，支持实时预览。输入Markdown语法即可看到渲染效果，支持标题、列表、代码块、表格、链接等。一键复制HTML代码。">
+  <meta name="keywords" content="Markdown编辑器,Markdown预览,在线Markdown,md编辑器,Markdown转HTML">
+  <meta property="og:title" content="Markdown编辑器 - 在线Markdown预览">
+  <meta property="og:description" content="在线Markdown编辑器，实时预览渲染效果。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .md-toolbar{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+    .md-btn{padding:6px 10px;background:#f1f5f9;border:none;border-radius:6px;cursor:pointer;font-size:13px;color:#475569;transition:all .15s}
+    .md-btn:hover{background:#e2e8f0}
+    .md-container{display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:400px}
+    .md-textarea{width:100%;height:400px;padding:14px;border:2px solid #e2e8f0;border-radius:8px;font-family:"Courier New",monospace;font-size:14px;resize:vertical;line-height:1.6}
+    .md-textarea:focus{border-color:#4f46e5;outline:none}
+    .md-preview{height:400px;overflow-y:auto;padding:14px;border:2px solid #e2e8f0;border-radius:8px;background:#fff;line-height:1.7}
+    .md-preview h1{font-size:24px;border-bottom:2px solid #e2e8f0;padding-bottom:8px}
+    .md-preview h2{font-size:20px;border-bottom:1px solid #e2e8f0;padding-bottom:6px}
+    .md-preview h3{font-size:17px}
+    .md-preview code{background:#f1f5f9;padding:2px 6px;border-radius:3px;font-family:"Courier New",monospace;font-size:13px}
+    .md-preview pre{background:#1e293b;color:#e2e8f0;padding:12px;border-radius:6px;overflow-x:auto}
+    .md-preview pre code{background:none;color:inherit}
+    .md-preview blockquote{border-left:4px solid #4f46e5;padding-left:12px;color:#64748b;margin:8px 0}
+    .md-preview table{border-collapse:collapse;width:100%}
+    .md-preview th,.md-preview td{border:1px solid #e2e8f0;padding:8px;text-align:left}
+    .md-preview th{background:#f8fafc}
+    .md-preview img{max-width:100%}
+    @media(max-width:680px){.md-container{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>Markdown编辑器</h1>
+      <p>在线编写Markdown，实时预览渲染效果</p>
+    </div>
+
+    <div class="tool-box">
+      <div class="md-toolbar">
+        <button class="md-btn" onclick="insert('**','**','粗体')">B 粗体</button>
+        <button class="md-btn" onclick="insert('*','*','斜体')">I 斜体</button>
+        <button class="md-btn" onclick="insertLine('## 标题')">H2</button>
+        <button class="md-btn" onclick="insertLine('- 列表项')">列表</button>
+        <button class="md-btn" onclick="insertLine('1. 有序项')">有序</button>
+        <button class="md-btn" onclick="insert('[','](链接)','链接')">链接</button>
+        <button class="md-btn" onclick="insert('`','`','代码')">代码</button>
+        <button class="md-btn" onclick="insertLine('> 引用')">引用</button>
+        <button class="md-btn" onclick="insertLine('---')">分隔线</button>
+        <button class="md-btn" onclick="copyHTML()" style="margin-left:auto;background:#4f46e5;color:#fff">复制HTML</button>
+      </div>
+      <div class="md-container">
+        <textarea class="md-textarea" id="mdInput" oninput="render()" placeholder="在此输入 Markdown..."># 欢迎使用 Markdown 编辑器
+
+## 基本语法
+
+- **粗体** 用 `**` 包裹
+- *斜体* 用 `*` 包裹
+- `行内代码` 用反引号包裹
+
+### 代码块
+
+```javascript
+function hello() {
+  console.log("Hello, Markdown!");
+}
+```
+
+> 这是一段引用文字
+
+| 工具 | 说明 |
+|------|------|
+| 效率盒子 | 在线工具箱 |
+
+[访问效率盒子](https://2726401886.github.io)</textarea>
+        <div class="md-preview" id="mdPreview"></div>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "markdown-editor");
+
+    function escapeHtml(s) {
+      return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    }
+
+    function render() {
+      let md = document.getElementById("mdInput").value;
+      let html = escapeHtml(md);
+      // 代码块
+      html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (m, lang, code) => `<pre><code>${code.trim()}</code></pre>`);
+      // 标题
+      html = html.replace(/^### (.+)$/gm, "<h3>$1</h3>");
+      html = html.replace(/^## (.+)$/gm, "<h2>$1</h2>");
+      html = html.replace(/^# (.+)$/gm, "<h1>$1</h1>");
+      // 分隔线
+      html = html.replace(/^---$/gm, "<hr>");
+      // 引用
+      html = html.replace(/^&gt; (.+)$/gm, "<blockquote>$1</blockquote>");
+      // 表格
+      html = html.replace(/^\|(.+)\|\n\|[-| :]+\|\n((?:\|.*\|\n?)*)/gm, (m, header, rows) => {
+        const hCells = header.split("|").map(c => c.trim()).filter(c => c);
+        const rCells = rows.trim().split("\n").map(r => r.split("|").map(c => c.trim()).filter(c => c));
+        let table = "<table><thead><tr>" + hCells.map(c => `<th>${c}</th>`).join("") + "</tr></thead><tbody>";
+        rCells.forEach(r => { table += "<tr>" + r.map(c => `<td>${c}</td>`).join("") + "</tr>"; });
+        return table + "</tbody></table>";
+      });
+      // 列表
+      html = html.replace(/^- (.+)$/gm, "<li>$1</li>");
+      html = html.replace(/(<li>.*<\/li>\n?)+/g, m => "<ul>" + m + "</ul>");
+      html = html.replace(/^\d+\. (.+)$/gm, "<li>$1</li>");
+      // 行内代码
+      html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+      // 粗体斜体
+      html = html.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+      html = html.replace(/\*([^*]+)\*/g, "<em>$1</em>");
+      // 链接
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank">$1</a>');
+      // 段落
+      html = html.split(/\n\n+/).map(block => {
+        if (block.match(/^<(h\d|ul|ol|pre|blockquote|table|hr)/)) return block;
+        return block.trim() ? "<p>" + block.replace(/\n/g, "<br>") + "</p>" : "";
+      }).join("\n");
+      document.getElementById("mdPreview").innerHTML = html;
+    }
+
+    function insert(before, after, placeholder) {
+      const ta = document.getElementById("mdInput");
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const sel = ta.value.substring(start, end) || placeholder;
+      ta.value = ta.value.substring(0, start) + before + sel + after + ta.value.substring(end);
+      ta.focus();
+      render();
+    }
+
+    function insertLine(prefix) {
+      const ta = document.getElementById("mdInput");
+      const start = ta.selectionStart;
+      const lineStart = ta.value.lastIndexOf("\n", start - 1) + 1;
+      ta.value = ta.value.substring(0, lineStart) + prefix + "\n" + ta.value.substring(lineStart);
+      ta.focus();
+      render();
+    }
+
+    function copyHTML() {
+      const html = document.getElementById("mdPreview").innerHTML;
+      navigator.clipboard.writeText(html).then(() => {
+        alert("HTML代码已复制到剪贴板！");
+      }).catch(() => {
+        const ta = document.createElement("textarea");
+        ta.value = html;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+        alert("HTML代码已复制！");
+      });
+    }
+
+    render();
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

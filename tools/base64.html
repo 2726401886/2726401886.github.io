@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64编解码 - 在线Base64编码解码工具 | 效率盒子</title>
+  <meta name="description" content="免费在线Base64编码解码工具，支持文本和UTF-8中文的Base64编码与解码，一键复制结果。适用于数据传输、API调试等场景。">
+  <meta name="keywords" content="Base64编码,Base64解码,Base64转换,在线Base64">
+  <meta property="og:title" content="Base64编解码 - 在线Base64编码解码工具">
+  <meta property="og:description" content="Base64编码与解码，支持中文。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>Base64 编解码</h1>
+      <p>Base64编码与解码，支持中文UTF-8</p>
+    </div>
+
+    <div class="tool-box">
+      <div class="form-group">
+        <label for="b64-input">输入内容</label>
+        <textarea id="b64-input" placeholder="输入要编码或解码的文本..."></textarea>
+      </div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px;">
+        <button class="btn btn-primary" onclick="encode()">编码 (Encode)</button>
+        <button class="btn btn-primary" onclick="decode()">解码 (Decode)</button>
+        <button class="btn btn-secondary" onclick="clearAll()">清空</button>
+      </div>
+
+      <div class="form-group">
+        <label for="b64-output">输出结果</label>
+        <textarea id="b64-output" readonly placeholder="结果将显示在这里..."></textarea>
+      </div>
+
+      <button class="btn btn-success btn-sm" onclick="copyResult()" id="copy-btn">复制结果</button>
+    </div>
+
+    <div class="ad-zone">
+      <span class="ad-zone-label">广告位</span>
+    </div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "base64");
+
+    function encode() {
+      const input = document.getElementById("b64-input").value;
+      if (!input) { showToast("请输入内容"); return; }
+      try {
+        // 支持 UTF-8 中文
+        const encoded = btoa(unescape(encodeURIComponent(input)));
+        document.getElementById("b64-output").value = encoded;
+        showToast("编码成功");
+      } catch (e) {
+        document.getElementById("b64-output").value = "编码失败: " + e.message;
+      }
+    }
+
+    function decode() {
+      const input = document.getElementById("b64-input").value.trim();
+      if (!input) { showToast("请输入内容"); return; }
+      try {
+        const decoded = decodeURIComponent(escape(atob(input)));
+        document.getElementById("b64-output").value = decoded;
+        showToast("解码成功");
+      } catch (e) {
+        document.getElementById("b64-output").value = "解码失败: 不是有效的Base64字符串";
+      }
+    }
+
+    function clearAll() {
+      document.getElementById("b64-input").value = "";
+      document.getElementById("b64-output").value = "";
+    }
+
+    function copyResult() {
+      const output = document.getElementById("b64-output").value;
+      if (!output || output.startsWith("编码失败") || output.startsWith("解码失败")) {
+        showToast("没有可复制的结果");
+        return;
+      }
+      copyToClipboard(output, document.getElementById("copy-btn"));
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

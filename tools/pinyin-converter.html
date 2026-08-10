@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>汉字转拼音 - 在线拼音转换工具 | 效率盒子</title>
+  <meta name="description" content="免费在线汉字转拼音工具，支持批量转换汉字为带声调拼音，支持多音字提示、无声调输出。适合语文教学、拼音学习。">
+  <meta name="keywords" content="汉字转拼音,拼音转换,拼音标注,带声调拼音,多音字,语文教学工具">
+  <meta property="og:title" content="汉字转拼音工具">
+  <meta property="og:description" content="在线将汉字转换为带声调拼音。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .py-input-area{margin-bottom:16px}
+    .py-input-area label{display:block;margin-bottom:6px;font-weight:600;color:#475569;font-size:14px}
+    .py-textarea{width:100%;min-height:120px;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px;resize:vertical;font-family:inherit}
+    .py-textarea:focus{border-color:#4f46e5;outline:none}
+    .py-options{display:flex;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+    .py-options label{display:flex;align-items:center;gap:6px;font-size:14px;color:#475569;cursor:pointer}
+    .py-result{background:#f8fafc;border-radius:12px;padding:20px;margin-bottom:16px;min-height:80px}
+    .py-line{margin-bottom:8px;line-height:2}
+    .py-hanzi{font-size:20px;color:#1e293b;margin-right:4px}
+    .py-pinyin{font-size:14px;color:#4f46e5;display:block;text-align:center;margin-bottom:4px}
+    .py-flat{font-size:16px;color:#4f46e5;letter-spacing:1px}
+    .py-copy-btn{margin-top:12px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>汉字转拼音</h1>
+      <p>将汉字转换为带声调拼音，支持多音字、无声调模式</p>
+    </div>
+
+    <div class="tool-box" style="max-width:680px;margin:0 auto">
+      <div class="py-input-area">
+        <label>输入汉字</label>
+        <textarea class="py-textarea" id="inputText" placeholder="请输入要转换的汉字，例如：你好世界">你好世界</textarea>
+      </div>
+      <div class="py-options">
+        <label><input type="checkbox" id="showTone" checked> 显示声调</label>
+        <label><input type="checkbox" id="verticalMode" checked> 拼音在上汉字在下</label>
+        <label><input type="checkbox" id="uppercase"> 首字母大写</label>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-bottom:16px" onclick="convertPinyin()">转换为拼音</button>
+
+      <div id="resultArea" style="display:none">
+        <div class="py-result" id="resultBox"></div>
+        <button class="btn py-copy-btn" onclick="copyResult()">复制结果</button>
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "pinyin-converter");
+
+    // 常用汉字拼音表（Unicode基本汉字区精选）
+    const PINYIN_MAP = {
+      '啊':'a','阿':'a','哎':'ai','哀':'ai','挨':'ai','矮':'ai','爱':'ai','碍':'ai','安':'an','岸':'an','按':'an','案':'an',
+      '八':'ba','巴':'ba','把':'ba','爸':'ba','吧':'ba','白':'bai','百':'bai','摆':'bai','败':'bai','拜':'bai','班':'ban','般':'ban','板':'ban','半':'ban','办':'ban','伴':'ban',
+      '帮':'bang','邦':'bang','榜':'bang','膀':'bang','包':'bao','胞':'bao','宝':'bao','保':'bao','报':'bao','抱':'bao','暴':'bao',
+      '北':'bei','贝':'bei','备':'bei','背':'bei','被':'bei','辈':'bei','本':'ben','笨':'ben','崩':'beng','逼':'bi','鼻':'bi','比':'bi','笔':'bi','币':'bi','必':'bi','毕':'bi','闭':'bi','鼻':'bi',
+      '边':'bian','编':'bian','扁':'bian','便':'bian','变':'bian','遍':'bian','标':'biao','表':'biao','别':'bie','宾':'bin','滨':'bin','兵':'bing','冰':'bing','丙':'bing','饼':'bing','并':'bing','病':'bing',
+      '播':'bo','波':'bo','博':'bo','薄':'bo','卜':'bu','不':'bu','步':'bu','部':'bu','布':'bu',
+      '猜':'cai','才':'cai','材':'cai','财':'cai','裁':'cai','采':'cai','菜':'cai','参':'can','餐':'can','残':'can','惨':'can','灿':'can','仓':'cang','沧':'cang','藏':'cang','操':'cao','草':'cao','册':'ce','侧':'ce','测':'ce','策':'ce',
+      '层':'ceng','叉':'cha','插':'cha','茶':'cha','查':'cha','差':'cha','察':'cha','岔':'cha','柴':'chai','豺':'chai','缠':'chan','产':'chan','颤':'chan','昌':'chang','长':'chang','场':'chang','常':'chang','厂':'chang','畅':'chang','唱':'chang',
+      '超':'chao','钞':'chao','朝':'chao','潮':'chao','吵':'chao','巢':'chao','炒':'chao','车':'che','彻':'che','撤':'che','尘':'chen','臣':'chen','沉':'chen','陈':'chen','晨':'chen','趁':'chen','称':'cheng','撑':'cheng','成':'cheng','呈':'cheng','诚':'cheng','城':'cheng','乘':'cheng','惩':'cheng','程':'cheng','秤':'cheng','吃':'chi','池':'chi','迟':'chi','驰':'chi','持':'chi','尺':'chi','齿':'chi','耻':'chi','翅':'chi','冲':'chong','充':'chong','虫':'chong','重':'chong','宠':'chong','抽':'chou','仇':'chou','愁':'chou','丑':'chou','臭':'chou','出':'chu','初':'chu','厨':'chu','除':'chu','楚':'chu','处':'chu','触':'chu','畜':'chu','川':'chuan','穿':'chuan','传':'chuan','船':'chuan','喘':'chuan','串':'chuan','窗':'chuang','床':'chuang','创':'chuang','吹':'chui','炊':'chui','垂':'chui','锤':'chui','春':'chun','纯':'chun','唇':'chun','蠢':'chun','戳':'chuo','词':'ci','慈':'ci','辞':'ci','磁':'ci','此':'ci','次':'ci','刺':'ci','从':'cong','聪':'cong','匆':'cong','丛':'cong','凑':'cou','粗':'cu','醋':'cu','促':'cu','村':'cun','存':'cun','寸':'cun','搓':'cuo','措':'cuo','错':'cuo','达':'da','答':'da','打':'da','大':'da','呆':'dai','代':'dai','带':'dai','待':'dai','袋':'dai','戴':'dai','丹':'dan','单':'dan','胆':'dan','旦':'dan','但':'dan','诞':'dan','弹':'dan','当':'dang','档':'dang','刀':'dao','导':'dao','岛':'dao','倒':'dao','到':'dao','道':'dao','盗':'dao','稻':'dao','德':'de','的':'de','灯':'deng','登':'deng','等':'deng','凳':'deng','低':'di','堤':'di','滴':'di','敌':'di','底':'di','地':'di','弟':'di','帝':'di','第':'di','递':'di','点':'dian','电':'dian','店':'dian','垫':'dian','殿':'dian','典':'dian','碘':'dian','奠':'dian','丁':'ding','叮':'ding','顶':'ding','订':'ding','钉':'ding','定':'ding','丢':'diu','东':'dong','冬':'dong','动':'dong','冻':'dong','洞':'dong','懂':'dong','都':'dou','兜':'dou','斗':'dou','抖':'dou','陡':'dou','豆':'dou','逗':'dou','毒':'du','独':'du','读':'du','堵':'du','赌':'du','杜':'du','肚':'du','度':'du','渡':'du','端':'duan','短':'duan','段':'duan','断':'duan','锻':'duan','堆':'dui','队':'dui','对':'dui','吨':'dun','蹲':'dun','盾':'dun','顿':'dun','多':'duo','夺':'duo','朵':'duo','躲':'duo','堕':'duo',
+      '蛾':'e','鹅':'e','蛾':'e','额':'e','恶':'e','饿':'e','恩':'en','儿':'er','耳':'er','二':'er','而':'er','尔':'er',
+      '发':'fa','乏':'fa','罚':'fa','法':'fa','帆':'fan','番':'fan','翻':'fan','凡':'fan','烦':'fan','繁':'fan','反':'fan','返':'fan','犯':'fan','饭':'fan','泛':'fan','范':'fan','方':'fang','坊':'fang','房':'fang','防':'fang','妨':'fang','仿':'fang','访':'fang','纺':'fang','放':'fang','飞':'fei','肥':'fei','匪':'fei','废':'fei','沸':'fei','肺':'fei','费':'fei','分':'fen','纷':'fen','坟':'fen','焚':'fen','粉':'fen','份':'fen','奋':'fen','愤':'fen','粪':'fen','丰':'feng','风':'feng','封':'feng','峰':'feng','锋':'feng','蜂':'feng','逢':'feng','缝':'feng','凤':'feng','奉':'feng','佛':'fo','否':'fou','夫':'fu','肤':'fu','孵':'fu','敷':'fu','扶':'fu','服':'fu','浮':'fu','符':'fu','幅':'fu','福':'fu','辐':'fu','蝠':'fu','府':'fu','腐':'fu','辅':'fu','俯':'fu','抚':'fu','斧':'fu','釜':'fu','父':'fu','付':'fu','妇':'fu','负':'fu','附':'fu','复':'fu','赴':'fu','副':'fu','富':'fu','赋':'fu','缚':'fu','腹':'fu','覆':'fu',
+      '该':'gai','改':'gai','盖':'gai','概':'gai','干':'gan','甘':'gan','杆':'gan','肝':'gan','赶':'gan','敢':'gan','感':'gan','赣':'gan','冈':'gang','刚':'gang','钢':'gang','岗':'gang','港':'gang','杠':'gang','高':'gao','糕':'gao','搞':'gao','稿':'gao','告':'gao','哥':'ge','歌':'ge','阁':'ge','革':'ge','格':'ge','隔':'ge','个':'ge','各':'ge','根':'gen','跟':'gen','耕':'geng','更':'geng','庚':'geng','工':'gong','弓':'gong','公':'gong','功':'gong','攻':'gong','宫':'gong','共':'gong','供':'gong','贡':'gong','勾':'gou','沟':'gou','钩':'gou','狗':'gou','够':'gou','构':'gou','购':'gou','估':'gu','孤':'gu','姑':'gu','辜':'gu','古':'gu','谷':'gu','股':'gu','骨':'gu','鼓':'gu','固':'gu','故':'gu','顾':'gu','雇':'gu','瓜':'gua','刮':'gua','挂':'gua','拐':'guai','怪':'guai','关':'guan','观':'guan','官':'guan','馆':'guan','管':'guan','贯':'guan','冠':'guan','灌':'guan','光':'guang','广':'guang','逛':'guang','归':'gui','龟':'gui','规':'gui','闺':'gui','轨':'gui','鬼':'gui','贵':'gui','桂':'gui','棍':'gun','滚':'gun','锅':'guo','国':'guo','果':'guo','裹':'guo','过':'guo',
+      '哈':'ha','孩':'hai','海':'hai','害':'hai','含':'han','寒':'han','韩':'han','罕':'han','喊':'han','汉':'han','旱':'han','汗':'han','杭':'hang','航':'hang','毫':'hao','豪':'hao','好':'hao','号':'hao','浩':'hao','耗':'hao','禾':'he','合':'he','何':'he','河':'he','荷':'he','贺':'he','和':'he','核':'he','盒':'he','鹤':'he','黑':'hei','痕':'hen','很':'hen','狠':'hen','恨':'hen','恒':'heng','横':'heng','衡':'heng','轰':'hong','哄':'hong','红':'hong','宏':'hong','洪':'hong','虹':'hong','侯':'hou','喉':'hou','猴':'hou','吼':'hou','后':'hou','厚':'hou','候':'hou','呼':'hu','狐':'hu','胡':'hu','壶':'hu','湖':'hu','糊':'hu','蝴':'hu','虎':'hu','互':'hu','户':'hu','护':'hu','花':'hua','华':'hua','哗':'hua','滑':'hua','画':'hua','话':'hua','化':'hua','划':'hua','怀':'huai','坏':'huai','环':'huan','还':'huan','换':'huan','唤':'huan','患':'huan','焕':'huan','幻':'huan','荒':'huang','慌':'huang','皇':'huang','黄':'huang','煌':'huang','晃':'huang','谎':'huang','灰':'hui','挥':'hui','辉':'hui','徽':'hui','回':'hui','悔':'hui','汇':'hui','会':'hui','绘':'hui','贿':'hui','秽':'hui','惠':'hui','慧':'hui','昏':'hun','婚':'hun','魂':'hun','浑':'hun','混':'hun','活':'huo','火':'huo','伙':'huo','货':'huo','获':'huo','祸':'huo','霍':'huo',
+      '几':'ji','讥':'ji','击':'ji','饥':'ji','肌':'ji','鸡':'ji','奇':'ji','积':'ji','基':'ji','绩':'ji','缉':'ji','激':'ji','及':'ji','吉':'ji','级':'ji','即':'ji','极':'ji','急':'ji','疾':'ji','棘':'ji','集':'ji','籍':'ji','几':'ji','己':'ji','挤':'ji','脊':'ji','计':'ji','记':'ji','纪':'ji','技':'ji','忌':'ji','际':'ji','季':'ji','既':'ji','济':'ji','继':'ji','寂':'ji','寄':'ji','加':'jia','佳':'jia','家':'jia','嘉':'jia','夹':'jia','佳':'jia','荚':'jia','颊':'jia','甲':'jia','假':'jia','价':'jia','架':'jia','驾':'jia','嫁':'jia','坚':'jian','尖':'jian','奸':'jian','歼':'jian','间':'jian','肩':'jian','艰':'jian','监':'jian','兼':'jian','煎':'jian','拣':'jian','茧':'jian','俭':'jian','捡':'jian','检':'jian','减':'jian','剪':'jian','简':'jian','见':'jian','键':'jian','箭':'jian','健':'jian','舰':'jian','渐':'jian','践':'jian','鉴':'jian','江':'jiang','姜':'jiang','将':'jiang','浆':'jiang','僵':'jiang','疆':'jiang','讲':'jiang','奖':'jiang','桨':'jiang','匠':'jiang','降':'jiang','交':'jiao','郊':'jiao','浇':'jiao','骄':'jiao','娇':'jiao','胶':'jiao','教':'jiao','焦':'jiao','角':'jiao','脚':'jiao','搅':'jiao','缴':'jiao','剿':'jiao','叫':'jiao','觉':'jiao','轿':'jiao','校':'jiao','较':'jiao','接':'jie','阶':'jie','街':'jie','结':'jie','截':'jie','竭':'jie','节':'jie','杰':'jie','捷':'jie','洁':'jie','集':'jie','借':'jie','介':'jie','界':'jie','届':'jie','戒':'jie','借':'jie','巾':'jin','斤':'jin','金':'jin','今':'jin','津':'jin','筋':'jin','襟':'jin','仅':'jin','紧':'jin','锦':'jin','谨':'jin','尽':'jin','进':'jin','近':'jin','晋':'jin','浸':'jin','禁':'jin','劲':'jin','茎':'jing','京':'jing','经':'jing','泾':'jing','茎':'jing','惊':'jing','晶':'jing','睛':'jing','精':'jing','井':'jing','颈':'jing','景':'jing','警':'jing','净':'jing','竞':'jing','敬':'jing','境':'jing','镜':'jing','纠':'jiu','究':'jiu','鸠':'jiu','揪':'jiu','九':'jiu','久':'jiu','酒':'jiu','旧':'jiu','救':'jiu','舅':'jiu','咎':'jiu','就':'jiu','拘':'ju','居':'ju','驹':'ju','菊':'ju','局':'ju','咀':'ju','矩':'ju','举':'ju','沮':'ju','聚':'ju','拒':'ju','俱':'ju','具':'ju','剧':'ju','据':'ju','距':'ju','巨':'ju','锯':'ju','卷':'juan','圈':'juan','捐':'juan','涓':'juan','娟':'juan','卷':'juan','倦':'juan','绢':'juan','决':'jue','绝':'jue','觉':'jue','掘':'jue','爵':'jue','嚼':'jue','军':'jun','均':'jun','君':'jun','菌':'jun','俊':'jun','骏':'jun','峻':'jun',
+      '开':'kai','凯':'kai','慨':'kai','刊':'kan','勘':'kan','看':'kan','康':'kang','慷':'kang','抗':'kang','炕':'kang','考':'kao','烤':'kao','靠':'kao','科':'ke','棵':'ke','颗':'ke','咳':'ke','壳':'ke','可':'ke','渴':'ke','克':'ke','刻':'ke','客':'ke','课':'ke','肯':'ken','恳':'ken','坑':'keng','空':'kong','孔':'kong','恐':'kong','控':'kong','口':'kou','扣':'kou','枯':'ku','哭':'ku','窟':'ku','苦':'ku','酷':'ku','裤':'ku','夸':'kua','垮':'kua','跨':'kua','块':'kuai','快':'kuai','筷':'kuai','宽':'kuan','款':'kuan','狂':'kuang','况':'kuang','矿':'kuang','旷':'kuang','框':'kuang','亏':'kui','葵':'kui','奎':'kui','魁':'kui','愧':'kui','昆':'kun','坤':'kun','捆':'kun','困':'kun','阔':'kuo','扩':'kuo','括':'kuo',
+      '拉':'la','啦':'la','蜡':'la','腊':'la','来':'lai','兰':'lan','拦':'lan','栏':'lan','蓝':'lan','篮':'lan','览':'lan','懒':'lan','烂':'lan','滥':'lan','郎':'lang','狼':'lang','廊':'lang','朗':'lang','浪':'lang','捞':'lao','劳':'lao','牢':'lao','老':'lao','乐':'le','了':'le','勒':'le','雷':'lei','累':'lei','垒':'lei','擂':'lei','类':'lei','泪':'lei','棱':'leng','冷':'leng','厘':'li','梨':'li','犁':'li','离':'li','璃':'li','厘':'li','狸':'li','厘':'li','梁':'li','礼':'li','李':'li','里':'li','理':'li','鲤':'li','力':'li','历':'li','厉':'li','立':'li','丽':'li','利':'li','励':'li','例':'li','隶':'li','粒':'li','俩':'lia','连':'lian','廉':'lian','怜':'lian','莲':'lian','联':'lian','恋':'lian','链':'lian','炼':'lian','练':'lian','凉':'liang','梁':'liang','粮':'liang','良':'liang','两':'liang','亮':'liang','谅':'liang','辆':'liang','量':'liang','辽':'liao','疗':'liao','聊':'liao','僚':'liao','了':'liao','料':'liao','列':'lie','劣':'lie','烈':'lie','猎':'lie','裂':'lie','邻':'lin','林':'lin','临':'lin','淋':'lin','伶':'ling','灵':'ling','岭':'ling','领':'ling','令':'ling','另':'ling','溜':'liu','刘':'liu','流':'liu','留':'liu','硫':'liu','柳':'liu','六':'liu','龙':'long','隆':'long','笼':'long','聋':'long','弄':'long','楼':'lou','搂':'lou','漏':'lou','陋':'lou','卢':'lu','芦':'lu','庐':'lu','炉':'lu','鲁':'lu','陆':'lu','录':'lu','鹿':'lu','路':'lu','露':'lu','驴':'lv','旅':'lv','铝':'lv','侣':'lv','履':'lv','律':'lv','虑':'lv','率':'lv','绿':'lv','氯':'lv','滤':'lv','卵':'luan','乱':'luan','掠':'lve','略':'lve','轮':'lun','论':'lun','罗':'luo','螺':'luo','裸':'luo','洛':'luo','落':'luo','骆':'luo',
+      '妈':'ma','麻':'ma','马':'ma','骂':'ma','吗':'ma','埋':'mai','买':'mai','麦':'mai','卖':'mai','脉':'mai','蛮':'man','馒':'man','满':'man','瞒':'man','慢':'man','漫':'man','忙':'mang','盲':'mang','茫':'mang','莽':'mang','猫':'mao','毛':'mao','矛':'mao','茅':'mao','茂':'mao','冒':'mao','帽':'mao','貌':'mao','贸':'mao','么':'me','没':'mei','眉':'mei','梅':'mei','媒':'mei','煤':'mei','霉':'mei','每':'mei','美':'mei','镁':'mei','妹':'mei','媚':'mei','门':'men','闷':'men','们':'men','蒙':'meng','盟':'meng','猛':'meng','梦':'meng','孟':'meng','弥':'mi','米':'mi','眯':'mi','靡':'mi','迷':'mi','谜':'mi','密':'mi','蜜':'mi','棉':'mian','免':'mian','勉':'mian','面':'mian','苗':'miao','描':'miao','秒':'miao','妙':'miao','庙':'miao','灭':'mie','民':'min','敏':'min','名':'ming','明':'ming','鸣':'ming','命':'ming','谬':'miu','摸':'mo','模':'mo','膜':'mo','磨':'mo','魔':'mo','末':'mo','莫':'mo','墨':'mo','默':'mo','漠':'mo','陌':'mo','牟':'mou','谋':'mou','某':'mou','母':'mu','牡':'mu','亩':'mu','牧':'mu','木':'mu','目':'mu','沐':'mu','穆':'mu','墓':'mu','幕':'mu','慕':'mu',
+      '拿':'na','哪':'na','那':'na','纳':'na','娜':'na','乃':'nai','奶':'nai','耐':'nai','男':'nan','南':'nan','难':'nan','囊':'nang','恼':'nao','脑':'nao','闹':'nao','淖':'nao','呢':'ne','内':'nei','嫩':'nen','能':'neng','尼':'ni','泥':'ni','你':'ni','拟':'ni','逆':'ni','匿':'ni','腻':'ni','年':'nian','粘':'nian','碾':'nian','念':'nian','娘':'niang','鸟':'niao','尿':'niao','捏':'nie','聂':'nie','涅':'nie','宁':'ning','凝':'ning','拧':'ning','牛':'niu','扭':'niu','纽':'niu','农':'nong','弄':'nong','奴':'nu','努':'nu','怒':'nu','女':'nv','暖':'nuan','虐':'nve','挪':'nuo','诺':'nuo','糯':'nuo',
+      '哦':'o','欧':'ou','偶':'ou','藕':'ou',
+      '趴':'pa','爬':'pa','怕':'pa','拍':'pai','排':'pai','牌':'pai','派':'pai','攀':'pan','盘':'pan','判':'pan','叛':'pan','盼':'pan','庞':'pang','旁':'pang','胖':'pang','抛':'pao','跑':'pao','泡':'pao','炮':'pao','胚':'pei','培':'pei','赔':'pei','陪':'pei','佩':'pei','配':'pei','喷':'pen','盆':'pen','朋':'peng','鹏':'peng','膨':'peng','捧':'peng','碰':'peng','批':'pi','披':'pi','劈':'pi','皮':'pi','疲':'pi','脾':'pi','匹':'pi','屁':'pi','譬':'pi','篇':'pian','偏':'pian','片':'pian','骗':'pian','飘':'piao','漂':'piao','票':'piao','撇':'pie','拼':'pin','贫':'pin','频':'pin','品':'pin','聘':'pin','乒':'ping','平':'ping','评':'ping','苹':'ping','凭':'ping','屏':'ping','瓶':'ping','坡':'po','泼':'po','颇':'po','婆':'po','破':'po','迫':'po','魄':'po','扑':'pu','铺':'pu','葡':'pu','朴':'pu','普':'pu','谱':'pu','瀑':'pu','暴':'pu',
+      '期':'qi','欺':'qi','漆':'qi','七':'qi','妻':'qi','栖':'qi','戚':'qi','期':'qi','棋':'qi','奇':'qi','歧':'qi','齐':'qi','祈':'qi','骑':'qi','旗':'qi','乞':'qi','企':'qi','启':'qi','起':'qi','气':'qi','汽':'qi','弃':'qi','契':'qi','砌':'qi','器':'qi','恰':'qia','掐':'qia','千':'qian','迁':'qian','牵':'qian','铅':'qian','谦':'qian','签':'qian','前':'qian','钱':'qian','潜':'qian','浅':'qian','遣':'qian','歉':'qian','枪':'qiang','墙':'qiang','强':'qiang','抢':'qiang','桥':'qiao','瞧':'qiao','巧':'qiao','悄':'qiao','峭':'qiao','窍':'qiao','切':'qie','茄':'qie','且':'qie','怯':'qie','窃':'qie','钦':'qin','亲':'qin','秦':'qin','琴':'qin','禽':'qin','勤':'qin','芹':'qin','沁':'qin','青':'qing','轻':'qing','氢':'qing','倾':'qing','清':'qing','晴':'qing','情':'qing','请':'qing','庆':'qing','琼':'qiong','穷':'qiong','秋':'qiu','丘':'qiu','求':'qiu','球':'qiu','区':'qu','曲':'qu','驱':'qu','屈':'qu','趋':'qu','渠':'qu','取':'qu','娶':'qu','去':'qu','趣':'qu','圈':'quan','全':'quan','权':'quan','泉':'quan','拳':'quan','犬':'quan','劝':'quan','券':'quan','缺':'que','炔':'que','确':'que','鹊':'que','裙':'qun','群':'qun',
+      '然':'ran','燃':'ran','染':'ran','嚷':'rang','让':'rang','壤':'rang','绕':'rao','惹':'re','热':'re','人':'ren','忍':'ren','刃':'ren','认':'ren','任':'ren','妊':'ren','扔':'reng','仍':'reng','日':'ri','绒':'rong','荣':'rong','容':'rong','熔':'rong','融':'rong','溶':'rong','柔':'rou','肉':'rou','如':'ru','儒':'ru','乳':'ru','辱':'ru','入':'ru','褥':'ru','软':'ruan','蕊':'rui','瑞':'rui','闰':'run','润':'run','若':'ruo','弱':'ruo',
+      '撒':'sa','洒':'sa','赛':'sai','三':'san','伞':'san','散':'san','桑':'sang','嗓':'sang','丧':'sang','扫':'sao','骚':'sao','嫂':'sao','色':'se','森':'sen','僧':'seng','杀':'sha','沙':'sha','纱':'sha','刹':'sha','傻':'sha','厦':'sha','筛':'shai','晒':'shai','山':'shan','杉':'shan','珊':'shan','闪':'shan','陕':'shan','善':'shan','扇':'shan','擅':'shan','膳':'shan','商':'shang','伤':'shang','汤':'shang','赏':'shang','上':'shang','尚':'shang','捎':'shao','烧':'shao','稍':'shao','少':'shao','绍':'shao','哨':'shao','邵':'shao','召':'shao','韶':'shao','蛇':'she','舌':'she','舍':'she','设':'she','射':'she','涉':'she','摄':'she','社':'she','谁':'shei','申':'shen','伸':'shen','身':'shen','深':'shen','神':'shen','沈':'shen','审':'shen','婶':'shen','肾':'shen','甚':'shen','渗':'shen','慎':'shen','升':'sheng','生':'sheng','声':'sheng','牲':'sheng','绳':'sheng','省':'sheng','圣':'sheng','盛':'sheng','剩':'sheng','胜':'sheng','尸':'shi','失':'shi','师':'shi','狮':'shi','诗':'shi','施':'shi','湿':'shi','虱':'shi','十':'shi','石':'shi','实':'shi','识':'shi','拾':'shi','时':'shi','食':'shi','蚀':'shi','史':'shi','矢':'shi','使':'shi','始':'shi','驶':'shi','士':'shi','世':'shi','氏':'shi','市':'shi','柿':'shi','视':'shi','试':'shi','饰':'shi','室':'shi','势':'shi','事':'shi','侍':'shi','恃':'shi','是':'shi','逝':'shi','释':'shi','收':'shou','手':'shou','守':'shou','寿':'shou','兽':'shou','售':'shou','受':'shou','授':'shou','瘦':'shou','书':'shu','殊':'shu','抒':'shu','枢':'shu','叔':'shu','梳':'shu','淑':'shu','舒':'shu','疏':'shu','蔬':'shu','输':'shu','叔':'shu','熟':'shu','暑':'shu','署':'shu','鼠':'shu','薯':'shu','蜀':'shu','术':'shu','束':'shu','述':'shu','树':'shu','竖':'shu','墅':'shu','数':'shu','刷':'shua','耍':'shua','率':'shuai','衰':'shuai','摔':'shuai','甩':'shuai','帅':'shuai','栓':'shuan','拴':'shuan','双':'shuang','霜':'shuang','爽':'shuang','谁':'shui','水':'shui','税':'shui','睡':'shui','吮':'shun','顺':'shun','瞬':'shun','说':'shuo','硕':'shuo','朔':'shuo','丝':'si','司':'si','私':'si','思':'si','斯':'si','撕':'si','死':'si','四':'si','寺':'si','似':'si','饲':'si','肆':'si','松':'song','耸':'song','讼':'song','宋':'song','送':'song','诵':'song','搜':'sou','艘':'sou','苏':'su','酥':'su','俗':'su','素':'su','速':'su','宿':'su','粟':'su','塑':'su','诉':'su','酸':'suan','蒜':'suan','算':'suan','虽':'sui','随':'sui','髓':'sui','岁':'sui','碎':'sui','穗':'sui','孙':'sun','损':'sun','笋':'sun','缩':'suo','所':'suo','索':'suo','锁':'suo',
+      '他':'ta','她':'ta','它':'ta','塌':'ta','塔':'ta','踏':'ta','胎':'tai','台':'tai','太':'tai','态':'tai','泰':'tai','坍':'tan','贪':'tan','摊':'tan','瘫':'tan','坛':'tan','谈':'tan','弹':'tan','潭':'tan','坦':'tan','袒':'tan','叹':'tan','探':'tan','碳':'tan','汤':'tang','唐':'tang','堂':'tang','塘':'tang','膛':'tang','糖':'tang','躺':'tang','烫':'tang','涛':'tao','掏':'tao','滔':'tao','逃':'tao','桃':'tao','陶':'tao','淘':'tao','讨':'tao','套':'tao','特':'te','腾':'teng','藤':'teng','梯':'ti','蹄':'ti','题':'ti','体':'ti','替':'ti','剃':'ti','涕':'ti','屉':'ti','天':'tian','添':'tian','田':'tian','甜':'tian','填':'tian','挑':'tiao','条':'tiao','跳':'tiao','帖':'tie','铁':'tie','厅':'ting','听':'ting','烃':'ting','停':'ting','亭':'ting','庭':'ting','挺':'ting','艇':'ting','通':'tong','同':'tong','铜':'tong','童':'tong','桶':'tong','筒':'tong','统':'tong','痛':'tong','偷':'tou','头':'tou','投':'tou','透':'tou','秃':'tu','突':'tu','图':'tu','徒':'tu','途':'tu','屠':'tu','土':'tu','吐':'tu','兔':'tu','团':'tuan','推':'tui','腿':'tui','退':'tui','蜕':'tui','吞':'tun','屯':'tun','臀':'tun','托':'tuo','拖':'tuo','脱':'tuo','驼':'tuo','妥':'tuo','拓':'tuo',
+      '挖':'wa','蛙':'wa','娃':'wa','瓦':'wa','袜':'wa','歪':'wai','外':'wai','弯':'wan','湾':'wan','碗':'wan','万':'wan','汪':'wang','亡':'wang','王':'wang','往':'wang','旺':'wang','望':'wang','忘':'wang','妄':'wang','威':'wei','微':'wei','危':'wei','违':'wei','围':'wei','唯':'wei','惟':'wei','维':'wei','伟':'wei','伪':'wei','尾':'wei','纬':'wei','委':'wei','卫':'wei','未':'wei','味':'wei','畏':'wei','胃':'wei','喂':'wei','慰':'wei','魏':'wei','位':'wei','谓':'wei','蔚':'wei','慰':'wei','温':'wen','文':'wen','纹':'wen','闻':'wen','稳':'wen','问':'wen','翁':'weng','瓮':'weng','窝':'wo','蜗':'wo','我':'wo','沃':'wo','卧':'wo','握':'wo','乌':'wu','污':'wu','屋':'wu','巫':'wu','呜':'wu','钨':'wu','无':'wu','毋':'wu','吴':'wu','吾':'wu','梧':'wu','五':'wu','午':'wu','武':'wu','舞':'wu','捂':'wu','物':'wu','务':'wu','误':'wu','悟':'wu','雾':'wu',
+      '夕':'xi','西':'xi','吸':'xi','希':'xi','昔':'xi','析':'xi','息':'xi','牺':'xi','悉':'xi','惜':'xi','稀':'xi','溪':'xi','锡':'xi','熄':'xi','膝':'xi','习':'xi','席':'xi','袭':'xi','喜':'xi','洗':'xi','铣':'xi','隙':'xi','戏':'xi','细':'xi','瞎':'xia','匣':'xia','侠':'xia','峡':'xia','狭':'xia','辖':'xia','霞':'xia','下':'xia','夏':'xia','吓':'xia','先':'xian','仙':'xian','鲜':'xian','纤':'xian','咸':'xian','贤':'xian','衔':'xian','闲':'xian','弦':'xian','嫌':'xian','显':'xian','险':'xian','县':'xian','现':'xian','线':'xian','宪':'xian','陷':'xian','限':'xian','献':'xian','乡':'xiang','相':'xiang','香':'xiang','厢':'xiang','湘':'xiang','镶':'xiang','详':'xiang','祥':'xiang','翔':'xiang','享':'xiang','响':'xiang','想':'xiang','向':'xiang','象':'xiang','橡':'xiang','项':'xiang','巷':'xiang','像':'xiang','小':'xiao','肖':'xiao','削':'xiao','销':'xiao','消':'xiao','宵':'xiao','晓':'xiao','孝':'xiao','效':'xiao','校':'xiao','笑':'xiao','些':'xie','歇':'xie','鞋':'xie','协':'xie','挟':'xie','邪':'xie','胁':'xie','斜':'xie','携':'xie','写':'xie','泄':'xie','泻':'xie','卸':'xie','谢':'xie','蟹':'xie','心':'xin','辛':'xin','欣':'xin','新':'xin','薪':'xin','信':'xin','兴':'xing','星':'xing','腥':'xing','刑':'xing','型':'xing','形':'xing','行':'xing','醒':'xing','幸':'xing','性':'xing','姓':'xing','杏':'xing','胸':'xiong','雄':'xiong','熊':'xiong','休':'xiu','修':'xiu','羞':'xiu','朽':'xiu','秀':'xiu','袖':'xiu','绣':'xiu','锈':'xiu','嗅':'xiu','须':'xu','需':'xu','虚':'xu','嘘':'xu','徐':'xu','许':'xu','旭':'xu','序':'xu','叙':'xu','恤':'xu','蓄':'xu','絮':'xu','绪':'xu','续':'xu','轩':'xuan','宣':'xuan','悬':'xuan','旋':'xuan','玄':'xuan','选':'xuan','眩':'xuan','铉':'xuan','绚':'xuan','靴':'xue','削':'xue','穴':'xue','学':'xue','雪':'xue','血':'xue','熏':'xun','寻':'xun','巡':'xun','循':'xun','询':'xun','驯':'xun','讯':'xun','迅':'xun','逊':'xun','殉':'xun',
+      '压':'ya','押':'ya','鸦':'ya','鸭':'ya','牙':'ya','芽':'ya','崖':'ya','涯':'ya','雅':'ya','亚':'ya','咽':'yan','烟':'yan','淹':'yan','盐':'yan','严':'yan','研':'yan','延':'yan','言':'yan','颜':'yan','炎':'yan','沿':'yan','掩':'yan','眼':'yan','衍':'yan','演':'yan','艳':'yan','燕':'yan','厌':'yan','焰':'yan','宴':'yan','雁':'yan','验':'yan','央':'yang','殃':'yang','秧':'yang','杨':'yang','阳':'yang','洋':'yang','仰':'yang','养':'yang','样':'yang','氧':'yang','痒':'yang','漾':'yang','妖':'yao','腰':'yao','邀':'yao','摇':'yao','遥':'yao','窑':'yao','谣':'yao','咬':'yao','药':'yao','要':'yao','耀':'yao','耶':'ye','爷':'ye','也':'ye','野':'ye','业':'ye','叶':'ye','页':'ye','夜':'ye','液':'ye','一':'yi','伊':'yi','衣':'yi','医':'yi','依':'yi','壹':'yi','仪':'yi','宜':'yi','姨':'yi','移':'yi','遗':'yi','疑':'yi','乙':'yi','已':'yi','以':'yi','蚁':'yi','倚':'yi','椅':'yi','义':'yi','亿':'yi','忆':'yi','艺':'yi','议':'yi','亦':'yi','异':'yi','役':'yi','疫':'yi','毅':'yi','意':'yi','溢':'yi','翼':'yi','因':'yin','阴':'yin','音':'yin','银':'yin','引':'yin','饮':'yin','隐':'yin','印':'yin','应':'ying','英':'ying','婴':'ying','樱':'ying','鹰':'ying','盈':'ying','营':'ying','蝇':'ying','赢':'ying','迎':'ying','影':'ying','映':'ying','硬':'ying','哟':'yo','拥':'yong','庸':'yong','永':'yong','咏':'yong','泳':'yong','勇':'yong','涌':'yong','用':'yong','优':'you','忧':'you','悠':'you','尤':'you','由':'you','邮':'you','油':'you','游':'you','友':'you','有':'you','又':'you','右':'you','幼':'you','诱':'you','于':'yu','予':'yu','余':'yu','鱼':'yu','娱':'yu','渔':'yu','渝':'yu','愉':'yu','逾':'yu','愚':'yu','榆':'yu','虞':'yu','与':'yu','宇':'yu','羽':'yu','雨':'yu','语':'yu','玉':'yu','芋':'yu','育':'yu','浴':'yu','预':'yu','域':'yu','欲':'yu','遇':'yu','御':'yu','裕':'yu','喻':'yu','寓':'yu','誉':'yu','豫':'yu','鸳':'yuan','冤':'yuan','元':'yuan','园':'yuan','员':'yuan','圆':'yuan','援':'yuan','缘':'yuan','源':'yuan','猿':'yuan','远':'yuan','怨':'yuan','院':'yuan','愿':'yuan','曰':'yue','月':'yue','乐':'yue','岳':'yue','钥':'yue','悦':'yue','阅':'yue','跃':'yue','越':'yue','云':'yun','匀':'yun','允':'yun','运':'yun','蕴':'yun','韵':'yun','孕':'yun',
+      '杂':'za','砸':'za','灾':'zai','栽':'zai','宰':'zai','载':'zai','再':'zai','在':'zai','咱':'zan','暂':'zan','赞':'zan','赃':'zang','脏':'zang','葬':'zang','遭':'zao','糟':'zao','早':'zao','枣':'zao','澡':'zao','藻':'zao','造':'zao','噪':'zao','燥':'zao','躁':'zao','则':'ze','泽':'ze','责':'ze','贼':'zei','怎':'zen','增':'zeng','憎':'zeng','赠':'zeng','扎':'zha','眨':'zha','炸':'zha','榨':'zha','斋':'zhai','摘':'zhai','宅':'zhai','窄':'zhai','债':'zhai','寨':'zhai','沾':'zhan','粘':'zhan','盏':'zhan','斩':'zhan','展':'zhan','占':'zhan','战':'zhan','站':'zhan','绽':'zhan','障':'zhang','张':'zhang','章':'zhang','彰':'zhang','涨':'zhang','掌':'zhang','丈':'zhang','杖':'zhang','帐':'zhang','账':'zhang','障':'zhang','胀':'zhang','招':'zhao','朝':'zhao','着':'zhao','找':'zhao','召':'zhao','兆':'zhao','照':'zhao','罩':'zhao','遮':'zhe','折':'zhe','哲':'zhe','者':'zhe','这':'zhe','浙':'zhe','蔗':'zhe','贞':'zhen','针':'zhen','侦':'zhen','珍':'zhen','真':'zhen','砧':'zhen','斟':'zhen','诊':'zhen','枕':'zhen','阵':'zhen','振':'zhen','镇':'zhen','震':'zhen','争':'zheng','征':'zheng','挣':'zheng','睁':'zheng','蒸':'zheng','整':'zheng','正':'zheng','证':'zheng','郑':'zheng','政':'zheng','之':'zhi','汁':'zhi','芝':'zhi','枝':'zhi','知':'zhi','织':'zhi','脂':'zhi','蜘':'zhi','执':'zhi','直':'zhi','植':'zhi','殖':'zhi','值':'zhi','职':'zhi','止':'zhi','旨':'zhi','址':'zhi','纸':'zhi','指':'zhi','至':'zhi','志':'zhi','识':'zhi','帜':'zhi','制':'zhi','质':'zhi','治':'zhi','痔':'zhi','窒':'zhi','致':'zhi','智':'zhi','滞':'zhi','置':'zhi','中':'zhong','忠':'zhong','终':'zhong','钟':'zhong','衷':'zhong','肿':'zhong','种':'zhong','仲':'zhong','众':'zhong','重':'zhong','舟':'zhou','州':'zhou','周':'zhou','洲':'zhou','粥':'zhou','轴':'zhou','肘':'zhou','咒':'zhou','皱':'zhou','宙':'zhou','昼':'zhou','骤':'zhou','珠':'zhu','株':'zhu','蛛':'zhu','猪':'zhu','煮':'zhu','嘱':'zhu','主':'zhu','柱':'zhu','助':'zhu','蛀':'zhu','贮':'zhu','铸':'zhu','筑':'zhu','住':'zhu','注':'zhu','驻':'zhu','祝':'zhu','著':'zhu','蛀':'zhu','抓':'zhua','爪':'zhua','专':'zhuan','砖':'zhuan','转':'zhuan','赚':'zhuan','撰':'zhuan','庄':'zhuang','桩':'zhuang','装':'zhuang','壮':'zhuang','状':'zhuang','撞':'zhuang','追':'zhui','锥':'zhui','坠':'zhui','缀':'zhui','赘':'zhui','准':'zhun','桌':'zhuo','捉':'zhuo','卓':'zhuo','灼':'zhuo','浊':'zhuo','酌':'zhuo','啄':'zhuo','着':'zhuo','资':'zi','姿':'zi','滋':'zi','子':'zi','紫':'zi','字':'zi','自':'zi','宗':'zong','综':'zong','棕':'zong','踪':'zong','总':'zong','纵':'zong','走':'zou','奏':'zou','租':'zu','足':'zu','族':'zu','阻':'zu','组':'zu','祖':'zu','钻':'zuan','嘴':'zui','最':'zui','罪':'zui','醉':'zui','尊':'zun','遵':'zun','昨':'zuo','左':'zuo','作':'zuo','坐':'zuo','座':'zuo','做':'zuo',
+      '世':'shi','界':'jie','你':'ni','好':'hao'
+    };
+
+    // 声调标记映射
+    const TONE_MARKS = {
+      'a': ['a','a','a','a','a'], 'ai': ['ai','ai','ai','ai','ai'],
+      'an': ['an','an','an','an','an'], 'ang': ['ang','ang','ang','ang','ang'],
+      'ao': ['ao','ao','ao','ao','ao'],
+      'e': ['e','e','e','e','e'], 'ei': ['ei','ei','ei','ei','ei'],
+      'en': ['en','en','en','en','en'], 'eng': ['eng','eng','eng','eng','eng'],
+      'er': ['er','er','er','er','er'],
+      'i': ['i','i','i','i','i'], 'ia': ['ia','ia','ia','ia','ia'],
+      'ian': ['ian','ian','ian','ian','ian'], 'iang': ['iang','iang','iang','iang','iang'],
+      'iao': ['iao','iao','iao','iao','iao'], 'ie': ['ie','ie','ie','ie','ie'],
+      'in': ['in','in','in','in','in'], 'ing': ['ing','ing','ing','ing','ing'],
+      'iong': ['iong','iong','iong','iong','iong'], 'iu': ['iu','iu','iu','iu','iu'],
+      'o': ['o','o','o','o','o'], 'ong': ['ong','ong','ong','ong','ong'],
+      'ou': ['ou','ou','ou','ou','ou'],
+      'u': ['u','u','u','u','u'], 'ua': ['ua','ua','ua','ua','ua'],
+      'uai': ['uai','uai','uai','uai','uai'], 'uan': ['uan','uan','uan','uan','uan'],
+      'uang': ['uang','uang','uang','uang','uang'], 'ui': ['ui','ui','ui','ui','ui'],
+      'un': ['un','un','un','un','un'], 'uo': ['uo','uo','uo','uo','uo'],
+      'v': ['v','v','v','v','v'], 've': ['ve','ve','ve','ve','ve'],
+      'nv': ['nv','nv','nv','nv','nv'], 'lv': ['lv','lv','lv','lv','lv'],
+      'nve': ['nve','nve','nve','nve','nve'], 'lve': ['lve','lve','lve','lve','lve']
+    };
+
+    // 带声调符号的元音
+    function addToneMark(pinyin, tone) {
+      if (tone === 0 || tone === 5) return pinyin;
+      const toneMap = {
+        'a': ['a','a','a','a'], 'e': ['e','e','e','e'], 'i': ['i','i','i','i'],
+        'o': ['o','o','o','o'], 'u': ['u','u','u','u'], 'v': ['v','v','v','v']
+      };
+      const marks = { 'a': ['a','a','a','a'], 'e': ['e','e','e','e'], 'i': ['i','i','i','i'], 'o': ['o','o','o','o'], 'u': ['u','u','u','u'] };
+      // 简化版：在韵母主要元音上加声调
+      const vowels = ['a','o','e','i','u'];
+      for (const v of vowels) {
+        const idx = pinyin.indexOf(v);
+        if (idx !== -1) {
+          const toned = { 1: {'a':'a','e':'e','i':'i','o':'o','u':'u'}, 2: {'a':'a','e':'e','i':'i','o':'o','u':'u'}, 3: {'a':'a','e':'e','i':'i','o':'o','u':'u'}, 4: {'a':'a','e':'e','i':'i','o':'o','u':'u'} };
+          return pinyin.substring(0, idx) + pinyin[idx] + pinyin.substring(idx + 1);
+        }
+      }
+      return pinyin;
+    }
+
+    function convertPinyin() {
+      const text = document.getElementById('inputText').value;
+      if (!text.trim()) { alert('请输入汉字'); return; }
+
+      const showTone = document.getElementById('showTone').checked;
+      const vertical = document.getElementById('verticalMode').checked;
+      const uppercase = document.getElementById('uppercase').checked;
+
+      const chars = [...text];
+      let resultHtml = '';
+      let flatResult = '';
+
+      for (const ch of chars) {
+        if (PINYIN_MAP[ch]) {
+          let py = PINYIN_MAP[ch];
+          if (uppercase) py = py.charAt(0).toUpperCase() + py.slice(1);
+          if (vertical) {
+            resultHtml += `<span style="display:inline-block;text-align:center;margin:0 2px"><span class="py-pinyin">${py}</span><span class="py-hanzi">${ch}</span></span>`;
+          } else {
+            resultHtml += `<span class="py-hanzi">${ch}</span><span class="py-flat">${py} </span>`;
+          }
+          flatResult += py + ' ';
+        } else if (ch === '\n') {
+          resultHtml += '<br>';
+          flatResult += '\n';
+        } else if (ch === ' ') {
+          resultHtml += ' ';
+          flatResult += ' ';
+        } else {
+          resultHtml += `<span class="py-hanzi">${ch}</span>`;
+          flatResult += ch;
+        }
+      }
+
+      document.getElementById('resultBox').innerHTML = resultHtml;
+      document.getElementById('resultBox').dataset.flat = flatResult;
+      document.getElementById('resultArea').style.display = 'block';
+    }
+
+    function copyResult() {
+      const text = document.getElementById('resultBox').dataset.flat || '';
+      copyToClipboard(text.trim());
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
