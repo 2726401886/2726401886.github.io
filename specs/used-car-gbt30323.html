@@ -7,10 +7,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#060810;--s1:#0b0d16;--s2:#111422;--s3:#181c2e;--s4:#212740;--bd:#2a3050;--ac:#42a5f5;--ac2:#1e88e5;--acg:rgba(66,165,245,.1);--gld:#ffd54f;--gldg:rgba(255,213,79,.1);--gn:#66bb6a;--gng:rgba(102,187,106,.1);--rd:#ef5350;--rdg:rgba(239,83,80,.1);--cy:#26c6da;--cyg:rgba(38,198,218,.1);--org:#ffa726;--orgg:rgba(255,167,38,.1);--t1:#e4e8f0;--t2:#8690a8;--t3:#555e78;--r:10px}
+:root{--bg:#f3f5f9;--s1:#ffffff;--s2:#f8f9fb;--s3:#eef1f6;--s4:#e4e8f0;--bd:#d8dde6;--ac:#1976d2;--ac2:#1565c0;--acg:rgba(25,118,210,.1);--gld:#f9a825;--gldg:rgba(249,168,37,.12);--gn:#2e7d32;--gng:rgba(46,125,50,.1);--rd:#c62828;--rdg:rgba(198,40,40,.1);--cy:#00838f;--cyg:rgba(0,131,143,.1);--org:#ef6c00;--orgg:rgba(239,108,0,.1);--t1:#1a202c;--t2:#4a5568;--t3:#718096;--r:10px}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden;display:flex;flex-direction:column}
-.titlebar{background:#080a14;border-bottom:1px solid var(--bd);padding:0 18px;height:44px;display:flex;align-items:center;gap:12px;flex-shrink:0;user-select:none}
+.titlebar{background:var(--s1);border-bottom:1px solid var(--bd);padding:0 18px;height:44px;display:flex;align-items:center;gap:12px;flex-shrink:0;user-select:none}
 .tdots{display:flex;gap:7px}.tdots span{width:12px;height:12px;border-radius:50%}
 .dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
 .ttitle{flex:1;text-align:center;font-size:13px;font-weight:500;color:var(--t2);letter-spacing:1.2px}
@@ -25,7 +25,7 @@ body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--t1);
 .ni{display:flex;align-items:center;gap:9px;padding:7px 14px 7px 16px;cursor:pointer;font-size:12px;color:var(--t2);transition:all .15s;border-left:3px solid transparent}
 .ni:hover{background:var(--s2);color:var(--t1)}.ni.a{background:var(--acg);color:var(--ac);border-left-color:var(--ac)}
 .ni i{font-size:13px;width:18px;text-align:center;font-style:normal}
-.content{flex:1;overflow-y:auto}.content::-webkit-scrollbar{width:5px}.content::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.content{flex:1;overflow-y:auto;padding-bottom:120px}.content::-webkit-scrollbar{width:5px}.content::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
 .sec{display:none;padding:28px 34px;animation:fi .25s ease}.sec.a{display:block}
 @keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 .sh{margin-bottom:24px}.sh h1{font-size:20px;font-weight:700;margin-bottom:4px}.sh p{font-size:12.5px;color:var(--t3);line-height:1.7}
@@ -53,7 +53,7 @@ select option{background:var(--s2)}
 textarea{resize:vertical;min-height:60px}
 .btn{padding:8px 20px;border:none;border-radius:5px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Noto Sans SC',sans-serif}
 .bp{background:var(--ac);color:#fff}.bp:hover{background:var(--ac2)}
-.bn{background:var(--gn);color:#000}.bn:hover{background:#4caf50}
+.bn{background:var(--gn);color:#fff}.bn:hover{background:#1b5e20}
 .bs{background:var(--s3);color:var(--t2);border:1px solid var(--bd)}.bs:hover{background:var(--bd);color:var(--t1)}
 .rb{margin-top:16px;background:var(--s2);border:1px solid var(--ac);border-radius:var(--r);padding:16px;display:none}
 .rb.show{display:block;animation:fi .3s ease}
@@ -88,7 +88,7 @@ textarea{resize:vertical;min-height:60px}
 .wtbl select:focus{border-color:var(--ac)}
 .wtbl input[type=text]{background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:4px 6px;color:var(--t1);font-size:11px;outline:none;width:100%;font-family:'Noto Sans SC',sans-serif}
 .wtbl .sc-col{width:60px;text-align:center;color:var(--ac);font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px}
-.live-score{position:fixed;bottom:80px;right:24px;background:var(--s2);border:1px solid var(--ac);border-radius:var(--r);padding:14px 20px;z-index:99;box-shadow:0 4px 24px rgba(0,0,0,.5);display:none}
+.live-score{position:fixed;bottom:110px;right:24px;background:var(--s2);border:1px solid var(--ac);border-radius:var(--r);padding:14px 20px;z-index:99;box-shadow:0 4px 20px rgba(26,32,44,.12);display:none}
 .live-score.show{display:block}
 .live-score .ls-title{font-size:10px;color:var(--t3);letter-spacing:1px;margin-bottom:4px}
 .live-score .ls-val{font-size:22px;font-weight:700;color:var(--ac);font-family:'JetBrains Mono',monospace}
@@ -98,11 +98,36 @@ textarea{resize:vertical;min-height:60px}
 .sec-anchor .sec-head .sh-icon{width:22px;height:22px;border-radius:50%;background:var(--acg);border:1px solid var(--ac);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ac);flex-shrink:0}
 .sec-anchor .sec-head .sh-text{font-size:14px;font-weight:600;color:var(--ac)}
 .sec-anchor .sec-head .sh-score{margin-left:auto;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--t3)}
-@media print{.sidebar,.titlebar,.statusbar,.btn,.wiz-head,.wiz-nav,.live-score,.sb-search,.sec-anchor .sec-head{display:none!important}.content{overflow:visible!important}.sec,.wiz-panel{display:block!important;padding:8px!important}body{background:#fff;color:#000;height:auto;overflow:visible}.tw,.cp{border-color:#ccc;page-break-inside:avoid}th{background:#f0f0f0;color:#333}td{color:#333}}
+.reward{margin-top:auto;padding:14px;border-top:1px solid var(--bd);background:linear-gradient(180deg,var(--s1),var(--s2));text-align:center}
+.reward-text{font-size:11px;color:var(--t2);line-height:1.6;margin-bottom:10px}
+.reward-text strong{color:var(--gld);font-weight:600}
+.reward-qr{width:130px;height:130px;border-radius:8px;border:1px solid var(--bd);background:#fff;padding:6px;margin:0 auto;display:block;cursor:pointer;transition:transform .2s,border-color .2s}
+.reward-qr:hover{transform:scale(1.03);border-color:var(--ac)}
+.reward-qr img{width:100%;height:100%;object-fit:contain;border-radius:4px}
+.reward-tip{font-size:9px;color:var(--t3);margin-top:8px}
+.lock-badge{margin-left:auto;font-size:11px;opacity:.85}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:300;backdrop-filter:blur(3px);padding:16px}
+.modal-mask.show{display:flex}
+.modal{position:relative;width:330px;max-width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:14px;padding:24px 22px;text-align:center;box-shadow:0 20px 50px rgba(26,32,44,.18);animation:fi .25s ease}
+.modal-close{position:absolute;top:10px;right:14px;background:none;border:none;color:var(--t3);font-size:22px;cursor:pointer;line-height:1;padding:0}
+.modal-close:hover{color:var(--t1)}
+.modal-title{font-size:16px;font-weight:700;margin-bottom:6px;color:var(--t1)}
+.modal-sub{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:18px}
+.modal-qr{width:168px;height:168px;border-radius:8px;background:#fff;padding:8px;margin:0 auto;display:block;box-shadow:0 2px 10px rgba(0,0,0,.4)}
+.modal-tip{font-size:11px;color:var(--t3);margin-top:10px}
+.modal-phone{margin:18px 0 14px;text-align:left}
+.modal-phone label{display:block;font-size:11px;color:var(--t3);margin-bottom:6px}
+.modal-phone input{width:100%;background:var(--s3);border:1px solid var(--bd);border-radius:6px;padding:11px 12px;color:var(--t1);font-size:15px;outline:none;font-family:'JetBrains Mono',monospace;text-align:center;letter-spacing:2px;box-sizing:border-box}
+.modal-phone input:focus{border-color:var(--ac)}
+.modal-phone input.err{border-color:var(--rd)}
+.modal-btns{display:flex;gap:10px}
+.modal-btns .btn{flex:1;padding:10px 0}
+.modal-note{font-size:9px;color:var(--t3);margin-top:14px;line-height:1.6}
+@media print{.sidebar,.titlebar,.statusbar,.btn,.wiz-head,.wiz-nav,.live-score,.sb-search,.sec-anchor .sec-head,.reward,.modal-mask{display:none!important}.content{overflow:visible!important}.sec,.wiz-panel{display:block!important;padding:8px!important}body{background:#fff;color:#000;height:auto;overflow:visible}.tw,.cp{border-color:#ccc;page-break-inside:avoid}th{background:#f0f0f0;color:#333}td{color:#333}}
 </style>
 </head>
 <body>
-<div class="titlebar"><div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="ttitle">二手车鉴定评估技术规范系统</div><div class="tbadge">GB/T 30323—2013</div></div>
+<div class="titlebar"><div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="ttitle">二手车鉴定评估技术规范系统</div><div class="tbadge">GB/T 30323—2013</div><a href="../index.html" style="font-size:11px;color:var(--ac);text-decoration:none;padding:3px 10px;border:1px solid rgba(66,165,245,.3);border-radius:20px;margin-left:6px;">← 返回首页</a></div>
 <div class="main">
 <div class="sidebar">
   <div class="sb-hd"><input type="text" class="sb-search" placeholder="🔍 搜索功能模块..." oninput="fn(this.value)"></div>
@@ -111,9 +136,16 @@ textarea{resize:vertical;min-height:60px}
     <div class="ni" onclick="sh('terms',this)"><i>📖</i>术语和定义</div><div class="ni" onclick="sh('req',this)"><i>🏢</i>机构条件</div>
     <div class="nc">评估流程</div><div class="ni" onclick="sh('flow',this)"><i>📋</i>作业流程</div>
     <div class="ni" onclick="sh('tradable',this)"><i>✅</i>可交易判别</div><div class="ni" onclick="sh('accident',this)"><i>⚠️</i>事故车判别</div>
-    <div class="nc">核心功能</div><div class="ni" onclick="sh('wizard',this);initWiz()"><i>📝</i>全流程鉴定</div>
+    <div class="nc">核心功能</div><div class="ni" id="navWizard" onclick="tryWizard(this)"><i>📝</i>全流程鉴定</div>
     <div class="ni" onclick="sh('score',this)"><i>🧮</i>评分计算器</div><div class="ni" onclick="sh('value',this)"><i>💰</i>价值评估</div>
     <div class="nc">下载</div><div class="ni" onclick="sh('forms',this)"><i>📄</i>规范表格</div>
+  </div>
+  <div class="reward">
+    <div class="reward-text" id="rewardText"><strong>💛 本项目独立开发维护</strong><br>持续更新不易<br>如若产品为您带来实用价值<br>可自愿打赏助力开发<br>馈赠不分数额，每一份支持<br>都将用于版本升级与维护<br>由衷致谢</div>
+    <div class="reward-qr" onclick="window.open('../images/reward-qrcode.png','_blank')" title="点击放大赞赏码">
+      <img src="../images/reward-qrcode.png" alt="微信赞赏码">
+    </div>
+    <div class="reward-tip">微信扫码打赏 · 加 QQ：2726401886 获取解锁码</div>
   </div>
 </div>
 <div class="content">
@@ -146,8 +178,28 @@ textarea{resize:vertical;min-height:60px}
     <tr><td class="nc2">D</td><td>评估报告</td><td><button class="btn bp" style="padding:4px 12px;font-size:11px" onclick="dlForm('D')">下载Word</button></td></tr></tbody></table></div></div>
 </div>
 </div>
-<div class="statusbar"><span class="dt"></span><span>GB/T 30323—2013</span><span style="margin-left:auto">商务部提出</span></div>
+<div class="statusbar"><span class="dt"></span><span>GB/T 30323—2013</span><span style="margin-left:auto">商务部提出</span><span>· 联系 2726401886@qq.com</span><span>· 浏览 <span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv">-</span></span> 次</span><span>· 访客 <span id="busuanzi_container_site_uv"><span id="busuanzi_value_site_uv">-</span></span></span></div>
 <div class="live-score" id="liveScore"><div class="ls-title">实时评分</div><div class="ls-val" id="lsVal">100</div><div class="ls-grade" id="lsGrade"></div></div>
+
+<div class="modal-mask" id="rewardModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeReward()" aria-label="关闭">×</button>
+    <div class="modal-title">💛 解锁 Word 报告下载</div>
+    <div class="modal-sub">💛 本项目独立开发维护，持续更新不易<br>如若产品为您带来实用价值，可自愿打赏助力开发<br>馈赠不分数额，每一份支持都将用于版本升级与维护<br>由衷致谢</div>
+    <img src="../images/reward-qrcode.png" class="modal-qr" alt="微信赞赏码" onclick="window.open('../images/reward-qrcode.png','_blank')" style="cursor:pointer" title="点击放大赞赏码">
+    <div class="modal-tip">微信扫码打赏 · 打赏后请加 QQ：2726401886 获取下载解锁码</div>
+    <div class="modal-phone">
+      <label>请输入解锁码（格式：手机号-8位验证码）</label>
+      <input type="text" id="unlockCode" placeholder="如 13800138000-A1B2C3D4" maxlength="24" autocomplete="off">
+    </div>
+    <div class="modal-btns">
+      <button class="btn bs" onclick="closeReward()">暂不需要</button>
+      <button class="btn bp" onclick="confirmUnlock()">验证并解锁</button>
+    </div>
+    <div class="modal-note" id="unlockMsg"></div>
+    <div class="modal-note">解锁码仅保存在你本机浏览器，不会上传任何服务器。<br>解锁后本机即可永久下载 Word 报告。</div>
+  </div>
+</div>
 
 <script>
 function sh(id,el){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('a'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));document.getElementById(id).classList.add('a');if(el)el.classList.add('a');document.querySelector('.content').scrollTop=0;if(id!=='wizard')document.getElementById('liveScore').classList.remove('show')}
@@ -222,7 +274,7 @@ function initWiz(){
 
   bp+=`<div class="wiz-panel" id="wp3">${s3}</div>`;
   bp+=`<div class="wiz-panel" id="wp4"><div class="in">推荐现行市价法，无参照物时用重置成本法。</div><div class="cp"><h3>💰 价值评估</h3><div class="fr"><div class="fg"><label>评估方法</label><select id="wvM"><option value="m">现行市价法</option><option value="r">重置成本法</option></select></div></div><div id="wvMkt"><div class="fr"><div class="fg"><label>同车型交易价(元)</label><input type="number" id="wvP"></div><div class="fg"><label>修正率(%)</label><input type="number" id="wvF" value="0" step="0.5"></div></div></div><div id="wvRC" style="display:none"><div class="fr"><div class="fg"><label>重置成本(元)</label><input type="number" id="wvR1"></div><div class="fg"><label>实体性贬值率(%)</label><input type="number" id="wvR2"></div></div><div class="fr"><div class="fg"><label>功能性贬值率(%)</label><input type="number" id="wvR3" value="0"></div><div class="fg"><label>经济性贬值率(%)</label><input type="number" id="wvR4" value="0"></div></div></div><div class="fr"><div class="fg"><label>特别事项说明</label><textarea id="wvN" rows="3"></textarea></div></div></div></div>`;
-  bp+=`<div class="wiz-panel" id="wp5"><div class="in">系统自动生成Word格式完整评估报告。</div><div id="repSum"></div><div style="display:flex;gap:10px;margin-top:16px"><button class="btn bn" onclick="genReport()">📄 下载Word报告</button><button class="btn bp" onclick="genSummary()">🔄 刷新预览</button></div></div>`;
+  bp+=`<div class="wiz-panel" id="wp5"><div class="in">系统自动生成Word格式完整评估报告。</div><div id="repSum"></div><div style="display:flex;gap:10px;margin-top:16px"><button class="btn bn" onclick="guardDownload()">📄 下载Word报告</button><button class="btn bp" onclick="genSummary()">🔄 刷新预览</button></div></div>`;
 
   document.getElementById('wizBody').innerHTML=bp;
   document.getElementById('wTL').innerHTML=mkSel(tradItems,'wt_');
@@ -286,6 +338,45 @@ function dlForm(t){
   else if(t==='D')h=`<h1>二手车鉴定评估报告</h1><p>评报字(20__年)第___号</p><h2>一、绪言</h2><p>接受______的委托，根据GB/T 30323的规定，对牌号为______的车辆进行了鉴定。</p><h2>二、委托方信息</h2><table><tr><td>委托方</td><td></td><td>联系电话</td><td></td></tr><tr><td>评估目的</td><td></td><td>评估基准日</td><td></td></tr></table><h2>三、车辆信息</h2><table><tr><td>厂牌型号</td><td></td><td>牌照号码</td><td></td></tr><tr><td>发动机号</td><td></td><td>VIN码</td><td></td></tr></table><h2>四、技术鉴定</h2><table><tr><th>科目</th><th>满分</th><th>得分</th></tr><tr><td>车身外观</td><td style="text-align:center">20</td><td></td></tr><tr><td>发动机舱</td><td style="text-align:center">20</td><td></td></tr><tr><td>驾驶舱</td><td style="text-align:center">10</td><td></td></tr><tr><td>启动</td><td style="text-align:center">20</td><td></td></tr><tr><td>路试</td><td style="text-align:center">15</td><td></td></tr><tr><td>底盘</td><td style="text-align:center">15</td><td></td></tr><tr style="font-weight:bold"><td>合计</td><td style="text-align:center">100</td><td></td></tr></table><p><strong>技术状况等级：</strong></p><h2>五、价值评估</h2><p><strong>方法：</strong>□现行市价法 □重置成本法</p><p><strong>评估价值：</strong>人民币 ______ 元</p><h2>六、特别事项说明</h2><h2>七、声明</h2><p>(1)本机构对报告承担法律责任；(2)评估价值为基准日价值；(3)使用权归委托方；(4)未经许可不公开。</p><p class="note">有效期90天。</p><p>&nbsp;</p><table class="sig"><tr><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>评估师签字<br>复核人签字</td><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>机构盖章<br>年&emsp;月&emsp;日</td></tr></table>`;
   downloadWord(`二手车鉴定评估_附录${t}_${date}.doc`, `<style>${css}</style>${h}`);
 }
+
+/* ====== 解锁码机制 ====== */
+const SECRET=atob('ZWZmYm94LXVubG9jay0yMDI2LXhxcg=='); // 开发者与用户端共用密钥（纯静态无法保密，已 base64 混淆）
+const UNLOCK_KEY='effbox_unlock';
+function isUnlocked(){try{return localStorage.getItem(UNLOCK_KEY)==='1'}catch(e){return false}}
+async function sha256hex(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function verifyUnlockCode(input){
+  const m=input.trim().toUpperCase().replace(/\s/g,'');
+  const idx=m.lastIndexOf('-');
+  if(idx<0)return false;
+  const phone=m.slice(0,idx),check=m.slice(idx+1);
+  if(!/^1\d{10}$/.test(phone))return false;
+  if(check.length<8)return false;
+  const raw=await sha256hex(phone+'|'+SECRET);
+  return check===raw.slice(0,8).toUpperCase();
+}
+function openUnlock(){const m=document.getElementById('rewardModal');const c=document.getElementById('unlockCode');c.value='';c.classList.remove('err');const msg=document.getElementById('unlockMsg');if(msg){msg.textContent='';msg.style.color=''}m.classList.add('show');setTimeout(()=>c.focus(),50);}
+function closeReward(){document.getElementById('rewardModal').classList.remove('show')}
+async function confirmUnlock(){
+  const c=document.getElementById('unlockCode');
+  const msg=document.getElementById('unlockMsg');
+  const code=c.value.trim();
+  if(!code){c.classList.add('err');c.focus();return;}
+  let ok=false;try{ok=await verifyUnlockCode(code);}catch(e){}
+  if(!ok){c.classList.add('err');if(msg){msg.style.color='var(--rd)';msg.textContent='解锁码无效，请确认手机号与验证码是否正确，或联系开发者。'};return;}
+  try{localStorage.setItem(UNLOCK_KEY,'1')}catch(e){}
+  c.classList.remove('err');
+  if(msg){msg.style.color='var(--gn)';msg.textContent='✅ 解锁成功！现在可以下载 Word 报告了。'}
+  setTimeout(()=>{closeReward();},1200);
+}
+function guardDownload(){
+  if(isUnlocked()){genReport();return;}
+  openUnlock();
+}
+function tryWizard(el){sh('wizard',el);initWiz();}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReward()});
 
 initTrad();initAcc()
 </script>
