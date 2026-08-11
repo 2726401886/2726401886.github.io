@@ -39,4 +39,22 @@
     var t = e.target.closest("[data-reward]");
     if (t) send("reward", t.getAttribute("data-reward") || "");
   });
+
+  // 自动统计工具使用：在 /tools/ 页面，用户首次点击主操作按钮记为一次"工具使用"
+  if (/^\/tools\//.test(location.pathname)) {
+    var rawTitle = (document.title || "").trim();
+    var toolName = rawTitle.split(/[-—·|]/)[0].trim() || location.pathname.split("/").pop();
+    var toolUsed = false;
+    document.addEventListener("click", function (e) {
+      if (toolUsed) return;
+      var el = e.target.closest("button, input[type=submit], input[type=button]");
+      if (!el) return;
+      // 排除页眉/页脚/导航内的按钮，以及复制/清空/重置/下载/关闭等辅助按钮
+      if (el.closest("header, footer, nav, .nav, .site-header, .site-footer")) return;
+      var txt = (el.textContent || el.value || el.title || "").toLowerCase();
+      if (/(copy|复制|拷贝|清空|清除|clear|reset|重置|下载|download|关闭|收起|复制结果)/i.test(txt)) return;
+      toolUsed = true;
+      send("tool_use", toolName);
+    });
+  }
 })();
