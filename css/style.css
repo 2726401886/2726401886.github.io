@@ -37,27 +37,35 @@
   margin: 0 auto 16px;
   max-width: 640px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 8px 16px;
+  padding: 7px 16px;
   white-space: nowrap;
   box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
 }
-.spec-marquee span {
+.spec-marquee .track {
   display: inline-block;
   padding-left: 100%;
-  animation: specMarquee 18s linear infinite;
+  animation: specMarquee 10s linear infinite;
+}
+.spec-marquee .track span {
+  display: inline-block;
+  padding-right: 50px;
   color: var(--primary-dark);
   font-size: 13px;
   font-weight: 500;
+}
+.spec-marquee:hover .track {
+  animation-play-state: paused;
 }
 @keyframes specMarquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
 @media (max-width: 480px) {
-  .spec-marquee span { font-size: 12px; animation-duration: 14s; }
+  .spec-marquee .track span { font-size: 12px; }
+  .spec-marquee .track { animation-duration: 8s; }
 }
 
 /* Container - 通用内容容器（限宽+居中+左右内边距） */
