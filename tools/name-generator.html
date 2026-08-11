@@ -226,7 +226,7 @@
             <option value="company">公司名</option>
           </select>
         </div>
-        <div class="ng-hint">字库未收录的汉字，请在下方的「康熙笔画核对」中手动填写，以确保五格准确。</div>
+        <div class="ng-hint">汉字已用全量笔画库自动识别康熙笔画（字库校准过的异体部首字优先）；个别字若仍有出入，可在下方「康熙笔画核对」中手动修正，以确保五格准确。</div>
         <div style="margin-top:8px"><button class="btn btn-primary btn-block" onclick="evaluateName()">解析并评分</button></div>
         <div id="k-verify" class="ng-result"></div>
         <div id="k-result" class="ng-result"></div>
@@ -270,6 +270,7 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script src="../js/cnchar.min.js"></script>
   <script>renderRelatedTools("related-tools", "name-generator");</script>
 
   <script>
@@ -546,6 +547,21 @@
   }
   function lookup(ch){ return LEX_MAP[ch]; }
 
+  // 取单字康熙笔画：优先用字库手填的康熙校准值（含氵/艹/忄等异体部首差异字），
+  // 其余用 cnchar 全量笔画库兜底（现代规范笔画，绝大多数与康熙一致）。
+  function getStroke(ch){
+    var c = LEX_MAP[ch];
+    if(c && c.py) return c.py;
+    try{
+      if(typeof cnchar!=='undefined' && cnchar.stroke){
+        var r = cnchar.stroke(ch);
+        if(typeof r === 'number' && r>0) return r;
+        if(Array.isArray(r)){ if(r.length===1) return r[0]; var sum=0; for(var i=0;i<r.length;i++) sum+=r[i]; if(sum>0) return sum; }
+      }
+    }catch(e){}
+    return 0; // 未识别，需手动
+  }
+
   // 常见复姓笔画（康熙）
   var COMPOUND = {'欧阳':17,'司马':15,'上官':11,'诸葛':25,'东方':12,'慕容':25,'南宫':19,'司徒':15,'宇文':10,'拓跋':21,'欧阳':17,'夏侯':19,'诸葛':25,'东方':12,'独孤':16,'慕容':25,'司马':15,'上官':11,'令狐':20,'诸葛':25};
 
@@ -554,8 +570,8 @@
     if(surname.length>=2 && COMPOUND[surname]!==undefined) return COMPOUND[surname];
     var total=0, ok=true;
     for(var i=0;i<surname.length;i++){
-      var c = lookup(surname[i]);
-      if(c) total += c.py; else ok=false;
+      var s = getStroke(surname[i]);
+      if(s>0) total += s; else ok=false;
     }
     return ok ? total : 0;
   }
@@ -801,9 +817,9 @@
     var rows='';
     chars.forEach(function(c){
       var c0=lookup(c);
-      var stroke = c0?c0.py:'';
-      var el = c0?EL_NAME[c0.el]:'未收录';
-      var mean = c0?(c0.mean||''):'字库未收录，请在右侧填写康熙笔画';
+      var stroke = getStroke(c);
+      var el = c0?EL_NAME[c0.el]:'自动';
+      var mean = c0?(c0.mean||''):'已用笔画库自动识别，如有出入可手动修正';
       rows+='<div class="ng-char-row"><span class="ch">'+c+'</span>'+
         '<span>笔画：</span><input class="vstroke" data-ch="'+c+'" type="number" min="0" value="'+(stroke||'')+'" placeholder="笔画">'+
         '<span>五行：'+el+'</span><span style="color:#64748b">'+mean+'</span></div>';
