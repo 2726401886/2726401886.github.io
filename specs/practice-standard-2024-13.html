@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>价格鉴证评估执业规范 · 查询与计算系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0e14;
+  --bg-secondary: #111520;
+  --surface: #161b27;
+  --surface-hover: #1c2333;
+  --border: #252d3f;
+  --accent: #d4a853;
+  --accent-dim: #a07830;
+  --accent-glow: rgba(212, 168, 83, 0.15);
+  --text-primary: #e8e4dc;
+  --text-secondary: #9a9490;
+  --text-muted: #5c5856;
+  --red: #c94040;
+  --green: #40a87c;
+  --blue: #4a88c7;
+  --purple: #8868c7;
+  --serif: 'Noto Serif SC', 'SimSun', serif;
+  --sans: 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  --mono: 'JetBrains Mono', 'Consolas', monospace;
+  --radius: 6px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  line-height: 1.6;
+}
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-dim); }
+.app-container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  grid-template-rows: 56px 1fr;
+  height: 100vh;
+  gap: 0;
+}
+.top-bar {
+  grid-column: 1 / -1;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 20px;
+  z-index: 100;
+}
+.top-bar .logo {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: 17px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.top-bar .logo .badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 500;
+  background: var(--accent);
+  color: var(--bg);
+  padding: 2px 8px;
+  border-radius: 3px;
+  letter-spacing: 0.05em;
+}
+.search-box { flex: 1; max-width: 520px; position: relative; }
+.search-box input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 8px 14px 8px 36px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--sans);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-box input:focus { border-color: var(--accent-dim); box-shadow: 0 0 0 3px var(--accent-glow); }
+.search-box input::placeholder { color: var(--text-muted); }
+.search-box .search-icon {
+  position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  color: var(--text-muted); font-size: 14px; pointer-events: none;
+}
+.search-count { font-family: var(--mono); font-size: 11px; color: var(--text-muted); white-space: nowrap; }
+.sidebar {
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 16px 0;
+}
+.sidebar-section { margin-bottom: 8px; }
+.sidebar-section-title {
+  font-family: var(--mono); font-size: 10px; font-weight: 500;
+  color: var(--text-muted); text-transform: uppercase;
+  letter-spacing: 0.12em; padding: 8px 20px 6px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 20px; cursor: pointer;
+  transition: all 0.15s; font-size: 13px;
+  color: var(--text-secondary); border-left: 2px solid transparent;
+}
+.nav-item:hover { background: var(--surface); color: var(--text-primary); }
+.nav-item.active { background: var(--surface); color: var(--accent); border-left-color: var(--accent); font-weight: 500; }
+.nav-item .nav-icon { width: 18px; text-align: center; font-size: 12px; opacity: 0.7; }
+.nav-item.active .nav-icon { opacity: 1; }
+.nav-item .chapter-num { font-family: var(--mono); font-size: 11px; min-width: 24px; }
+.main-content { overflow-y: auto; padding: 0; position: relative; }
+.panel { display: none; padding: 28px 32px 40px; animation: fadeIn 0.25s ease; }
+.panel.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.panel-header { margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.panel-header h2 { font-family: var(--serif); font-weight: 700; font-size: 22px; color: var(--text-primary); margin-bottom: 4px; }
+.panel-header p { font-size: 13px; color: var(--text-secondary); }
+.article-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px;
+  margin-bottom: 10px; transition: all 0.15s; cursor: pointer;
+}
+.article-card:hover { border-color: var(--accent-dim); background: var(--surface-hover); }
+.article-card.highlight { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+.article-card .article-num { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: 6px; font-weight: 500; }
+.article-card .article-text { font-size: 13.5px; line-height: 1.75; color: var(--text-secondary); }
+.article-card .article-text mark { background: var(--accent-glow); color: var(--accent); border-radius: 2px; padding: 0 2px; }
+.section-divider {
+  font-family: var(--serif); font-weight: 700; font-size: 16px;
+  color: var(--accent); margin: 20px 0 12px; padding-left: 4px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.calc-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px; transition: all 0.15s;
+}
+.calc-card.full-width { grid-column: 1 / -1; }
+.calc-card h3 {
+  font-family: var(--serif); font-size: 15px; font-weight: 600;
+  color: var(--text-primary); margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px;
+}
+.calc-card h3 .method-tag {
+  font-family: var(--mono); font-size: 10px;
+  background: var(--accent-glow); color: var(--accent);
+  padding: 1px 7px; border-radius: 3px;
+}
+.calc-card .calc-desc { font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.5; }
+.form-group { margin-bottom: 12px; }
+.form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 5px; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 8px 12px; color: var(--text-primary);
+  font-size: 13px; font-family: var(--mono); outline: none; transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus { border-color: var(--accent-dim); box-shadow: 0 0 0 2px var(--accent-glow); }
+.form-group textarea { resize: vertical; min-height: 60px; font-family: var(--sans); }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 8px 20px; border: 1px solid var(--border); border-radius: 4px;
+  background: var(--surface); color: var(--text-primary);
+  font-size: 13px; font-family: var(--sans); cursor: pointer; transition: all 0.15s;
+}
+.btn:hover { border-color: var(--accent-dim); background: var(--surface-hover); }
+.btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600; }
+.btn-primary:hover { background: var(--accent-dim); border-color: var(--accent-dim); letter-spacing: 0.04em; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-icon { padding: 6px 10px; font-size: 14px; }
+.result-box {
+  background: var(--bg); border: 1px solid var(--accent-dim);
+  border-radius: var(--radius); padding: 16px 20px; margin-top: 16px;
+}
+.result-box .result-label { font-size: 11px; color: var(--text-muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+.result-box .result-value { font-family: var(--mono); font-size: 24px; font-weight: 700; color: var(--accent); }
+.result-box .result-detail { font-size: 12px; color: var(--text-secondary); margin-top: 8px; line-height: 1.6; }
+.result-box .result-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+.result-box .result-row:last-child { border-bottom: none; }
+.result-box .result-row .rlabel { color: var(--text-secondary); }
+.result-box .result-row .rvalue { font-family: var(--mono); color: var(--text-primary); font-weight: 500; }
+.workflow-steps { position: relative; padding-left: 28px; }
+.workflow-steps::before { content: ''; position: absolute; left: 9px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+.workflow-step {
+  position: relative; margin-bottom: 4px; padding: 12px 16px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); cursor: pointer; transition: all 0.15s;
+}
+.workflow-step:hover { border-color: var(--accent-dim); background: var(--surface-hover); }
+.workflow-step::before {
+  content: ''; position: absolute; left: -24px; top: 18px;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--bg); border: 2px solid var(--border);
+  z-index: 1; transition: all 0.15s;
+}
+.workflow-step.completed::before { background: var(--green); border-color: var(--green); }
+.workflow-step.active-step::before { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
+.workflow-step .step-title { font-weight: 600; font-size: 14px; color: var(--text-primary); margin-bottom: 2px; }
+.workflow-step .step-articles { font-family: var(--mono); font-size: 11px; color: var(--accent-dim); }
+.workflow-step .step-detail { font-size: 12px; color: var(--text-muted); margin-top: 4px; display: none; }
+.workflow-step.expanded .step-detail { display: block; }
+.stats-bar { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+.stat-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 18px; flex: 1; min-width: 120px;
+}
+.stat-item .stat-label { font-size: 11px; color: var(--text-muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.stat-item .stat-value { font-family: var(--serif); font-size: 26px; font-weight: 900; color: var(--accent); line-height: 1.2; }
+.stat-item .stat-sub { font-size: 11px; color: var(--text-secondary); }
+.print-btn-area { display: flex; gap: 10px; margin-top: 12px; }
+.detail-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+.detail-table th, .detail-table td { padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
+.detail-table th { color: var(--text-muted); font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--mono); }
+.detail-table td { color: var(--text-secondary); }
+.detail-table td:first-child { font-family: var(--mono); color: var(--accent-dim); }
+.quick-actions { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+.quick-btn {
+  display: flex; align-items: center; gap: 6px; padding: 8px 14px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; color: var(--text-secondary); font-size: 12px;
+  cursor: pointer; transition: all 0.15s;
+}
+.quick-btn:hover { border-color: var(--accent-dim); color: var(--accent); background: var(--surface-hover); }
+.error-text { color: var(--red); font-size: 12px; margin-top: 4px; }
+.success-text { color: var(--green); font-size: 12px; margin-top: 4px; }
+.tab-bar { display: flex; gap: 0; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
+.tab-btn {
+  padding: 8px 18px; font-size: 13px; color: var(--text-muted); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.15s;
+  background: none; border-top: none; border-left: none; border-right: none; font-family: var(--sans);
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.sub-panel { display: none; }
+.sub-panel.active { display: block; animation: fadeIn 0.2s ease; }
+.comparable-table { width: 100%; margin: 8px 0; }
+.comparable-table th { font-size: 11px; font-family: var(--mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 6px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+.comparable-table td { padding: 6px 8px; font-size: 13px; }
+.comparable-table td input {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 3px; padding: 5px 8px; color: var(--text-primary);
+  font-size: 12px; font-family: var(--mono); outline: none;
+}
+.comparable-table td input:focus { border-color: var(--accent-dim); }
+body::after {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 9999; opacity: 0.5;
+}
+
+/* ===== DOC VIEWER STYLES ===== */
+.doc-viewer-toolbar {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.doc-viewer-toolbar .toolbar-group {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 4px 6px;
+}
+.doc-viewer-toolbar .toolbar-label {
+  font-size: 11px; color: var(--text-muted); font-family: var(--mono);
+  padding: 0 6px; letter-spacing: 0.04em;
+}
+.doc-font-btn {
+  width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid transparent; border-radius: 4px;
+  color: var(--text-secondary); font-size: 13px; cursor: pointer; transition: all 0.15s;
+}
+.doc-font-btn:hover { background: var(--bg); border-color: var(--border); color: var(--text-primary); }
+.doc-font-btn.active { background: var(--accent-glow); border-color: var(--accent-dim); color: var(--accent); }
+
+.doc-container {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+}
+.doc-header-bar {
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  padding: 16px 24px; text-align: center;
+}
+.doc-header-bar .doc-main-title {
+  font-family: var(--serif); font-weight: 900; font-size: 20px;
+  color: var(--accent); margin-bottom: 4px; letter-spacing: 0.08em;
+}
+.doc-header-bar .doc-subtitle {
+  font-size: 12px; color: var(--text-muted); font-family: var(--mono);
+}
+.doc-body {
+  padding: 24px 32px 40px; max-height: calc(100vh - 320px);
+  overflow-y: auto; scroll-behavior: smooth;
+}
+.doc-body.font-sm { font-size: 13px; line-height: 1.7; }
+.doc-body.font-md { font-size: 15px; line-height: 1.8; }
+.doc-body.font-lg { font-size: 17px; line-height: 1.9; }
+
+.doc-chapter-title {
+  font-family: var(--serif); font-weight: 700; font-size: 17px;
+  color: var(--accent); margin: 28px 0 12px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.doc-chapter-title:first-child { margin-top: 0; }
+
+.doc-section-title {
+  font-family: var(--serif); font-weight: 600; font-size: 14px;
+  color: var(--text-primary); margin: 18px 0 8px;
+  padding-left: 8px; border-left: 3px solid var(--accent-dim);
+}
+
+.doc-article {
+  margin: 6px 0; padding: 8px 12px; border-radius: 4px;
+  transition: background 0.2s;
+  line-height: 1.8; color: var(--text-secondary);
+}
+.doc-article:hover { background: var(--accent-glow); }
+.doc-article .doc-art-num {
+  font-weight: 600; color: var(--accent-dim); margin-right: 4px;
+}
+
+.doc-download-panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 20px 24px; margin-top: 20px;
+}
+.doc-download-panel h4 {
+  font-family: var(--serif); font-size: 14px; color: var(--text-primary);
+  margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.download-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; }
+.download-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  cursor: pointer; transition: all 0.2s; text-align: center;
+}
+.download-card:hover {
+  border-color: var(--accent-dim); background: var(--surface-hover);
+  transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.download-card .dl-icon { font-size: 28px; margin-bottom: 6px; display: block; }
+.download-card .dl-title { font-weight: 600; font-size: 13px; color: var(--text-primary); margin-bottom: 2px; }
+.download-card .dl-desc { font-size: 11px; color: var(--text-muted); }
+.download-card .dl-badge {
+  display: inline-block; margin-top: 6px; font-size: 10px;
+  font-family: var(--mono); padding: 1px 6px; border-radius: 3px;
+  background: var(--accent-glow); color: var(--accent);
+}
+
+.doc-toc {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 16px 20px; margin-bottom: 16px;
+}
+.doc-toc h4 {
+  font-family: var(--mono); font-size: 11px; color: var(--text-muted);
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 10px;
+}
+.doc-toc-list { list-style: none; }
+.doc-toc-list li {
+  padding: 4px 0; font-size: 13px; color: var(--text-secondary);
+  cursor: pointer; transition: color 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.doc-toc-list li:hover { color: var(--accent); }
+.doc-toc-list li .toc-num { font-family: var(--mono); font-size: 11px; color: var(--accent-dim); min-width: 24px; }
+
+.doc-progress {
+  height: 2px; background: var(--border); border-radius: 1px;
+  margin-bottom: 4px; overflow: hidden;
+}
+.doc-progress-bar {
+  height: 100%; background: var(--accent); width: 0%;
+  transition: width 0.3s; border-radius: 1px;
+}
+
+.doc-search-inline {
+  display: flex; gap: 8px; align-items: center;
+}
+.doc-search-inline input {
+  flex: 1; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 4px; padding: 6px 10px; color: var(--text-primary);
+  font-size: 12px; font-family: var(--sans); outline: none;
+}
+.doc-search-inline input:focus { border-color: var(--accent-dim); }
+.doc-search-inline .hit-count {
+  font-family: var(--mono); font-size: 11px; color: var(--text-muted);
+  white-space: nowrap;
+}
+.doc-search-inline .nav-arrow {
+  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 3px;
+  color: var(--text-secondary); cursor: pointer; font-size: 11px; transition: all 0.15s;
+}
+.doc-search-inline .nav-arrow:hover { border-color: var(--accent-dim); color: var(--accent); }
+
+.print-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+}
+.print-overlay.show { display: flex; align-items: center; justify-content: center; }
+.print-modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; padding: 24px; width: 400px; max-width: 90vw;
+  text-align: center;
+}
+.print-modal h3 { font-family: var(--serif); margin-bottom: 12px; }
+.print-modal p { font-size: 13px; color: var(--text-secondary); margin-bottom: 16px; }
+.print-modal .print-actions { display: flex; gap: 8px; justify-content: center; }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="top-bar">
+    <div class="logo">
+      <span>价格鉴证评估系统</span>
+      <span class="badge">2024</span>
+    </div>
+    <div class="search-box">
+      <span class="search-icon">⌕</span>
+      <input type="text" id="globalSearch" placeholder="搜索条文内容、关键词…" autocomplete="off">
+    </div>
+    <div class="search-count" id="searchCount"></div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">功能模块</div>
+      <div class="nav-item active" data-panel="overview" onclick="switchPanel('overview', this)">
+        <span class="nav-icon">◈</span><span>总览</span>
+      </div>
+      <div class="nav-item" data-panel="original-doc" onclick="switchPanel('original-doc', this)">
+        <span class="nav-icon">▤</span><span>原文件查阅/下载</span>
+      </div>
+      <div class="nav-item" data-panel="calculator" onclick="switchPanel('calculator', this)">
+        <span class="nav-icon">∿</span><span>评估方法计算</span>
+      </div>
+      <div class="nav-item" data-panel="workflow" onclick="switchPanel('workflow', this)">
+        <span class="nav-icon">⋯</span><span>评估流程跟踪</span>
+      </div>
+      <div class="nav-item" data-panel="archive" onclick="switchPanel('archive', this)">
+        <span class="nav-icon">⊞</span><span>档案管理</span>
+      </div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">章节导航</div>
+      <div class="nav-item" data-panel="ch1" onclick="switchPanel('ch1', this)"><span class="chapter-num">§1</span><span>总则</span></div>
+      <div class="nav-item" data-panel="ch2" onclick="switchPanel('ch2', this)"><span class="chapter-num">§2</span><span>评估程序</span></div>
+      <div class="nav-item" data-panel="ch3" onclick="switchPanel('ch3', this)"><span class="chapter-num">§3</span><span>评估方法</span></div>
+      <div class="nav-item" data-panel="ch4" onclick="switchPanel('ch4', this)"><span class="chapter-num">§4</span><span>档案管理</span></div>
+      <div class="nav-item" data-panel="ch5" onclick="switchPanel('ch5', this)"><span class="chapter-num">§5</span><span>行业管理</span></div>
+      <div class="nav-item" data-panel="ch6" onclick="switchPanel('ch6', this)"><span class="chapter-num">§6</span><span>附则</span></div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-section-title">信息查询</div>
+      <div class="nav-item" data-panel="docinfo" onclick="switchPanel('docinfo', this)">
+        <span class="nav-icon">◎</span><span>文件信息</span>
+      </div>
+      <div class="nav-item" data-panel="search-results" onclick="switchPanel('search-results', this)">
+        <span class="nav-icon">⌕</span><span>搜索结果</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content" id="mainContent">
+
+    <!-- Overview Panel -->
+    <div class="panel active" id="panel-overview">
+      <div class="panel-header">
+        <h2>价格鉴证评估执业规范</h2>
+        <p>中价协〔2024〕13号 · 自2024年7月1日起施行</p>
+      </div>
+      <div class="stats-bar">
+        <div class="stat-item"><div class="stat-label">总条文</div><div class="stat-value">58</div><div class="stat-sub">条款数量</div></div>
+        <div class="stat-item"><div class="stat-label">章节</div><div class="stat-value">6</div><div class="stat-sub">章 · 11节</div></div>
+        <div class="stat-item"><div class="stat-label">评估方法</div><div class="stat-value">4</div><div class="stat-sub">种主要方法</div></div>
+        <div class="stat-item"><div class="stat-label">档案保存</div><div class="stat-value">15+</div><div class="stat-sub">年（最低）</div></div>
+      </div>
+      <div class="section-divider">快速操作</div>
+      <div class="quick-actions">
+        <div class="quick-btn" onclick="switchPanel('original-doc', document.querySelector('[data-panel=original-doc]'))">▤ 原文件查阅/下载</div>
+        <div class="quick-btn" onclick="switchPanel('calculator', document.querySelector('[data-panel=calculator]'))">∿ 评估方法计算</div>
+        <div class="quick-btn" onclick="switchPanel('workflow', document.querySelector('[data-panel=workflow]'))">⋯ 流程跟踪</div>
+        <div class="quick-btn" onclick="focusSearch()">⌕ 全文搜索</div>
+        <div class="quick-btn" onclick="switchPanel('docinfo', document.querySelector('[data-panel=docinfo]'))">◎ 文件信息</div>
+      </div>
+      <div class="section-divider">规范概览</div>
+      <div class="calc-card full-width" style="margin-bottom: 10px;"><h3>第一章 · 总则 <span class="method-tag">第一条 — 第六条</span></h3><p class="article-text">规定了价格鉴证评估的定义、适用范围、专业人员资格要求及机构执业原则。</p></div>
+      <div class="calc-card full-width" style="margin-bottom: 10px;"><h3>第二章 · 价格鉴证评估程序 <span class="method-tag">第七条 — 第三十九条</span></h3><p class="article-text">涵盖完整的评估程序，包括委托、受理、人员指派、实物查验、市场调查、评定估算、审核、签发、送达归档、中止和终止共11个环节。</p></div>
+      <div class="calc-card full-width" style="margin-bottom: 10px;"><h3>第三章 · 价格鉴证评估方法 <span class="method-tag">第四十条 — 第四十四条</span></h3><p class="article-text">规定了市场法、成本法、收益法、专家咨询法四种主要评估方法及其适用条件。</p></div>
+      <div class="calc-card full-width" style="margin-bottom: 10px;"><h3>第四章 · 档案管理 <span class="method-tag">第四十五条 — 第五十条</span></h3><p class="article-text">规定档案管理制度，评估资料应在工作结束后30日内归档，保存期限不少于15年。</p></div>
+      <div class="calc-card full-width" style="margin-bottom: 10px;"><h3>第五章 · 行业管理 <span class="method-tag">第五十一条 — 第五十六条</span></h3><p class="article-text">规定执业禁止行为、行业自律管理、信用档案、继续教育及投诉举报处理。</p></div>
+      <div class="calc-card full-width"><h3>第六章 · 附则 <span class="method-tag">第五十七条 — 第五十八条</span></h3><p class="article-text">由中国价格协会负责解释，自2024年7月1日起执行。</p></div>
+    </div>
+
+    <!-- ===== ORIGINAL DOC VIEWER PANEL ===== -->
+    <div class="panel" id="panel-original-doc">
+      <div class="panel-header">
+        <h2>原文件查阅与下载</h2>
+        <p>中国价格协会 · 中价协〔2024〕13号 · 全文在线查阅与多格式下载</p>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="doc-viewer-toolbar">
+        <div class="toolbar-group">
+          <span class="toolbar-label">字号</span>
+          <button class="doc-font-btn" onclick="setDocFont('sm')" title="小号字" id="btnFontSm">A-</button>
+          <button class="doc-font-btn active" onclick="setDocFont('md')" title="标准" id="btnFontMd">A</button>
+          <button class="doc-font-btn" onclick="setDocFont('lg')" title="大号字" id="btnFontLg">A+</button>
+        </div>
+        <div class="toolbar-group doc-search-inline">
+          <span class="toolbar-label">查找</span>
+          <input type="text" id="docInlineSearch" placeholder="在原文中搜索…" oninput="searchInDoc(this.value)">
+          <span class="hit-count" id="docHitCount"></span>
+          <button class="nav-arrow" onclick="docSearchNav(-1)" title="上一个">↑</button>
+          <button class="nav-arrow" onclick="docSearchNav(1)" title="下一个">↓</button>
+        </div>
+        <div class="toolbar-group">
+          <button class="btn btn-sm btn-primary" onclick="printDoc()" style="font-size:12px;">⎙ 打印/导出PDF</button>
+        </div>
+      </div>
+
+      <!-- Reading progress -->
+      <div class="doc-progress"><div class="doc-progress-bar" id="docProgressBar"></div></div>
+
+      <!-- TOC -->
+      <div class="doc-toc">
+        <h4>目录</h4>
+        <ul class="doc-toc-list">
+          <li onclick="docScrollTo('doc-ch-notice')"><span class="toc-num"></span>通知正文</li>
+          <li onclick="docScrollTo('doc-ch-1')"><span class="toc-num">§1</span>第一章 总则（第一条—第六条）</li>
+          <li onclick="docScrollTo('doc-ch-2')"><span class="toc-num">§2</span>第二章 价格鉴证评估程序（第七条—第三十九条）</li>
+          <li onclick="docScrollTo('doc-ch-3')"><span class="toc-num">§3</span>第三章 价格鉴证评估方法（第四十条—第四十四条）</li>
+          <li onclick="docScrollTo('doc-ch-4')"><span class="toc-num">§4</span>第四章 档案管理（第四十五条—第五十条）</li>
+          <li onclick="docScrollTo('doc-ch-5')"><span class="toc-num">§5</span>第五章 行业管理（第五十一条—第五十六条）</li>
+          <li onclick="docScrollTo('doc-ch-6')"><span class="toc-num">§6</span>第六章 附则（第五十七条—第五十八条）</li>
+        </ul>
+      </div>
+
+      <!-- Doc Content -->
+      <div class="doc-container">
+        <div class="doc-header-bar">
+          <div class="doc-main-title">价格鉴证评估执业规范</div>
+          <div class="doc-subtitle">中国价格协会文件 · 中价协〔2024〕13号 · 自2024年7月1日起施行</div>
+        </div>
+        <div class="doc-body font-md" id="docBody">
+          <!-- Notice -->
+          <div id="doc-ch-notice">
+            <div class="doc-chapter-title">关于印发《价格鉴证评估执业规范》的通知</div>
+            <div class="doc-article">各省、自治区、直辖市价格协会，价格鉴证评估协会，各驻省代表处，各价格鉴证评估机构：</div>
+            <div class="doc-article">为进一步规范价格鉴证评估行为，统一价格鉴证评估程序和方法，保证价格鉴证评估工作合法、独立、客观、公正，维护社会公共利益和当事人合法权益，维护社会主义市场经济秩序，促进价格鉴证评估行业健康发展，根据《中华人民共和国价格法》《中华人民共和国国有资产评估法》《中华人民共和国刑事诉讼法》《中华人民共和国民事诉讼法》等法律及国家市场监督管理总局《价格鉴证评估行为指南》等国家有关部门相关价格鉴证评估的规定，结合价格鉴证评估工作实际，现印发《价格鉴证评估执业规范》（中价协〔2024〕13号），自2024年7月1日起施行。原《价格鉴证评估执业规范》（中价协〔2020〕31号）同时废止。</div>
+            <div class="doc-article">特此通知。</div>
+          </div>
+
+          <!-- Chapter 1 -->
+          <div id="doc-ch-1">
+            <div class="doc-chapter-title">第一章 总则</div>
+            <div class="doc-article"><span class="doc-art-num">第一条</span> 为规范价格鉴证评估行为，统一价格鉴证评估程序和方法，保证价格鉴证评估工作合法、独立、客观、公正，维护社会公共利益和当事人合法权益，维护社会主义市场经济秩序，促进价格鉴证评估行业健康发展，根据《中华人民共和国价格法》《中华人民共和国资产评估法》《中华人民共和国刑事诉讼法》《中华人民共和国民事诉讼法》等法律及国家市场监督管理总局《价格鉴证评估行为指南》等国家有关部门相关价格鉴证评估的规定，结合价格鉴证评估工作实际，制定本规范。</div>
+            <div class="doc-article"><span class="doc-art-num">第二条</span> 本规范所称价格鉴证评估，是指依法设立的价格鉴证评估机构及其价格鉴证评估专业人员根据委托，利用专业知识和专门技能，对涉及国家利益和公众利益的各类有形财产、无形资产及各类有偿服务、其他经济权益的价格进行评定、估算，并出具具有证明效力或咨询效力的价格鉴定意见书或价格评估报告的专业服务行为。价格鉴定意见书和价格评估报告以下统称为价格鉴证评估报告。</div>
+            <div class="doc-article"><span class="doc-art-num">第三条</span> 本规范所称价格鉴证评估专业人员包括价格鉴证师、经国家人社部门或相关政府部门认可的专业评估师及其他经过职业能力水平评价取得相应证书，具有价格鉴证评估专业知识和实践经验的各业务类别价格鉴证评估从业人员。价格鉴证师应通过国家人社部门组织的全国统一考试取得价格鉴证师执业资格证书或通过中国价格协会统一组织的职业能力水平评价考试并取得价格鉴证师职业能力水平评价证书；国家人社部门认可的专业评估师包括房地产估价师、资产评估师、矿业权评估师等。其他价格鉴证评估专业人员是指具有高等院校专科以上学历的公民，具有价格鉴证评估专业知识及实践经验，通过中国价格协会职业能力评价取得相应证书的专业人员。</div>
+            <div class="doc-article"><span class="doc-art-num">第四条</span> 价格鉴证评估机构及其价格鉴证评估专业人员应当依法按照独立、客观、公正的原则开展业务。价格鉴证评估机构建立健全质量控制制度和风险防范机制，保证价格鉴证评估报告的客观、真实、合理。</div>
+            <div class="doc-article"><span class="doc-art-num">第五条</span> 本规范适用于依法设立并在中国价格协会或相关省级价格协会（价格鉴证评估协会）登记公告的价格鉴证评估机构及其价格鉴证评估专业人员。</div>
+            <div class="doc-article"><span class="doc-art-num">第六条</span> 本规范授权由中国价格协会价格鉴证评估分会组织实施。</div>
+          </div>
+
+          <!-- Chapter 2 -->
+          <div id="doc-ch-2">
+            <div class="doc-chapter-title">第二章 价格鉴证评估程序</div>
+
+            <div class="doc-section-title">第一节 价格鉴证评估委托</div>
+            <div class="doc-article"><span class="doc-art-num">第七条</span> 委托方委托价格鉴证评估机构办理价格鉴证评估事项，应当出具价格鉴证评估委托书或其他相关手续。</div>
+            <div class="doc-article"><span class="doc-art-num">第八条</span> 价格鉴证评估委托书应当包括下列内容：(一)价格鉴证评估单位的名称；(二)价格鉴证评估目的；(三)价格鉴证评估标的名称、数量以及质量等基本情况；(四)价格内涵；(五)价格鉴证评估基准日；(六)提供材料的名称、份数；(七)价格鉴证评估标的权属证明；(八)委托日期；(九)委托方的名称、联系地址、联系人、联系方式；(十)其他需要说明的事项。价格鉴证评估委托书和相关材料应当加盖委托方印章或签名。委托方应当对其提供的权属证明、财务会计信息和其他资料的真实性、完整性和合法性负责。</div>
+            <div class="doc-article"><span class="doc-art-num">第九条</span> 价格鉴证评估委托书应当完整、准确地反映价格鉴证评估委托事项的内容。其中：(一)价格鉴证评估目的是指价格鉴证评估结论的用途；(二)价格鉴证评估标的是指价格鉴证评估的具体对象；(三)价格内涵是指对价格鉴证评估事项所处不同环节、区域及其他特定情况的价格限定；(四)价格鉴证评估基准日是指价格鉴证评估标的状况及其价格所对应的时间。价格鉴证评估基准日须由委托方确定。</div>
+
+            <div class="doc-section-title">第二节 价格鉴证评估受理</div>
+            <div class="doc-article"><span class="doc-art-num">第十条</span> 价格鉴证评估机构应当根据委托方提供的价格鉴证评估委托书和相关材料，决定受理或者不予受理价格鉴证评估事项。不予受理的，价格鉴证评估机构应当出具不予受理通知书。</div>
+            <div class="doc-article"><span class="doc-art-num">第十一条</span> 有下列情形之一的，价格鉴证评估机构应不予受理价格鉴证评估委托：（一）委托方不符合本规范要求的；（二）价格鉴证评估事项不符合相关规定的；（三）法律、法规规定无需进行价格鉴证评估的；（四）价格鉴证评估机构受理价格鉴证评估业务不能满足专业能力和业务风险控制要求的；（五）具有其他不予受理的情形。</div>
+            <div class="doc-article"><span class="doc-art-num">第十二条</span> 有下列情形之一的，价格鉴证评估机构应当书面告知委托方补充相关材料：（一）价格鉴证评估委托书内容不符合要求的；（二）价格鉴证评估材料不齐全的；（三）应当提供有效的真伪、质量、技术等检测、鉴定报告而未提供的；（四）委托价格鉴证评估时，价格鉴证评估标的的状态与委托方确定的价格鉴证评估基准日期相比发生较大变化，委托方未确定其在价格鉴证评估基准日期状态的；（五）委托内容变更需要委托方书面确认的。委托方补足相关材料后，符合价格鉴证评估受理条件的，价格鉴证评估机构应当及时受理。</div>
+            <div class="doc-article"><span class="doc-art-num">第十三条</span> 价格鉴证评估机构应当与委托方订立委托合同，约定双方的权利和义务。（一）委托方拒绝提供或者不如实提供鉴证评估业务所需的权属证明、财务会计信息和其他资料的，价格鉴证评估机构有权依法拒绝履行合同；（二）委托方要求出具虚假价格鉴证评估报告或者有其他非法干预价格鉴证评估结论情形的，价格鉴证评估机构有权解除合同；（三）双方议定评估费用和付款方式；（四）价格鉴证评估机构受理价格鉴证评估委托后，应当在约定的期限内作出价格鉴证评估报告；没有约定的，一般可在30日内作出；（五）双方约定对价格鉴证评估报告出现异议时的处理方式和时限，明确违约责任和争议解决等内容。</div>
+
+            <div class="doc-section-title">第三节 价格鉴证评估专业人员指派</div>
+            <div class="doc-article"><span class="doc-art-num">第十四条</span> 价格鉴证评估机构受理价格鉴证评估委托后，应当指派2名或者2名以上符合条件的价格鉴证评估专业人员组成价格鉴证评估小组，制定工作计划，办理价格鉴证评估事项。</div>
+            <div class="doc-article"><span class="doc-art-num">第十五条</span> 遇有下列情形之一的，价格鉴证评估专业人员应当回避：（一）是价格鉴证评估事项当事人或者其近亲属的；（二）本人或者其近亲属与价格鉴证评估事项有利害关系的；（三）与价格鉴证评估事项当事人有其他关系，可能影响价格鉴证评估报告公正的。委托方有权要求与相关当事人及价格鉴证评估事项有利害关系的价格鉴证评估专业人员回避。</div>
+
+            <div class="doc-section-title">第四节 实物查验或者勘验</div>
+            <div class="doc-article"><span class="doc-art-num">第十六条</span> 价格鉴证评估专业人员应当对价格鉴证评估标的进行实物查验或者勘验，并如实记录查验或者勘验情况。</div>
+            <div class="doc-article"><span class="doc-art-num">第十七条</span> 价格鉴证评估专业人员应当要求委托方协助并参加查验或者勘验。有必要的，可以要求委托方通知价格鉴证评估事项相关当事人到场。</div>
+            <div class="doc-article"><span class="doc-art-num">第十八条</span> 价格鉴证评估标的类型复杂的，可以分类查验或者勘验；价格鉴证评估标的数量较大的，可以抽样查验或者勘验，抽样类别及抽样比例应达到一定规模。</div>
+            <div class="doc-article"><span class="doc-art-num">第十九条</span> 对属性特殊、专业性、技术性强的价格鉴证评估标的，查验或者勘验时可以聘请相关专家参加。可协助委托方，委托第三方检验检测机构或鉴定机构进行专业技术检测或鉴定，依据检验检测或鉴定报告进行价格鉴证评估。</div>
+            <div class="doc-article"><span class="doc-art-num">第二十条</span> 查验或勘验结果与价格鉴证评估委托书内容或者委托方提供的相关材料不符时，价格鉴证评估机构应当要求委托方书面予以明确，或者重新出具价格鉴证评估委托书。</div>
+            <div class="doc-article"><span class="doc-art-num">第二十一条</span> 价格鉴证评估专业人员应当制作查验或者勘验记录并签字，同时要求参加查验或者勘验的委托方、其他有关人员在查验或者勘验记录上签字确认。委托方、其他有关人员未签字确认的，价格鉴证评估专业人员应当在查验或者勘验记录上载明情况，查验或者勘验记录的使用不受影响。</div>
+
+            <div class="doc-section-title">第五节 市场调查</div>
+            <div class="doc-article"><span class="doc-art-num">第二十二条</span> 价格鉴证评估专业人员可以采取多种方式进行市场调查，收集价格鉴证评估业务所需要的资料，包括：委托方提供的资料和从政府部门、各类专业机构以及专业市场、互联网等渠道获取的其他资料，并记录调查情况。</div>
+            <div class="doc-article"><span class="doc-art-num">第二十三条</span> 市场调查记录应当有调查人和被调查人签字。被调查人未签字的，调查人应当在记录上载明情况，市场调查记录的使用不受影响。调查人对被调查人个人信息具有保密义务。</div>
+            <div class="doc-article"><span class="doc-art-num">第二十四条</span> 价格鉴证评估专业人员在进行市场调查时，可以要求委托方协助查阅有关账目、文件等资料，或者向价格鉴证评估事项有关的单位和个人了解情况，收集资料。</div>
+            <div class="doc-article"><span class="doc-art-num">第二十五条</span> 价格鉴证评估专业人员必要时应当对市场调查资料的真实性、合法性和关联性进行审查。市场调查资料、调查记录不作为价格鉴证评估报告的附件，但必须存入档案妥善保存。</div>
+
+            <div class="doc-section-title">第六节 评定估算及作出结论</div>
+            <div class="doc-article"><span class="doc-art-num">第二十六条</span> 价格鉴证评估小组应当对收集到的资料进行核查验证、分析整理、数据处理，按照价格鉴证评估相关原则、规定，结合价格鉴证评估事项特点，选择合理的技术路径和评估方法进行测算，经综合分析，形成测算技术报告。</div>
+            <div class="doc-article"><span class="doc-art-num">第二十七条</span> 价格鉴证评估小组应当根据价格鉴证评估事项的性质、测算技术报告，形成价格鉴证评估结论，并按照价格鉴证评估文书格式的相关规定，撰写价格鉴证评估报告。价格鉴证评估报告应当包括标题、文号、目录、声明、摘要、正文、附件等部分。具体内容包括：（一）价格鉴证评估事项描述；（二）价格鉴证评估依据；（三）价格鉴证评估过程及方法；（四）价格鉴证评估结论；（五）价格鉴证评估限定条件；（六）异议处理方式和限定处理时限；（七）声明；（八）专业人员签名和机构印章；（九）其他需要说明的事项。</div>
+
+            <div class="doc-section-title">第七节 内部审核及集体审议</div>
+            <div class="doc-article"><span class="doc-art-num">第二十八条</span> 价格鉴证评估机构应当对价格鉴证评估报告及相关资料进行内部审核。</div>
+            <div class="doc-article"><span class="doc-art-num">第二十九条</span> 对重大、疑难的价格鉴证评估事项，价格鉴证评估小组应当将价格鉴证评估结论提交集体审议，形成集体审议意见。价格鉴证评估机构可根据需要聘请具有相关专业技术职称或能力水平的专家参加集体审议。</div>
+            <div class="doc-article"><span class="doc-art-num">第三十条</span> 集体审议时，价格鉴证评估专业人员应当记录审议内容。参加审议的人员应当在审议记录上签字；未签字的，应当在审议记录上载明情况，审议记录的使用不受影响。</div>
+
+            <div class="doc-section-title">第八节 签发及文书制作</div>
+            <div class="doc-article"><span class="doc-art-num">第三十一条</span> 经过审核、审议的价格鉴证评估报告应当由价格鉴证评估机构法定代表人或者首席合伙人签发。价格鉴证评估报告自签发之日起生效。</div>
+            <div class="doc-article"><span class="doc-art-num">第三十二条</span> 价格鉴证评估机构应当制作价格鉴证评估报告正式文本并出具价格鉴证评估报告书或价格鉴定意见书，由至少两名承办该项业务的价格鉴证评估专业人员签名并加盖价格鉴证评估机构印章。</div>
+
+            <div class="doc-section-title">第九节 送达及归档</div>
+            <div class="doc-article"><span class="doc-art-num">第三十三条</span> 价格鉴证评估报告可以采用直接送达、邮寄送达等方式送达委托方。直接送达的，应当要求委托方在送达回证上签字，并注明接收日期及份数。邮寄送达的，应当同时邮寄送达回证，并要求委托方寄回送达回证。送达回证没有寄回的，应当在邮寄凭证上记明情况，以邮寄凭证作为送达回证的附件，邮寄凭证上注明的日期为已送日期。</div>
+            <div class="doc-article"><span class="doc-art-num">第三十四条</span> 价格鉴证评估专业人员应当将反映价格鉴证评估全过程的各种资料和文书整理归档，并统一保管。归档资料和文书主要包括：（一）签发程序单；（二）价格鉴证评估报告正式文本；（三）价格鉴证评估委托书及相关材料；（四）实物查验或者勘验记录及相关资料；（五）市场调查记录及相关资料；（六）测算说明；（七）送达回证；（八）其他相关资料。</div>
+
+            <div class="doc-section-title">第十节 价格鉴证评估中止</div>
+            <div class="doc-article"><span class="doc-art-num">第三十五条</span> 有下列情形之一的，价格鉴证评估机构应当中止价格鉴证评估：（一）委托方书面提出中止价格鉴证评估的；（二）委托方不能按规定或者约定时间提供相关材料的；（三）其他原因导致价格鉴证评估工作暂时无法正常开展的。</div>
+            <div class="doc-article"><span class="doc-art-num">第三十六条</span> 价格鉴证评估中止的，价格鉴证评估机构应当及时书面通知委托方，并说明原因。</div>
+            <div class="doc-article"><span class="doc-art-num">第三十七条</span> 中止价格鉴证评估的原因消除后，价格鉴证评估机构应当恢复价格鉴证评估。</div>
+
+            <div class="doc-section-title">第十一节 价格鉴证评估终止</div>
+            <div class="doc-article"><span class="doc-art-num">第三十八条</span> 有下列情形之一的，价格鉴证评估机构应当终止价格鉴证评估：（一）委托方书面提出终止价格鉴证评估的；（二）委托方提供的材料不完整、不充分，且不能补正的；（三）因不可抗力致使价格鉴证评估无法继续进行的；（四）其他原因导致价格鉴证评估工作需要终止的。</div>
+            <div class="doc-article"><span class="doc-art-num">第三十九条</span> 价格鉴证评估终止的，价格鉴证评估机构应当书面通知委托方，并说明原因。</div>
+          </div>
+
+          <!-- Chapter 3 -->
+          <div id="doc-ch-3">
+            <div class="doc-chapter-title">第三章 价格鉴证评估方法</div>
+            <div class="doc-article"><span class="doc-art-num">第四十条</span> 价格鉴证评估方法主要有：市场法、成本法、收益法、专家咨询法等。价格鉴证评估专业人员应当根据价格鉴证评估事项、价格内涵、价格鉴证评估目的及取得的相关资料等选择恰当的价格评估方法，经综合分析进行价格鉴证评估。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十一条</span> 市场法：是指通过市场调查，选择三个或者三个以上与价格鉴证评估事项相同或者类似的可比实例或者参照物，分析比较价格鉴证评估事项与参照物之间的差异并进行调整，从而确定价格鉴证评估事项市场价格的方法。市场法的适用条件：（一）交易市场发育充分；（二）参照物及其与价格鉴证评估事项可比较的指标、技术参数等资料可以收集到。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十二条</span> 成本法：是指在办理价格鉴证评估事项时，按照价格鉴证评估事项在基准日的重置成本扣减各种损耗来确定价格鉴证评估事项价格的方法。成本法的适用条件：（一）具备可以采用的成本资料；（二）各种损耗可以量化。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十三条</span> 收益法：是指将价格鉴证评估事项的预期收益，按一定的折现率折算成现值，从而确定价格鉴证评估事项价格的方法。收益法的适用条件：（一）价格鉴证评估事项的预期收益可以预测并能用货币衡量；（二）获得预期收益所承担的风险可以预测并能用货币衡量；（三）预期获利年限可以预测。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十四条</span> 专家咨询法：是指运用统计分析的方法，对所收集到的有关价格鉴证评估事项专家意见进行分析处理，从而确定价格鉴证评估事项价格的方法。专家咨询法的适用条件：（一）价格鉴证评估事项属性特殊、专业性强，难以采用市场法、成本法和收益法；（二）价格鉴证评估事项价格不取决于成本，其艺术价值、科学价值、历史价值等方面差异悬殊，可比性差；（三）专家身份的认定、聘请及其工作机制应遵循相关规定。</div>
+          </div>
+
+          <!-- Chapter 4 -->
+          <div id="doc-ch-4">
+            <div class="doc-chapter-title">第四章 档案管理</div>
+            <div class="doc-article"><span class="doc-art-num">第四十五条</span> 价格鉴证评估机构应当建立价格鉴证评估档案管理制度。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十六条</span> 价格鉴证评估资料应当在价格鉴证评估工作结束后30日内归档。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十七条</span> 归档的各种价格鉴证评估资料，应当编写档案索引，并按价格鉴证评估项目分别立卷归档，以一定顺序编号存放。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十八条</span> 价格鉴证评估档案的保存期限不少于十五年。有相关法律规定的从其规定。</div>
+            <div class="doc-article"><span class="doc-art-num">第四十九条</span> 中国价格协会或相关省级价格协会（价格鉴证评估协会）可以根据工作需要查阅价格鉴证评估工作档案。有关国家机关等单位履行职责时，需了解价格鉴证评估情况的，在办理必要的手续后可以查阅价格鉴证评估档案。查阅档案时，涉及保密事项的，查阅人应当承担保密责任。</div>
+            <div class="doc-article"><span class="doc-art-num">第五十条</span> 保管期限届满的价格鉴证评估工作档案，价格鉴证评估机构应当编造清册，并按有关规定处理。</div>
+          </div>
+
+          <!-- Chapter 5 -->
+          <div id="doc-ch-5">
+            <div class="doc-chapter-title">第五章 行业管理</div>
+            <div class="doc-article"><span class="doc-art-num">第五十一条</span> 价格鉴证评估机构、价格鉴证师和其他价格鉴证评估专业人员应当遵守本规范，诚实守信、勤勉尽责，谨慎从业，具有良好的职业道德。</div>
+            <div class="doc-article"><span class="doc-art-num">第五十二条</span> 价格鉴证评估专业人员从事价格鉴证评估业务，应当独立进行分析、评定、估算并形成专业意见，不受委托方或其他组织、个人的非法干预。价格鉴证评估专业人员在执业中不得有下列行为：（一）私自接受委托从事业务、收取费用；（二）同时在两个以上评估机构从事业务；（三）采用欺骗、利诱、胁迫，或者贬损、诋毁其他评估专业人员等不正当手段招揽业务；（四）允许他人以本人名义从事业务，或者冒用他人名义从事业务；（五）签署本人未承办业务的价格鉴证评估报告；（六）索要、收受或者变相索要、收受合同约定以外的酬金、财物，或者谋取其他不正当利益；（七）签署虚假价格鉴证评估报告或者有重大遗漏的价格鉴证评估报告；（八）违反法律、行政法规的其他行为。</div>
+            <div class="doc-article"><span class="doc-art-num">第五十三条</span> 价格鉴证评估机构在执业中不得有下列行为：（一）利用开展业务之便，谋取不正当利益；（二）允许其他机构以本机构名义开展业务，或者冒用其他机构名义开展业务；（三）以恶性压价、支付回扣、虚假宣传，或者贬损、诋毁其他评估机构等不正当手段招揽业务；（四）受理与自身有利害关系的业务；（五）分别接受利益冲突双方的委托，对同一评估对象进行评估；（六）出具虚假价格鉴证评估报告或者有重大遗漏的价格鉴证评估报告；（七）聘用或者指定不符合本规范规定的人员从事价格鉴证评估业务；（八）违反法律、行政法规的其他行为。</div>
+            <div class="doc-article"><span class="doc-art-num">第五十四条</span> 价格鉴证评估机构及其价格鉴证评估专业人员，违反上述规定，由中国价格协会或相关省级价格协会（价格鉴证评估协会）依据行业自律管理相关规定予以相应惩戒；情节严重触犯法律的，依法承担相应的法律责任。</div>
+            <div class="doc-article"><span class="doc-art-num">第五十五条</span> 中国价格协会或相关省级价格协会（价格鉴证评估协会）应当加强行业自律管理，规范会员执业行为，定期对会员出具的价格鉴证评估报告进行检查；建立会员信用档案；开展会员继续教育；检查会员建立健全质量管理制度和风险防范机制的情况；受理对会员的投诉、举报；受理会员的申诉，调解会员执业纠纷；根据委托方委托，对会员出具的价格鉴证评估报告进行专业技术评审；保障会员依法开展业务，维护会员合法权益。</div>
+            <div class="doc-article"><span class="doc-art-num">第五十六条</span> 中国价格协会与相关省级价格协会应建立沟通协作和信息共享机制，根据需要制定统一的行为规范，共同促进价格鉴证评估行业健康有序发展。</div>
+          </div>
+
+          <!-- Chapter 6 -->
+          <div id="doc-ch-6">
+            <div class="doc-chapter-title">第六章 附则</div>
+            <div class="doc-article"><span class="doc-art-num">第五十七条</span> 本规范由中国价格协会负责解释。</div>
+            <div class="doc-article"><span class="doc-art-num">第五十八条</span> 本规范自2024年7月1日起执行，原中价协〔2020〕31号文件同时废止。</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Download Panel -->
+      <div class="doc-download-panel">
+        <h4>⬇ 文件下载</h4>
+        <div class="download-cards">
+          <div class="download-card" onclick="downloadTXT()">
+            <span class="dl-icon">📄</span>
+            <div class="dl-title">纯文本格式</div>
+            <div class="dl-desc">TXT 文件，便于复制粘贴</div>
+            <span class="dl-badge">.txt</span>
+          </div>
+          <div class="download-card" onclick="downloadHTML()">
+            <span class="dl-icon">📋</span>
+            <div class="dl-title">格式化文档</div>
+            <div class="dl-desc">HTML 格式，保留排版样式</div>
+            <span class="dl-badge">.html</span>
+          </div>
+          <div class="download-card" onclick="printDoc()">
+            <span class="dl-icon">🖨</span>
+            <div class="dl-title">打印/导出PDF</div>
+            <div class="dl-desc">调用系统打印，可另存为PDF</div>
+            <span class="dl-badge">.pdf</span>
+          </div>
+          <div class="download-card" onclick="downloadJSON()">
+            <span class="dl-icon">📊</span>
+            <div class="dl-title">结构化数据</div>
+            <div class="dl-desc">JSON 格式，便于程序调用</div>
+            <span class="dl-badge">.json</span>
+          </div>
+          <div class="download-card" onclick="downloadMD()">
+            <span class="dl-icon">📝</span>
+            <div class="dl-title">Markdown 格式</div>
+            <div class="dl-desc">MD 文档，通用标记格式</div>
+            <span class="dl-badge">.md</span>
+          </div>
+          <div class="download-card" onclick="downloadCSV()">
+            <span class="dl-icon">📑</span>
+            <div class="dl-title">条文索引表</div>
+            <div class="dl-desc">CSV 表格，含章节与条文编号</div>
+            <span class="dl-badge">.csv</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculator Panel -->
+    <div class="panel" id="panel-calculator">
+      <div class="panel-header"><h2>评估方法计算</h2><p>根据规范第三章（第四十条至第四十四条）的四种评估方法进行在线计算</p></div>
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchCalcTab('market', this)">市场法</button>
+        <button class="tab-btn" onclick="switchCalcTab('cost', this)">成本法</button>
+        <button class="tab-btn" onclick="switchCalcTab('income', this)">收益法</button>
+        <button class="tab-btn" onclick="switchCalcTab('expert', this)">专家咨询法</button>
+      </div>
+      <div class="sub-panel active" id="calc-market">
+        <div class="calc-card full-width">
+          <h3>市场法 <span class="method-tag">第四十一条</span></h3>
+          <p class="calc-desc">通过市场调查，选择三个或三个以上可比实例或参照物，分析比较差异并调整，确定市场价格。</p>
+          <div class="calc-desc" style="margin-bottom: 16px;"><strong>适用条件：</strong>交易市场发育充分；参照物及其可比较指标、技术参数等资料可以收集到。</div>
+          <div class="form-group"><label>可比实例数量（至少3个）</label><select id="marketCount" onchange="updateMarketInputs()"><option value="3">3个</option><option value="4">4个</option><option value="5">5个</option><option value="6">6个</option></select></div>
+          <div id="marketInputs"></div>
+          <div class="form-row" style="margin-top: 12px;">
+            <div class="form-group"><label>标的物特征权重分配方式</label><select id="marketWeightType" onchange="toggleMarketWeight()"><option value="equal">等权平均</option><option value="custom">自定义权重</option></select></div>
+            <div class="form-group"><label>调整系数说明</label><input type="text" id="marketNote" placeholder="如：区位差异、成新率差异等"></div>
+          </div>
+          <div id="marketWeightInputs" style="display:none;"></div>
+          <button class="btn btn-primary" onclick="calcMarket()" style="margin-top: 8px;">计算评估价格</button>
+          <div id="marketResult"></div>
+        </div>
+      </div>
+      <div class="sub-panel" id="calc-cost">
+        <div class="calc-card full-width">
+          <h3>成本法 <span class="method-tag">第四十二条</span></h3>
+          <p class="calc-desc">按照评估标的在基准日的重置成本扣减各种损耗来确定价格。</p>
+          <div class="calc-desc" style="margin-bottom: 16px;"><strong>适用条件：</strong>具备可以采用的成本资料；各种损耗可以量化。</div>
+          <div class="form-row"><div class="form-group"><label>重置成本（元）</label><input type="text" id="costReplacement" placeholder="如：1000000"></div><div class="form-group"><label>实体损耗（元）</label><input type="text" id="costPhysical" placeholder="如：150000"></div></div>
+          <div class="form-row"><div class="form-group"><label>功能性损耗（元）</label><input type="text" id="costFunctional" placeholder="如：50000" value="0"></div><div class="form-group"><label>经济性损耗（元）</label><input type="text" id="costEconomic" placeholder="如：30000" value="0"></div></div>
+          <div class="form-group"><label>备注说明</label><input type="text" id="costNote" placeholder="损耗计算依据等"></div>
+          <button class="btn btn-primary" onclick="calcCost()" style="margin-top: 4px;">计算评估价格</button>
+          <div id="costResult"></div>
+        </div>
+      </div>
+      <div class="sub-panel" id="calc-income">
+        <div class="calc-card full-width">
+          <h3>收益法 <span class="method-tag">第四十三条</span></h3>
+          <p class="calc-desc">将评估标的预期收益按一定折现率折算成现值，确定价格。</p>
+          <div class="calc-desc" style="margin-bottom: 16px;"><strong>适用条件：</strong>预期收益可预测并能用货币衡量；所承担风险可预测并能用货币衡量；预期获利年限可预测。</div>
+          <div class="form-row-3"><div class="form-group"><label>年预期收益（元）</label><input type="text" id="incomeAnnual" placeholder="如：200000"></div><div class="form-group"><label>折现率（%）</label><input type="text" id="incomeRate" placeholder="如：8"></div><div class="form-group"><label>收益年限（年）</label><input type="text" id="incomeYears" placeholder="如：10"></div></div>
+          <div class="form-group"><label>收益模式</label><select id="incomeMode"><option value="equal">等额年金（每年相等）</option><option value="growth">递增年金（年增长率固定）</option></select></div>
+          <div class="form-group" id="incomeGrowthGroup" style="display:none;"><label>年增长率（%）</label><input type="text" id="incomeGrowth" placeholder="如：3"></div>
+          <button class="btn btn-primary" onclick="calcIncome()" style="margin-top: 4px;">计算评估价格</button>
+          <div id="incomeResult"></div>
+        </div>
+      </div>
+      <div class="sub-panel" id="calc-expert">
+        <div class="calc-card full-width">
+          <h3>专家咨询法 <span class="method-tag">第四十四条</span></h3>
+          <p class="calc-desc">运用统计分析方法，对收集到的专家意见进行分析处理，确定价格。</p>
+          <div class="calc-desc" style="margin-bottom: 16px;"><strong>适用条件：</strong>属性特殊、专业性强，难以采用市场法、成本法和收益法；价格不取决于成本，艺术价值、科学价值、历史价值等方面差异悬殊。</div>
+          <div class="form-group"><label>专家数量</label><select id="expertCount" onchange="updateExpertInputs()"><option value="3">3位</option><option value="5" selected>5位</option><option value="7">7位</option><option value="9">9位</option></select></div>
+          <div id="expertInputs"></div>
+          <div class="form-group" style="margin-top: 8px;"><label>统计方法</label><select id="expertMethod"><option value="mean">算术平均法</option><option value="median">中位数法</option><option value="trimmed">去极值平均法（去掉最高最低）</option><option value="weighted">加权平均法</option></select></div>
+          <button class="btn btn-primary" onclick="calcExpert()" style="margin-top: 4px;">计算评估价格</button>
+          <div id="expertResult"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workflow Panel -->
+    <div class="panel" id="panel-workflow">
+      <div class="panel-header"><h2>评估流程跟踪</h2><p>根据规范第二章（第七条至第三十九条）的完整程序流程</p></div>
+      <div style="display:flex; gap:8px; margin-bottom:20px;"><button class="btn btn-sm" onclick="resetWorkflow()">重置流程</button><button class="btn btn-sm" onclick="expandAllSteps()">全部展开</button></div>
+      <div class="workflow-steps" id="workflowSteps">
+        <div class="workflow-step active-step" onclick="toggleStep(this)" data-step="1"><div class="step-title">1. 委托</div><div class="step-articles">第七条 — 第九条</div><div class="step-detail">委托方出具价格鉴证评估委托书，包括：评估单位名称、评估目的、标的名称数量质量、价格内涵、基准日、提供材料、权属证明、委托日期、委托方信息等。基准日须由委托方确定。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="2"><div class="step-title">2. 受理</div><div class="step-articles">第十条 — 第十二条</div><div class="step-detail">机构审核委托书和材料，决定受理或不予受理。材料不齐全的书面告知补充。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="3"><div class="step-title">3. 订立合同</div><div class="step-articles">第十三条</div><div class="step-detail">双方订立委托合同，约定权利义务、费用付款、完成期限（未约定一般30日内）、异议处理、违约责任等。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="4"><div class="step-title">4. 人员指派</div><div class="step-articles">第十四条 — 第十五条</div><div class="step-detail">指派2名或以上专业人员组成评估小组，制定工作计划。存在利害关系的人员应当回避。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="5"><div class="step-title">5. 实物查验/勘验</div><div class="step-articles">第十六条 — 第二十一条</div><div class="step-detail">对标的进行实物查验或勘验并如实记录，可聘请专家或委托第三方检测。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="6"><div class="step-title">6. 市场调查</div><div class="step-articles">第二十二条 — 第二十五条</div><div class="step-detail">通过多种方式收集资料并记录。调查人对被调查人个人信息有保密义务。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="7"><div class="step-title">7. 评定估算</div><div class="step-articles">第二十六条 — 第二十七条</div><div class="step-detail">选择合理技术路径和评估方法进行测算，形成测算技术报告和评估结论。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="8"><div class="step-title">8. 内部审核及集体审议</div><div class="step-articles">第二十八条 — 第三十条</div><div class="step-detail">对报告进行内部审核。重大疑难事项提交集体审议。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="9"><div class="step-title">9. 签发及文书制作</div><div class="step-articles">第三十一条 — 第三十二条</div><div class="step-detail">法定代表人或首席合伙人签发，至少两名承办人员签名并加盖印章。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="10"><div class="step-title">10. 送达及归档</div><div class="step-articles">第三十三条 — 第三十四条</div><div class="step-detail">直接送达或邮寄送达。全部资料整理归档统一保管。</div></div>
+        <div class="workflow-step" onclick="toggleStep(this)" data-step="11"><div class="step-title">11. 中止/终止</div><div class="step-articles">第三十五条 — 第三十九条</div><div class="step-detail">中止或终止均应书面通知委托方并说明原因。</div></div>
+      </div>
+    </div>
+
+    <!-- Archive Panel -->
+    <div class="panel" id="panel-archive">
+      <div class="panel-header"><h2>档案管理</h2><p>根据规范第四章（第四十五条至第五十条）</p></div>
+      <div class="calc-card full-width" style="margin-bottom:16px;"><h3>归档时间要求</h3><p class="calc-desc">价格鉴证评估资料应当在工作结束后 <strong style="color:var(--accent);">30日内</strong> 归档。</p></div>
+      <div class="section-divider">归档资料清单（第三十四条）</div>
+      <table class="detail-table"><thead><tr><th>序号</th><th>归档资料</th><th>说明</th></tr></thead><tbody>
+        <tr><td>1</td><td>签发程序单</td><td>审核签发流程记录</td></tr>
+        <tr><td>2</td><td>价格鉴证评估报告正式文本</td><td>含签名和机构印章</td></tr>
+        <tr><td>3</td><td>价格鉴证评估委托书及相关材料</td><td>委托方提供的全部材料</td></tr>
+        <tr><td>4</td><td>实物查验或勘验记录及相关资料</td><td>含签字确认记录</td></tr>
+        <tr><td>5</td><td>市场调查记录及相关资料</td><td>含调查人签字</td></tr>
+        <tr><td>6</td><td>测算说明</td><td>技术路径和方法说明</td></tr>
+        <tr><td>7</td><td>送达回证</td><td>直接送达或邮寄凭证</td></tr>
+        <tr><td>8</td><td>其他相关资料</td><td>集体审议记录等</td></tr>
+      </tbody></table>
+      <div class="calc-card full-width" style="margin-top:16px;">
+        <h3>保存期限计算器</h3>
+        <p class="calc-desc">档案保存期限不少于十五年（第四十八条）。输入起始日期计算最早可销毁日期。</p>
+        <div class="form-row"><div class="form-group"><label>归档日期</label><input type="date" id="archiveDate"></div><div class="form-group"><label>保存年限要求（年）</label><input type="number" id="archiveYears" value="15" min="1"></div></div>
+        <button class="btn btn-primary" onclick="calcArchiveDate()">计算最早销毁日期</button>
+        <div id="archiveResult"></div>
+      </div>
+      <div class="calc-card full-width" style="margin-top:16px;"><h3>档案查阅权限（第四十九条）</h3><p class="calc-desc">中国价格协会或相关省级价格协会可根据工作需要查阅；有关国家机关等单位履行职责时，办理必要手续后可以查阅。涉及保密事项的，查阅人应当承担保密责任。</p></div>
+    </div>
+
+    <!-- Chapter Panels -->
+    <div class="panel" id="panel-ch1"><div class="panel-header"><h2>第一章 · 总则</h2><p>第一条至第六条</p></div><div id="ch1-articles"></div></div>
+    <div class="panel" id="panel-ch2"><div class="panel-header"><h2>第二章 · 价格鉴证评估程序</h2><p>第七条至第三十九条 · 共11节</p></div><div id="ch2-articles"></div></div>
+    <div class="panel" id="panel-ch3"><div class="panel-header"><h2>第三章 · 价格鉴证评估方法</h2><p>第四十条至第四十四条</p></div><div id="ch3-articles"></div></div>
+    <div class="panel" id="panel-ch4"><div class="panel-header"><h2>第四章 · 档案管理</h2><p>第四十五条至第五十条</p></div><div id="ch4-articles"></div></div>
+    <div class="panel" id="panel-ch5"><div class="panel-header"><h2>第五章 · 行业管理</h2><p>第五十一条至第五十六条</p></div><div id="ch5-articles"></div></div>
+    <div class="panel" id="panel-ch6"><div class="panel-header"><h2>第六章 · 附则</h2><p>第五十七条至第五十八条</p></div><div id="ch6-articles"></div></div>
+
+    <!-- Doc Info Panel -->
+    <div class="panel" id="panel-docinfo">
+      <div class="panel-header"><h2>文件信息</h2><p>价格鉴证评估执业规范 基本信息</p></div>
+      <table class="detail-table"><tbody>
+        <tr><td style="width:140px">文件标题</td><td>价格鉴证评估执业规范</td></tr>
+        <tr><td>文件编号</td><td>中价协〔2024〕13号</td></tr>
+        <tr><td>发布机构</td><td>中国价格协会</td></tr>
+        <tr><td>施行日期</td><td>2024年7月1日</td></tr>
+        <tr><td>废止文件</td><td>中价协〔2020〕31号</td></tr>
+        <tr><td>法律依据</td><td>《中华人民共和国价格法》《中华人民共和国资产评估法》《中华人民共和国刑事诉讼法》《中华人民共和国民事诉讼法》</td></tr>
+        <tr><td>配套规定</td><td>国家市场监督管理总局《价格鉴证评估行为指南》</td></tr>
+        <tr><td>组织实施</td><td>中国价格协会价格鉴证评估分会</td></tr>
+        <tr><td>适用对象</td><td>依法设立并在相关协会登记公告的价格鉴证评估机构及其专业人员</td></tr>
+        <tr><td>解释权</td><td>中国价格协会</td></tr>
+      </tbody></table>
+      <div class="section-divider" style="margin-top:24px;">专业人员分类</div>
+      <table class="detail-table"><thead><tr><th>类别</th><th>资格要求</th></tr></thead><tbody>
+        <tr><td>价格鉴证师</td><td>通过国家人社部门全国统一考试取得执业资格证书，或通过中国价格协会职业能力水平评价考试取得证书</td></tr>
+        <tr><td>国家认可的专业评估师</td><td>包括房地产估价师、资产评估师、矿业权评估师等</td></tr>
+        <tr><td>其他专业人员</td><td>高等院校专科以上学历，具有专业知识及实践经验，通过中国价格协会职业能力评价取得相应证书</td></tr>
+      </tbody></table>
+    </div>
+
+    <!-- Search Results Panel -->
+    <div class="panel" id="panel-search-results">
+      <div class="panel-header"><h2>搜索结果</h2><p id="searchResultDesc">请输入关键词进行搜索</p></div>
+      <div id="searchResults"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ===== ARTICLE DATA =====
+const articles = [
+  {id:1,chapter:"第一章 总则",chapterKey:"ch1",num:"第一条",text:"为规范价格鉴证评估行为，统一价格鉴证评估程序和方法，保证价格鉴证评估工作合法、独立、客观、公正，维护社会公共利益和当事人合法权益，维护社会主义市场经济秩序，促进价格鉴证评估行业健康发展，根据《中华人民共和国价格法》《中华人民共和国资产评估法》《中华人民共和国刑事诉讼法》《中华人民共和国民事诉讼法》等法律及国家市场监督管理总局《价格鉴证评估行为指南》等国家有关部门相关价格鉴证评估的规定，结合价格鉴证评估工作实际，制定本规范。"},
+  {id:2,chapter:"第一章 总则",chapterKey:"ch1",num:"第二条",text:"本规范所称价格鉴证评估，是指依法设立的价格鉴证评估机构及其价格鉴证评估专业人员根据委托，利用专业知识和专门技能，对涉及国家利益和公众利益的各类有形财产、无形资产及各类有偿服务、其他经济权益的价格进行评定、估算，并出具具有证明效力或咨询效力的价格鉴定意见书或价格评估报告的专业服务行为。价格鉴定意见书和价格评估报告以下统称为价格鉴证评估报告。"},
+  {id:3,chapter:"第一章 总则",chapterKey:"ch1",num:"第三条",text:"本规范所称价格鉴证评估专业人员包括价格鉴证师、经国家人社部门或相关政府部门认可的专业评估师及其他经过职业能力水平评价取得相应证书，具有价格鉴证评估专业知识和实践经验的各业务类别价格鉴证评估从业人员。"},
+  {id:4,chapter:"第一章 总则",chapterKey:"ch1",num:"第四条",text:"价格鉴证评估机构及其价格鉴证评估专业人员应当依法按照独立、客观、公正的原则开展业务。价格鉴证评估机构建立健全质量控制制度和风险防范机制，保证价格鉴证评估报告的客观、真实、合理。"},
+  {id:5,chapter:"第一章 总则",chapterKey:"ch1",num:"第五条",text:"本规范适用于依法设立并在中国价格协会或相关省级价格协会（价格鉴证评估协会）登记公告的价格鉴证评估机构及其价格鉴证评估专业人员。"},
+  {id:6,chapter:"第一章 总则",chapterKey:"ch1",num:"第六条",text:"本规范授权由中国价格协会价格鉴证评估分会组织实施。"},
+  {id:7,chapter:"第二章 评估程序·第一节 委托",chapterKey:"ch2",num:"第七条",text:"委托方委托价格鉴证评估机构办理价格鉴证评估事项，应当出具价格鉴证评估委托书或其他相关手续。"},
+  {id:8,chapter:"第二章 评估程序·第一节 委托",chapterKey:"ch2",num:"第八条",text:"价格鉴证评估委托书应当包括下列内容：(一)价格鉴证评估单位的名称；(二)价格鉴证评估目的；(三)价格鉴证评估标的名称、数量以及质量等基本情况；(四)价格内涵；(五)价格鉴证评估基准日；(六)提供材料的名称、份数；(七)价格鉴证评估标的权属证明；(八)委托日期；(九)委托方的名称、联系地址、联系人、联系方式；(十)其他需要说明的事项。"},
+  {id:9,chapter:"第二章 评估程序·第一节 委托",chapterKey:"ch2",num:"第九条",text:"价格鉴证评估委托书应当完整、准确地反映价格鉴证评估委托事项的内容。"},
+  {id:10,chapter:"第二章 评估程序·第二节 受理",chapterKey:"ch2",num:"第十条",text:"价格鉴证评估机构应当根据委托方提供的价格鉴证评估委托书和相关材料，决定受理或者不予受理价格鉴证评估事项。"},
+  {id:11,chapter:"第二章 评估程序·第二节 受理",chapterKey:"ch2",num:"第十一条",text:"有下列情形之一的，价格鉴证评估机构应不予受理价格鉴证评估委托。"},
+  {id:12,chapter:"第二章 评估程序·第二节 受理",chapterKey:"ch2",num:"第十二条",text:"有下列情形之一的，价格鉴证评估机构应当书面告知委托方补充相关材料。"},
+  {id:13,chapter:"第二章 评估程序·第二节 受理",chapterKey:"ch2",num:"第十三条",text:"价格鉴证评估机构应当与委托方订立委托合同，约定双方的权利和义务。"},
+  {id:14,chapter:"第二章 评估程序·第三节 人员指派",chapterKey:"ch2",num:"第十四条",text:"应当指派2名或者2名以上符合条件的价格鉴证评估专业人员组成价格鉴证评估小组。"},
+  {id:15,chapter:"第二章 评估程序·第三节 人员指派",chapterKey:"ch2",num:"第十五条",text:"遇有回避情形的，价格鉴证评估专业人员应当回避。"},
+  {id:16,chapter:"第二章 评估程序·第四节 查验勘验",chapterKey:"ch2",num:"第十六条",text:"价格鉴证评估专业人员应当对价格鉴证评估标的进行实物查验或者勘验。"},
+  {id:17,chapter:"第二章 评估程序·第四节 查验勘验",chapterKey:"ch2",num:"第十七条",text:"应当要求委托方协助并参加查验或者勘验。"},
+  {id:18,chapter:"第二章 评估程序·第四节 查验勘验",chapterKey:"ch2",num:"第十八条",text:"标的类型复杂的可以分类查验；数量较大的可以抽样查验。"},
+  {id:19,chapter:"第二章 评估程序·第四节 查验勘验",chapterKey:"ch2",num:"第十九条",text:"对属性特殊、专业性技术性强的标的，可聘请专家或委托第三方检测。"},
+  {id:20,chapter:"第二章 评估程序·第四节 查验勘验",chapterKey:"ch2",num:"第二十条",text:"查验结果与委托书不符时，应要求委托方书面明确或重新出具委托书。"},
+  {id:21,chapter:"第二章 评估程序·第四节 查验勘验",chapterKey:"ch2",num:"第二十一条",text:"应当制作查验或者勘验记录并签字确认。"},
+  {id:22,chapter:"第二章 评估程序·第五节 市场调查",chapterKey:"ch2",num:"第二十二条",text:"可以采取多种方式进行市场调查，收集评估业务所需资料。"},
+  {id:23,chapter:"第二章 评估程序·第五节 市场调查",chapterKey:"ch2",num:"第二十三条",text:"市场调查记录应当有调查人和被调查人签字。调查人对被调查人个人信息具有保密义务。"},
+  {id:24,chapter:"第二章 评估程序·第五节 市场调查",chapterKey:"ch2",num:"第二十四条",text:"可以要求委托方协助查阅有关账目、文件等资料。"},
+  {id:25,chapter:"第二章 评估程序·第五节 市场调查",chapterKey:"ch2",num:"第二十五条",text:"必要时应当对市场调查资料的真实性、合法性和关联性进行审查。"},
+  {id:26,chapter:"第二章 评估程序·第六节 评定估算",chapterKey:"ch2",num:"第二十六条",text:"应当对收集到的资料进行核查验证、分析整理、数据处理，选择合理的技术路径和评估方法进行测算。"},
+  {id:27,chapter:"第二章 评估程序·第六节 评定估算",chapterKey:"ch2",num:"第二十七条",text:"评估报告应当包括标题、文号、目录、声明、摘要、正文、附件等部分。"},
+  {id:28,chapter:"第二章 评估程序·第七节 内部审核",chapterKey:"ch2",num:"第二十八条",text:"应当对价格鉴证评估报告及相关资料进行内部审核。"},
+  {id:29,chapter:"第二章 评估程序·第七节 内部审核",chapterKey:"ch2",num:"第二十九条",text:"重大疑难事项应当提交集体审议。"},
+  {id:30,chapter:"第二章 评估程序·第七节 内部审核",chapterKey:"ch2",num:"第三十条",text:"集体审议时应当记录审议内容，参加人员签字。"},
+  {id:31,chapter:"第二章 评估程序·第八节 签发",chapterKey:"ch2",num:"第三十一条",text:"评估报告应当由法定代表人或首席合伙人签发，自签发之日起生效。"},
+  {id:32,chapter:"第二章 评估程序·第八节 签发",chapterKey:"ch2",num:"第三十二条",text:"至少两名承办人员签名并加盖机构印章。"},
+  {id:33,chapter:"第二章 评估程序·第九节 送达归档",chapterKey:"ch2",num:"第三十三条",text:"可采用直接送达、邮寄送达等方式。"},
+  {id:34,chapter:"第二章 评估程序·第九节 送达归档",chapterKey:"ch2",num:"第三十四条",text:"全部资料和文书整理归档并统一保管。"},
+  {id:35,chapter:"第二章 评估程序·第十节 中止",chapterKey:"ch2",num:"第三十五条",text:"应当中止的三种情形。"},
+  {id:36,chapter:"第二章 评估程序·第十节 中止",chapterKey:"ch2",num:"第三十六条",text:"中止的应当及时书面通知委托方。"},
+  {id:37,chapter:"第二章 评估程序·第十节 中止",chapterKey:"ch2",num:"第三十七条",text:"中止原因消除后应当恢复评估。"},
+  {id:38,chapter:"第二章 评估程序·第十一节 终止",chapterKey:"ch2",num:"第三十八条",text:"应当终止的四种情形。"},
+  {id:39,chapter:"第二章 评估程序·第十一节 终止",chapterKey:"ch2",num:"第三十九条",text:"终止的应当书面通知委托方并说明原因。"},
+  {id:40,chapter:"第三章 评估方法",chapterKey:"ch3",num:"第四十条",text:"主要方法有：市场法、成本法、收益法、专家咨询法等。"},
+  {id:41,chapter:"第三章 评估方法",chapterKey:"ch3",num:"第四十一条",text:"市场法：选择三个或以上可比实例，分析比较差异并调整，确定市场价格。"},
+  {id:42,chapter:"第三章 评估方法",chapterKey:"ch3",num:"第四十二条",text:"成本法：按基准日重置成本扣减各种损耗确定价格。"},
+  {id:43,chapter:"第三章 评估方法",chapterKey:"ch3",num:"第四十三条",text:"收益法：将预期收益按折现率折算成现值确定价格。"},
+  {id:44,chapter:"第三章 评估方法",chapterKey:"ch3",num:"第四十四条",text:"专家咨询法：运用统计分析方法对专家意见进行分析处理确定价格。"},
+  {id:45,chapter:"第四章 档案管理",chapterKey:"ch4",num:"第四十五条",text:"应当建立价格鉴证评估档案管理制度。"},
+  {id:46,chapter:"第四章 档案管理",chapterKey:"ch4",num:"第四十六条",text:"资料应当在工作结束后30日内归档。"},
+  {id:47,chapter:"第四章 档案管理",chapterKey:"ch4",num:"第四十七条",text:"归档资料应编写档案索引，按项目分别立卷归档。"},
+  {id:48,chapter:"第四章 档案管理",chapterKey:"ch4",num:"第四十八条",text:"保存期限不少于十五年。"},
+  {id:49,chapter:"第四章 档案管理",chapterKey:"ch4",num:"第四十九条",text:"协会和有关国家机关可按规定查阅档案。"},
+  {id:50,chapter:"第四章 档案管理",chapterKey:"ch4",num:"第五十条",text:"保管期限届满的档案应编造清册按有关规定处理。"},
+  {id:51,chapter:"第五章 行业管理",chapterKey:"ch5",num:"第五十一条",text:"应当遵守本规范，诚实守信、勤勉尽责，谨慎从业。"},
+  {id:52,chapter:"第五章 行业管理",chapterKey:"ch5",num:"第五十二条",text:"专业人员执业中不得有的八项禁止行为。"},
+  {id:53,chapter:"第五章 行业管理",chapterKey:"ch5",num:"第五十三条",text:"评估机构执业中不得有的八项禁止行为。"},
+  {id:54,chapter:"第五章 行业管理",chapterKey:"ch5",num:"第五十四条",text:"违反规定的，依据行业自律管理予以惩戒；触犯法律的依法承担法律责任。"},
+  {id:55,chapter:"第五章 行业管理",chapterKey:"ch5",num:"第五十五条",text:"协会应当加强行业自律管理，规范执业行为，建立信用档案，开展继续教育等。"},
+  {id:56,chapter:"第五章 行业管理",chapterKey:"ch5",num:"第五十六条",text:"应建立沟通协作和信息共享机制。"},
+  {id:57,chapter:"第六章 附则",chapterKey:"ch6",num:"第五十七条",text:"本规范由中国价格协会负责解释。"},
+  {id:58,chapter:"第六章 附则",chapterKey:"ch6",num:"第五十八条",text:"本规范自2024年7月1日起执行，原中价协〔2020〕31号文件同时废止。"},
+];
+
+// Full original text for download
+const fullDocText = `中国价格协会文件
+中价协〔2024〕13号
+
+关于印发《价格鉴证评估执业规范》的通知
+
+各省、自治区、直辖市价格协会，价格鉴证评估协会，各驻省代表处，各价格鉴证评估机构：
+
+为进一步规范价格鉴证评估行为，统一价格鉴证评估程序和方法，保证价格鉴证评估工作合法、独立、客观、公正，维护社会公共利益和当事人合法权益，维护社会主义市场经济秩序，促进价格鉴证评估行业健康发展，根据《中华人民共和国价格法》《中华人民共和国国有资产评估法》《中华人民共和国刑事诉讼法》《中华人民共和国民事诉讼法》等法律及国家市场监督管理总局《价格鉴证评估行为指南》等国家有关部门相关价格鉴证评估的规定，结合价格鉴证评估工作实际，现印发《价格鉴证评估执业规范》（中价协〔2024〕13号），自2024年7月1日起施行。原《价格鉴证评估执业规范》（中价协〔2020〕31号）同时废止。
+
+特此通知。
+
+附件：《价格鉴证评估执业规范》
+
+价格鉴证评估执业规范
+
+第一章 总则
+
+第一条  为规范价格鉴证评估行为，统一价格鉴证评估程序和方法，保证价格鉴证评估工作合法、独立、客观、公正，维护社会公共利益和当事人合法权益，维护社会主义市场经济秩序，促进价格鉴证评估行业健康发展，根据《中华人民共和国价格法》《中华人民共和国资产评估法》《中华人民共和国刑事诉讼法》《中华人民共和国民事诉讼法》等法律及国家市场监督管理总局《价格鉴证评估行为指南》等国家有关部门相关价格鉴证评估的规定，结合价格鉴证评估工作实际，制定本规范。
+
+第二条  本规范所称价格鉴证评估，是指依法设立的价格鉴证评估机构及其价格鉴证评估专业人员根据委托，利用专业知识和专门技能，对涉及国家利益和公众利益的各类有形财产、无形资产及各类有偿服务、其他经济权益的价格进行评定、估算，并出具具有证明效力或咨询效力的价格鉴定意见书或价格评估报告的专业服务行为。价格鉴定意见书和价格评估报告以下统称为价格鉴证评估报告。
+
+第三条  本规范所称价格鉴证评估专业人员包括价格鉴证师、经国家人社部门或相关政府部门认可的专业评估师及其他经过职业能力水平评价取得相应证书，具有价格鉴证评估专业知识和实践经验的各业务类别价格鉴证评估从业人员。价格鉴证师应通过国家人社部门组织的全国统一考试取得价格鉴证师执业资格证书或通过中国价格协会统一组织的职业能力水平评价考试并取得价格鉴证师职业能力水平评价证书；国家人社部门认可的专业评估师包括房地产估价师、资产评估师、矿业权评估师等。其他价格鉴证评估专业人员是指具有高等院校专科以上学历的公民，具有价格鉴证评估专业知识及实践经验，通过中国价格协会职业能力评价取得相应证书的专业人员。
+
+第四条  价格鉴证评估机构及其价格鉴证评估专业人员应当依法按照独立、客观、公正的原则开展业务。价格鉴证评估机构建立健全质量控制制度和风险防范机制，保证价格鉴证评估报告的客观、真实、合理。
+
+第五条  本规范适用于依法设立并在中国价格协会或相关省级价格协会（价格鉴证评估协会）登记公告的价格鉴证评估机构及其价格鉴证评估专业人员。
+
+第六条  本规范授权由中国价格协会价格鉴证评估分会组织实施。
+
+第二章 价格鉴证评估程序
+
+第一节 价格鉴证评估委托
+
+第七条  委托方委托价格鉴证评估机构办理价格鉴证评估事项，应当出具价格鉴证评估委托书或其他相关手续。
+
+第八条  价格鉴证评估委托书应当包括下列内容：(一)价格鉴证评估单位的名称；(二)价格鉴证评估目的；(三)价格鉴证评估标的名称、数量以及质量等基本情况；(四)价格内涵；(五)价格鉴证评估基准日；(六)提供材料的名称、份数；(七)价格鉴证评估标的权属证明；(八)委托日期；(九)委托方的名称、联系地址、联系人、联系方式；(十)其他需要说明的事项。价格鉴证评估委托书和相关材料应当加盖委托方印章或签名。委托方应当对其提供的权属证明、财务会计信息和其他资料的真实性、完整性和合法性负责。
+
+第九条  价格鉴证评估委托书应当完整、准确地反映价格鉴证评估委托事项的内容。其中：(一)价格鉴证评估目的是指价格鉴证评估结论的用途；(二)价格鉴证评估标的是指价格鉴证评估的具体对象；(三)价格内涵是指对价格鉴证评估事项所处不同环节、区域及其他特定情况的价格限定；(四)价格鉴证评估基准日是指价格鉴证评估标的状况及其价格所对应的时间。价格鉴证评估基准日须由委托方确定。
+
+第二节 价格鉴证评估受理
+
+第十条  价格鉴证评估机构应当根据委托方提供的价格鉴证评估委托书和相关材料，决定受理或者不予受理价格鉴证评估事项。不予受理的，价格鉴证评估机构应当出具不予受理通知书。
+
+第十一条  有下列情形之一的，价格鉴证评估机构应不予受理价格鉴证评估委托：（一）委托方不符合本规范要求的；（二）价格鉴证评估事项不符合相关规定的；（三）法律、法规规定无需进行价格鉴证评估的；（四）价格鉴证评估机构受理价格鉴证评估业务不能满足专业能力和业务风险控制要求的；（五）具有其他不予受理的情形。
+
+第十二条  有下列情形之一的，价格鉴证评估机构应当书面告知委托方补充相关材料：（一）价格鉴证评估委托书内容不符合要求的；（二）价格鉴证评估材料不齐全的；（三）应当提供有效的真伪、质量、技术等检测、鉴定报告而未提供的；（四）委托价格鉴证评估时，价格鉴证评估标的的状态与委托方确定的价格鉴证评估基准日期相比发生较大变化，委托方未确定其在价格鉴证评估基准日期状态的；（五）委托内容变更需要委托方书面确认的。委托方补足相关材料后，符合价格鉴证评估受理条件的，价格鉴证评估机构应当及时受理。
+
+第十三条  价格鉴证评估机构应当与委托方订立委托合同，约定双方的权利和义务。（一）委托方拒绝提供或者不如实提供鉴证评估业务所需的权属证明、财务会计信息和其他资料的，价格鉴证评估机构有权依法拒绝履行合同；（二）委托方要求出具虚假价格鉴证评估报告或者有其他非法干预价格鉴证评估结论情形的，价格鉴证评估机构有权解除合同；（三）双方议定评估费用和付款方式；（四）价格鉴证评估机构受理价格鉴证评估委托后，应当在约定的期限内作出价格鉴证评估报告；没有约定的，一般可在30日内作出；（五）双方约定对价格鉴证评估报告出现异议时的处理方式和时限，明确违约责任和争议解决等内容。
+
+第三节 价格鉴证评估专业人员指派
+
+第十四条  价格鉴证评估机构受理价格鉴证评估委托后，应当指派2名或者2名以上符合条件的价格鉴证评估专业人员组成价格鉴证评估小组，制定工作计划，办理价格鉴证评估事项。
+
+第十五条  遇有下列情形之一的，价格鉴证评估专业人员应当回避：（一）是价格鉴证评估事项当事人或者其近亲属的；（二）本人或者其近亲属与价格鉴证评估事项有利害关系的；（三）与价格鉴证评估事项当事人有其他关系，可能影响价格鉴证评估报告公正的。委托方有权要求与相关当事人及价格鉴证评估事项有利害关系的价格鉴证评估专业人员回避。
+
+第四节 实物查验或者勘验
+
+第十六条  价格鉴证评估专业人员应当对价格鉴证评估标的进行实物查验或者勘验，并如实记录查验或者勘验情况。
+
+第十七条  价格鉴证评估专业人员应当要求委托方协助并参加查验或者勘验。有必要的，可以要求委托方通知价格鉴证评估事项相关当事人到场。
+
+第十八条  价格鉴证评估标的类型复杂的，可以分类查验或者勘验；价格鉴证评估标的数量较大的，可以抽样查验或者勘验，抽样类别及抽样比例应达到一定规模。
+
+第十九条  对属性特殊、专业性、技术性强的价格鉴证评估标的，查验或者勘验时可以聘请相关专家参加。可协助委托方，委托第三方检验检测机构或鉴定机构进行专业技术检测或鉴定，依据检验检测或鉴定报告进行价格鉴证评估。
+
+第二十条  查验或勘验结果与价格鉴证评估委托书内容或者委托方提供的相关材料不符时，价格鉴证评估机构应当要求委托方书面予以明确，或者重新出具价格鉴证评估委托书。
+
+第二十一条  价格鉴证评估专业人员应当制作查验或者勘验记录并签字，同时要求参加查验或者勘验的委托方、其他有关人员在查验或者勘验记录上签字确认。委托方、其他有关人员未签字确认的，价格鉴证评估专业人员应当在查验或者勘验记录上载明情况，查验或者勘验记录的使用不受影响。
+
+第五节 市场调查
+
+第二十二条  价格鉴证评估专业人员可以采取多种方式进行市场调查，收集价格鉴证评估业务所需要的资料，包括：委托方提供的资料和从政府部门、各类专业机构以及专业市场、互联网等渠道获取的其他资料，并记录调查情况。
+
+第二十三条  市场调查记录应当有调查人和被调查人签字。被调查人未签字的，调查人应当在记录上载明情况，市场调查记录的使用不受影响。调查人对被调查人个人信息具有保密义务。
+
+第二十四条  价格鉴证评估专业人员在进行市场调查时，可以要求委托方协助查阅有关账目、文件等资料，或者向价格鉴证评估事项有关的单位和个人了解情况，收集资料。
+
+第二十五条  价格鉴证评估专业人员必要时应当对市场调查资料的真实性、合法性和关联性进行审查。市场调查资料、调查记录不作为价格鉴证评估报告的附件，但必须存入档案妥善保存。
+
+第六节 评定估算及作出结论
+
+第二十六条  价格鉴证评估小组应当对收集到的资料进行核查验证、分析整理、数据处理，按照价格鉴证评估相关原则、规定，结合价格鉴证评估事项特点，选择合理的技术路径和评估方法进行测算，经综合分析，形成测算技术报告。
+
+第二十七条  价格鉴证评估小组应当根据价格鉴证评估事项的性质、测算技术报告，形成价格鉴证评估结论，并按照价格鉴证评估文书格式的相关规定，撰写价格鉴证评估报告。价格鉴证评估报告应当包括标题、文号、目录、声明、摘要、正文、附件等部分。
+
+第七节 内部审核及集体审议
+
+第二十八条  价格鉴证评估机构应当对价格鉴证评估报告及相关资料进行内部审核。
+
+第二十九条  对重大、疑难的价格鉴证评估事项，价格鉴证评估小组应当将价格鉴证评估结论提交集体审议，形成集体审议意见。价格鉴证评估机构可根据需要聘请具有相关专业技术职称或能力水平的专家参加集体审议。
+
+第三十条  集体审议时，价格鉴证评估专业人员应当记录审议内容。参加审议的人员应当在审议记录上签字；未签字的，应当在审议记录上载明情况，审议记录的使用不受影响。
+
+第八节 签发及文书制作
+
+第三十一条  经过审核、审议的价格鉴证评估报告应当由价格鉴证评估机构法定代表人或者首席合伙人签发。价格鉴证评估报告自签发之日起生效。
+
+第三十二条  价格鉴证评估机构应当制作价格鉴证评估报告正式文本并出具价格鉴证评估报告书或价格鉴定意见书，由至少两名承办该项业务的价格鉴证评估专业人员签名并加盖价格鉴证评估机构印章。
+
+第九节 送达及归档
+
+第三十三条  价格鉴证评估报告可以采用直接送达、邮寄送达等方式送达委托方。直接送达的，应当要求委托方在送达回证上签字，并注明接收日期及份数。邮寄送达的，应当同时邮寄送达回证，并要求委托方寄回送达回证。
+
+第三十四条  价格鉴证评估专业人员应当将反映价格鉴证评估全过程的各种资料和文书整理归档，并统一保管。归档资料和文书主要包括：（一）签发程序单；（二）价格鉴证评估报告正式文本；（三）价格鉴证评估委托书及相关材料；（四）实物查验或者勘验记录及相关资料；（五）市场调查记录及相关资料；（六）测算说明；（七）送达回证；（八）其他相关资料。
+
+第十节 价格鉴证评估中止
+
+第三十五条  有下列情形之一的，价格鉴证评估机构应当中止价格鉴证评估：（一）委托方书面提出中止价格鉴证评估的；（二）委托方不能按规定或者约定时间提供相关材料的；（三）其他原因导致价格鉴证评估工作暂时无法正常开展的。
+
+第三十六条  价格鉴证评估中止的，价格鉴证评估机构应当及时书面通知委托方，并说明原因。
+
+第三十七条  中止价格鉴证评估的原因消除后，价格鉴证评估机构应当恢复价格鉴证评估。
+
+第十一节 价格鉴证评估终止
+
+第三十八条  有下列情形之一的，价格鉴证评估机构应当终止价格鉴证评估：（一）委托方书面提出终止价格鉴证评估的；（二）委托方提供的材料不完整、不充分，且不能补正的；（三）因不可抗力致使价格鉴证评估无法继续进行的；（四）其他原因导致价格鉴证评估工作需要终止的。
+
+第三十九条  价格鉴证评估终止的，价格鉴证评估机构应当书面通知委托方，并说明原因。
+
+第三章 价格鉴证评估方法
+
+第四十条  价格鉴证评估方法主要有：市场法、成本法、收益法、专家咨询法等。价格鉴证评估专业人员应当根据价格鉴证评估事项、价格内涵、价格鉴证评估目的及取得的相关资料等选择恰当的价格评估方法，经综合分析进行价格鉴证评估。
+
+第四十一条  市场法：是指通过市场调查，选择三个或者三个以上与价格鉴证评估事项相同或者类似的可比实例或者参照物，分析比较价格鉴证评估事项与参照物之间的差异并进行调整，从而确定价格鉴证评估事项市场价格的方法。市场法的适用条件：（一）交易市场发育充分；（二）参照物及其与价格鉴证评估事项可比较的指标、技术参数等资料可以收集到。
+
+第四十二条  成本法：是指在办理价格鉴证评估事项时，按照价格鉴证评估事项在基准日的重置成本扣减各种损耗来确定价格鉴证评估事项价格的方法。成本法的适用条件：（一）具备可以采用的成本资料；（二）各种损耗可以量化。
+
+第四十三条  收益法：是指将价格鉴证评估事项的预期收益，按一定的折现率折算成现值，从而确定价格鉴证评估事项价格的方法。收益法的适用条件：（一）价格鉴证评估事项的预期收益可以预测并能用货币衡量；（二）获得预期收益所承担的风险可以预测并能用货币衡量；（三）预期获利年限可以预测。
+
+第四十四条  专家咨询法：是指运用统计分析的方法，对所收集到的有关价格鉴证评估事项专家意见进行分析处理，从而确定价格鉴证评估事项价格的方法。专家咨询法的适用条件：（一）价格鉴证评估事项属性特殊、专业性强，难以采用市场法、成本法和收益法；（二）价格鉴证评估事项价格不取决于成本，其艺术价值、科学价值、历史价值等方面差异悬殊，可比性差；（三）专家身份的认定、聘请及其工作机制应遵循相关规定。
+
+第四章 档案管理
+
+第四十五条  价格鉴证评估机构应当建立价格鉴证评估档案管理制度。
+
+第四十六条  价格鉴证评估资料应当在价格鉴证评估工作结束后30日内归档。
+
+第四十七条  归档的各种价格鉴证评估资料，应当编写档案索引，并按价格鉴证评估项目分别立卷归档，以一定顺序编号存放。
+
+第四十八条  价格鉴证评估档案的保存期限不少于十五年。有相关法律规定的从其规定。
+
+第四十九条  中国价格协会或相关省级价格协会（价格鉴证评估协会）可以根据工作需要查阅价格鉴证评估工作档案。有关国家机关等单位履行职责时，需了解价格鉴证评估情况的，在办理必要的手续后可以查阅价格鉴证评估档案。查阅档案时，涉及保密事项的，查阅人应当承担保密责任。
+
+第五十条  保管期限届满的价格鉴证评估工作档案，价格鉴证评估机构应当编造清册，并按有关规定处理。
+
+第五章 行业管理
+
+第五十一条  价格鉴证评估机构、价格鉴证师和其他价格鉴证评估专业人员应当遵守本规范，诚实守信、勤勉尽责，谨慎从业，具有良好的职业道德。
+
+第五十二条  价格鉴证评估专业人员从事价格鉴证评估业务，应当独立进行分析、评定、估算并形成专业意见，不受委托方或其他组织、个人的非法干预。价格鉴证评估专业人员在执业中不得有下列行为：（一）私自接受委托从事业务、收取费用；（二）同时在两个以上评估机构从事业务；（三）采用欺骗、利诱、胁迫，或者贬损、诋毁其他评估专业人员等不正当手段招揽业务；（四）允许他人以本人名义从事业务，或者冒用他人名义从事业务；（五）签署本人未承办业务的价格鉴证评估报告；（六）索要、收受或者变相索要、收受合同约定以外的酬金、财物，或者谋取其他不正当利益；（七）签署虚假价格鉴证评估报告或者有重大遗漏的价格鉴证评估报告；（八）违反法律、行政法规的其他行为。
+
+第五十三条  价格鉴证评估机构在执业中不得有下列行为：（一）利用开展业务之便，谋取不正当利益；（二）允许其他机构以本机构名义开展业务，或者冒用其他机构名义开展业务；（三）以恶性压价、支付回扣、虚假宣传，或者贬损、诋毁其他评估机构等不正当手段招揽业务；（四）受理与自身有利害关系的业务；（五）分别接受利益冲突双方的委托，对同一评估对象进行评估；（六）出具虚假价格鉴证评估报告或者有重大遗漏的价格鉴证评估报告；（七）聘用或者指定不符合本规范规定的人员从事价格鉴证评估业务；（八）违反法律、行政法规的其他行为。
+
+第五十四条  价格鉴证评估机构及其价格鉴证评估专业人员，违反上述规定，由中国价格协会或相关省级价格协会（价格鉴证评估协会）依据行业自律管理相关规定予以相应惩戒；情节严重触犯法律的，依法承担相应的法律责任。
+
+第五十五条  中国价格协会或相关省级价格协会（价格鉴证评估协会）应当加强行业自律管理，规范会员执业行为，定期对会员出具的价格鉴证评估报告进行检查；建立会员信用档案；开展会员继续教育；检查会员建立健全质量管理制度和风险防范机制的情况；受理对会员的投诉、举报；受理会员的申诉，调解会员执业纠纷；根据委托方委托，对会员出具的价格鉴证评估报告进行专业技术评审；保障会员依法开展业务，维护会员合法权益。
+
+第五十六条  中国价格协会与相关省级价格协会应建立沟通协作和信息共享机制，根据需要制定统一的行为规范，共同促进价格鉴证评估行业健康有序发展。
+
+第六章 附则
+
+第五十七条  本规范由中国价格协会负责解释。
+
+第五十八条  本规范自2024年7月1日起执行，原中价协〔2020〕31号文件同时废止。`;
+
+// ===== RENDER ARTICLES =====
+function renderArticles(containerId, chapterKey) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const filtered = articles.filter(a => a.chapterKey === chapterKey);
+  let currentSection = '';
+  let html = '';
+  filtered.forEach(a => {
+    const section = a.chapter.split('·')[1] || '';
+    if (section && section !== currentSection) { currentSection = section; html += `<div class="section-divider">${section}</div>`; }
+    html += `<div class="article-card" id="article-${a.id}"><div class="article-num">${a.num}</div><div class="article-text">${a.text}</div></div>`;
+  });
+  container.innerHTML = html;
+}
+function renderAllChapters() { ['ch1','ch2','ch3','ch4','ch5','ch6'].forEach(k => renderArticles(k+'-articles', k)); }
+
+// ===== PANEL SWITCHING =====
+function switchPanel(panelId, navEl) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const panel = document.getElementById('panel-' + panelId);
+  if (panel) { panel.classList.add('active'); document.getElementById('mainContent').scrollTop = 0; }
+  if (navEl) navEl.classList.add('active');
+}
+function focusSearch() { document.getElementById('globalSearch').focus(); }
+
+// ===== SEARCH =====
+document.getElementById('globalSearch').addEventListener('input', function(e) {
+  const query = e.target.value.trim();
+  if (!query) { document.getElementById('searchCount').textContent = ''; return; }
+  const results = articles.filter(a => a.text.includes(query) || a.num.includes(query));
+  document.getElementById('searchCount').textContent = `找到 ${results.length} 条`;
+  const container = document.getElementById('searchResults');
+  document.getElementById('searchResultDesc').textContent = `关键词"${query}" — 找到 ${results.length} 条匹配结果`;
+  if (results.length === 0) { container.innerHTML = '<div class="article-card"><div class="article-text" style="color:var(--text-muted);">未找到匹配的条文内容</div></div>'; }
+  else {
+    let html = '';
+    let currentChapter = '';
+    results.forEach(a => {
+      if (a.chapter.split('·')[0] !== currentChapter) { currentChapter = a.chapter.split('·')[0]; html += `<div class="section-divider">${currentChapter}</div>`; }
+      const highlighted = a.text.replace(new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'g'),'<mark>$1</mark>');
+      html += `<div class="article-card highlight" onclick="jumpToArticle(${a.id})"><div class="article-num">${a.num} · ${a.chapter}</div><div class="article-text">${highlighted}</div></div>`;
+    });
+    container.innerHTML = html;
+  }
+  switchPanel('search-results', document.querySelector('[data-panel="search-results"]'));
+});
+function jumpToArticle(id) {
+  const a = articles.find(x => x.id === id);
+  if (!a) return;
+  switchPanel(a.chapterKey, document.querySelector(`[data-panel="${a.chapterKey}"]`));
+  setTimeout(() => { const el = document.getElementById('article-'+id); if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('highlight');setTimeout(()=>el.classList.remove('highlight'),2000);} },100);
+}
+
+// ===== DOC VIEWER =====
+function setDocFont(size) {
+  const body = document.getElementById('docBody');
+  body.className = 'doc-body font-' + size;
+  document.querySelectorAll('.doc-font-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btnFont' + size.charAt(0).toUpperCase() + size.slice(1)).classList.add('active');
+}
+
+function docScrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Doc reading progress
+const docBody = document.getElementById('docBody');
+if (docBody) {
+  docBody.addEventListener('scroll', function() {
+    const pct = (this.scrollTop / (this.scrollHeight - this.clientHeight)) * 100;
+    document.getElementById('docProgressBar').style.width = Math.min(pct, 100) + '%';
+  });
+}
+
+// In-doc search
+let docSearchHits = [];
+let docSearchIdx = -1;
+function searchInDoc(query) {
+  // Clear previous highlights
+  document.querySelectorAll('.doc-search-highlight').forEach(el => {
+    el.outerHTML = el.textContent;
+  });
+  docSearchHits = [];
+  docSearchIdx = -1;
+
+  if (!query.trim()) {
+    document.getElementById('docHitCount').textContent = '';
+    return;
+  }
+
+  const docBody = document.getElementById('docBody');
+  const articles = docBody.querySelectorAll('.doc-article');
+  articles.forEach(article => {
+    const text = article.innerHTML;
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escaped})`, 'g');
+    if (regex.test(text)) {
+      const count = (text.match(regex) || []).length;
+      article.innerHTML = text.replace(regex, '<span class="doc-search-highlight" style="background:var(--accent-glow);color:var(--accent);border-radius:2px;padding:0 2px;">$1</span>');
+      for (let i = 0; i < count; i++) {
+        const highlights = article.querySelectorAll('.doc-search-highlight');
+        if (highlights.length > docSearchHits.length - [...docSearchHits].filter(h => h.closest && h.closest === article).length) {
+          // Collect all
+        }
+      }
+    }
+  });
+
+  docSearchHits = document.querySelectorAll('.doc-search-highlight');
+  document.getElementById('docHitCount').textContent = docSearchHits.length > 0 ? `${docSearchHits.length} 处` : '无结果';
+
+  if (docSearchHits.length > 0) {
+    docSearchIdx = 0;
+    docSearchHits[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    docSearchHits[0].style.outline = '2px solid var(--accent)';
+  }
+}
+
+function docSearchNav(dir) {
+  if (docSearchHits.length === 0) return;
+  if (docSearchIdx >= 0 && docSearchIdx < docSearchHits.length) {
+    docSearchHits[docSearchIdx].style.outline = 'none';
+  }
+  docSearchIdx = (docSearchIdx + dir + docSearchHits.length) % docSearchHits.length;
+  docSearchHits[docSearchIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+  docSearchHits[docSearchIdx].style.outline = '2px solid var(--accent)';
+}
+
+// ===== DOWNLOAD FUNCTIONS =====
+function downloadTXT() {
+  const blob = new Blob([fullDocText], { type: 'text/plain;charset=utf-8' });
+  triggerDownload(blob, '价格鉴证评估执业规范_中价协〔2024〕13号.txt');
+}
+
+function downloadHTML() {
+  const htmlContent = `<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><title>价格鉴证评估执业规范</title>
+<style>body{font-family:SimSun,serif;max-width:800px;margin:40px auto;padding:0 20px;line-height:2;color:#333;}
+h1{text-align:center;font-size:22px;margin-bottom:4px;}
+h2{font-size:16px;margin:24px 0 8px;border-bottom:1px solid #ccc;padding-bottom:4px;}
+h3{font-size:14px;margin:16px 0 6px;}
+.meta{text-align:center;color:#666;font-size:13px;margin-bottom:24px;}
+p{margin:4px 0;text-indent:2em;}
+.no-indent{text-indent:0;}</style></head><body>
+<h1>价格鉴证评估执业规范</h1>
+<p class="meta">中国价格协会文件 · 中价协〔2024〕13号 · 自2024年7月1日起施行</p>
+${fullDocText.split('\n\n').map(p => {
+  const trimmed = p.trim();
+  if (!trimmed) return '';
+  if (trimmed.startsWith('关于印发')) return `<h2>${trimmed}</h2>`;
+  if (trimmed.match(/^第[一二三四五六]章/)) return `<h2>${trimmed}</h2>`;
+  if (trimmed.match(/^第[一二三四五六七八九十]节/)) return `<h3>${trimmed}</h3>`;
+  if (trimmed.match(/^第[一二三四五六七八九十百]+条/)) return `<p>${trimmed}</p>`;
+  return `<p>${trimmed}</p>`;
+}).join('\n')}
+</body></html>`;
+  const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+  triggerDownload(blob, '价格鉴证评估执业规范_中价协〔2024〕13号.html');
+}
+
+function downloadJSON() {
+  const jsonData = {
+    title: '价格鉴证评估执业规范',
+    documentNumber: '中价协〔2024〕13号',
+    issuer: '中国价格协会',
+    effectiveDate: '2024-07-01',
+    supersededDocument: '中价协〔2020〕31号',
+    totalArticles: 58,
+    chapters: [
+      { number: 1, title: '总则', articles: articles.filter(a=>a.chapterKey==='ch1').map(a=>({number:a.num,content:a.text})) },
+      { number: 2, title: '价格鉴证评估程序', articles: articles.filter(a=>a.chapterKey==='ch2').map(a=>({number:a.num,content:a.text})) },
+      { number: 3, title: '价格鉴证评估方法', articles: articles.filter(a=>a.chapterKey==='ch3').map(a=>({number:a.num,content:a.text})) },
+      { number: 4, title: '档案管理', articles: articles.filter(a=>a.chapterKey==='ch4').map(a=>({number:a.num,content:a.text})) },
+      { number: 5, title: '行业管理', articles: articles.filter(a=>a.chapterKey==='ch5').map(a=>({number:a.num,content:a.text})) },
+      { number: 6, title: '附则', articles: articles.filter(a=>a.chapterKey==='ch6').map(a=>({number:a.num,content:a.text})) }
+    ]
+  };
+  const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json;charset=utf-8' });
+  triggerDownload(blob, '价格鉴证评估执业规范_中价协〔2024〕13号.json');
+}
+
+function downloadMD() {
+  let md = `# 价格鉴证评估执业规范\n\n**文件编号：** 中价协〔2024〕13号  \n**发布机构：** 中国价格协会  \n**施行日期：** 2024年7月1日\n\n---\n\n`;
+  let currentCh = '';
+  articles.forEach(a => {
+    const ch = a.chapter.split('·')[0];
+    if (ch !== currentCh) { currentCh = ch; md += `\n## ${ch}\n\n`; }
+    md += `**${a.num}** ${a.text}\n\n`;
+  });
+  const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+  triggerDownload(blob, '价格鉴证评估执业规范_中价协〔2024〕13号.md');
+}
+
+function downloadCSV() {
+  let csv = '\uFEFF条文编号,章节,条文摘要\n';
+  articles.forEach(a => {
+    const summary = a.text.length > 60 ? a.text.substring(0, 60) + '...' : a.text;
+    csv += `"${a.num}","${a.chapter}","${summary.replace(/"/g, '""')}"\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  triggerDownload(blob, '价格鉴证评估执业规范_条文索引.csv');
+}
+
+function printDoc() {
+  const printWin = window.open('', '_blank');
+  printWin.document.write(`<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<title>价格鉴证评估执业规范 — 打印版</title>
+<style>
+@page{margin:2cm;}
+body{font-family:SimSun,'宋体',serif;font-size:14px;line-height:2;color:#000;max-width:700px;margin:0 auto;padding:20px;}
+h1{text-align:center;font-size:20px;margin-bottom:4px;letter-spacing:0.1em;}
+.meta{text-align:center;color:#555;font-size:12px;margin-bottom:20px;}
+h2{font-size:16px;margin:20px 0 8px;padding-bottom:4px;border-bottom:1px solid #999;}
+h3{font-size:14px;margin:12px 0 4px;font-weight:bold;}
+p{margin:4px 0;}
+.notice{margin:8px 0;}
+@media print{.no-print{display:none;}}
+</style></head><body>
+<div class="no-print" style="text-align:center;padding:20px;"><button onclick="window.print()" style="padding:8px 24px;font-size:14px;cursor:pointer;">点击打印 / 另存为PDF</button><p style="font-size:12px;color:#666;margin-top:8px;">在打印对话框中选择"另存为PDF"即可导出PDF文件</p></div>
+<h1>价格鉴证评估执业规范</h1>
+<p class="meta">中国价格协会文件 · 中价协〔2024〕13号 · 自2024年7月1日起施行</p>
+${fullDocText.split('\n\n').map(p => {
+  const t = p.trim();
+  if(!t) return '';
+  if(t.match(/^关于印发/)) return `<h2>${t}</h2>`;
+  if(t.match(/^第[一二三四五六]章/)) return `<h2>${t}</h2>`;
+  if(t.match(/^第[一二三四五六七八九十]节/)) return `<h3>${t}</h3>`;
+  return `<p>${t}</p>`;
+}).join('\n')}
+</body></html>`);
+  printWin.document.close();
+}
+
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ===== MARKET APPROACH =====
+function updateMarketInputs() {
+  const count = parseInt(document.getElementById('marketCount').value);
+  let html = '<table class="comparable-table"><thead><tr><th>编号</th><th>参照物价格（元）</th><th>调整系数</th><th>说明</th></tr></thead><tbody>';
+  for (let i = 0; i < count; i++) {
+    html += `<tr><td style="color:var(--accent);font-family:var(--mono);font-size:12px;">参照${i+1}</td><td><input type="text" id="mkt_price_${i}" placeholder="如：${100000+i*10000}"></td><td><input type="text" id="mkt_adj_${i}" value="1.00"></td><td><input type="text" id="mkt_note_${i}" placeholder="差异说明"></td></tr>`;
+  }
+  html += '</tbody></table>';
+  document.getElementById('marketInputs').innerHTML = html;
+  toggleMarketWeight();
+}
+function toggleMarketWeight() {
+  const type = document.getElementById('marketWeightType').value;
+  const count = parseInt(document.getElementById('marketCount').value);
+  const container = document.getElementById('marketWeightInputs');
+  if (type === 'custom') {
+    let html = '<div class="form-group"><label>自定义权重（各权重之和应为1）</label><div class="form-row">';
+    for (let i = 0; i < count; i++) html += `<div class="form-group"><label>参照${i+1}权重</label><input type="text" id="mkt_w_${i}" value="${(1/count).toFixed(2)}"></div>`;
+    html += '</div></div>'; container.innerHTML = html; container.style.display = 'block';
+  } else { container.style.display = 'none'; }
+}
+function calcMarket() {
+  const count = parseInt(document.getElementById('marketCount').value);
+  const weightType = document.getElementById('marketWeightType').value;
+  let total = 0, totalWeight = 0, rows = [];
+  for (let i = 0; i < count; i++) {
+    const price = parseFloat(document.getElementById(`mkt_price_${i}`).value) || 0;
+    const adj = parseFloat(document.getElementById(`mkt_adj_${i}`).value) || 1;
+    const note = document.getElementById(`mkt_note_${i}`).value || '';
+    let w = weightType === 'custom' ? (parseFloat(document.getElementById(`mkt_w_${i}`).value) || 0) : (1/count);
+    const adjusted = price * adj;
+    total += adjusted * w; totalWeight += w;
+    rows.push({idx:i+1,price,adj,adjusted,w,note});
+  }
+  if (totalWeight === 0) { document.getElementById('marketResult').innerHTML = '<div class="error-text" style="margin-top:12px;">请输入至少一个参照物价格</div>'; return; }
+  const result = total / totalWeight;
+  let detailHtml = rows.map(r => `<div class="result-row"><span class="rlabel">参照${r.idx}：${formatNum(r.price)} × ${r.adj.toFixed(2)}${r.note?'（'+r.note+'）':''}</span><span class="rvalue">${formatNum(r.adjusted.toFixed(2))}</span></div>`).join('');
+  document.getElementById('marketResult').innerHTML = `<div class="result-box"><div class="result-label">评估价格（市场法）</div><div class="result-value">¥ ${formatNum(result.toFixed(2))}</div><div class="result-detail">${detailHtml}<div class="result-row" style="margin-top:8px;font-weight:600;"><span class="rlabel" style="color:var(--accent);">综合评估价</span><span class="rvalue" style="color:var(--accent);">¥ ${formatNum(result.toFixed(2))}</span></div></div></div>`;
+}
+
+// ===== COST APPROACH =====
+function calcCost() {
+  const replacement = parseFloat(document.getElementById('costReplacement').value) || 0;
+  const physical = parseFloat(document.getElementById('costPhysical').value) || 0;
+  const functional = parseFloat(document.getElementById('costFunctional').value) || 0;
+  const economic = parseFloat(document.getElementById('costEconomic').value) || 0;
+  const totalLoss = physical + functional + economic;
+  const result = replacement - totalLoss;
+  const lossRate = replacement > 0 ? ((totalLoss / replacement) * 100).toFixed(2) : '0.00';
+  if (replacement <= 0) { document.getElementById('costResult').innerHTML = '<div class="error-text" style="margin-top:12px;">请输入重置成本</div>'; return; }
+  document.getElementById('costResult').innerHTML = `<div class="result-box"><div class="result-label">评估价格（成本法）</div><div class="result-value">¥ ${formatNum(result.toFixed(2))}</div><div class="result-detail"><div class="result-row"><span class="rlabel">重置成本</span><span class="rvalue">¥ ${formatNum(replacement.toFixed(2))}</span></div><div class="result-row"><span class="rlabel">实体损耗</span><span class="rvalue" style="color:var(--red);">- ¥ ${formatNum(physical.toFixed(2))}</span></div><div class="result-row"><span class="rlabel">功能性损耗</span><span class="rvalue" style="color:var(--red);">- ¥ ${formatNum(functional.toFixed(2))}</span></div><div class="result-row"><span class="rlabel">经济性损耗</span><span class="rvalue" style="color:var(--red);">- ¥ ${formatNum(economic.toFixed(2))}</span></div><div class="result-row"><span class="rlabel">总损耗率</span><span class="rvalue">${lossRate}%</span></div><div class="result-row" style="margin-top:4px;font-weight:600;"><span class="rlabel" style="color:var(--accent);">评估价格</span><span class="rvalue" style="color:var(--accent);">¥ ${formatNum(result.toFixed(2))}</span></div></div></div>`;
+}
+
+// ===== INCOME APPROACH =====
+document.getElementById('incomeMode').addEventListener('change', function() { document.getElementById('incomeGrowthGroup').style.display = this.value === 'growth' ? 'block' : 'none'; });
+function calcIncome() {
+  const annual = parseFloat(document.getElementById('incomeAnnual').value) || 0;
+  const rate = parseFloat(document.getElementById('incomeRate').value) || 0;
+  const years = parseInt(document.getElementById('incomeYears').value) || 0;
+  const mode = document.getElementById('incomeMode').value;
+  const growth = parseFloat(document.getElementById('incomeGrowth').value) || 0;
+  if (annual <= 0 || rate <= 0 || years <= 0) { document.getElementById('incomeResult').innerHTML = '<div class="error-text" style="margin-top:12px;">请填写完整的收益参数</div>'; return; }
+  const r = rate / 100;
+  let result = 0, formula = '';
+  if (mode === 'equal') {
+    const factor = (1 - Math.pow(1 + r, -years)) / r;
+    result = annual * factor;
+    formula = `${formatNum(annual)} × [(1-(1+${r.toFixed(4)})^-${years}) / ${r.toFixed(4)}]`;
+  } else {
+    const g = growth / 100;
+    if (r <= g) { document.getElementById('incomeResult').innerHTML = '<div class="error-text" style="margin-top:12px;">折现率必须大于增长率</div>'; return; }
+    const factor = (1 / (r - g)) * (1 - Math.pow((1 + g) / (1 + r), years));
+    result = annual * factor;
+    formula = `${formatNum(annual)} / (${(r*100).toFixed(2)}% - ${(g*100).toFixed(2)}%) × [1 - ((1+${g.toFixed(4)})/(1+${r.toFixed(4)}))^${years}]`;
+  }
+  document.getElementById('incomeResult').innerHTML = `<div class="result-box"><div class="result-label">评估价格（收益法）</div><div class="result-value">¥ ${formatNum(result.toFixed(2))}</div><div class="result-detail"><div class="result-row"><span class="rlabel">年预期收益</span><span class="rvalue">¥ ${formatNum(annual.toFixed(2))}</span></div><div class="result-row"><span class="rlabel">折现率</span><span class="rvalue">${rate.toFixed(2)}%</span></div><div class="result-row"><span class="rlabel">收益年限</span><span class="rvalue">${years} 年</span></div>${mode==='growth'?`<div class="result-row"><span class="rlabel">年增长率</span><span class="rvalue">${growth.toFixed(2)}%</span></div>`:''}<div class="result-row"><span class="rlabel">计算公式</span><span class="rvalue" style="font-size:11px;">${formula}</span></div><div class="result-row" style="margin-top:4px;font-weight:600;"><span class="rlabel" style="color:var(--accent);">评估价格</span><span class="rvalue" style="color:var(--accent);">¥ ${formatNum(result.toFixed(2))}</span></div></div></div>`;
+}
+
+// ===== EXPERT CONSULTATION =====
+function updateExpertInputs() {
+  const count = parseInt(document.getElementById('expertCount').value);
+  let html = '<table class="comparable-table"><thead><tr><th>专家</th><th>评估值（元）</th><th>权重</th><th>专业领域</th></tr></thead><tbody>';
+  for (let i = 0; i < count; i++) html += `<tr><td style="color:var(--accent);font-family:var(--mono);font-size:12px;">专家${i+1}</td><td><input type="text" id="exp_val_${i}"></td><td><input type="text" id="exp_w_${i}" value="${(1/count).toFixed(2)}"></td><td><input type="text" id="exp_field_${i}" placeholder="如：资产评估"></td></tr>`;
+  html += '</tbody></table>';
+  document.getElementById('expertInputs').innerHTML = html;
+}
+function calcExpert() {
+  const count = parseInt(document.getElementById('expertCount').value);
+  const method = document.getElementById('expertMethod').value;
+  let values = [], rows = [];
+  for (let i = 0; i < count; i++) {
+    const val = parseFloat(document.getElementById(`exp_val_${i}`).value) || 0;
+    const w = parseFloat(document.getElementById(`exp_w_${i}`).value) || 0;
+    const field = document.getElementById(`exp_field_${i}`).value || '';
+    if (val > 0) { values.push({val,w,field,idx:i+1}); rows.push({val,w,field,idx:i+1}); }
+  }
+  if (values.length === 0) { document.getElementById('expertResult').innerHTML = '<div class="error-text" style="margin-top:12px;">请至少输入一位专家的评估值</div>'; return; }
+  let result = 0, methodName = '';
+  if (method === 'mean') { result = values.reduce((s,v) => s+v.val, 0) / values.length; methodName = '算术平均法'; }
+  else if (method === 'median') { const sorted = [...values].sort((a,b) => a.val-b.val); const mid = Math.floor(sorted.length/2); result = sorted.length%2!==0 ? sorted[mid].val : (sorted[mid-1].val+sorted[mid].val)/2; methodName = '中位数法'; }
+  else if (method === 'trimmed') { if(values.length<3) result=values.reduce((s,v)=>s+v.val,0)/values.length; else { const sorted=[...values].sort((a,b)=>a.val-b.val); const trimmed=sorted.slice(1,-1); result=trimmed.reduce((s,v)=>s+v.val,0)/trimmed.length; } methodName='去极值平均法'; }
+  else if (method === 'weighted') { const totalW=values.reduce((s,v)=>s+v.w,0); if(totalW===0){document.getElementById('expertResult').innerHTML='<div class="error-text" style="margin-top:12px;">权重之和不能为0</div>';return;} result=values.reduce((s,v)=>s+v.val*v.w,0)/totalW; methodName='加权平均法'; }
+  let detailHtml = rows.map(r => `<div class="result-row"><span class="rlabel">专家${r.idx}${r.field?'（'+r.field+'）':''}：¥ ${formatNum(r.val.toFixed(2))}，权重 ${r.w.toFixed(2)}</span><span class="rvalue"></span></div>`).join('');
+  document.getElementById('expertResult').innerHTML = `<div class="result-box"><div class="result-label">评估价格（专家咨询法 · ${methodName}）</div><div class="result-value">¥ ${formatNum(result.toFixed(2))}</div><div class="result-detail">${detailHtml}<div class="result-row" style="margin-top:8px;font-weight:600;"><span class="rlabel" style="color:var(--accent);">统计结果</span><span class="rvalue" style="color:var(--accent);">¥ ${formatNum(result.toFixed(2))}</span></div></div></div>`;
+}
+
+// ===== CALC TABS =====
+function switchCalcTab(tab, btn) {
+  document.querySelectorAll('#panel-calculator .tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#panel-calculator .sub-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('calc-' + tab).classList.add('active');
+}
+
+// ===== WORKFLOW =====
+function toggleStep(el) { el.classList.toggle('expanded'); if(!el.classList.contains('completed')){el.classList.add('completed');el.classList.remove('active-step');const next=el.nextElementSibling;if(next&&next.classList.contains('workflow-step'))next.classList.add('active-step');} }
+function resetWorkflow() { document.querySelectorAll('.workflow-step').forEach((s,i) => { s.classList.remove('completed','active-step','expanded'); if(i===0)s.classList.add('active-step'); }); }
+function expandAllSteps() { document.querySelectorAll('.workflow-step').forEach(s => s.classList.add('expanded')); }
+
+// ===== ARCHIVE =====
+function calcArchiveDate() {
+  const dateStr = document.getElementById('archiveDate').value;
+  const years = parseInt(document.getElementById('archiveYears').value) || 15;
+  if (!dateStr) { document.getElementById('archiveResult').innerHTML = '<div class="error-text" style="margin-top:12px;">请选择归档日期</div>'; return; }
+  const date = new Date(dateStr); date.setFullYear(date.getFullYear() + years);
+  const result = date.toISOString().split('T')[0];
+  const days = Math.round((date - new Date(dateStr)) / (1000*60*60*24));
+  document.getElementById('archiveResult').innerHTML = `<div class="result-box"><div class="result-label">最早可销毁日期</div><div class="result-value">${result}</div><div class="result-detail"><div class="result-row"><span class="rlabel">归档日期</span><span class="rvalue">${dateStr}</span></div><div class="result-row"><span class="rlabel">保存年限</span><span class="rvalue">${years} 年</span></div><div class="result-row"><span class="rlabel">总保存天数</span><span class="rvalue">${days} 天</span></div><div class="result-row"><span class="rlabel">依据</span><span class="rvalue">第四十八条</span></div></div></div>`;
+}
+
+function formatNum(n) { const parts = n.toString().split('.'); parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ','); return parts.join('.'); }
+
+// ===== INIT =====
+renderAllChapters();
+updateMarketInputs();
+updateExpertInputs();
+document.getElementById('archiveDate').value = new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>

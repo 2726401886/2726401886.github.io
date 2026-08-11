@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>事故机动车鉴定及贬值损失评估规范系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090d;
+  --surface: #0f1117;
+  --surface2: #161922;
+  --surface3: #1d2130;
+  --surface4: #252a3a;
+  --border: #2a2f42;
+  --accent: #6c8cff;
+  --accent2: #4a6aee;
+  --accent-glow: rgba(108,140,255,0.12);
+  --accent-dim: rgba(108,140,255,0.06);
+  --gold: #f5c842;
+  --gold-glow: rgba(245,200,66,0.12);
+  --green: #3dd68c;
+  --green-glow: rgba(61,214,140,0.1);
+  --red: #f5576c;
+  --red-glow: rgba(245,87,108,0.1);
+  --orange: #f0a040;
+  --cyan: #4dd0e1;
+  --text-primary: #e8ecf4;
+  --text-secondary: #8892a8;
+  --text-muted: #5a6478;
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  font-family:'Noto Sans SC',sans-serif;
+  background:var(--bg);
+  color:var(--text-primary);
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TITLEBAR */
+.titlebar{
+  background:#0a0c12;
+  border-bottom:1px solid var(--border);
+  padding:0 20px;
+  height:46px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-shrink:0;
+  user-select:none;
+}
+.titlebar-dots{display:flex;gap:8px;}
+.titlebar-dots span{width:13px;height:13px;border-radius:50%;display:block;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.titlebar-title{flex:1;text-align:center;font-size:13px;font-weight:500;color:var(--text-secondary);letter-spacing:1.5px;}
+.titlebar-badge{
+  font-size:10px;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--accent);
+  background:var(--accent-dim);
+  padding:3px 10px;
+  border-radius:20px;
+  border:1px solid rgba(108,140,255,0.2);
+}
+
+/* MAIN */
+.main{display:flex;flex:1;overflow:hidden;}
+
+/* SIDEBAR */
+.sidebar{
+  width:264px;
+  min-width:264px;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.sidebar-header{padding:14px;border-bottom:1px solid var(--border);}
+.sidebar-search{
+  width:100%;
+  background:var(--surface2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:9px 12px;
+  color:var(--text-primary);
+  font-size:12.5px;
+  outline:none;
+  transition:border-color 0.2s;
+  font-family:'Noto Sans SC',sans-serif;
+}
+.sidebar-search:focus{border-color:var(--accent);}
+.sidebar-search::placeholder{color:var(--text-muted);}
+.nav-list{flex:1;overflow-y:auto;padding:6px 0;}
+.nav-list::-webkit-scrollbar{width:3px;}
+.nav-list::-webkit-scrollbar-track{background:transparent;}
+.nav-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.nav-cat{
+  padding:10px 16px 5px;
+  font-size:10px;
+  font-weight:700;
+  color:var(--text-muted);
+  text-transform:uppercase;
+  letter-spacing:2px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 16px 8px 18px;
+  cursor:pointer;
+  font-size:12.5px;
+  color:var(--text-secondary);
+  transition:all 0.15s;
+  border-left:3px solid transparent;
+}
+.nav-item:hover{background:var(--surface2);color:var(--text-primary);}
+.nav-item.active{background:var(--accent-glow);color:var(--accent);border-left-color:var(--accent);}
+.nav-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+
+/* CONTENT */
+.content{flex:1;overflow-y:auto;padding:0;}
+.content::-webkit-scrollbar{width:5px;}
+.content::-webkit-scrollbar-track{background:transparent;}
+.content::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+.section{display:none;padding:32px 36px;animation:fadeIn 0.25s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.sec-header{margin-bottom:28px;}
+.sec-header h1{font-size:22px;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:10px;}
+.sec-header p{font-size:13px;color:var(--text-muted);line-height:1.7;}
+
+/* CARDS */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-bottom:24px;}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:18px;transition:all 0.2s;cursor:default;
+}
+.stat-card:hover{border-color:var(--accent);box-shadow:0 0 20px var(--accent-glow);}
+.stat-card .label{font-size:11px;color:var(--text-muted);margin-bottom:7px;letter-spacing:1px;}
+.stat-card .value{font-size:24px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace;}
+.stat-card .sub{font-size:12px;color:var(--text-secondary);margin-top:4px;}
+
+/* TABLES */
+.table-wrap{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:22px;
+}
+.table-head{
+  padding:13px 18px;font-size:13px;font-weight:600;
+  background:var(--surface2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.table-head .tf{margin-left:auto;}
+.table-head input{
+  background:var(--surface3);border:1px solid var(--border);border-radius:4px;
+  padding:5px 10px;color:var(--text-primary);font-size:12px;outline:none;width:170px;
+  font-family:'Noto Sans SC',sans-serif;
+}
+.table-head input:focus{border-color:var(--accent);}
+table{width:100%;border-collapse:collapse;}
+th{
+  background:var(--surface2);padding:9px 14px;text-align:left;
+  font-size:11.5px;font-weight:600;color:var(--text-secondary);
+  border-bottom:1px solid var(--border);white-space:nowrap;position:sticky;top:0;
+}
+td{
+  padding:8px 14px;font-size:12.5px;
+  border-bottom:1px solid rgba(42,47,66,0.4);color:var(--text-primary);
+}
+tr:hover td{background:var(--accent-dim);}
+.nc{font-family:'JetBrains Mono',monospace;text-align:center;font-weight:500;color:var(--accent);}
+.sc{padding-left:28px;color:var(--text-secondary);}
+.gr{font-weight:600;}
+
+/* FORMULA */
+.formula-box{
+  background:linear-gradient(135deg, var(--surface2), var(--surface3));
+  border:1px solid var(--border);border-left:3px solid var(--gold);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:16px 20px;margin-bottom:18px;
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  color:var(--gold);line-height:1.8;overflow-x:auto;
+}
+
+/* INFO */
+.info-note{
+  background:var(--accent-dim);border-left:3px solid var(--accent);
+  padding:13px 17px;margin-bottom:18px;border-radius:0 var(--radius) var(--radius) 0;
+  font-size:12.5px;color:var(--text-secondary);line-height:1.7;
+}
+.warn-note{
+  background:var(--gold-glow);border-left:3px solid var(--gold);
+  padding:13px 17px;margin-bottom:18px;border-radius:0 var(--radius) var(--radius) 0;
+  font-size:12.5px;color:var(--text-secondary);line-height:1.7;
+}
+.danger-note{
+  background:var(--red-glow);border-left:3px solid var(--red);
+  padding:13px 17px;margin-bottom:18px;border-radius:0 var(--radius) var(--radius) 0;
+  font-size:12.5px;color:var(--text-secondary);line-height:1.7;
+}
+
+/* CALC */
+.calc-panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:26px;margin-bottom:22px;
+}
+.calc-panel h3{font-size:15px;font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.form-row{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.form-group{flex:1;min-width:180px;}
+.form-group label{display:block;font-size:11.5px;color:var(--text-muted);margin-bottom:5px;font-weight:500;}
+.form-group input,.form-group select{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:9px 12px;color:var(--text-primary);
+  font-size:13px;outline:none;transition:border-color 0.2s;
+  font-family:'Noto Sans SC',sans-serif;
+}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent);}
+select option{background:var(--surface2);}
+.btn{
+  padding:9px 22px;border:none;border-radius:var(--radius-sm);
+  font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;
+  font-family:'Noto Sans SC',sans-serif;
+}
+.btn-primary{background:var(--accent);color:#fff;}
+.btn-primary:hover{background:var(--accent2);box-shadow:0 0 16px var(--accent-glow);}
+.btn-secondary{background:var(--surface3);color:var(--text-secondary);border:1px solid var(--border);}
+.btn-secondary:hover{background:var(--border);color:var(--text-primary);}
+.btn-gold{background:var(--gold);color:#000;}
+.btn-gold:hover{background:#e0b830;}
+.btn-green{background:var(--green);color:#000;}
+.btn-green:hover{background:#2ec07d;}
+
+.result-box{
+  margin-top:18px;background:var(--surface2);border:1px solid var(--accent);
+  border-radius:var(--radius);padding:18px;display:none;
+}
+.result-box.show{display:block;animation:fadeIn 0.3s ease;}
+.result-box .rt{font-size:11px;color:var(--text-muted);margin-bottom:6px;letter-spacing:1px;}
+.result-box .rv{font-size:28px;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace;}
+.result-box .rd{margin-top:10px;font-size:12.5px;color:var(--text-secondary);line-height:1.9;}
+
+/* TABS */
+.tab-bar{display:flex;gap:0;margin-bottom:20px;border-bottom:1px solid var(--border);}
+.tab-btn{
+  padding:10px 18px;font-size:12.5px;color:var(--text-muted);cursor:pointer;
+  border:none;border-bottom:2px solid transparent;transition:all 0.15s;
+  background:none;font-family:'Noto Sans SC',sans-serif;
+}
+.tab-btn:hover{color:var(--text-primary);}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+.tab-pane{display:none;}.tab-pane.active{display:block;}
+
+/* CHECKLIST */
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;}
+.check-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-sm);
+  padding:12px 14px;font-size:12.5px;
+}
+.check-item .ci-title{font-weight:600;margin-bottom:4px;color:var(--text-primary);}
+.check-item .ci-field{
+  display:flex;gap:8px;margin-top:6px;align-items:center;
+}
+.check-item .ci-field input[type="text"]{
+  flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:4px;
+  padding:5px 8px;color:var(--text-primary);font-size:12px;outline:none;
+}
+
+/* STATUS */
+.statusbar{
+  background:var(--surface);border-top:1px solid var(--border);
+  padding:4px 16px;display:flex;align-items:center;gap:14px;
+  font-size:10.5px;color:var(--text-muted);height:26px;flex-shrink:0;
+}
+.statusbar .dot{width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;}
+
+/* RANGE SLIDER */
+.range-display{
+  display:flex;align-items:center;gap:10px;
+}
+.range-display input[type="range"]{
+  flex:1;-webkit-appearance:none;height:4px;background:var(--surface4);
+  border-radius:2px;outline:none;
+}
+.range-display input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;border-radius:50%;
+  background:var(--accent);cursor:pointer;border:2px solid var(--bg);
+}
+.range-val{
+  font-family:'JetBrains Mono',monospace;font-size:13px;
+  color:var(--accent);min-width:52px;text-align:right;
+}
+
+/* MULTI SELECT */
+.multi-result{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--radius-sm);padding:14px;margin-top:10px;
+  font-size:12.5px;color:var(--text-secondary);line-height:1.8;
+}
+.tag{
+  display:inline-block;padding:2px 8px;border-radius:3px;
+  font-size:11px;margin:2px;font-family:'JetBrains Mono',monospace;
+}
+.tag-blue{background:var(--accent-glow);color:var(--accent);border:1px solid rgba(108,140,255,0.2);}
+.tag-gold{background:var(--gold-glow);color:var(--gold);border:1px solid rgba(245,200,66,0.2);}
+.tag-green{background:var(--green-glow);color:var(--green);border:1px solid rgba(61,214,140,0.2);}
+.tag-red{background:var(--red-glow);color:var(--red);border:1px solid rgba(245,87,108,0.2);}
+</style>
+</head>
+<body>
+
+<div class="titlebar">
+  <div class="titlebar-dots"><span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span></div>
+  <div class="titlebar-title">事故机动车鉴定及贬值损失评估规范系统</div>
+  <div class="titlebar-badge">T/NMAAA.0004-2025</div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <input type="text" class="sidebar-search" placeholder="🔍 搜索功能模块..." id="sideSearch" oninput="filterNav(this.value)">
+    </div>
+    <div class="nav-list" id="navList">
+      <div class="nav-cat">概览</div>
+      <div class="nav-item active" onclick="showSec('home',this)"><span class="nav-icon">📊</span>工作台</div>
+      <div class="nav-item" onclick="showSec('terms',this)"><span class="nav-icon">📖</span>术语和定义</div>
+
+      <div class="nav-cat">核心计算</div>
+      <div class="nav-item" onclick="showSec('formula',this)"><span class="nav-icon">📐</span>计算公式体系</div>
+      <div class="nav-item" onclick="showSec('calc-main',this)"><span class="nav-icon">🧮</span>贬值损失计算器</div>
+      <div class="nav-item" onclick="showSec('calc-pre',this)"><span class="nav-icon">💰</span>事故前价值计算器</div>
+      <div class="nav-item" onclick="showSec('calc-post',this)"><span class="nav-icon">📉</span>事故后价值计算器</div>
+
+      <div class="nav-cat">调整系数</div>
+      <div class="nav-item" onclick="showSec('coeff-t',this)"><span class="nav-icon">⚙️</span>综合调整系数T</div>
+      <div class="nav-item" onclick="showSec('coeff-damage',this)"><span class="nav-icon">🔧</span>事故贬值系数（受损部位）</div>
+      <div class="nav-item" onclick="showSec('coeff-accident',this)"><span class="nav-icon">⚠️</span>事故贬值系数（等级/工艺）</div>
+      <div class="nav-item" onclick="showSec('coeff-psych',this)"><span class="nav-icon">🧠</span>心理影响度系数</div>
+
+      <div class="nav-cat">工具</div>
+      <div class="nav-item" onclick="showSec('checklist',this)"><span class="nav-icon">📋</span>车辆技术状况检查表</div>
+      <div class="nav-item" onclick="showSec('limits',this)"><span class="nav-icon">📏</span>取值限制速查</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- HOME -->
+    <div class="section active" id="home">
+      <div class="sec-header">
+        <h1>📊 工作台</h1>
+        <p>事故机动车鉴定及贬值损失评估规范 · T/NMAAA.0004-2025 · 2025年7月1日实施</p>
+      </div>
+      <div class="card-grid">
+        <div class="stat-card"><div class="label">标准编号</div><div class="value" style="font-size:16px;">T/NMAAA.0004</div><div class="sub">内蒙古机动车鉴定评估行业协会</div></div>
+        <div class="stat-card"><div class="label">核心公式</div><div class="value" style="font-size:18px;">P = P₁ - P₂</div><div class="sub">贬值损失 = 事故前价值 - 事故后价值</div></div>
+        <div class="stat-card"><div class="label">调整系数</div><div class="value">5</div><div class="sub">大类调整系数体系</div></div>
+        <div class="stat-card"><div class="label">心理影响等级</div><div class="value">10</div><div class="sub">一级至十级分类</div></div>
+        <div class="stat-card"><div class="label">受损部位类型</div><div class="value">12</div><div class="sub">车身结构件+系统+特殊</div></div>
+        <div class="stat-card"><div class="label">计算工具</div><div class="value">3</div><div class="sub">贬值损失/事故前/事故后</div></div>
+      </div>
+
+      <div class="info-note">
+        <strong>适用范围：</strong>本标准规定了事故机动车鉴定及贬值损失评估规范的术语和定义、鉴定评估程序和方法。适用于内蒙古自治区事故机动车的鉴定及贬值损失评估相关执业活动，其他相关行业和机构可参照执行。
+      </div>
+
+      <div class="warn-note">
+        <strong>重要限制：</strong><br>
+        · 表2累加额不高于30%<br>
+        · 表3中带*号为必需考虑项目<br>
+        · 表4等级多项叠加最高不超15%<br>
+        · 事故贬值调整系数所有取值累加合计不超50%<br>
+        · 非法定业务档案保存期限为15年，法定业务为30年
+      </div>
+
+      <div class="table-wrap">
+        <div class="table-title table-head">📑 标准目录</div>
+        <table>
+          <thead><tr><th>章节</th><th>内容</th></tr></thead>
+          <tbody>
+            <tr><td class="nc">1</td><td>范围</td></tr>
+            <tr><td class="nc">2</td><td>规范性引用文件</td></tr>
+            <tr><td class="nc">3</td><td>术语和定义</td></tr>
+            <tr><td class="nc">4</td><td>基本要求</td></tr>
+            <tr><td class="nc">5</td><td>事故机动车鉴定评估程序</td></tr>
+            <tr><td class="nc">6</td><td>贬值损失鉴定评估计算</td></tr>
+            <tr><td class="nc">7</td><td>确定综合调整系数和其它调整系数</td></tr>
+            <tr><td class="nc">8</td><td>出具贬值鉴定评估意见书</td></tr>
+            <tr><td class="nc">9</td><td>归档</td></tr>
+            <tr><td class="nc">附录A</td><td>机动车技术状况检查记录表（资料性附录）</td></tr>
+            <tr><td class="nc">附录B</td><td>计算公式说明及取值限制（规范性附录）</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TERMS -->
+    <div class="section" id="terms">
+      <div class="sec-header">
+        <h1>📖 术语和定义</h1>
+        <p>本标准定义的核心术语</p>
+      </div>
+      <div class="table-wrap">
+        <div class="table-head">术语定义一览</div>
+        <table>
+          <thead><tr><th style="width:40%">术语</th><th>定义</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>3.1 事故机动车</strong></td>
+              <td>是指因泡水、火灾、碰撞、维修不当、使用不当等因素（非自然损耗因素）造成损失的机动车。<br><em style="color:var(--text-muted)">注：包括机动车、场（厂）内机动车辆、拖拉机。</em></td>
+            </tr>
+            <tr>
+              <td><strong>3.2 事故机动车鉴定</strong></td>
+              <td>是指对事故机动车技术状况鉴定和价值评估、机动车质量与技术鉴定等活动。</td>
+            </tr>
+            <tr>
+              <td><strong>3.3 事故机动车贬值损失</strong></td>
+              <td>是指机动车在事故前的鉴定评估值与事故修复后的鉴定评估值的差额。<br><em style="color:var(--text-muted)">注：该贬值损失不包括因维修工艺不规范和维修质量不符合相关标准所造成的贬值。</em></td>
+            </tr>
+            <tr>
+              <td><strong>3.4 事故机动车心理影响度分析判断</strong></td>
+              <td>是指事故机动车给人们造成的心理影响事实已经形成，鉴定评估专业人员对其影响程度的判断。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FORMULA -->
+    <div class="section" id="formula">
+      <div class="sec-header">
+        <h1>📐 计算公式体系</h1>
+        <p>事故机动车贬值损失评估的完整公式链</p>
+      </div>
+
+      <div class="formula-box">
+        <strong>1. 贬值损失：</strong>P = P₁ - P₂
+      </div>
+      <div class="info-note">P为贬值损失评估值，P₁为事故发生前价值，P₂为事故发生后价值。</div>
+
+      <div class="formula-box">
+        <strong>2. 事故前价值：</strong>P₁ = C × Z₁<br>
+        其中：Z₁（综合成新率）= L × T<br><br>
+        <strong>3. 理论成新率 L：</strong><br>
+        L = [(N - N₁) / N + (G - G₁) / G] / 2<br><br>
+        N=理论使用年限(月), N₁=已使用年限(月)<br>
+        G=理论使用公里数, G₁=表显公里数或理论公里数
+      </div>
+
+      <div class="formula-box">
+        <strong>4. 事故后价值：</strong>P₂ = C × Z₂<br>
+        其中：Z₂（事故后综合成新率）= Z₁ × C₂b<br><br>
+        <strong>5. 事故贬值调整系数：</strong>C₂b = 1 - γ × (1 + δ₂/T)⁻¹<br><br>
+        δ₁ = 事故调整系数贬值系数（受损部位、修复方法）<br>
+        δ₂ = 事故调整系数贬值系数（事故等级、修复工艺、事故前状况）<br>
+        γ = 心理影响评估调整系数
+      </div>
+
+      <div class="warn-note">
+        <strong>附录B关键说明：</strong><br>
+        · N以月计算，不足一个月以整月计算<br>
+        · G₁表显公里数缺失的以相关标准确定的理论公里数计算<br>
+        · 事故后未修复的以修复后符合国家事故车修复标准考虑计算<br>
+        · 修复技术规范不符合国家事故车修复标准的不在本标准适用范围<br>
+        · T系数的事故前后动态检查以相同标准记取，不重复计算
+      </div>
+    </div>
+
+    <!-- CALC MAIN -->
+    <div class="section" id="calc-main">
+      <div class="sec-header">
+        <h1>🧮 贬值损失综合计算器</h1>
+        <p>一站式计算P = P₁ - P₂，自动调用所有系数表</p>
+      </div>
+      <div class="calc-panel">
+        <h3>📋 基础参数</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>重置成本 C（元）</label>
+            <input type="number" id="mc_C" placeholder="同型号新车市场售价">
+          </div>
+          <div class="form-group">
+            <label>理论使用年限 N（月）</label>
+            <input type="number" id="mc_N" placeholder="如: 180">
+          </div>
+          <div class="form-group">
+            <label>已使用年限 N₁（月）</label>
+            <input type="number" id="mc_N1" placeholder="如: 48">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>理论使用公里数 G（公里）</label>
+            <input type="number" id="mc_G" placeholder="如: 600000">
+          </div>
+          <div class="form-group">
+            <label>表显/理论公里数 G₁（公里）</label>
+            <input type="number" id="mc_G1" placeholder="如: 80000">
+          </div>
+        </div>
+
+        <h3 style="margin-top:18px;">⚙️ 综合调整系数 T</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>技术性能 (权重35%)</label>
+            <select id="mc_tech">
+              <option value="">请选择...</option>
+              <option value="0.3">差</option>
+              <option value="0.45">较差</option>
+              <option value="0.65">中等</option>
+              <option value="0.85">较好</option>
+              <option value="1.0">好</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>维护保养 (权重20%)</label>
+            <select id="mc_maint">
+              <option value="">请选择...</option>
+              <option value="0.5">差</option>
+              <option value="0.65">较差</option>
+              <option value="0.8">中等</option>
+              <option value="0.9">较好</option>
+              <option value="1.0">好</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>制造质量 (权重20%)</label>
+            <select id="mc_mfg">
+              <option value="">请选择...</option>
+              <option value="0.6">国产</option>
+              <option value="0.8">合资</option>
+              <option value="1.0">原装进口</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>工作性质 (权重15%)</label>
+            <select id="mc_work">
+              <option value="">请选择...</option>
+              <option value="0.5">营运、特殊环境</option>
+              <option value="0.8">公务、商务</option>
+              <option value="1.0">家庭、私用</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>市场美誉 (权重10%)</label>
+            <select id="mc_rep">
+              <option value="">请选择...</option>
+              <option value="0.6">差</option>
+              <option value="0.8">一般</option>
+              <option value="1.0">好</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 style="margin-top:18px;">🔧 事故贬值系数 δ₁（受损部位）</h3>
+        <p style="font-size:12px;color:var(--text-muted);margin-bottom:10px;">选择所有受损部位及修复方法，系统自动累加（累加不高于30%）</p>
+        <div id="mc_damage_list"></div>
+        <div class="form-row" style="margin-top:10px;">
+          <div class="form-group" style="min-width:200px;">
+            <select id="mc_add_damage">
+              <option value="">+ 添加受损部位...</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end;">
+            <button class="btn btn-secondary" onclick="addDamageItem()">添加</button>
+          </div>
+        </div>
+
+        <h3 style="margin-top:18px;">⚠️ 事故贬值系数 δ₂（等级/工艺/前状况）</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>事故等级（必需*）</label>
+            <select id="mc_level">
+              <option value="">请选择...</option>
+              <option value="3.5">轻度（2-5%，取中值3.5%）</option>
+              <option value="4.5">中度（3-6%，取中值4.5%）</option>
+              <option value="5.5">严重（4-7%，取中值5.5%）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>本次事故前状况（可选）</label>
+            <select id="mc_prev">
+              <option value="0">不考虑</option>
+              <option value="5">无事故，正常使用（3-7%，取5%）</option>
+              <option value="6">有一次或多次普通事故修复（4-8%，取6%）</option>
+              <option value="7">有一次或多次较大事故修复（5-9%，取7%）</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>修复工艺（可选）</label>
+            <select id="mc_craft">
+              <option value="0">不考虑</option>
+              <option value="4.5">原厂返修（3-6%，取4.5%）</option>
+              <option value="5.5">4S专修（4-7%，取5.5%）</option>
+              <option value="6.5">其它合法厂修（5-8%，取6.5%）</option>
+            </select>
+          </div>
+        </div>
+
+        <h3 style="margin-top:18px;">🧠 心理影响评估系数 γ</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>心理影响等级</label>
+            <select id="mc_psych">
+              <option value="0">无心理影响</option>
+              <option value="0.05">十级 - 轻度受损可修复基本达原厂（0-0.1%）</option>
+              <option value="0.25">九级 - 车辆中度受损（0.2-0.3%）</option>
+              <option value="0.45">八级 - 车辆较重受损（0.4-0.5%）</option>
+              <option value="0.65">七级 - 车辆严重受损（0.6-0.7%）</option>
+              <option value="0.85">六级 - 造成除人以外物种伤亡（0.8-0.9%）</option>
+              <option value="1.5">五级 - 造成除人以外多物种伤亡（1-2%）</option>
+              <option value="3.5">四级 - 造成一人及以上受伤（3-4%）</option>
+              <option value="5.5">三级 - 造成一人及以上重伤（5-6%）</option>
+              <option value="7.5">二级 - 车外有一人及以上死亡（7-8%）</option>
+              <option value="9.5">一级 - 车内有一人及以上死亡（9-10%）</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-primary" onclick="calcMain()">计算贬值损失</button>
+          <button class="btn btn-gold" onclick="calcT()">单独计算T系数</button>
+          <button class="btn btn-secondary" onclick="resetMain()">重置所有</button>
+        </div>
+
+        <div id="mcResult" class="result-box">
+          <div class="rt">贬值损失评估值</div>
+          <div class="rv" id="mcRv">—</div>
+          <div class="rd" id="mcRd"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALC PRE -->
+    <div class="section" id="calc-pre">
+      <div class="sec-header">
+        <h1>💰 事故前价值计算器</h1>
+        <p>P₁ = C × Z₁，Z₁ = L × T</p>
+      </div>
+      <div class="calc-panel">
+        <h3>📋 参数输入</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>重置成本 C（元）</label>
+            <input type="number" id="pre_C" placeholder="同型号新车市场售价">
+          </div>
+          <div class="form-group">
+            <label>综合调整系数 T（0-1）</label>
+            <input type="number" id="pre_T" placeholder="如: 0.82" step="0.01" min="0" max="1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>理论使用年限 N（月）</label>
+            <input type="number" id="pre_N" placeholder="如: 180">
+          </div>
+          <div class="form-group">
+            <label>已使用年限 N₁（月）</label>
+            <input type="number" id="pre_N1" placeholder="如: 48">
+          </div>
+          <div class="form-group">
+            <label>理论使用公里数 G</label>
+            <input type="number" id="pre_G" placeholder="如: 600000">
+          </div>
+          <div class="form-group">
+            <label>表显/理论公里数 G₁</label>
+            <input type="number" id="pre_G1" placeholder="如: 80000">
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-primary" onclick="calcPre()">计算事故前价值</button>
+          <button class="btn btn-secondary" onclick="resetPre()">重置</button>
+        </div>
+        <div id="preResult" class="result-box">
+          <div class="rt">事故前价值 P₁</div>
+          <div class="rv" id="preRv">—</div>
+          <div class="rd" id="preRd"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALC POST -->
+    <div class="section" id="calc-post">
+      <div class="sec-header">
+        <h1>📉 事故后价值计算器</h1>
+        <p>P₂ = C × Z₂，Z₂ = Z₁ × C₂b</p>
+      </div>
+      <div class="calc-panel">
+        <h3>📋 参数输入</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>重置成本 C（元）</label>
+            <input type="number" id="post_C" placeholder="同型号新车市场售价">
+          </div>
+          <div class="form-group">
+            <label>事故前综合成新率 Z₁（0-1）</label>
+            <input type="number" id="post_Z1" placeholder="如: 0.65" step="0.01">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>事故贬值调整系数 C₂b（0-1）</label>
+            <input type="number" id="post_C2b" placeholder="如: 0.85" step="0.01">
+          </div>
+        </div>
+        <div class="info-note">如需计算C₂b，请使用"贬值损失综合计算器"或按公式 C₂b = 1 - γ×(1+δ₂/T)⁻¹ 手动计算。</div>
+        <div style="display:flex;gap:12px;">
+          <button class="btn btn-primary" onclick="calcPost()">计算事故后价值</button>
+          <button class="btn btn-secondary" onclick="resetPost()">重置</button>
+        </div>
+        <div id="postResult" class="result-box">
+          <div class="rt">事故后价值 P₂</div>
+          <div class="rv" id="postRv">—</div>
+          <div class="rd" id="postRd"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COEFF T -->
+    <div class="section" id="coeff-t">
+      <div class="sec-header">
+        <h1>⚙️ 综合调整系数 T 确定</h1>
+        <p>依据表1，根据机动车技术性能、维护保养、制造质量、工作性质、市场美誉的权重综合确定</p>
+      </div>
+      <div class="calc-panel">
+        <h3>🧮 T系数在线计算器</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>技术性能 (35%)</label>
+            <div class="range-display">
+              <input type="range" id="t_tech" min="0.3" max="1.0" step="0.05" value="0.8" oninput="updateT()">
+              <span class="range-val" id="t_tech_v">0.80</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>维护保养 (20%)</label>
+            <div class="range-display">
+              <input type="range" id="t_maint" min="0.5" max="1.0" step="0.05" value="0.8" oninput="updateT()">
+              <span class="range-val" id="t_maint_v">0.80</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>制造质量 (20%)</label>
+            <div class="range-display">
+              <input type="range" id="t_mfg" min="0.6" max="1.0" step="0.05" value="0.8" oninput="updateT()">
+              <span class="range-val" id="t_mfg_v">0.80</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>工作性质 (15%)</label>
+            <div class="range-display">
+              <input type="range" id="t_work" min="0.5" max="1.0" step="0.05" value="0.8" oninput="updateT()">
+              <span class="range-val" id="t_work_v">0.80</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>市场美誉 (10%)</label>
+            <div class="range-display">
+              <input type="range" id="t_rep" min="0.6" max="1.0" step="0.05" value="0.8" oninput="updateT()">
+              <span class="range-val" id="t_rep_v">0.80</span>
+            </div>
+          </div>
+        </div>
+        <div class="result-box show" style="border-color:var(--gold);">
+          <div class="rt">综合调整系数 T</div>
+          <div class="rv" id="tVal" style="color:var(--gold);">—</div>
+          <div class="rd" id="tDetail"></div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-head">📊 表1 综合调整系数的确定</div>
+        <table>
+          <thead><tr><th>确定因素</th><th>等级</th><th>调整系数</th><th>权重(%)</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="5"><strong>技术性能</strong></td><td>差</td><td class="nc" rowspan="5">0.3-1.0</td><td class="nc" rowspan="5">35</td></tr>
+            <tr><td>较差</td></tr>
+            <tr><td>中等</td></tr>
+            <tr><td>较好</td></tr>
+            <tr><td>好</td></tr>
+            <tr><td rowspan="5"><strong>维护保养</strong></td><td>差</td><td class="nc" rowspan="5">0.5-1.0</td><td class="nc" rowspan="5">20</td></tr>
+            <tr><td>较差</td></tr>
+            <tr><td>中等</td></tr>
+            <tr><td>较好</td></tr>
+            <tr><td>好</td></tr>
+            <tr><td rowspan="3"><strong>制造质量</strong></td><td>国产</td><td class="nc" rowspan="3">0.6-1.0</td><td class="nc" rowspan="3">20</td></tr>
+            <tr><td>合资</td></tr>
+            <tr><td>原装进口</td></tr>
+            <tr><td rowspan="3"><strong>工作性质</strong></td><td>营运、特殊环境</td><td class="nc" rowspan="3">0.5-1.0</td><td class="nc" rowspan="3">15</td></tr>
+            <tr><td>公务、商务</td></tr>
+            <tr><td>家庭、私用</td></tr>
+            <tr><td rowspan="3"><strong>市场美誉(结合工作条件)</strong></td><td>差</td><td class="nc" rowspan="3">0.6-1.0</td><td class="nc" rowspan="3">10</td></tr>
+            <tr><td>一般</td></tr>
+            <tr><td>好</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COEFF DAMAGE -->
+    <div class="section" id="coeff-damage">
+      <div class="sec-header">
+        <h1>🔧 事故贬值系数 δ₁（受损部位、修复方法）</h1>
+        <p>依据表2，根据车身结构件受损部位及修复方法确定贬值系数。累加额不高于30%。</p>
+      </div>
+      <div class="warn-note">表2累加额不高于30%。</div>
+      <div class="table-wrap">
+        <div class="table-head">📊 表2 事故调整系数贬值系数参照表（受损部位）
+          <div class="tf"><input type="text" placeholder="搜索部位..." oninput="filterTbl(this,'dmgTbl')"></div>
+        </div>
+        <table id="dmgTbl">
+          <thead><tr><th>系统</th><th>受损部位</th><th>修复方法</th><th>贬值系数(%)</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>左右前纵梁</td><td>切割、焊接</td><td class="nc">3-7</td></tr>
+            <tr><td>左右前纵梁</td><td>整形修复</td><td class="nc">2-5</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>右后纵梁</td><td>切割、焊接</td><td class="nc">3-7</td></tr>
+            <tr><td>右后纵梁</td><td>整形修复</td><td class="nc">2-4</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>左右下边梁</td><td>切割、焊接</td><td class="nc">3-5</td></tr>
+            <tr><td>左右下边梁</td><td>整形修复</td><td class="nc">2-4</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>左右A、B、C、D柱</td><td>切割、焊接</td><td class="nc">3-6</td></tr>
+            <tr><td>左右A、B、C、D柱</td><td>整形修复</td><td class="nc">2-4</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>车底纵梁及底板</td><td>切割、焊接</td><td class="nc">3-7</td></tr>
+            <tr><td>车底纵梁及底板</td><td>整形修复</td><td class="nc">2-4</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>前防火墙、后围板</td><td>切割、焊接</td><td class="nc">2-5</td></tr>
+            <tr><td>前防火墙、后围板</td><td>整形修复</td><td class="nc">1-3</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>左右前减震器座部位</td><td>切割、焊接</td><td class="nc">2-4</td></tr>
+            <tr><td>左右前减震器座部位</td><td>整形修复</td><td class="nc">1-2</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>左右后减震器座部位</td><td>切割、焊接</td><td class="nc">2-4</td></tr>
+            <tr><td>左右后减震器座部位</td><td>整形修复</td><td class="nc">1-2</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>车顶横梁及边梁</td><td>切割、焊接</td><td class="nc">2-4</td></tr>
+            <tr><td>车顶横梁及边梁</td><td>整形修复</td><td class="nc">1-2</td></tr>
+            <tr><td rowspan="2"><strong>车身</strong></td><td>车身侧围</td><td>切割、焊接</td><td class="nc">2-4</td></tr>
+            <tr><td>车身侧围</td><td>整形修复</td><td class="nc">1-2</td></tr>
+            <tr><td><strong>动力系统</strong></td><td>含发动机、电动机</td><td>因事故原因导致</td><td class="nc">3-7</td></tr>
+            <tr><td><strong>安全系统</strong></td><td>安全气囊</td><td>因撞击导致</td><td class="nc">3-6</td></tr>
+            <tr><td><strong>泡水</strong></td><td>积水进入车舱</td><td>—</td><td class="nc">2-8</td></tr>
+            <tr><td><strong>火灾</strong></td><td>自燃/撞击燃烧/其他</td><td>—</td><td class="nc">2-10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COEFF ACCIDENT -->
+    <div class="section" id="coeff-accident">
+      <div class="sec-header">
+        <h1>⚠️ 事故贬值系数 δ₂（事故等级/修复工艺/事故前状况）</h1>
+        <p>依据表3，带*号为必需考虑项目</p>
+      </div>
+      <div class="info-note">表3中带*号的项目为必需考虑项目，非*号为根据鉴定案件实际情况决定的可选项目。</div>
+      <div class="table-wrap">
+        <div class="table-head">📊 表3 事故调整系数贬值系数参照表</div>
+        <table>
+          <thead><tr><th>调整类型</th><th>形态描述</th><th>贬值系数(%)</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3"><strong>*车辆事故的等级</strong></td><td>轻度、事故部位轻度受损或维修费用低</td><td class="nc">2-5</td></tr>
+            <tr><td>中度、多处事故部位受损或维修费用较高</td><td class="nc">3-6</td></tr>
+            <tr><td>严重、多处事故部位严重受损，维修费用高</td><td class="nc">4-7</td></tr>
+            <tr><td rowspan="3"><strong>本次事故前状况</strong></td><td>无事故，正常使用</td><td class="nc">3-7</td></tr>
+            <tr><td>有一次或多次普通事故修复使用</td><td class="nc">4-8</td></tr>
+            <tr><td>有一次或多次较大事故修复使用</td><td class="nc">5-9</td></tr>
+            <tr><td rowspan="3"><strong>*修复工艺</strong></td><td>原厂返修</td><td class="nc">3-6</td></tr>
+            <tr><td>4S专修</td><td class="nc">4-7</td></tr>
+            <tr><td>其它合法厂修</td><td class="nc">5-8</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COEFF PSYCH -->
+    <div class="section" id="coeff-psych">
+      <div class="sec-header">
+        <h1>🧠 心理影响度贬值系数 γ</h1>
+        <p>依据表4心理影响评估调整系数。等级多项叠加最高不超15%。</p>
+      </div>
+      <div class="warn-note">表4等级多项叠加最高不超15%。</div>
+      <div class="table-wrap">
+        <div class="table-head">📊 表4 心理影响评估调整系数参照表</div>
+        <table>
+          <thead><tr><th>等级</th><th>事故影响因素</th><th>贬值系数(%)</th></tr></thead>
+          <tbody>
+            <tr><td class="nc gr">一级</td><td>事故机动车内有一人及以上死亡</td><td class="nc" style="color:var(--red);">9-10</td></tr>
+            <tr><td class="nc gr">二级</td><td>事故机动车外有一人及以上死亡</td><td class="nc" style="color:var(--red);">7-8</td></tr>
+            <tr><td class="nc gr">三级</td><td>事故车造成一人及以上重伤</td><td class="nc" style="color:var(--orange);">5-6</td></tr>
+            <tr><td class="nc gr">四级</td><td>事故车造成一人及以上受伤</td><td class="nc" style="color:var(--orange);">3-4</td></tr>
+            <tr><td class="nc gr">五级</td><td>事故车有造成除人以外多物种伤亡</td><td class="nc" style="color:var(--gold);">1-2</td></tr>
+            <tr><td class="nc gr">六级</td><td>事故车有造成除人以外物种伤亡</td><td class="nc">0.8-0.9</td></tr>
+            <tr><td class="nc gr">七级</td><td>没有造成人以外多物种伤亡，车辆严重受损</td><td class="nc">0.6-0.7</td></tr>
+            <tr><td class="nc gr">八级</td><td>没有造成人以外多物种伤亡，车辆较重受损</td><td class="nc">0.4-0.5</td></tr>
+            <tr><td class="nc gr">九级</td><td>没有造成人以外多物种伤亡，车辆中度受损</td><td class="nc">0.2-0.3</td></tr>
+            <tr><td class="nc gr">十级</td><td>没有造成人以外多物种伤亡，车辆轻度受损可修复基本达到原厂水平</td><td class="nc">0-0.1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div class="section" id="checklist">
+      <div class="sec-header">
+        <h1>📋 机动车技术状况检查记录表</h1>
+        <p>附录A（资料性附录）· 可在线填写并打印</p>
+      </div>
+      <div class="calc-panel">
+        <h3>🚗 车辆基本信息</h3>
+        <div class="check-grid">
+          <div class="check-item"><div class="ci-title">厂牌型号</div><div class="ci-field"><input type="text" placeholder="填写厂牌型号"></div></div>
+          <div class="check-item"><div class="ci-title">牌照号码</div><div class="ci-field"><input type="text" placeholder="填写牌照号码"></div></div>
+          <div class="check-item"><div class="ci-title">发动机号</div><div class="ci-field"><input type="text" placeholder="填写发动机号"></div></div>
+          <div class="check-item"><div class="ci-title">VIN码</div><div class="ci-field"><input type="text" placeholder="填写VIN码"></div></div>
+          <div class="check-item"><div class="ci-title">初次登记日期</div><div class="ci-field"><input type="text" placeholder="年 月 日"></div></div>
+          <div class="check-item"><div class="ci-title">表征里程</div><div class="ci-field"><input type="text" placeholder="公里"></div></div>
+          <div class="check-item"><div class="ci-title">品牌名称</div><div class="ci-field"><input type="text" placeholder="填写品牌名称"></div></div>
+          <div class="check-item"><div class="ci-title">车身颜色</div><div class="ci-field"><input type="text" placeholder="填写车身颜色"></div></div>
+          <div class="check-item"><div class="ci-title">使用性质</div><div class="ci-field"><select><option>营运车</option><option>非营运车</option><option>其他</option></select></div></div>
+          <div class="check-item"><div class="ci-title">机动车所有人</div><div class="ci-field"><input type="text" placeholder="企业法人证书代码/身份证号码"></div></div>
+        </div>
+
+        <h3 style="margin-top:14px;">⚙️ 重要配置</h3>
+        <div class="check-grid">
+          <div class="check-item"><div class="ci-title">燃料标号 / 排量 / 缸数</div><div class="ci-field"><input type="text" placeholder="填写"></div></div>
+          <div class="check-item"><div class="ci-title">发动机功率 / 排放标准</div><div class="ci-field"><input type="text" placeholder="填写"></div></div>
+          <div class="check-item"><div class="ci-title">变速器形式 / 驱动方式</div><div class="ci-field"><input type="text" placeholder="填写"></div></div>
+          <div class="check-item"><div class="ci-title">气囊 / ABS</div><div class="ci-field"><select><option>ABS有</option><option>ABS无</option></select></div></div>
+        </div>
+
+        <h3 style="margin-top:14px;">🔍 车辆技术性能鉴定</h3>
+        <div class="check-grid">
+          <div class="check-item"><div class="ci-title">车身检查</div><div class="ci-field"><input type="text" placeholder="缺陷描述"></div></div>
+          <div class="check-item"><div class="ci-title">发动机检查</div><div class="ci-field"><input type="text" placeholder="缺陷描述"></div></div>
+          <div class="check-item"><div class="ci-title">车内检查</div><div class="ci-field"><input type="text" placeholder="缺陷描述"></div></div>
+          <div class="check-item"><div class="ci-title">启动检查</div><div class="ci-field"><input type="text" placeholder="缺陷描述"></div></div>
+          <div class="check-item"><div class="ci-title">路试检查</div><div class="ci-field"><input type="text" placeholder="缺陷描述"></div></div>
+          <div class="check-item"><div class="ci-title">底盘检查</div><div class="ci-field"><input type="text" placeholder="缺陷描述"></div></div>
+        </div>
+
+        <h3 style="margin-top:14px;">🧠 心理影响度调整系数</h3>
+        <div class="check-grid">
+          <div class="check-item" style="grid-column:1/-1;"><div class="ci-title">具体等级及加权说明</div><div class="ci-field"><input type="text" placeholder="填写心理影响度等级及说明" style="width:100%;"></div></div>
+          <div class="check-item" style="grid-column:1/-1;"><div class="ci-title">鉴定评估结果</div>
+            <div class="ci-field">
+              <select><option>好</option><option>较好</option><option>一般</option><option>较差</option><option>差</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;gap:12px;">
+          <button class="btn btn-green" onclick="window.print()">🖨️ 打印检查表</button>
+          <button class="btn btn-secondary" onclick="clearChecklist()">清除所有填写</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- LIMITS -->
+    <div class="section" id="limits">
+      <div class="sec-header">
+        <h1>📏 取值限制速查</h1>
+        <p>附录B（规范性附录）中的关键限制条件汇总</p>
+      </div>
+      <div class="danger-note">
+        <strong>⚠ 所有限制条件必须严格遵守，否则评估结果无效</strong>
+      </div>
+      <div class="table-wrap">
+        <div class="table-head">📊 取值限制汇总表</div>
+        <table>
+          <thead><tr><th>#</th><th>限制项目</th><th>限制值</th><th>说明</th></tr></thead>
+          <tbody>
+            <tr><td class="nc">1</td><td>表2累加额</td><td class="nc" style="color:var(--red);">≤30%</td><td>所有受损部位贬值系数累加</td></tr>
+            <tr><td class="nc">2</td><td>表4叠加</td><td class="nc" style="color:var(--red);">≤15%</td><td>心理影响等级多项叠加</td></tr>
+            <tr><td class="nc">3</td><td>事故贬值调整系数总累加</td><td class="nc" style="color:var(--red);">≤50%</td><td>表2+表3+表4所有取值累加合计</td></tr>
+            <tr><td class="nc">4</td><td>综合调整系数T</td><td class="nc">0-1</td><td>加权计算，五项权重合计100%</td></tr>
+            <tr><td class="nc">5</td><td>理论成新率L</td><td class="nc">0-1</td><td>时间折旧和里程折旧取均值</td></tr>
+            <tr><td class="nc">6</td><td>综合成新率Z</td><td class="nc">0-1</td><td>Z = L × T</td></tr>
+            <tr><td class="nc">7</td><td>非法定业务档案</td><td class="nc">15年</td><td>保存期限</td></tr>
+            <tr><td class="nc">8</td><td>法定业务档案</td><td class="nc">30年</td><td>保存期限</td></tr>
+            <tr><td class="nc">9</td><td>表3*号项目</td><td class="nc" style="color:var(--gold);">必需</td><td>事故等级、修复工艺为必需考虑项目</td></tr>
+            <tr><td class="nc">10</td><td>表3非*号项目</td><td class="nc">可选</td><td>本次事故前状况根据案件实际决定</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-note">
+        <strong>权重汇总：</strong><br>
+        · 技术性能：35% · 维护保养：20% · 制造质量：20% · 工作性质：15% · 市场美誉：10%
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+
+<div class="statusbar">
+  <span class="dot"></span>
+  <span>系统就绪</span>
+  <span>|</span>
+  <span>T/NMAAA.0004-2025 · 事故机动车鉴定及贬值损失评估规范</span>
+  <span style="margin-left:auto">内蒙古机动车鉴定评估行业协会</span>
+</div>
+
+<script>
+// NAV
+function showSec(id,el){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el)el.classList.add('active');
+  document.querySelector('.content').scrollTop=0;
+}
+
+function filterNav(q){
+  q=q.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(i=>{
+    i.style.display=i.textContent.toLowerCase().includes(q)?'':'none';
+  });
+  document.querySelectorAll('.nav-cat').forEach(c=>{
+    let n=c.nextElementSibling,has=false;
+    while(n&&!n.classList.contains('nav-cat')){
+      if(n.classList.contains('nav-item')&&n.style.display!=='none')has=true;
+      n=n.nextElementSibling;
+    }
+    c.style.display=has?'':'none';
+  });
+}
+
+function filterTbl(inp,tblId){
+  const q=inp.value.toLowerCase();
+  document.querySelectorAll('#'+tblId+' tbody tr').forEach(r=>{
+    r.style.display=r.textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+// DAMAGE ITEMS
+const damageOptions=[
+  {val:'lqz_cut',label:'左右前纵梁 - 切割焊接',range:[3,7]},
+  {val:'lqz_fix',label:'左右前纵梁 - 整形修复',range:[2,5]},
+  {val:'rhq_cut',label:'右后纵梁 - 切割焊接',range:[3,7]},
+  {val:'rhq_fix',label:'右后纵梁 - 整形修复',range:[2,4]},
+  {val:'lxb_cut',label:'左右下边梁 - 切割焊接',range:[3,5]},
+  {val:'lxb_fix',label:'左右下边梁 - 整形修复',range:[2,4]},
+  {val:'abcd_cut',label:'左右A/B/C/D柱 - 切割焊接',range:[3,6]},
+  {val:'abcd_fix',label:'左右A/B/C/D柱 - 整形修复',range:[2,4]},
+  {val:'cdl_cut',label:'车底纵梁及底板 - 切割焊接',range:[3,7]},
+  {val:'cdl_fix',label:'车底纵梁及底板 - 整形修复',range:[2,4]},
+  {val:'fhq_cut',label:'前防火墙/后围板 - 切割焊接',range:[2,5]},
+  {val:'fhq_fix',label:'前防火墙/后围板 - 整形修复',range:[1,3]},
+  {val:'fqz_cut',label:'左右前减震器座 - 切割焊接',range:[2,4]},
+  {val:'fqz_fix',label:'左右前减震器座 - 整形修复',range:[1,2]},
+  {val:'hqz_cut',label:'左右后减震器座 - 切割焊接',range:[2,4]},
+  {val:'hqz_fix',label:'左右后减震器座 - 整形修复',range:[1,2]},
+  {val:'cdh_cut',label:'车顶横梁及边梁 - 切割焊接',range:[2,4]},
+  {val:'cdh_fix',label:'车顶横梁及边梁 - 整形修复',range:[1,2]},
+  {val:'cw_cut',label:'车身侧围 - 切割焊接',range:[2,4]},
+  {val:'cw_fix',label:'车身侧围 - 整形修复',range:[1,2]},
+  {val:'power',label:'动力系统(发动机/电动机)',range:[3,7]},
+  {val:'airbag',label:'安全气囊',range:[3,6]},
+  {val:'flood',label:'泡水 - 积水进入车舱',range:[2,8]},
+  {val:'fire',label:'火灾',range:[2,10]},
+];
+
+let selectedDamage=[];
+
+function initDamageSelect(){
+  const sel=document.getElementById('mc_add_damage');
+  damageOptions.forEach(o=>{
+    const opt=document.createElement('option');
+    opt.value=o.val;
+    opt.textContent=o.label+` (${o.range[0]}-${o.range[1]}%)`;
+    sel.appendChild(opt);
+  });
+}
+
+function addDamageItem(){
+  const sel=document.getElementById('mc_add_damage');
+  const val=sel.value;
+  if(!val)return;
+  if(selectedDamage.find(d=>d.val===val)){sel.value='';return;}
+  const opt=damageOptions.find(o=>o.val===val);
+  const mid=prompt(`请输入${opt.label}的贬值系数(%)\n参考范围: ${opt.range[0]}-${opt.range[1]}%\n（输入数字，如取中值输入${((opt.range[0]+opt.range[1])/2).toFixed(1)}）`);
+  if(mid===null||isNaN(parseFloat(mid))){sel.value='';return;}
+  selectedDamage.push({val:opt.val,label:opt.label,pct:parseFloat(mid)});
+  renderDamageList();
+  sel.value='';
+}
+
+function removeDamage(idx){
+  selectedDamage.splice(idx,1);
+  renderDamageList();
+}
+
+function renderDamageList(){
+  const div=document.getElementById('mc_damage_list');
+  if(!selectedDamage.length){div.innerHTML='<div style="font-size:12px;color:var(--text-muted);padding:8px 0;">暂无受损部位</div>';return;}
+  let total=0;
+  let html='<div class="multi-result">';
+  selectedDamage.forEach((d,i)=>{
+    total+=d.pct;
+    html+=`<span class="tag tag-red">${d.label}: ${d.pct}% <span style="cursor:pointer;margin-left:4px;" onclick="removeDamage(${i})">✕</span></span> `;
+  });
+  html+=`<br><br><strong>δ₁ 累加: ${total.toFixed(1)}%</strong>`;
+  if(total>30)html+=` <span style="color:var(--red);">⚠ 超过30%上限！</span>`;
+  html+='</div>';
+  div.innerHTML=html;
+}
+
+// T CALCULATOR
+function updateT(){
+  const tech=parseFloat(document.getElementById('t_tech').value);
+  const maint=parseFloat(document.getElementById('t_maint').value);
+  const mfg=parseFloat(document.getElementById('t_mfg').value);
+  const work=parseFloat(document.getElementById('t_work').value);
+  const rep=parseFloat(document.getElementById('t_rep').value);
+  document.getElementById('t_tech_v').textContent=tech.toFixed(2);
+  document.getElementById('t_maint_v').textContent=maint.toFixed(2);
+  document.getElementById('t_mfg_v').textContent=mfg.toFixed(2);
+  document.getElementById('t_work_v').textContent=work.toFixed(2);
+  document.getElementById('t_rep_v').textContent=rep.toFixed(2);
+  const T=tech*0.35+maint*0.20+mfg*0.20+work*0.15+rep*0.10;
+  document.getElementById('tVal').textContent=T.toFixed(4);
+  document.getElementById('tDetail').innerHTML=
+    `<strong>计算过程：</strong><br>`+
+    `技术性能: ${tech.toFixed(2)} × 35% = ${(tech*0.35).toFixed(4)}<br>`+
+    `维护保养: ${maint.toFixed(2)} × 20% = ${(maint*0.20).toFixed(4)}<br>`+
+    `制造质量: ${mfg.toFixed(2)} × 20% = ${(mfg*0.20).toFixed(4)}<br>`+
+    `工作性质: ${work.toFixed(2)} × 15% = ${(work*0.15).toFixed(4)}<br>`+
+    `市场美誉: ${rep.toFixed(2)} × 10% = ${(rep*0.10).toFixed(4)}<br>`+
+    `<strong>T = ${T.toFixed(4)}</strong>`;
+}
+
+// MAIN CALC
+function calcMain(){
+  const C=parseFloat(document.getElementById('mc_C').value);
+  const N=parseFloat(document.getElementById('mc_N').value);
+  const N1=parseFloat(document.getElementById('mc_N1').value);
+  const G=parseFloat(document.getElementById('mc_G').value);
+  const G1=parseFloat(document.getElementById('mc_G1').value);
+
+  if(isNaN(C)||isNaN(N)||isNaN(N1)||isNaN(G)||isNaN(G1)){
+    alert('请填写完整的基础参数');return;
+  }
+
+  // T
+  const tech=parseFloat(document.getElementById('mc_tech').value)||0;
+  const maint=parseFloat(document.getElementById('mc_maint').value)||0;
+  const mfg=parseFloat(document.getElementById('mc_mfg').value)||0;
+  const work=parseFloat(document.getElementById('mc_work').value)||0;
+  const rep=parseFloat(document.getElementById('mc_rep').value)||0;
+  if(!tech||!maint||!mfg||!work||!rep){alert('请选择综合调整系数T的所有因素');return;}
+  const T=tech*0.35+maint*0.20+mfg*0.20+work*0.15+rep*0.10;
+
+  // L
+  const L_raw=((N-N1)/N+(G-G1)/G)/2;
+  const L=Math.max(0,Math.min(1,L_raw));
+
+  // Z1
+  const Z1=L*T;
+
+  // delta1
+  let delta1=0;
+  selectedDamage.forEach(d=>{delta1+=d.pct;});
+  if(delta1>30){alert('受损部位贬值系数累加超过30%上限，请调整');return;}
+
+  // delta2
+  const level=parseFloat(document.getElementById('mc_level').value)||0;
+  const prev=parseFloat(document.getElementById('mc_prev').value)||0;
+  const craft=parseFloat(document.getElementById('mc_craft').value)||0;
+  const delta2=level+prev+craft;
+
+  // gamma
+  const gamma=parseFloat(document.getElementById('mc_psych').value)||0;
+
+  // total check
+  if(delta1+delta2+gamma>50){
+    alert(`所有取值累加(${(delta1+delta2+gamma).toFixed(1)}%)超过50%上限，请调整`);
+    return;
+  }
+
+  // C2b = 1 - gamma% * (1 + delta2%/T) ^ (-1)
+  // Note: percentages are used as percentages in the formula context
+  const gammaDec=gamma/100;
+  const delta2Dec=delta2/100;
+  const delta1Dec=delta1/100;
+
+  // The actual formula from the standard: C₂b = 1 - (delta1 + gamma*(1+delta2/T)^(-1))
+  // Based on appendix B point 6: δ = (1+δ₂/T)^(-1)
+  // Combined: C₂b = 1 - (δ₁ + γ×(1+δ₂/T)^(-1))
+  const psychFactor=gammaDec*(1/(1+delta2Dec/T));
+  const C2b=Math.max(0,1-(delta1Dec+psychFactor));
+
+  const Z2=Z1*C2b;
+  const P1=C*Z1;
+  const P2=C*Z2;
+  const P=P1-P2;
+
+  const rb=document.getElementById('mcResult');
+  document.getElementById('mcRv').textContent='¥'+P.toLocaleString('zh-CN',{maximumFractionDigits:0});
+  document.getElementById('mcRd').innerHTML=
+    `<strong>完整计算过程：</strong><br><br>`+
+    `<span class="tag tag-blue">基础参数</span><br>`+
+    `重置成本 C = ¥${C.toLocaleString()}<br>`+
+    `理论成新率 L = [(${N}-${N1})/${N} + (${G}-${G1})/${G}] / 2 = ${L.toFixed(4)}<br>`+
+    `综合调整系数 T = ${T.toFixed(4)}<br>`+
+    `综合成新率 Z₁ = ${L.toFixed(4)} × ${T.toFixed(4)} = ${Z1.toFixed(4)}<br><br>`+
+    `<span class="tag tag-gold">事故贬值系数</span><br>`+
+    `δ₁（受损部位）= ${delta1.toFixed(1)}%<br>`+
+    `δ₂（等级/工艺/前状况）= ${delta2.toFixed(1)}%（等级${level}% + 前状况${prev}% + 工艺${craft}%）<br>`+
+    `γ（心理影响）= ${gamma.toFixed(1)}%<br>`+
+    `累加合计 = ${(delta1+delta2+gamma).toFixed(1)}% ${delta1+delta2+gamma<=50?'✓':'⚠ 超限'}<br><br>`+
+    `<span class="tag tag-green">核心计算</span><br>`+
+    `心理影响因子 = γ×(1+δ₂/T)⁻¹ = ${(gammaDec*100).toFixed(1)}% × (1+${(delta2Dec*100).toFixed(1)}%/${T.toFixed(4)})⁻¹ = ${(psychFactor*100).toFixed(2)}%<br>`+
+    `事故贬值调整系数 C₂b = 1 - (δ₁ + 心理因子) = 1 - (${(delta1Dec*100).toFixed(1)}% + ${(psychFactor*100).toFixed(2)}%) = ${C2b.toFixed(4)}<br>`+
+    `事故后综合成新率 Z₂ = ${Z1.toFixed(4)} × ${C2b.toFixed(4)} = ${Z2.toFixed(4)}<br><br>`+
+    `<span class="tag tag-red">最终结果</span><br>`+
+    `事故前价值 P₁ = ${C.toLocaleString()} × ${Z1.toFixed(4)} = ¥${P1.toLocaleString('zh-CN',{maximumFractionDigits:0})}<br>`+
+    `事故后价值 P₂ = ${C.toLocaleString()} × ${Z2.toFixed(4)} = ¥${P2.toLocaleString('zh-CN',{maximumFractionDigits:0})}<br>`+
+    `<strong>贬值损失 P = P₁ - P₂ = ¥${P.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`;
+  rb.classList.add('show');
+}
+
+function calcT(){
+  showSec('coeff-t',null);
+  updateT();
+}
+
+function resetMain(){
+  ['mc_C','mc_N','mc_N1','mc_G','mc_G1'].forEach(id=>document.getElementById(id).value='');
+  ['mc_tech','mc_maint','mc_mfg','mc_work','mc_rep','mc_level','mc_prev','mc_craft','mc_psych'].forEach(id=>document.getElementById(id).selectedIndex=0);
+  selectedDamage=[];
+  renderDamageList();
+  document.getElementById('mcResult').classList.remove('show');
+}
+
+// PRE CALC
+function calcPre(){
+  const C=parseFloat(document.getElementById('pre_C').value);
+  const T=parseFloat(document.getElementById('pre_T').value);
+  const N=parseFloat(document.getElementById('pre_N').value);
+  const N1=parseFloat(document.getElementById('pre_N1').value);
+  const G=parseFloat(document.getElementById('pre_G').value);
+  const G1=parseFloat(document.getElementById('pre_G1').value);
+  if(isNaN(C)||isNaN(T)||isNaN(N)||isNaN(N1)||isNaN(G)||isNaN(G1)){alert('请填写所有参数');return;}
+  const L=Math.max(0,Math.min(1,((N-N1)/N+(G-G1)/G)/2));
+  const Z1=L*T;
+  const P1=C*Z1;
+  const rb=document.getElementById('preResult');
+  document.getElementById('preRv').textContent='¥'+P1.toLocaleString('zh-CN',{maximumFractionDigits:0});
+  document.getElementById('preRd').innerHTML=
+    `<strong>计算过程：</strong><br>`+
+    `L = [(${N}-${N1})/${N} + (${G}-${G1})/${G}] / 2 = ${L.toFixed(4)}<br>`+
+    `Z₁ = ${L.toFixed(4)} × ${T.toFixed(4)} = ${Z1.toFixed(4)}<br>`+
+    `P₁ = ${C.toLocaleString()} × ${Z1.toFixed(4)} = <strong>¥${P1.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`;
+  rb.classList.add('show');
+}
+function resetPre(){['pre_C','pre_T','pre_N','pre_N1','pre_G','pre_G1'].forEach(id=>document.getElementById(id).value='');document.getElementById('preResult').classList.remove('show');}
+
+// POST CALC
+function calcPost(){
+  const C=parseFloat(document.getElementById('post_C').value);
+  const Z1=parseFloat(document.getElementById('post_Z1').value);
+  const C2b=parseFloat(document.getElementById('post_C2b').value);
+  if(isNaN(C)||isNaN(Z1)||isNaN(C2b)){alert('请填写所有参数');return;}
+  const Z2=Z1*C2b;
+  const P2=C*Z2;
+  const rb=document.getElementById('postResult');
+  document.getElementById('postRv').textContent='¥'+P2.toLocaleString('zh-CN',{maximumFractionDigits:0});
+  document.getElementById('postRd').innerHTML=
+    `<strong>计算过程：</strong><br>`+
+    `Z₂ = ${Z1.toFixed(4)} × ${C2b.toFixed(4)} = ${Z2.toFixed(4)}<br>`+
+    `P₂ = ${C.toLocaleString()} × ${Z2.toFixed(4)} = <strong>¥${P2.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`;
+  rb.classList.add('show');
+}
+function resetPost(){['post_C','post_Z1','post_C2b'].forEach(id=>document.getElementById(id).value='');document.getElementById('postResult').classList.remove('show');}
+
+// CLEAR CHECKLIST
+function clearChecklist(){
+  document.querySelectorAll('#checklist input[type="text"]').forEach(i=>i.value='');
+}
+
+// INIT
+initDamageSelect();
+renderDamageList();
+updateT();
+
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='f'){e.preventDefault();document.getElementById('sideSearch').focus();}
+});
+</script>
+</body>
+</html>

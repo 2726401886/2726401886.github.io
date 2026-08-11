@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>火灾损失价格鉴证评估系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cinnabar:#b91c1c;--cinnabar-dark:#991b1b;--cinnabar-light:#fecaca;
+  --bg-dark:#1c1917;--bg-darker:#0f0e0d;--bg-main:#f7f5f2;--surface:#ffffff;
+  --text:#1c1917;--text-secondary:#57534e;--text-muted:#a8a29e;
+  --border:#d6d3d1;--border-light:#e7e5e4;
+  --sidebar-w:280px;--header-h:52px;--tabs-h:44px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.06);--shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --radius:6px;
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:'Noto Sans SC',system-ui,sans-serif;color:var(--text);background:var(--bg-main);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+h1,h2,h3,h4{font-family:'Noto Serif SC',serif;font-weight:600;line-height:1.4}
+.mono{font-family:'DM Mono',monospace}
+
+/* ── Header ── */
+.header{background:var(--bg-dark);color:#fff;height:var(--header-h);display:flex;align-items:center;padding:0 20px;gap:14px;flex-shrink:0;user-select:none}
+.header .logo{width:28px;height:28px;background:var(--cinnabar);border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;flex-shrink:0}
+.header h1{font-size:15px;font-weight:500;font-family:'Noto Sans SC',sans-serif;letter-spacing:.5px}
+.header .version{font-size:11px;color:var(--text-muted);margin-left:auto;font-family:'DM Mono',monospace}
+
+/* ── Tab bar ── */
+.tab-bar{background:var(--bg-darker);height:var(--tabs-h);display:flex;align-items:stretch;padding:0 12px;gap:2px;flex-shrink:0}
+.tab-btn{background:none;border:none;color:#a8a29e;font-size:13px;padding:0 18px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;position:relative;transition:color .2s}
+.tab-btn:hover{color:#d6d3d1}
+.tab-btn.active{color:#fff}
+.tab-btn.active::after{content:'';position:absolute;bottom:0;left:12px;right:12px;height:2px;background:var(--cinnabar);border-radius:2px 2px 0 0}
+
+/* ── Main layout ── */
+.main{flex:1;display:flex;overflow:hidden}
+.tab-panel{display:none;width:100%;height:100%}
+.tab-panel.active{display:flex}
+
+/* ── Specification tab ── */
+.spec-sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border-light);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.spec-search{padding:12px;border-bottom:1px solid var(--border-light)}
+.spec-search input{width:100%;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:'Noto Sans SC',sans-serif;outline:none;transition:border-color .2s}
+.spec-search input:focus{border-color:var(--cinnabar)}
+.spec-search input::placeholder{color:var(--text-muted)}
+.spec-nav{flex:1;overflow-y:auto;padding:8px 0}
+.spec-nav::-webkit-scrollbar{width:5px}
+.spec-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.nav-chapter{padding:8px 16px 4px;font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.nav-chapter .arrow{font-size:10px;transition:transform .2s;display:inline-block}
+.nav-chapter.collapsed .arrow{transform:rotate(-90deg)}
+.nav-chapter.collapsed+.nav-items{display:none}
+.nav-items{margin-bottom:4px}
+.nav-item{display:block;padding:5px 16px 5px 28px;font-size:12.5px;color:var(--text-secondary);cursor:pointer;text-decoration:none;border-left:2px solid transparent;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-item:hover{background:var(--bg-main);color:var(--text)}
+.nav-item.active{border-left-color:var(--cinnabar);color:var(--cinnabar);background:var(--cinnabar-light);font-weight:500}
+
+.spec-content{flex:1;overflow-y:auto;padding:28px 36px 60px;scroll-behavior:smooth}
+.spec-content::-webkit-scrollbar{width:7px}
+.spec-content::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.spec-content::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
+
+.article{padding:20px 0;border-bottom:1px solid var(--border-light)}
+.article:last-child{border-bottom:none}
+.article-title{font-size:16px;font-weight:700;color:var(--cinnabar);margin-bottom:10px;font-family:'Noto Serif SC',serif;scroll-margin-top:20px}
+.article-body{font-size:14px;line-height:1.85;color:var(--text)}
+.article-body p{margin-bottom:10px;text-indent:2em}
+.article-body ol,.article-body ul{padding-left:2em;margin-bottom:10px}
+.article-body li{margin-bottom:6px;line-height:1.8}
+.article-body .sub-item{margin-bottom:8px}
+.article-body .sub-title{font-weight:600;margin-bottom:4px}
+.highlight{background:#fef08a;padding:0 2px;border-radius:2px}
+.spec-notice{background:var(--bg-main);border:1px solid var(--border-light);border-radius:var(--radius);padding:20px;margin-bottom:24px}
+.spec-notice h2{font-size:18px;margin-bottom:12px;color:var(--cinnabar)}
+.spec-notice .meta{font-size:13px;color:var(--text-secondary);margin-bottom:6px}
+
+/* ── Content panels (non-spec) ── */
+.content-panel{flex:1;overflow-y:auto;padding:28px 36px 60px}
+.content-panel::-webkit-scrollbar{width:7px}
+.content-panel::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.panel-header{margin-bottom:24px}
+.panel-header h2{font-size:22px;color:var(--text);margin-bottom:6px}
+.panel-header p{font-size:13.5px;color:var(--text-secondary)}
+
+/* ── Cards ── */
+.card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow-sm)}
+.card h3{font-size:15px;margin-bottom:12px;color:var(--text)}
+.card h4{font-size:13.5px;margin-bottom:8px;color:var(--text-secondary)}
+
+/* ── Classification section ── */
+.class-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.class-card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:16px;transition:box-shadow .2s,border-color .2s;cursor:default}
+.class-card:hover{border-color:var(--cinnabar);box-shadow:var(--shadow-md)}
+.class-card .num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:var(--cinnabar);color:#fff;border-radius:50%;font-size:12px;font-weight:700;margin-bottom:8px}
+.class-card h4{font-size:14px;margin-bottom:6px;font-family:'Noto Serif SC',serif}
+.class-card p{font-size:12.5px;line-height:1.7;color:var(--text-secondary)}
+
+/* ── Burn rate tables ── */
+.br-section{margin-bottom:28px}
+.br-section h3{font-size:16px;margin-bottom:14px;padding-bottom:8px;border-bottom:2px solid var(--cinnabar);display:inline-block}
+.br-table{width:100%;border-collapse:collapse;font-size:13px}
+.br-table th{background:var(--bg-dark);color:#fff;padding:10px 14px;text-align:left;font-weight:500;font-size:12.5px}
+.br-table td{padding:10px 14px;border-bottom:1px solid var(--border-light);vertical-align:top;line-height:1.6}
+.br-table tr:hover td{background:#fef9ee}
+.br-table .level{display:inline-block;padding:2px 8px;border-radius:3px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.level-light{background:#dcfce7;color:#166534}
+.level-moderate{background:#fef3c7;color:#92400e}
+.level-heavy{background:#fee2e2;color:#991b1b}
+.level-total{background:#1c1917;color:#fff}
+
+/* ── Calculator ── */
+.calc-tabs{display:flex;gap:4px;margin-bottom:20px;flex-wrap:wrap}
+.calc-tab{padding:8px 16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:13px;font-family:'Noto Sans SC',sans-serif;transition:all .2s}
+.calc-tab:hover{border-color:var(--cinnabar)}
+.calc-tab.active{background:var(--cinnabar);color:#fff;border-color:var(--cinnabar)}
+.calc-panel{display:none}
+.calc-panel.active{display:block}
+.form-row{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.form-group{flex:1;min-width:180px}
+.form-group label{display:block;font-size:12.5px;color:var(--text-secondary);margin-bottom:4px;font-weight:500}
+.form-group input,.form-group select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:13.5px;font-family:'DM Mono',monospace;outline:none;transition:border-color .2s;background:var(--surface)}
+.form-group input:focus,.form-group select:focus{border-color:var(--cinnabar)}
+.form-group .unit{font-size:11px;color:var(--text-muted);margin-top:2px}
+.btn-calc{padding:10px 28px;background:var(--cinnabar);color:#fff;border:none;border-radius:var(--radius);font-size:14px;font-weight:600;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:background .2s;margin-top:8px}
+.btn-calc:hover{background:var(--cinnabar-dark)}
+.result-box{background:linear-gradient(135deg,#fef2f2,#fefce8);border:1px solid var(--cinnabar-light);border-radius:var(--radius);padding:20px;margin-top:16px}
+.result-box .label{font-size:12.5px;color:var(--text-secondary);margin-bottom:4px}
+.result-box .value{font-size:28px;font-weight:700;color:var(--cinnabar);font-family:'DM Mono',monospace}
+.result-box .formula{font-size:12px;color:var(--text-muted);margin-top:8px;font-family:'DM Mono',monospace;line-height:1.6}
+.calc-note{margin-top:12px;padding:12px;background:var(--bg-main);border-radius:var(--radius);font-size:12.5px;color:var(--text-secondary);line-height:1.7}
+.calc-note strong{color:var(--text)}
+
+/* ── Life table ── */
+.life-search{margin-bottom:16px}
+.life-search input{width:100%;max-width:400px;padding:8px 12px;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:'Noto Sans SC',sans-serif;outline:none}
+.life-search input:focus{border-color:var(--cinnabar)}
+.life-table-wrap{overflow-x:auto}
+.life-table{width:100%;border-collapse:collapse;font-size:13px;min-width:600px}
+.life-table th{background:var(--bg-dark);color:#fff;padding:10px 14px;text-align:left;font-weight:500;font-size:12.5px;position:sticky;top:0;z-index:1}
+.life-table td{padding:8px 14px;border-bottom:1px solid var(--border-light);vertical-align:top}
+.life-table tr:hover td{background:#fef9ee}
+.life-table .cat-row{background:var(--bg-main);font-weight:600}
+.life-table .cat-row td{color:var(--cinnabar);font-size:13.5px}
+.life-table .sub-cat-row{background:#fafaf9;font-weight:500}
+.life-table .sub-cat-row td{color:var(--text-secondary);font-size:12.5px}
+
+/* ── Principles section ── */
+.principle-list{display:grid;gap:12px}
+.principle-card{background:var(--surface);border:1px solid var(--border-light);border-left:3px solid var(--cinnabar);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px}
+.principle-card h4{font-size:14px;margin-bottom:4px}
+.principle-card p{font-size:13px;line-height:1.7;color:var(--text-secondary)}
+
+/* ── Procedure section ── */
+.proc-card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.proc-card .step-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--cinnabar);color:#fff;border-radius:50%;font-size:13px;font-weight:700;margin-right:8px;vertical-align:middle}
+.proc-card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.proc-card .content{font-size:13.5px;line-height:1.8;color:var(--text);padding-left:36px}
+.proc-card .content p{margin-bottom:8px}
+.proc-card .content ol,.proc-card .content ul{padding-left:1.5em;margin-bottom:8px}
+.proc-card .content li{margin-bottom:4px}
+
+/* ── Methods section ── */
+.method-card{background:var(--surface);border:1px solid var(--border-light);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.method-card h3{font-size:17px;color:var(--cinnabar);margin-bottom:14px;font-family:'Noto Serif SC',serif;padding-bottom:8px;border-bottom:1px solid var(--border-light)}
+.method-card .content{font-size:13.5px;line-height:1.85}
+.method-card .content p{margin-bottom:10px}
+.method-card .content ol,.method-card .content ul{padding-left:1.5em;margin-bottom:10px}
+.method-card .content li{margin-bottom:6px}
+.method-card .content .formula-box{background:var(--bg-main);border:1px solid var(--border-light);border-radius:var(--radius);padding:12px 16px;margin:10px 0;font-family:'DM Mono',monospace;font-size:13px;line-height:1.8}
+
+/* ── Scrollbar global ── */
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* ── Print ── */
+@media print{
+  .header,.tab-bar,.spec-sidebar{display:none!important}
+  .main{display:block!important}
+  .tab-panel{display:block!important}
+  .spec-content,.content-panel{padding:0!important;overflow:visible!important}
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="logo">火</div>
+  <h1>火灾损失价格鉴证评估系统</h1>
+  <span class="version">v1.0 · 依据中价协〔2024〕15号</span>
+</div>
+
+<!-- Tab bar -->
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="tab-spec">规范全文</button>
+  <button class="tab-btn" data-tab="tab-principles">评估原则</button>
+  <button class="tab-btn" data-tab="tab-classify">损失分类</button>
+  <button class="tab-btn" data-tab="tab-burnrate">烧损率</button>
+  <button class="tab-btn" data-tab="tab-calc">价格计算</button>
+  <button class="tab-btn" data-tab="tab-lifetime">使用年限表</button>
+  <button class="tab-btn" data-tab="tab-procedure">评估程序</button>
+  <button class="tab-btn" data-tab="tab-methods">评估方法</button>
+</div>
+
+<!-- Main content -->
+<div class="main">
+
+  <!-- ═══════ TAB: 规范全文 ═══════ -->
+  <div class="tab-panel active" id="tab-spec">
+    <aside class="spec-sidebar">
+      <div class="spec-search">
+        <input type="text" id="specSearchInput" placeholder="搜索条款内容… (Ctrl+F)">
+      </div>
+      <nav class="spec-nav" id="specNav">
+        <div class="nav-chapter" data-target="notice"><span class="arrow">▾</span> 通知</div>
+        <div class="nav-items"><a class="nav-item" data-target="notice">关于印发通知</a></div>
+
+        <div class="nav-chapter" data-target="ch1"><span class="arrow">▾</span> 第一章 总则</div>
+        <div class="nav-items">
+          <a class="nav-item" data-target="art1">第一条</a>
+          <a class="nav-item" data-target="art2">第二条</a>
+          <a class="nav-item" data-target="art3">第三条</a>
+          <a class="nav-item" data-target="art4">第四条</a>
+          <a class="nav-item" data-target="art5">第五条</a>
+        </div>
+
+        <div class="nav-chapter" data-target="ch2"><span class="arrow">▾</span> 第二章 损失分类</div>
+        <div class="nav-items">
+          <a class="nav-item" data-target="art6">第六条</a>
+        </div>
+
+        <div class="nav-chapter" data-target="ch3"><span class="arrow">▾</span> 第三章 评估原则</div>
+        <div class="nav-items">
+          <a class="nav-item" data-target="art7">第七条</a>
+          <a class="nav-item" data-target="art8">第八条</a>
+        </div>
+
+        <div class="nav-chapter" data-target="ch4"><span class="arrow">▾</span> 第四章 评估程序</div>
+        <div class="nav-items">
+          <a class="nav-item" data-target="art9">第九条</a>
+          <a class="nav-item" data-target="art10">第十条</a>
+          <a class="nav-item" data-target="art11">第十一条</a>
+          <a class="nav-item" data-target="art12">第十二条</a>
+          <a class="nav-item" data-target="art13">第十三条</a>
+          <a class="nav-item" data-target="art14">第十四条</a>
+          <a class="nav-item" data-target="art15">第十五条</a>
+          <a class="nav-item" data-target="art16">第十六条</a>
+          <a class="nav-item" data-target="art17">第十七条</a>
+          <a class="nav-item" data-target="art18">第十八条</a>
+          <a class="nav-item" data-target="art19">第十九条</a>
+          <a class="nav-item" data-target="art20">第二十条</a>
+          <a class="nav-item" data-target="art21">第二十一条</a>
+          <a class="nav-item" data-target="art22">第二十二条</a>
+          <a class="nav-item" data-target="art23">第二十三条</a>
+          <a class="nav-item" data-target="art24">第二十四条</a>
+        </div>
+
+        <div class="nav-chapter" data-target="ch5"><span class="arrow">▾</span> 第五章 评估方法</div>
+        <div class="nav-items">
+          <a class="nav-item" data-target="art25">第二十五条</a>
+          <a class="nav-item" data-target="art26">第二十六条</a>
+          <a class="nav-item" data-target="art27">第二十七条</a>
+          <a class="nav-item" data-target="art28">第二十八条</a>
+          <a class="nav-item" data-target="art29">第二十九条</a>
+        </div>
+
+        <div class="nav-chapter" data-target="ch6"><span class="arrow">▾</span> 第六章 附则</div>
+        <div class="nav-items">
+          <a class="nav-item" data-target="art30">第三十条</a>
+          <a class="nav-item" data-target="art31">第三十一条</a>
+          <a class="nav-item" data-target="art32">第三十二条</a>
+        </div>
+
+        <div class="nav-chapter" data-target="appendix"><span class="arrow">▾</span> 附表</div>
+        <div class="nav-items"><a class="nav-item" data-target="appendix">使用年限参考表</a></div>
+      </nav>
+    </aside>
+
+    <div class="spec-content" id="specContent">
+
+      <!-- 通知 -->
+      <div class="spec-notice" id="notice">
+        <h2>关于印发《火灾损失价格鉴证评估技术规范》的通知</h2>
+        <p class="meta">中国价格协会文件 · 中价协〔2024〕15号</p>
+        <p style="margin-top:12px;line-height:1.8;text-indent:2em">各省、自治区、直辖市价格协会，价格鉴证评估协会，各驻省代表处，各价格鉴证评估机构：为规范火灾损失价格鉴证评估行为，统一火灾损失价格鉴证评估程序和方法，保护当事人的合法权益和公共利益，根据《中华人民共和国价格法》《中华人民共和国资产评估法》《中华人民共和国消防法》《火灾事故调查规定》《火灾损失统计方法》及中国价格协会《价格鉴证评估执业规范》《价格鉴证评估专业技术评审工作规范》等有关规定，制定本技术规范。</p>
+        <p style="margin-top:8px;text-indent:2em">本技术规范已经会长办公会议研究通过，自2024年7月1日起施行。</p>
+      </div>
+
+      <!-- 第一章 总则 -->
+      <div class="article" id="art1">
+        <div class="article-title" id="ch1">第一条</div>
+        <div class="article-body">
+          <p>为规范火灾损失价格鉴证评估行为，统一火灾损失价格鉴证评估程序和方法，保护当事人的合法权益和公共利益，根据《中华人民共和国价格法》《中华人民共和国资产评估法》《中华人民共和国消防法》《火灾事故调查规定》《火灾损失统计方法》及中国价格协会《价格鉴证评估执业规范》《价格鉴证评估专业技术评审工作规范》等有关规定，制定本规范。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art2">
+        <div class="article-title">第二条</div>
+        <div class="article-body">
+          <p>火灾损失，指火灾造成的经济损失，包括直接经济损失和间接经济损失。</p>
+          <p>直接经济损失指因财产形态或功能发生变化，导致的自身价值直接丧失或灭失（含部分价值丧失），包括火灾直接财产损失费和火灾现场处置费等费用。</p>
+          <p>间接经济损失是指因火灾而停工、停产、停业造成的损失以及现场施救、善后处理费用（包括清理火场、人身伤亡之后所支出医疗、丧葬、抚恤、补助救济、歇工工资等费用）。</p>
+          <p>火灾直接财产损失是指财产（不包括流通货币、票据、有价证券等）在火灾中直接被烧毁、烧损、烟熏、砸压、辐射和在灭火抢险中因破拆、水渍、碰撞以及因火灾引起的污染等所造成的损失。</p>
+          <p>火灾现场处置费用是指灭火救援费（包括灭火剂等消耗材料费、水带等消防器材损耗费、消防装备损坏损毁费、现场清障调用大型设备及人力费）及灾后现场清理费。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art3">
+        <div class="article-title">第三条</div>
+        <div class="article-body">
+          <p>火灾损失价格鉴证评估，是指价格鉴证评估机构及其价格鉴证评估专业人员根据委托，按照规定的标准和程序，运用科学的方法对火灾损失进行勘验、统计、评定、测算，并出具价格鉴证评估报告（价格鉴定意见书或价格评估报告）的专业服务行为。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art4">
+        <div class="article-title">第四条</div>
+        <div class="article-body">
+          <p>火灾损失价格鉴证评估通常指对火灾造成的直接财产损失进行价格鉴证评估。如果确需对火灾现场处置费用、火灾间接经济损失等其他损失进行价格鉴证评估，应另行委托。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art5">
+        <div class="article-title">第五条</div>
+        <div class="article-body">
+          <p>本规范不涉及国家另有规定的价格认定事项。</p>
+        </div>
+      </div>
+
+      <!-- 第二章 -->
+      <div class="article" id="art6">
+        <div class="article-title" id="ch2">第六条</div>
+        <div class="article-body">
+          <p>根据火灾直接经济损失分类界定范围，结合价格鉴证评估特点，火灾直接财产损失分类如下：</p>
+          <ol>
+            <li><strong>建筑物及构筑物类损失</strong>，指火灾造成的供人们生产、生活、经营、娱乐等活动的建筑物及构筑物（含供水、供电、供气、供暖、通信、消防、中央空调、中央通风等配套设施设备）的损失。</li>
+            <li><strong>装饰装修类损失</strong>，指建筑物及构筑物的室内外装饰装修的损失。</li>
+            <li><strong>生产设备机械类损失</strong>，指工、农、三产服务业中各种生产线、设施设备、机械车辆等的损失。</li>
+            <li><strong>产品类损失</strong>，指工、农、林、草、畜牧业在生产过程中的原材料、在产品、半成品、产成品等的损失。</li>
+            <li><strong>商品类损失</strong>，指商业流通领域商品（含仓储物品及4S店仓储成品车等）的损失。</li>
+            <li><strong>家庭物品类损失</strong>，指家用电器、乐器、健身器具、家具等有形家庭财产的损失。</li>
+            <li><strong>低值易耗品类损失</strong>，指家庭已使用衣物、床上用品、文具、玩具、挂件、摆件、炊具、餐具、粮油、食品以及企业不能作为固定资产的各种用具及耗材类物品的损失。</li>
+            <li><strong>贵重物品及书刊类损失</strong>，指钱币、邮票、字画、古董古玩等收藏品；金银、珠宝、红木家具、挂摆件、现代名家工艺品等贵重物品；名表、名牌化妆品、名牌箱包、名牌皮草、名牌衣物等奢侈品，以及具有收藏价值的图书期刊等财物的损失。</li>
+            <li><strong>文物及保护动植物类损失</strong>，指国家保护文物及动植物类的损失。</li>
+            <li><strong>其他财产损失</strong>。</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 第三章 -->
+      <div class="article" id="art7">
+        <div class="article-title" id="ch3">第七条</div>
+        <div class="article-body">
+          <p>火灾损失价格鉴证评估应遵循以下<strong>工作原则</strong>：</p>
+          <ol>
+            <li><strong>合法原则</strong>。指价格鉴证评估机构在登记的业务范围内开展火灾损失价格鉴证评估工作，其行为、依据、结果必须符合国家法律法规和政策要求。</li>
+            <li><strong>公正原则</strong>。指火灾损失价格鉴证评估必须站在公正立场上，对火灾所有当事人采用相同原则、标准，对火灾损失进行合理的价格鉴证评估。</li>
+            <li><strong>客观原则</strong>。指火灾损失价格鉴证评估应以事实或证据为依据，实事求是对火灾损失价格鉴证评估。</li>
+            <li><strong>独立原则</strong>。指价格鉴证评估机构应坚持第三者立场，不受任何相关方的诱导和干扰，客观、公正开展火灾损失价格鉴证评估。</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art8">
+        <div class="article-title">第八条</div>
+        <div class="article-body">
+          <p>火灾损失价格鉴证评估应遵循以下<strong>技术原则</strong>：</p>
+          <ol>
+            <li><strong>时点原则</strong>。火灾损失价格鉴证评估一般以火灾发生日为价格鉴证评估基准日，价格内涵为火灾发生前当日资产状态下的价格。</li>
+            <li><strong>替代原则</strong>。火灾中被烧毁、烧损或灭失的财物可采用相近效用的替代物或具有相同使用价值和质量的参照物鉴证评估其价格。火灾中灭失的整体资产可类比同类企业资产修正鉴证评估价格。</li>
+            <li><strong>预期收益原则</strong>。部分鉴证评估标的价格不是根据过去的生产成本或购买价格确定的，而是根据其未来的效用或获利能力来确定的。火灾中灭失的财物或整体资产可根据其灭失前获利情况，通过客观合理预测未来确定的获利能力及有效期来鉴证评估其灭失前的价格。</li>
+            <li><strong>贡献原则</strong>。火灾中灭失的财物或整体资产的某一部分构成，可根据其对整体资产的贡献或影响程度鉴证评估其价格。</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 第四章 -->
+      <div class="article" id="art9">
+        <div class="article-title" id="ch4">第九条 · 委托与受理</div>
+        <div class="article-body">
+          <p>（一）价格鉴证评估机构接受委托人的委托，进行火灾损失价格鉴证评估时，须委托人填写《火灾直接财产损失价格鉴证评估委托书》，签订委托合同。对火灾现场处置费用、火灾间接经济损失等其他损失进行价格鉴证评估，应另行分别委托，并签订委托合同。</p>
+          <p>（二）委托书应载明如下内容：</p>
+          <ol>
+            <li>价格鉴证评估目的和要求；</li>
+            <li>价格鉴证评估基准日、价格区域、物品所处环节或价格内涵；</li>
+            <li>毁损财物名称、范围、数量等；</li>
+            <li>委托方名称、印章、委托日期、联系人、地址、电话；</li>
+            <li>其他需要说明的情况。</li>
+          </ol>
+          <p>（三）委托人应提交如下资料：</p>
+          <ol>
+            <li>《火灾损失申报统计表》，包括：品名、规格、型号、生产厂家、数量、购置（交易）时间、原购置价格或进货价等；</li>
+            <li>火灾损失财物权属、质量及使用情况等证明资料；</li>
+            <li>火灾损失物品账目、发票、盘存表、对账单、转款支付凭证、购货合同、进出货单、托运单等资料（如已烧毁须提供相关联的证明资料）；</li>
+            <li>烧损程度描述，重要的物品应当附照片；</li>
+            <li>应检验检测财物的检验检测报告及修复方案；</li>
+            <li>财务系统数据、火灾前视频影像资料等；</li>
+            <li>其他可以证明火灾损失物品数量、品类、价格的资料。</li>
+          </ol>
+          <p>（四）委托人授权价格鉴证评估机构通过现场核实、确认火灾损失事实、进行火灾损失价格鉴证评估的，须有书面授权委托书及相关当事人协助配合承诺书，并在委托合同中予以明确。</p>
+          <p>（五）以服务刑事案件办理、统计火灾直接财产损失为目的的价格鉴证评估，委托主体应为各级政府及其公安、消防部门、检察机关和人民法院等。价格鉴证评估机构可协同办案机关开展相关技术服务，根据委托内容和要求出具火灾损失价格鉴证评估报告。报告中不得包含任何间接损失，并须声明报告不作为民事赔偿参照依据。</p>
+          <p>（六）以民事赔偿、事故处理为目的的火灾损失价格鉴证评估，火灾损失包括直接损失和间接损失。委托人可以是各级政府部门、人民法院、仲裁机构，也可以是市场主体（一般要求当事人共同委托）。价格鉴证评估机构受理时应全面了解委托目的和案情，出具正式价格鉴证评估报告，并声明该报告不得作为办理放火罪、失火罪等刑事案件的参照依据。</p>
+          <p>（七）价格鉴证评估机构不得转让已受理的业务，应独立、客观、公正出具价格鉴证评估报告。对严重灭失、类型复杂的大型火灾损失鉴证评估案件，对专业性强的特殊价格鉴证评估项目，可以聘请相关专业技术人员，或经委托方同意聘请相关专业机构，出具专业意见书。</p>
+          <p>（八）受理过程中遇有下列情形之一的，价格鉴证评估人员应主动回避：</p>
+          <ol>
+            <li>是价格鉴证评估事项当事人或者其近亲属的；</li>
+            <li>本人或者其近亲属和价格鉴证评估事项有利害关系的；</li>
+            <li>与价格鉴证评估事项当事人有其他利害关系，可能影响价格鉴证评估公正的。</li>
+          </ol>
+          <p>（九）受理过程中出现下列情形之一的，价格鉴证评估机构应出具书面不予受理通知书并说明理由或出具补充材料通知书：</p>
+          <ol>
+            <li>价格鉴证评估委托书内容不符合要求的；</li>
+            <li>相关材料不齐全的；</li>
+            <li>应当提供有效的真伪、质量、技术等检验检测报告、鉴定报告、修复方案等而未提供的；</li>
+            <li>提出价格鉴证评估时，价格鉴证评估标的已灭失或者其状态与价格鉴证评估基准日相比发生较大变化，委托方未确定其在价格鉴证评估基准日状态的。</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art10">
+        <div class="article-title">第十条 · 现场勘验</div>
+        <div class="article-body">
+          <p>（一）火灾损失价格鉴证评估现场勘验，应由不少于两名价格鉴证评估专业人员组成鉴证评估小组进行，其中至少应有一名价格鉴证师，具体专业人员数量可根据工作需要增加。鉴证评估小组调取《火灾直接财产损失申报统计表》，全面了解案情和委托要求，制定作业方案。</p>
+          <p>（二）现场勘验时应要求委托方工作人员及有关当事人参加，当事人拒绝参加或因故不能参加的，可请求当地基层组织或管理方指派工作人员见证，也可聘请两名以上与火灾无利害关系的公民见证。所有参加勘验的人员应在现场勘验记录上签字确认。</p>
+          <p>（三）现场勘验可聘请相关专家参加。专家提供咨询意见应当签名，并存入档案。必要时可提请委托方对评估标的有关事项进行专业检验检测，依据检验检测报告进行价格鉴证评估。</p>
+          <p>（四）现场勘验按照先拍照录像后提取搬动的原则；先总体观察后逐项展开的原则；先查可见残留物后再查灭失物的原则；先易后难、先外后内的顺序逐项开展清点核实工作。必要时召开质证座谈会，广泛听取各方陈述及意见建议。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art11">
+        <div class="article-title">第十一条</div>
+        <div class="article-body">
+          <p>通过现场勘验核实，协助确认火灾损失事实的原则及方法：</p>
+          <p>（一）现场核对。按照受损人提供的《火灾直接财产损失申报统计表》及证明材料，对损失财物类别、名称、型号、数量现场进行核查验证。</p>
+          <p>（二）现场无法勘验或不能清点核对时，以委托方提供的资料为价格鉴证评估依据，但价格鉴证评估人员应当依法对鉴证评估活动中使用的资料进行核查和验证。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art12">
+        <div class="article-title">第十二条</div>
+        <div class="article-body">
+          <p>认定火灾事实，原则上应由委托方或职能部门确认；委托方或职能部门确有困难的，经特别授权，鉴证评估机构可以在授权范围内协助开展工作，提供技术支持和协助，但须委托方签字认可。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art13">
+        <div class="article-title">第十三条 · 烧损等级及烧损率</div>
+        <div class="article-body">
+          <p>现场勘验确定烧损等级及烧损率的原则和方法。</p>
+          <p>（一）本规范所称火灾烧损率，是指烧损财物的损坏程度，用百分比表示。</p>
+          <p>（二）烧损率的确定方法：</p>
+          <ol>
+            <li><strong>药品、医疗器械、食品类</strong>。因移动外观受损或外包装轻度烟熏、水渍污染，内包装密封完好，经检测、检疫合格的烧损率，按30%—60%确定；经高温烘烤、辐射、部分烧损的烧损率按100%确定。</li>
+            <li><strong>商品类</strong>。外包装轻度烟熏、水渍污染，内包装密封完好，或高温烘烤、辐射后不产生毒副作用，简单处理可销售的，烧损率按30%—40%确定，中度处理可销售的，烧损率按40%—70%确定；高温烘烤、辐射后变形或可能产生毒副作用的，烧损率按100%确定。</li>
+            <li><strong>树木类</strong>（不含森林、古木、珍稀保护树木）：
+              <ul>
+                <li>轻度烧损：烟熏、辐射、烘烤、过火造成芽孢、小枝条烧损，修剪处理后不影响存活，仅影响当年产量或生长，烧损率按30%确定。</li>
+                <li>中度烧损：小枝条或局部侧枝烧损，主杆树皮小面积受损，修剪处理后不影响存活，长期影响产量或生长，烧损率按30%—60%确定。</li>
+                <li>完全烧损：树冠受损面积超过一半，或主杆树皮局部受损，修剪处理后仍对产量成材影响较大，以及死亡树木认定为完全烧损，烧损率按100%确定。</li>
+              </ul>
+            </li>
+            <li><strong>房屋、构筑物类</strong>：
+              <ul>
+                <li>轻度烧损：存在烟熏、水渍印迹，轻微变形或局部稍有变形，轻微网状裂缝，轻微碳化，略有烘烤痕迹。烧损率按20%以下确定。</li>
+                <li>中度烧损：存在烟熏、水渍损坏，略有变形，局部轻微裂缝或个别裂痕，中度碳化或局部木基层碳化烧损，表层混凝土变为粉红色、局部酥皮、隆起、脱落，轻微露筋。对承载无明显影响。烧损率按20%—50%确定。</li>
+                <li>重度烧损：大面积烧损，较大变形或局部承重严重变形，粗裂缝网，面层严重碳化，基层大部分碳化或烧损，表层混凝土变为土黄色或白色，大部分隆起、脱落，大面积露筋，对承载有一定影响。烧损率按50%—70%确定。</li>
+                <li>完全烧损：结构倒塌或构件脱落；梁、柱、墙、板等承重构件及非承重构件保护层大部分或全部严重剥落、露筋或断裂，主体结构严重损坏，丧失使用功能，有倒塌危险；门、窗、室内外装修大部分或全部烧毁脱落。烧损率按70%—100%确定。</li>
+              </ul>
+            </li>
+            <li><strong>车辆、机器、设备设施类</strong>：
+              <ul>
+                <li>轻度烧损：仅外观或少量零部件、附属件受损，使用功能精确度未受影响，通过一般的维护、保养、小修（简单修理或更换）。烧损率按20%以下确定。</li>
+                <li>中度烧损：部分零部件、附属件损坏，导致部分使用功能和精确度降低或丧失，部分拆解修理或更换烧损件。烧损率按20%—50%确定。</li>
+                <li>重度烧损：大部分零部件、附属件或关键零部件损坏，导致大部分使用功能和精确度降低或丧失，全部拆解修理或更换烧损件。烧损率按50%—70%确定。</li>
+                <li>完全烧损：绝大部分零部件、附属件或关键零部件烧损，失去原有使用价值；鉴定大修后虽能修复，但修复不经济（超过自身现值70%）。烧损率按70%—100%确定。</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art14">
+        <div class="article-title">第十四条</div>
+        <div class="article-body">
+          <p>房屋、构筑物、车辆、机器、设备设施类烧损率确定有争议，或者修复方案有争议，价格鉴证评估机构应要求委托方委托具备资质的专业机构检验检测、鉴定。价格鉴证评估机构应按检测报告鉴定结论测算确定价格。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art15">
+        <div class="article-title">第十五条</div>
+        <div class="article-body">
+          <p>价格鉴证评估机构在现场勘验中发现委托内容与实际情况不一致或缺少资料的，应及时书面通知变更、补充。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art16">
+        <div class="article-title">第十六条</div>
+        <div class="article-body">
+          <p>价格鉴证评估人员应做必要的市场调查，制作内容完整的调查记录，包括调查时间、地点、方式、内容。被调查人不愿签字的，调查人记录说明情况并签字，使用不受影响。必要时可以要求委托人协助。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art17">
+        <div class="article-title">第十七条</div>
+        <div class="article-body">
+          <p>市场调查可多渠道采用多种方式进行。调查方式可采用市场当面询价、网络询价、电话视频询价等。调查内容可以是公开的政府部门及行业管理组织和专业机构公布的政府定价、招标价、拍卖价、补偿价、统计价、基准价，市场上实体店、网店的交易价。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art18">
+        <div class="article-title">第十八条</div>
+        <div class="article-body">
+          <p>价格鉴证评估人员应当对市场调查资料的合法性、真实性、关联性进行审查。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art19">
+        <div class="article-title">第十九条 · 测算</div>
+        <div class="article-body">
+          <p>价格鉴证评估小组应当对收集到的资料进行整理分析、数据处理，按照价格鉴证评估相关规定、规则，结合价格鉴证评估标的特点，选择合理的技术路径和方法进行测算，并形成测算说明。</p>
+          <p>火灾损失财产价格鉴证评估一般按照以下规定办理：</p>
+          <ol>
+            <li>火灾损失财产为实行政府定价的，采用政府定价标准确定；</li>
+            <li>火灾损失财产为实行政府指导价的，按当地政府规定的基准价格与浮动幅度结合市场情况合理确定；</li>
+            <li>火灾损失财产为实行市场调节价的，按市场价格标准，选择以下与其相适应的方法进行测算：
+              <ul>
+                <li>商品、原材料、燃料财产损失按烧损前购进价加购进税金、运费、仓储费等扣除残值计算。</li>
+                <li>在产品、半成品、成品、协作产品财产损失按成本价格扣除残值计算。</li>
+                <li>达到或超过使用年限，但仍有使用价值的财产损失，结合现场勘验到的实际情况，按重置价值的20%-40%计算。</li>
+                <li>低值易耗品、日常生活用品等财产损失，按其烧损前财产价值具体计算。</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art20">
+        <div class="article-title">第二十条 · 出具报告</div>
+        <div class="article-body">
+          <p>价格鉴证评估小组应当根据测算说明，按照《价格鉴证评估文书指引》的相关规定，撰写价格鉴证评估报告。自受理委托书之日起，30个工作日内出具正式的价格鉴证评估报告。另有约定的从其约定。</p>
+          <p>价格鉴证评估报告应当包括下列内容：</p>
+          <ol>
+            <li>价格鉴证评估事项描述；</li>
+            <li>价格鉴证评估依据；</li>
+            <li>价格鉴证评估过程及方法；</li>
+            <li>价格鉴证评估结果；</li>
+            <li>价格鉴证评估限定条件和说明；</li>
+            <li>其他需要说明的事项。</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art21">
+        <div class="article-title">第二十一条 · 报告送达</div>
+        <div class="article-body">
+          <p>价格鉴证评估报告可以采用直接送达、邮寄送达等方式送达委托方。直接送达的，应当要求委托方在送达回证上签字，并注明接收日期及份数。邮寄送达的，应当同时邮寄送达回证，并要求委托方寄回送达回证。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art22">
+        <div class="article-title">第二十二条 · 归档</div>
+        <div class="article-body">
+          <p>价格鉴证评估机构应当将反映价格鉴证评估全过程的各种资料和文书整理归档，并按规定统一保管。其中，价格鉴定意见书保存期限不少于30年，价格评估报告保存期限不少于15年。</p>
+          <p>归档资料和文书主要包括：</p>
+          <ol>
+            <li>价格鉴证评估委托书及相关材料；</li>
+            <li>价格鉴证评估报告书正式文本；</li>
+            <li>现场勘验核实或者勘验记录及相关资料；</li>
+            <li>市场调查记录及相关资料；</li>
+            <li>测算说明；</li>
+            <li>送达回证；</li>
+            <li>其他相关资料。</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art23">
+        <div class="article-title">第二十三条 · 异议</div>
+        <div class="article-body">
+          <p>委托单位或相关当事人对价格鉴证评估报告有异议的，应在收到价格鉴证评估报告之日起10日内，向出具价格鉴证评估报告的价格鉴证评估机构提出异议申请，除下列情况外，价格鉴证评估机构一般应予以受理：</p>
+          <ol>
+            <li>逾期提出异议的；</li>
+            <li>异议提出方不是价格鉴证评估事项的委托单位、相关当事人，或者与价格鉴证评估事项无利害关系的；</li>
+            <li>异议书无正当异议理由的，或异议事项不明确的；</li>
+            <li>异议书无异议提出单位印章或提出人签名的。</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art24">
+        <div class="article-title">第二十四条 · 异议答复</div>
+        <div class="article-body">
+          <p>价格鉴证评估机构应在收到异议申请书20日内作出答复；另有约定的按约定期限内作出。</p>
+          <p>异议申请书应当包含：异议事项；提出异议的理由和依据；提供异议材料的名称、份数；提出异议的日期；异议人的相关信息。</p>
+          <p>异议答复应当包含：异议的范围及内容；异议处置过程要述；异议处置结论；其他需要说明的事项。</p>
+          <p>价格鉴证评估机构进行复议后，认为原评估程序符合规定，原评估报告适用依据正确、选用方法适当、采用参数合理并且测算准确的，应当维持原价格鉴证评估结论。认为程序不符合规定、适用依据错误、选用方法不当、采用参数不合理、测算错误的，应当撤销原价格鉴证评估结论或重新出具价格鉴证评估报告。</p>
+          <p>异议人对价格鉴证评估机构的书面异议答复仍然持有异议的，应通过委托人向价格鉴证评估机构会籍所属的协会提出专业技术评审委托。</p>
+        </div>
+      </div>
+
+      <!-- 第五章 -->
+      <div class="article" id="art25">
+        <div class="article-title" id="ch5">第二十五条 · 市场法</div>
+        <div class="article-body">
+          <p>市场法是指经市场调查，选取3个或3个以上可比参照物，比较分析毁损财物烧损前与参照物之间的因素差异，通过调整修正确定被毁损财物在价格鉴证评估基准日损失价格的方法。</p>
+          <p><strong>计算公式：</strong></p>
+          <p>1. 全部毁损：</p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px">评估价格 = (市场价格 ± 修正值) - 回收价格</p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px;margin-top:4px">评估价格 = (市场价格 × 修正率) - 回收价格</p>
+          <p style="margin-top:8px">2. 部分毁损：</p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px">评估价格 = (市场价格 ± 修正值) × 烧损率</p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px;margin-top:4px">评估价格 = 市场价格 × 修正率 × 烧损率</p>
+          <p style="margin-top:8px">（二）市场价格的确定方法。价格鉴证评估人员应当对调查资料整理分析，去伪存真，运用适当方法确定市场价格。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art26">
+        <div class="article-title">第二十六条 · 成本法</div>
+        <div class="article-body">
+          <p>成本法是指在鉴证评估火灾损失时，按财物价格鉴证评估基准日重置成本扣减其各项贬值或折旧，确定损失的方法。</p>
+          <p><strong>计算公式：</strong></p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px">评估价格 = (重置成本 - 实体性贬值 - 功能性贬值 - 经济性贬值) × 烧损率 - 残值</p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px;margin-top:4px">评估价格 = 重置成本 × 综合成新率 × 烧损率 - 残值</p>
+          <p style="margin-top:8px">烧损率小于100%，扣减毁损部分残值；烧损率等于100%，扣减全部残值。</p>
+          <p style="margin-top:12px"><strong>重置成本的确定方法：</strong></p>
+          <ol>
+            <li><strong>重置核算法</strong>：按财物或资产的成本构成，以现行市价加全部购建支出。
+              <br>重置成本 = 直接成本 + 间接成本
+            </li>
+            <li><strong>价格指数调整法</strong>：按财物或资产的成本，采用原始成本，运用价格指数测算重置成本。
+              <br>重置成本 = 原始成本 × (1 + 价格变动指数)
+            </li>
+            <li><strong>功能价值法</strong>：依据财物或资产的生产能力与制造成本呈线性关系，按生产能力比率关系计算重置成本。
+              <br>重置成本 = 参照物重置成本 × 标的生产能力 / 参照物生产能力
+            </li>
+          </ol>
+          <p style="margin-top:12px"><strong>综合成新率的确定：</strong></p>
+          <p>综合成新率 = 年限成新率 ± 修正值</p>
+          <p>年限成新率 = 预计尚可使用年限 / 总使用年限 × 100%</p>
+          <p>总使用年限 = 实际使用年限 + 预计尚可使用年限</p>
+        </div>
+      </div>
+
+      <div class="article" id="art27">
+        <div class="article-title">第二十七条 · 收益法</div>
+        <div class="article-body">
+          <p>收益法是指将财物或资产的未来的预期收益，按一定的折现率折算成现值的方法。</p>
+          <p><strong>前提条件：</strong>财物或资产可连续获利；未来预期收益能够用货币衡量；资产所有者承担的风险必须能够用货币衡量。</p>
+          <p><strong>计算公式：</strong></p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px">评估价格 = 财物现值 × 烧损率 - 残值</p>
+          <p style="margin-top:8px">烧损率小于100%，扣减毁损部分残值；烧损率等于100%，扣减全部残值。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art28">
+        <div class="article-title">第二十八条 · 修复费用加和法</div>
+        <div class="article-body">
+          <p>修复费用加和法是指火灾财物部分烧损情况下，修复恢复原有使用功能和外观的支出费用。并分析比较修复后财物的状态与火灾前财物的状态或全新状态的差异，修正确定火灾损失。</p>
+          <p><strong>计算公式：</strong></p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px">评估价格 = 修复费用 ± 修正值</p>
+          <p style="font-family:'DM Mono',monospace;background:var(--bg-main);padding:8px 12px;border-radius:4px;margin-top:4px">修复费用 = 更换主材价格 + 辅料价格 + 工时费 + 其他费用</p>
+          <p style="margin-top:8px"><strong>注意事项：</strong></p>
+          <ol>
+            <li>根据价格鉴证评估目的，区分刑事案件与民事案件办理中折旧率范围与修正值的差异。</li>
+            <li>民事案件办理中当修复费用大于火灾发生前财物现有价值时，为修复不经济，推定全损，按火灾发生前财物现有价值计算损失。刑事案件按实际损失只计算毁损财物直接损失，不包括任何间接损失。</li>
+            <li>残值是指毁损物烧毁后的残骸回收价。</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="article" id="art29">
+        <div class="article-title">第二十九条 · 专家咨询法</div>
+        <div class="article-body">
+          <p>专家咨询法是将若干专家设定为市场潜在的购买者，利用其专业知识、经验和分析判断能力对火灾财物损失的价格进行鉴证评估的方法。</p>
+          <p><strong>专家条件：</strong>国家公布或权威行业机构公示的持有专家证书并从事相应专业工作的人员；取得中级以上职称或具有同等能力，长期从事本行业工作，具有丰富经验及业界公认的权威专业人士。</p>
+          <p><strong>适用范围：</strong>油脂、纤维、塑料等石油产品，火灾后无残留物或残留物很少的灭失物；残骸不具备清理条件，其他方法难以鉴定财物；火灾价格鉴证评估初期的预估。</p>
+          <p><strong>注意事项：</strong>专家应根据鉴证评估工作需要在相关行业内选取，专家数量须3名以上（含3名）。</p>
+        </div>
+      </div>
+
+      <!-- 第六章 -->
+      <div class="article" id="art30">
+        <div class="article-title" id="ch6">第三十条</div>
+        <div class="article-body">
+          <p>法律法规和政策性文件另有规定的从其规定。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art31">
+        <div class="article-title">第三十一条</div>
+        <div class="article-body">
+          <p>本规范由中国价格协会负责解释。</p>
+        </div>
+      </div>
+
+      <div class="article" id="art32">
+        <div class="article-title">第三十二条</div>
+        <div class="article-body">
+          <p>本规范自2024年7月1日起施行。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: 评估原则 ═══════ -->
+  <div class="tab-panel" id="tab-principles">
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2>火灾损失价格鉴证评估原则</h2>
+        <p>依据《火灾损失价格鉴证评估技术规范》第七条、第八条</p>
+      </div>
+
+      <h3 style="margin-bottom:16px;font-size:17px">一、工作原则</h3>
+      <div class="principle-list" style="margin-bottom:28px">
+        <div class="principle-card">
+          <h4>合法原则</h4>
+          <p>价格鉴证评估机构在登记的业务范围内开展火灾损失价格鉴证评估工作，其行为、依据、结果必须符合国家法律法规和政策要求。</p>
+        </div>
+        <div class="principle-card">
+          <h4>公正原则</h4>
+          <p>火灾损失价格鉴证评估必须站在公正立场上，对火灾所有当事人采用相同原则、标准，对火灾损失进行合理的价格鉴证评估。</p>
+        </div>
+        <div class="principle-card">
+          <h4>客观原则</h4>
+          <p>火灾损失价格鉴证评估应以事实或证据为依据，实事求是对火灾损失价格鉴证评估。</p>
+        </div>
+        <div class="principle-card">
+          <h4>独立原则</h4>
+          <p>价格鉴证评估机构应坚持第三者立场，不受任何相关方的诱导和干扰，客观、公正开展火灾损失价格鉴证评估。</p>
+        </div>
+      </div>
+
+      <h3 style="margin-bottom:16px;font-size:17px">二、技术原则</h3>
+      <div class="principle-list">
+        <div class="principle-card">
+          <h4>时点原则</h4>
+          <p>火灾损失价格鉴证评估一般以火灾发生日为价格鉴证评估基准日，价格内涵为火灾发生前当日资产状态下的价格。</p>
+        </div>
+        <div class="principle-card">
+          <h4>替代原则</h4>
+          <p>火灾中被烧毁、烧损或灭失的财物可采用相近效用的替代物或具有相同使用价值和质量的参照物鉴证评估其价格。火灾中灭失的整体资产可类比同类企业资产修正鉴证评估价格。</p>
+        </div>
+        <div class="principle-card">
+          <h4>预期收益原则</h4>
+          <p>部分鉴证评估标的价格不是根据过去的生产成本或购买价格确定的，而是根据其未来的效用或获利能力来确定的。火灾中灭失的财物或整体资产可根据其灭失前获利情况，通过客观合理预测未来确定的获利能力及有效期来鉴证评估其灭失前的价格。</p>
+        </div>
+        <div class="principle-card">
+          <h4>贡献原则</h4>
+          <p>火灾中灭失的财物或整体资产的某一部分构成，可根据其对整体资产的贡献或影响程度鉴证评估其价格。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: 损失分类 ═══════ -->
+  <div class="tab-panel" id="tab-classify">
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2>火灾直接财产损失分类</h2>
+        <p>依据《火灾损失价格鉴证评估技术规范》第六条</p>
+      </div>
+      <div class="class-grid">
+        <div class="class-card"><div class="num">1</div><h4>建筑物及构筑物类</h4><p>供人们生产、生活、经营、娱乐等活动的建筑物及构筑物（含供水、供电、供气、供暖、通信、消防、中央空调、中央通风等配套设施设备）的损失。</p></div>
+        <div class="class-card"><div class="num">2</div><h4>装饰装修类</h4><p>建筑物及构筑物的室内外装饰装修的损失。</p></div>
+        <div class="class-card"><div class="num">3</div><h4>生产设备机械类</h4><p>工、农、三产服务业中各种生产线、设施设备、机械车辆等的损失。</p></div>
+        <div class="class-card"><div class="num">4</div><h4>产品类</h4><p>工、农、林、草、畜牧业在生产过程中的原材料、在产品、半成品、产成品等的损失。</p></div>
+        <div class="class-card"><div class="num">5</div><h4>商品类</h4><p>商业流通领域商品（含仓储物品及4S店仓储成品车等）的损失。</p></div>
+        <div class="class-card"><div class="num">6</div><h4>家庭物品类</h4><p>家用电器、乐器、健身器具、家具等有形家庭财产的损失。</p></div>
+        <div class="class-card"><div class="num">7</div><h4>低值易耗品类</h4><p>家庭已使用衣物、床上用品、文具、玩具、挂件、摆件、炊具、餐具、粮油、食品以及企业不能作为固定资产的各种用具及耗材类物品的损失。</p></div>
+        <div class="class-card"><div class="num">8</div><h4>贵重物品及书刊类</h4><p>钱币、邮票、字画、古董古玩等收藏品；金银、珠宝、红木家具等贵重物品；名表、名牌化妆品、名牌箱包等奢侈品，以及具有收藏价值的图书期刊等财物的损失。</p></div>
+        <div class="class-card"><div class="num">9</div><h4>文物及保护动植物类</h4><p>国家保护文物及动植物类的损失。</p></div>
+        <div class="class-card"><div class="num">10</div><h4>其他财产损失</h4><p>不属于以上分类的其他财产损失。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: 烧损率 ═══════ -->
+  <div class="tab-panel" id="tab-burnrate">
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2>火灾烧损率参考</h2>
+        <p>依据《火灾损失价格鉴证评估技术规范》第十三条。烧损率是指烧损财物的损坏程度，用百分比表示。</p>
+      </div>
+
+      <div class="br-section">
+        <h3>药品、医疗器械、食品类</h3>
+        <table class="br-table">
+          <thead><tr><th>损坏程度</th><th>描述</th><th>烧损率</th></tr></thead>
+          <tbody>
+            <tr><td><span class="level level-light">轻度</span></td><td>外包装轻度烟熏、水渍污染，内包装密封完好，经检测、检疫合格</td><td><strong>30%—60%</strong></td></tr>
+            <tr><td><span class="level level-total">严重</span></td><td>经高温烘烤、辐射、部分烧损</td><td><strong>100%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="br-section">
+        <h3>商品类</h3>
+        <table class="br-table">
+          <thead><tr><th>损坏程度</th><th>描述</th><th>烧损率</th></tr></thead>
+          <tbody>
+            <tr><td><span class="level level-light">轻度</span></td><td>外包装轻度烟熏、水渍污染，内包装密封完好，简单处理可销售</td><td><strong>30%—40%</strong></td></tr>
+            <tr><td><span class="level level-moderate">中度</span></td><td>高温烘烤、辐射后不产生毒副作用，中度处理可销售</td><td><strong>40%—70%</strong></td></tr>
+            <tr><td><span class="level level-total">严重</span></td><td>高温烘烤、辐射后变形或可能产生毒副作用</td><td><strong>100%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="br-section">
+        <h3>树木类（不含森林、古木、珍稀保护树木）</h3>
+        <table class="br-table">
+          <thead><tr><th>损坏程度</th><th>描述</th><th>烧损率</th></tr></thead>
+          <tbody>
+            <tr><td><span class="level level-light">轻度</span></td><td>烟熏、辐射、烘烤、过火造成芽孢、小枝条烧损，修剪处理后不影响存活，仅影响当年产量或生长</td><td><strong>30%</strong></td></tr>
+            <tr><td><span class="level level-moderate">中度</span></td><td>小枝条或局部侧枝烧损，主杆树皮小面积受损，修剪处理后不影响存活，长期影响产量或生长</td><td><strong>30%—60%</strong></td></tr>
+            <tr><td><span class="level level-total">完全</span></td><td>树冠受损面积超过一半，或主杆树皮局部受损，修剪处理后仍对产量成材影响较大，以及死亡树木</td><td><strong>100%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="br-section">
+        <h3>房屋、构筑物类</h3>
+        <table class="br-table">
+          <thead><tr><th>损坏程度</th><th>描述</th><th>烧损率</th></tr></thead>
+          <tbody>
+            <tr><td><span class="level level-light">轻度</span></td><td>存在烟熏、水渍印迹，轻微变形或局部稍有变形，轻微网状裂缝，轻微碳化，略有烘烤痕迹</td><td><strong>20%以下</strong></td></tr>
+            <tr><td><span class="level level-moderate">中度</span></td><td>存在烟熏、水渍损坏，略有变形，局部轻微裂缝或个别裂痕，中度碳化或局部木基层碳化烧损，表层混凝土变为粉红色、局部酥皮、隆起、脱落，轻微露筋。对承载无明显影响</td><td><strong>20%—50%</strong></td></tr>
+            <tr><td><span class="level level-heavy">重度</span></td><td>大面积烧损，较大变形或局部承重严重变形，粗裂缝网，面层严重碳化，基层大部分碳化或烧损，表层混凝土变为土黄色或白色，大部分隆起、脱落，大面积露筋，对承载有一定影响</td><td><strong>50%—70%</strong></td></tr>
+            <tr><td><span class="level level-total">完全</span></td><td>结构倒塌或构件脱落；承重构件及非承重构件保护层大部分或全部严重剥落、露筋或断裂，主体结构严重损坏，丧失使用功能，有倒塌危险</td><td><strong>70%—100%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="br-section">
+        <h3>车辆、机器、设备设施类</h3>
+        <table class="br-table">
+          <thead><tr><th>损坏程度</th><th>描述</th><th>烧损率</th></tr></thead>
+          <tbody>
+            <tr><td><span class="level level-light">轻度</span></td><td>仅外观或少量零部件、附属件受损，使用功能精确度未受影响，通过一般维护、保养、小修可恢复原状</td><td><strong>20%以下</strong></td></tr>
+            <tr><td><span class="level level-moderate">中度</span></td><td>部分零部件、附属件损坏，导致部分使用功能和精确度降低或丧失，部分拆解修理或更换烧损件</td><td><strong>20%—50%</strong></td></tr>
+            <tr><td><span class="level level-heavy">重度</span></td><td>大部分零部件、附属件或关键零部件损坏，导致大部分使用功能和精确度降低或丧失，全部拆解修理或更换烧损件</td><td><strong>50%—70%</strong></td></tr>
+            <tr><td><span class="level level-total">完全</span></td><td>绝大部分零部件、附属件或关键零部件烧损，失去原有使用价值；或修复不经济（超过自身现值70%）</td><td><strong>70%—100%</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: 价格计算 ═══════ -->
+  <div class="tab-panel" id="tab-calc">
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2>价格鉴证评估计算器</h2>
+        <p>依据《火灾损失价格鉴证评估技术规范》第五章（第二十五条至第二十九条）</p>
+      </div>
+
+      <div class="calc-tabs">
+        <button class="calc-tab active" data-calc="calc-market">市场法</button>
+        <button class="calc-tab" data-calc="calc-cost">成本法</button>
+        <button class="calc-tab" data-calc="calc-income">收益法</button>
+        <button class="calc-tab" data-calc="calc-repair">修复费用加和法</button>
+      </div>
+
+      <!-- 市场法 -->
+      <div class="calc-panel active" id="calc-market">
+        <div class="card">
+          <h3>市场法计算器</h3>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">选取3个或3个以上可比参照物，通过调整修正确定损失价格。</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>毁损类型</label>
+              <select id="mType" onchange="toggleMarketFields()">
+                <option value="total">全部毁损</option>
+                <option value="partial">部分毁损</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>市场价格（元）</label>
+              <input type="number" id="mMarketPrice" placeholder="参照物市场价格" step="0.01">
+              <div class="unit">基准日同类物品的市场价格</div>
+            </div>
+            <div class="form-group">
+              <label>修正方式</label>
+              <select id="mCorrectionType" onchange="toggleMarketCorrection()">
+                <option value="value">修正值（±元）</option>
+                <option value="rate">修正率（%）</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label id="mCorrectionLabel">修正值（元）</label>
+              <input type="number" id="mCorrection" placeholder="0" step="0.01">
+              <div class="unit" id="mCorrectionUnit">正值为加价，负值为减价</div>
+            </div>
+          </div>
+
+          <div class="form-row" id="mPartialRow" style="display:none">
+            <div class="form-group">
+              <label>烧损率（%）</label>
+              <input type="number" id="mBurnRate" placeholder="0-100" min="0" max="100" step="0.1">
+            </div>
+          </div>
+
+          <div class="form-row" id="mRecoveryRow">
+            <div class="form-group">
+              <label>回收价格/残值（元）</label>
+              <input type="number" id="mRecovery" placeholder="0" step="0.01" value="0">
+              <div class="unit">毁损物残骸回收价</div>
+            </div>
+          </div>
+
+          <button class="btn-calc" onclick="calcMarket()">计算评估价格</button>
+
+          <div class="result-box" id="mResult" style="display:none">
+            <div class="label">评估价格</div>
+            <div class="value" id="mResultValue">—</div>
+            <div class="formula" id="mResultFormula"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 成本法 -->
+      <div class="calc-panel" id="calc-cost">
+        <div class="card">
+          <h3>成本法计算器</h3>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">按财物在评估基准日的重置成本扣减各项贬值或折旧，确定损失。</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>计算方式</label>
+              <select id="cMethod" onchange="toggleCostMethod()">
+                <option value="depreciation">分项贬值法</option>
+                <option value="newness">综合成新率法</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>重置成本（元）</label>
+              <input type="number" id="cReplaceCost" placeholder="基准日重新购置/建造成本" step="0.01">
+            </div>
+          </div>
+
+          <div id="cDepFields">
+            <div class="form-row">
+              <div class="form-group">
+                <label>实体性贬值（元）</label>
+                <input type="number" id="cPhysical" placeholder="0" value="0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label>功能性贬值（元）</label>
+                <input type="number" id="cFunctional" placeholder="0" value="0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label>经济性贬值（元）</label>
+                <input type="number" id="cEconomic" placeholder="0" value="0" step="0.01">
+              </div>
+            </div>
+          </div>
+
+          <div id="cNewnessFields" style="display:none">
+            <div class="form-row">
+              <div class="form-group">
+                <label>实际已使用年限（年）</label>
+                <input type="number" id="cUsedYears" placeholder="0" step="0.1">
+              </div>
+              <div class="form-group">
+                <label>预计尚可使用年限（年）</label>
+                <input type="number" id="cRemainYears" placeholder="0" step="0.1">
+              </div>
+              <div class="form-group">
+                <label>成新率修正值（%）</label>
+                <input type="number" id="cNewnessAdj" placeholder="±调整" value="0" step="0.1">
+                <div class="unit">根据维护保养等因素调整</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>烧损率（%）</label>
+              <input type="number" id="cBurnRate" placeholder="0-100" min="0" max="100" step="0.1">
+            </div>
+            <div class="form-group">
+              <label>残值（元）</label>
+              <input type="number" id="cResidual" placeholder="0" value="0" step="0.01">
+              <div class="unit">毁损物残骸回收价</div>
+            </div>
+          </div>
+
+          <button class="btn-calc" onclick="calcCost()">计算评估价格</button>
+
+          <div class="result-box" id="cResult" style="display:none">
+            <div class="label">评估价格</div>
+            <div class="value" id="cResultValue">—</div>
+            <div class="formula" id="cResultFormula"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 收益法 -->
+      <div class="calc-panel" id="calc-income">
+        <div class="card">
+          <h3>收益法计算器</h3>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">将财物或资产未来的预期收益，按一定的折现率折算成现值的方法。</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>财物现值（元）</label>
+              <input type="number" id="iPresentValue" placeholder="财物/资产现值" step="0.01">
+              <div class="unit">通过收益折现测算的火灾前价值</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>烧损率（%）</label>
+              <input type="number" id="iBurnRate" placeholder="0-100" min="0" max="100" step="0.1">
+            </div>
+            <div class="form-group">
+              <label>残值（元）</label>
+              <input type="number" id="iResidual" placeholder="0" value="0" step="0.01">
+              <div class="unit">毁损物残骸回收价</div>
+            </div>
+          </div>
+
+          <button class="btn-calc" onclick="calcIncome()">计算评估价格</button>
+
+          <div class="result-box" id="iResult" style="display:none">
+            <div class="label">评估价格</div>
+            <div class="value" id="iResultValue">—</div>
+            <div class="formula" id="iResultFormula"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 修复费用加和法 -->
+      <div class="calc-panel" id="calc-repair">
+        <div class="card">
+          <h3>修复费用加和法计算器</h3>
+          <p style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">计算火灾财物部分烧损情况下，修复恢复原有使用功能和外观的支出费用。</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>更换主材价格（元）</label>
+              <input type="number" id="rMain" placeholder="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>辅料价格（元）</label>
+              <input type="number" id="rAux" placeholder="0" value="0" step="0.01">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>工时费（元）</label>
+              <input type="number" id="rLabor" placeholder="0" value="0" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>其他费用（元）</label>
+              <input type="number" id="rOther" placeholder="0" value="0" step="0.01">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>修正值（元）</label>
+              <input type="number" id="rCorrection" placeholder="0" value="0" step="0.01">
+              <div class="unit">正值为加价，负值为减价</div>
+            </div>
+            <div class="form-group">
+              <label>财物火灾前现值（元）</label>
+              <input type="number" id="rCurrentValue" placeholder="用于判断是否推定全损" step="0.01">
+              <div class="unit">民事案件中，修复费超过此值则推定全损</div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>案件类型</label>
+              <select id="rCaseType">
+                <option value="civil">民事案件</option>
+                <option value="criminal">刑事案件</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-calc" onclick="calcRepair()">计算评估价格</button>
+
+          <div class="result-box" id="rResult" style="display:none">
+            <div class="label">评估价格</div>
+            <div class="value" id="rResultValue">—</div>
+            <div class="formula" id="rResultFormula"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-note">
+        <strong>提示：</strong>以上计算工具仅供参考，实际价格鉴证评估应由具备资质的价格鉴证评估机构及专业人员依据本规范完整程序开展。评估结果的准确性取决于输入数据的真实性和完整性。
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: 使用年限表 ═══════ -->
+  <div class="tab-panel" id="tab-lifetime">
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2>火灾常见财物分类总使用年限参考表</h2>
+        <p>依据《火灾损失价格鉴证评估技术规范》附表，用于成本法中计算综合成新率。</p>
+      </div>
+
+      <div class="life-search">
+        <input type="text" id="lifeSearchInput" placeholder="搜索设备分类名称…" oninput="filterLifeTable()">
+      </div>
+
+      <div class="life-table-wrap">
+        <table class="life-table" id="lifeTable">
+          <thead><tr><th>序号</th><th>设备分类</th><th>年限（年）</th><th>里程（万千米）</th></tr></thead>
+          <tbody>
+            <tr class="cat-row"><td colspan="4">一、建筑物、构筑物类</td></tr>
+            <tr class="sub-cat-row"><td colspan="4">（一）生产、经营用房</td></tr>
+            <tr data-keywords="钢结构 生产 经营"><td>1</td><td>钢结构</td><td>40</td><td>—</td></tr>
+            <tr data-keywords="钢筋混凝土 仓库 生产 经营"><td>2</td><td>钢筋混凝土结构、仓库</td><td>50</td><td>—</td></tr>
+            <tr data-keywords="砖混 砖木 生产 经营"><td>3</td><td>砖混、砖木结构</td><td>30</td><td>—</td></tr>
+            <tr data-keywords="腐蚀 生产 危险品 仓库"><td>4</td><td>受腐蚀生产用房、危险品专用仓库</td><td>25</td><td>—</td></tr>
+            <tr data-keywords="强腐蚀 生产"><td>5</td><td>受强腐蚀生产用房</td><td>15</td><td>—</td></tr>
+            <tr data-keywords="办公 独立值班"><td>6</td><td>办公、独立值班用房</td><td>45</td><td>—</td></tr>
+            <tr data-keywords="简易 住宅"><td>7</td><td>简易住宅</td><td>8</td><td>—</td></tr>
+            <tr class="sub-cat-row"><td colspan="4">（二）居民住宅</td></tr>
+            <tr data-keywords="剪力墙 钢筋混凝土 居民"><td>1</td><td>剪力墙、钢筋混凝土结构</td><td>70</td><td>—</td></tr>
+            <tr data-keywords="砖混 居民"><td>2</td><td>砖混结构</td><td>50</td><td>—</td></tr>
+            <tr data-keywords="砖木 居民"><td>3</td><td>砖木结构</td><td>40</td><td>—</td></tr>
+            <tr data-keywords="简易 结构 居民"><td>4</td><td>简易结构</td><td>10</td><td>—</td></tr>
+            <tr class="sub-cat-row"><td colspan="4">（三）装饰装修</td></tr>
+            <tr data-keywords="宾馆 饭店 商场 公共娱乐 装修"><td>1</td><td>宾馆、饭店、商场、公共娱乐、营业场所</td><td>5-6</td><td>—</td></tr>
+            <tr data-keywords="办公 居民 住宅 装修"><td>2</td><td>办公、居民住宅</td><td>8-10</td><td>—</td></tr>
+            <tr class="sub-cat-row"><td colspan="4">（四）房屋设施</td></tr>
+            <tr data-keywords="玻璃幕墙 铝合金 门窗"><td>1</td><td>玻璃幕墙、铝合金及钢木门窗</td><td>25</td><td>—</td></tr>
+            <tr data-keywords="锅炉 暖气 自来水 管道"><td>2</td><td>锅炉及附属设施、暖气、自来水管道</td><td>20</td><td>—</td></tr>
+            <tr data-keywords="快装 锅炉"><td>3</td><td>快装锅炉</td><td>15</td><td>—</td></tr>
+            <tr data-keywords="电梯 监控 通信"><td>4</td><td>电梯、监控、通信系统</td><td>10</td><td>—</td></tr>
+            <tr data-keywords="变配电 动力 照明 强电"><td>5</td><td>变配电、动力电、照明电等强电系统</td><td>23</td><td>—</td></tr>
+            <tr data-keywords="消防 安全 设施"><td>6</td><td>消防安全设施、设备</td><td>10</td><td>—</td></tr>
+            <tr class="sub-cat-row"><td colspan="4">（五）构筑物</td></tr>
+            <tr data-keywords="水井 水池 水塔 冷却塔 冷库 加油站"><td>1</td><td>水井、水池、水塔、冷却塔、冷库、加油站基础设施</td><td>30</td><td>—</td></tr>
+            <tr data-keywords="露天 水罐 污水池 构筑物"><td>2</td><td>露天库、水罐、露天水池、污水池及其他构筑物</td><td>20</td><td>—</td></tr>
+
+            <tr class="cat-row"><td colspan="4">二、物品类</td></tr>
+            <tr class="sub-cat-row"><td colspan="4">（一）交通工具</td></tr>
+            <tr data-keywords="小型 微型 出租 客运"><td>1</td><td>小、微型出租客运汽车</td><td>8</td><td>60</td></tr>
+            <tr data-keywords="中型 出租 客运"><td>2</td><td>中型出租客运汽车</td><td>10</td><td>50</td></tr>
+            <tr data-keywords="大型 出租 客运"><td>3</td><td>大型出租客运汽车</td><td>12</td><td>60</td></tr>
+            <tr data-keywords="租赁 载客"><td>4</td><td>租赁载客汽车</td><td>15</td><td>60</td></tr>
+            <tr data-keywords="小型 教练 载客"><td>5</td><td>小型教练载客汽车</td><td>10</td><td>50</td></tr>
+            <tr data-keywords="中型 教练 载客"><td>6</td><td>中型教练载客汽车</td><td>12</td><td>50</td></tr>
+            <tr data-keywords="大型 教练 载客"><td>7</td><td>大型教练载客汽车</td><td>15</td><td>60</td></tr>
+            <tr data-keywords="公交 客运"><td>8</td><td>公交客运汽车</td><td>13</td><td>40</td></tr>
+            <tr data-keywords="其他 小微型 营运 载客"><td>9</td><td>其他小微型营运载客汽车</td><td>10</td><td>60</td></tr>
+            <tr data-keywords="其他 中型 营运 载客"><td>10</td><td>其他中型营运载客汽车</td><td>15</td><td>50</td></tr>
+            <tr data-keywords="其他 大型 营运 载客"><td>11</td><td>其他大型营运载客汽车</td><td>15</td><td>60</td></tr>
+            <tr data-keywords="大型 非营运 载客"><td>12</td><td>大型非营运载客汽车</td><td>20</td><td>60</td></tr>
+            <tr data-keywords="中型 非营运 载客"><td>13</td><td>中型非营运载客汽车</td><td>20</td><td>50</td></tr>
+            <tr data-keywords="小型 微型 非营运 轿车"><td>14</td><td>小、微型非营运载客汽车和大型非营运轿车</td><td>—</td><td>60</td></tr>
+            <tr data-keywords="微型 载货"><td>15</td><td>微型载货汽车</td><td>12</td><td>50</td></tr>
+            <tr data-keywords="危险品 运输 载货"><td>16</td><td>危险品运输载货汽车</td><td>10</td><td>40</td></tr>
+            <tr data-keywords="其他 载货 半挂 全挂 牵引"><td>17</td><td>其他载货汽车（包括半、全挂牵引车）</td><td>15</td><td>60</td></tr>
+            <tr data-keywords="多缸 低速 货车"><td>18</td><td>装有多缸发动机的低速货车</td><td>12</td><td>30</td></tr>
+            <tr data-keywords="三轮 单缸 低速"><td>19</td><td>三轮汽车、装有单缸发动机的低速货车</td><td>9</td><td>30</td></tr>
+            <tr data-keywords="有载货 专项 作业"><td>20</td><td>有载货功能专项作业车</td><td>15</td><td>50</td></tr>
+            <tr data-keywords="无载货 专项 作业"><td>21</td><td>无载货功能专项作业车</td><td>30</td><td>50</td></tr>
+            <tr data-keywords="轮式 专用 机械"><td>22</td><td>轮式专用机械车</td><td>—</td><td>50</td></tr>
+            <tr data-keywords="正三轮 摩托"><td>23</td><td>正三轮摩托车</td><td>12</td><td>10</td></tr>
+            <tr data-keywords="其他 摩托"><td>24</td><td>其他摩托车</td><td>13</td><td>12</td></tr>
+            <tr data-keywords="飞机"><td>25</td><td>飞机</td><td>10</td><td>—</td></tr>
+
+            <tr class="sub-cat-row"><td colspan="4">（二）工程机械</td></tr>
+            <tr data-keywords="起重 挖掘 土方 铲运 凿井 运输 混凝土 机械"><td>1</td><td>起重机械、挖掘机械、土方铲运机械、基础及凿井机械、皮带螺旋运输机械、钢筋及混凝土机械</td><td>10</td><td>—</td></tr>
+            <tr data-keywords="电动起重机 混凝土输送泵 凿岩机 切割机"><td>2</td><td>单转电动起重机、混凝土输送泵、内燃凿岩机、风动凿岩机、电动凿岩机、等离子切割机、磁力氧气切割机</td><td>5</td><td>—</td></tr>
+
+            <tr class="sub-cat-row"><td colspan="4">（三）农用机械</td></tr>
+            <tr data-keywords="大型 拖拉机 农用"><td>1</td><td>大型拖拉机（73.55千瓦以上）</td><td>10</td><td>—</td></tr>
+            <tr data-keywords="中型 拖拉机 农用"><td>2</td><td>中型拖拉机（14.71-73.5千瓦）</td><td>12</td><td>—</td></tr>
+            <tr data-keywords="小型 拖拉机 农用"><td>3</td><td>小型拖拉机（14.71千瓦以下）</td><td>4-7</td><td>—</td></tr>
+            <tr data-keywords="农用飞机 联合收获机 粮食 排灌 喷灌 农田 农机"><td>4</td><td>农用飞机及作业设备、联合收获机、粮食处理机械、排灌机械及大型喷灌机、农田基本建设机械、农机修理专用设备及测试设备</td><td>12</td><td>—</td></tr>
+
+            <tr class="sub-cat-row"><td colspan="4">（四）营业、办公、家用设备</td></tr>
+            <tr data-keywords="办公 家用 设备"><td>1</td><td>办公、家用设备</td><td>15</td><td>—</td></tr>
+            <tr data-keywords="营业 家具 游乐 健身 洗涤 厨房"><td>2</td><td>营业用家具设备、游乐场设备、健身房设备、洗涤设备、厨房用具设备</td><td>6</td><td>—</td></tr>
+            <tr data-keywords="手机 电话 电脑 复印机 传真机 计算机"><td>3</td><td>手机、电话机、电脑、复印机、传真机、文字处理机、电子计算机及系统设备</td><td>5</td><td>—</td></tr>
+            <tr data-keywords="地毯 纯毛 化纤 混织"><td>4</td><td>纯毛地毯、化纤地毯、混织地毯</td><td>8</td><td>—</td></tr>
+            <tr data-keywords="柜台 货架 经营"><td>5</td><td>经营柜台、货架</td><td>4</td><td>—</td></tr>
+            <tr data-keywords="音响 冰箱 空调 电视"><td>6</td><td>音响设备、电冰箱、空调器、电视机</td><td>10</td><td>—</td></tr>
+            <tr data-keywords="电梯 自动扶梯"><td>7</td><td>电梯、自动扶梯</td><td>10</td><td>—</td></tr>
+            <tr data-keywords="消防 安全 设施 设备"><td>8</td><td>消防安全设施、设备</td><td>6</td><td>—</td></tr>
+            <tr data-keywords="供电 供热 中央空调"><td>9</td><td>供电、供热系统设备，中央空调设备</td><td>18</td><td>—</td></tr>
+            <tr data-keywords="钢琴"><td>10</td><td>钢琴</td><td>16</td><td>—</td></tr>
+            <tr data-keywords="电子 乐器"><td>11</td><td>电子乐器</td><td>7</td><td>—</td></tr>
+            <tr data-keywords="其他 乐器"><td>12</td><td>其他乐器</td><td>8</td><td>—</td></tr>
+
+            <tr class="sub-cat-row"><td colspan="4">（五）工业设备</td></tr>
+            <tr data-keywords="电力 输电 线路"><td>1</td><td>电力工业专用输电线路</td><td>30</td><td>—</td></tr>
+            <tr data-keywords="电力 配电 线路"><td>2</td><td>电力工业专用配电线路</td><td>15</td><td>—</td></tr>
+            <tr data-keywords="电力 发电 变电 动力 传导"><td>3</td><td>电力工业专用发电、变电配电设备，动力设备、传导设备、非生产设备及器具设备工具</td><td>18</td><td>—</td></tr>
+            <tr data-keywords="公用事业 自来水 燃气"><td>4</td><td>公用事业企业专用自来水、燃气设备</td><td>18</td><td>—</td></tr>
+            <tr data-keywords="造船 工业"><td>5</td><td>造船工业专用设备</td><td>18</td><td>—</td></tr>
+            <tr data-keywords="电气化 铁路 机械 石油 化学 医药 电子 冶金 矿山 煤炭 森林 建材 纺织 轻工业 运输 自动化 控制 仪器 仪表 工业炉窑"><td>6</td><td>电气化铁路供电系统；机械工业、石油工业，化学工业，医药工业，电子仪表电讯工业，冶金工业，矿山、煤炭及森林工业，建材工业，纺织工业，轻工业等专用设备；通用设备</td><td>10</td><td>—</td></tr>
+            <tr data-keywords="港口 装卸 铁路 机车 通讯"><td>7</td><td>港口装卸机械及设备、运输船舶及辅助船舶、铁路机车车辆和通讯线路</td><td>16</td><td>—</td></tr>
+            <tr data-keywords="铁路 通信 导航 邮电 集装箱"><td>8</td><td>铁路通信信号设备、通信导航设备、邮电通信电信机械及电源设备；集装箱</td><td>7</td><td>—</td></tr>
+            <tr data-keywords="酱醋 腐蚀 粮油 烘干 油池 油罐"><td>9</td><td>酱醋类腐蚀性严重的加工设备及器具、粮油原料整理筛选设备、烘干设备、油池、油罐</td><td>8</td><td>—</td></tr>
+            <tr data-keywords="材料试验 测量 计量 探伤 测绘 照相 监控 音影 电子分色"><td>10</td><td>材料试验设备，测量、计量、探伤、测绘仪器；照相、监控、音影设备；电子分色设备</td><td>10</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: 评估程序 ═══════ -->
+  <div class="tab-panel" id="tab-procedure">
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2>火灾损失价格鉴证评估程序</h2>
+        <p>依据《火灾损失价格鉴证评估技术规范》第四章（第九条至第二十四条）</p>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">1</span>委托与受理（第九条）</h3>
+        <div class="content">
+          <p>价格鉴证评估机构接受委托人委托时，须填写《火灾直接财产损失价格鉴证评估委托书》，签订委托合同。</p>
+          <p>委托书应载明：评估目的和要求；评估基准日、价格区域、物品所处环节或价格内涵；毁损财物名称、范围、数量等；委托方信息。</p>
+          <p><strong>刑事案件：</strong>委托主体应为各级政府及其公安、消防部门、检察机关和人民法院等。报告中不得包含任何间接损失，并须声明报告不作为民事赔偿参照依据。</p>
+          <p><strong>民事案件：</strong>火灾损失包括直接损失和间接损失。委托人可以是各级政府部门、人民法院、仲裁机构，也可以是市场主体（一般要求当事人共同委托）。报告声明不得作为办理刑事案件的参照依据。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">2</span>现场勘验（第十条）</h3>
+        <div class="content">
+          <p>应由不少于两名价格鉴证评估专业人员组成鉴证评估小组，其中至少应有一名价格鉴证师。</p>
+          <p>勘验应要求委托方工作人员及有关当事人参加。勘验按照：先拍照录像后提取搬动；先总体观察后逐项展开；先查可见残留物后再查灭失物；先易后难、先外后内的顺序开展。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">3</span>确认损失事实（第十一条）</h3>
+        <div class="content">
+          <p>按照受损人提供的《火灾直接财产损失申报统计表》及证明材料，对损失财物类别、名称、型号、数量现场进行核查验证。现场无法勘验或不能清点核对时，以委托方提供的资料为依据。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">4</span>确定烧损率（第十三条）</h3>
+        <div class="content">
+          <p>根据财物类别和损坏程度，按照规范规定的烧损率确定方法，确定各类财物的烧损率。如有争议，应委托具备资质的专业机构检验检测、鉴定（第十四条）。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">5</span>市场调查（第十六条至第十八条）</h3>
+        <div class="content">
+          <p>价格鉴证评估人员应做必要的市场调查，制作内容完整的调查记录。调查可采用当面询价、网络询价、电话视频询价等多种方式。应对调查资料的合法性、真实性、关联性进行审查。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">6</span>测算（第十九条）</h3>
+        <div class="content">
+          <p>对收集到的资料进行整理分析、数据处理，选择合理的技术路径和方法（市场法、成本法、收益法、修复费用加和法、专家咨询法）进行测算，并形成测算说明。</p>
+          <p>政府定价财产采用政府定价标准；政府指导价按基准价格与浮动幅度结合市场情况确定；市场调节价按市场价格标准选择适当方法测算。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">7</span>出具报告（第二十条）</h3>
+        <div class="content">
+          <p>自受理委托书之日起，<strong>30个工作日内</strong>出具正式的价格鉴证评估报告（另有约定从其约定）。报告应包括：事项描述、依据、过程及方法、结果、限定条件和说明等。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">8</span>送达与归档（第二十一条、第二十二条）</h3>
+        <div class="content">
+          <p>报告可采用直接送达、邮寄送达等方式。价格鉴定意见书保存期限不少于<strong>30年</strong>，价格评估报告保存期限不少于<strong>15年</strong>。</p>
+        </div>
+      </div>
+
+      <div class="proc-card">
+        <h3><span class="step-num">9</span>异议处理（第二十三条、第二十四条）</h3>
+        <div class="content">
+          <p>委托单位或相关当事人对报告有异议的，应在收到报告之日起<strong>10日内</strong>向出具机构提出异议申请。机构应在收到异议申请书<strong>20日内</strong>作出答复。异议人仍有异议的，应通过委托人向机构会籍所属的协会提出专业技术评审委托。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ TAB: 评估方法 ═══════ -->
+  <div class="tab-panel" id="tab-methods">
+    <div class="content-panel">
+      <div class="panel-header">
+        <h2>火灾损失价格鉴证评估方法</h2>
+        <p>依据《火灾损失价格鉴证评估技术规范》第五章（第二十五条至第二十九条）</p>
+      </div>
+
+      <div class="method-card">
+        <h3>一、市场法（第二十五条）</h3>
+        <div class="content">
+          <p>经市场调查，选取3个或3个以上可比参照物，比较分析毁损财物烧损前与参照物之间的因素差异，通过调整修正确定被毁损财物在评估基准日损失价格的方法。</p>
+          <div class="formula-box">
+            <strong>全部毁损：</strong><br>
+            评估价格 = (市场价格 ± 修正值) - 回收价格<br>
+            评估价格 = (市场价格 × 修正率) - 回收价格<br><br>
+            <strong>部分毁损：</strong><br>
+            评估价格 = (市场价格 ± 修正值) × 烧损率<br>
+            评估价格 = 市场价格 × 修正率 × 烧损率
+          </div>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <h3>二、成本法（第二十六条）</h3>
+        <div class="content">
+          <p>按财物在评估基准日重置成本扣减其各项贬值或折旧，确定损失的方法。</p>
+          <div class="formula-box">
+            评估价格 = (重置成本 - 实体性贬值 - 功能性贬值 - 经济性贬值) × 烧损率 - 残值<br>
+            评估价格 = 重置成本 × 综合成新率 × 烧损率 - 残值<br><br>
+            <strong>重置成本确定方法：</strong><br>
+            ① 重置核算法：重置成本 = 直接成本 + 间接成本<br>
+            ② 价格指数调整法：重置成本 = 原始成本 × (1 + 价格变动指数)<br>
+            ③ 功能价值法：重置成本 = 参照物重置成本 × 标的生产能力/参照物生产能力<br><br>
+            <strong>综合成新率：</strong><br>
+            综合成新率 = 年限成新率 ± 修正值<br>
+            年限成新率 = 预计尚可使用年限 / 总使用年限 × 100%<br>
+            总使用年限 = 实际使用年限 + 预计尚可使用年限
+          </div>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <h3>三、收益法（第二十七条）</h3>
+        <div class="content">
+          <p>将财物或资产的未来的预期收益，按一定的折现率折算成现值的方法。</p>
+          <p><strong>前提条件：</strong>财物或资产可连续获利；未来预期收益能够用货币衡量；资产所有者承担的风险必须能够用货币衡量。</p>
+          <div class="formula-box">
+            评估价格 = 财物现值 × 烧损率 - 残值
+          </div>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <h3>四、修复费用加和法（第二十八条）</h3>
+        <div class="content">
+          <p>火灾财物部分烧损情况下，修复恢复原有使用功能和外观的支出费用。并分析比较修复后财物的状态与火灾前财物的状态或全新状态的差异，修正确定火灾损失。</p>
+          <div class="formula-box">
+            评估价格 = 修复费用 ± 修正值<br>
+            修复费用 = 更换主材价格 + 辅料价格 + 工时费 + 其他费用
+          </div>
+          <p><strong>特别注意：</strong>民事案件中，当修复费用大于火灾发生前财物现有价值时，为修复不经济，推定全损，按火灾发生前财物现有价值计算损失。刑事案件按实际损失只计算毁损财物直接损失。</p>
+        </div>
+      </div>
+
+      <div class="method-card">
+        <h3>五、专家咨询法（第二十九条）</h3>
+        <div class="content">
+          <p>将若干专家设定为市场潜在的购买者，利用其专业知识、经验和分析判断能力对火灾财物损失的价格进行鉴证评估的方法。</p>
+          <p><strong>适用范围：</strong>油脂、纤维、塑料等石油产品，火灾后无残留物或残留物很少的灭失物；残骸不具备清理条件，其他方法难以鉴定财物；火灾价格鉴证评估初期的预估。</p>
+          <p><strong>专家要求：</strong>须3名以上（含3名），应为国家公布或权威行业机构公示的持有专家证书的人员，或取得中级以上职称、具有同等能力的专业人士。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── Tab switching ── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+/* ── Spec sidebar navigation ── */
+document.querySelectorAll('.nav-item').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const target = document.getElementById(item.dataset.target);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+/* ── Chapter collapse ── */
+document.querySelectorAll('.nav-chapter').forEach(ch => {
+  ch.addEventListener('click', () => {
+    ch.classList.toggle('collapsed');
+  });
+});
+
+/* ── Active nav tracking on scroll ── */
+const specContent = document.getElementById('specContent');
+if (specContent) {
+  specContent.addEventListener('scroll', () => {
+    const articles = specContent.querySelectorAll('.article');
+    let current = null;
+    articles.forEach(art => {
+      const rect = art.getBoundingClientRect();
+      const sidebar = document.querySelector('.spec-sidebar');
+      const sidebarRect = sidebar ? sidebar.getBoundingClientRect() : {right:0};
+      if (rect.top < sidebarRect.bottom + 100) {
+        current = art;
+      }
+    });
+    if (current) {
+      const id = current.id;
+      document.querySelectorAll('.nav-item').forEach(i => {
+        i.classList.toggle('active', i.dataset.target === id);
+      });
+    }
+  });
+}
+
+/* ── Spec search ── */
+document.getElementById('specSearchInput').addEventListener('input', function() {
+  const query = this.value.trim().toLowerCase();
+  const articles = document.querySelectorAll('#specContent .article');
+
+  if (!query) {
+    articles.forEach(a => {
+      a.style.display = '';
+      removeHighlights(a);
+    });
+    document.getElementById('notice').style.display = '';
+    return;
+  }
+
+  document.getElementById('notice').style.display = 'none';
+  articles.forEach(a => {
+    removeHighlights(a);
+    const text = a.textContent.toLowerCase();
+    if (text.includes(query)) {
+      a.style.display = '';
+      highlightText(a, query);
+    } else {
+      a.style.display = 'none';
+    }
+  });
+});
+
+function highlightText(el, query) {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(node => {
+    const idx = node.textContent.toLowerCase().indexOf(query);
+    if (idx >= 0) {
+      const span = document.createElement('span');
+      span.className = 'highlight';
+      const before = document.createTextNode(node.textContent.slice(0, idx));
+      const match = document.createTextNode(node.textContent.slice(idx, idx + query.length));
+      const after = document.createTextNode(node.textContent.slice(idx + query.length));
+      span.appendChild(match);
+      const parent = node.parentNode;
+      parent.replaceChild(after, node);
+      parent.insertBefore(span, after);
+      parent.insertBefore(before, span);
+    }
+  });
+}
+
+function removeHighlights(el) {
+  el.querySelectorAll('.highlight').forEach(h => {
+    const parent = h.parentNode;
+    parent.replaceChild(document.createTextNode(h.textContent), h);
+    parent.normalize();
+  });
+}
+
+/* ── Keyboard shortcut ── */
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+    const activeTab = document.querySelector('.tab-panel.active');
+    if (activeTab && activeTab.id === 'tab-spec') {
+      e.preventDefault();
+      document.getElementById('specSearchInput').focus();
+    }
+  }
+});
+
+/* ── Calculator tab switching ── */
+document.querySelectorAll('.calc-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.calc).classList.add('active');
+  });
+});
+
+/* ── Market method calculator ── */
+function toggleMarketFields() {
+  const type = document.getElementById('mType').value;
+  document.getElementById('mPartialRow').style.display = type === 'partial' ? '' : 'none';
+  document.getElementById('mRecoveryRow').style.display = type === 'total' ? '' : 'none';
+}
+
+function toggleMarketCorrection() {
+  const type = document.getElementById('mCorrectionType').value;
+  const label = document.getElementById('mCorrectionLabel');
+  const unit = document.getElementById('mCorrectionUnit');
+  if (type === 'value') {
+    label.textContent = '修正值（元）';
+    unit.textContent = '正值为加价，负值为减价';
+  } else {
+    label.textContent = '修正率（%）';
+    unit.textContent = '例如 105 表示上浮5%，95 表示下浮5%';
+  }
+}
+
+function calcMarket() {
+  const type = document.getElementById('mType').value;
+  const marketPrice = parseFloat(document.getElementById('mMarketPrice').value) || 0;
+  const correctionType = document.getElementById('mCorrectionType').value;
+  const correction = parseFloat(document.getElementById('mCorrection').value) || 0;
+  const burnRate = (parseFloat(document.getElementById('mBurnRate').value) || 0) / 100;
+  const recovery = parseFloat(document.getElementById('mRecovery').value) || 0;
+
+  let result, formula;
+  if (type === 'total') {
+    if (correctionType === 'value') {
+      result = (marketPrice + correction) - recovery;
+      formula = `(${fmt(marketPrice)} ${correction >= 0 ? '+' : ''} ${fmt(correction)}) - ${fmt(recovery)} = ${fmt(result)}`;
+    } else {
+      result = (marketPrice * correction / 100) - recovery;
+      formula = `(${fmt(marketPrice)} × ${correction}%) - ${fmt(recovery)} = ${fmt(result)}`;
+    }
+  } else {
+    if (correctionType === 'value') {
+      result = (marketPrice + correction) * burnRate;
+      formula = `(${fmt(marketPrice)} ${correction >= 0 ? '+' : ''} ${fmt(correction)}) × ${(burnRate * 100).toFixed(1)}% = ${fmt(result)}`;
+    } else {
+      result = marketPrice * (correction / 100) * burnRate;
+      formula = `${fmt(marketPrice)} × ${correction}% × ${(burnRate * 100).toFixed(1)}% = ${fmt(result)}`;
+    }
+  }
+
+  showResult('m', result, formula);
+}
+
+/* ── Cost method calculator ── */
+function toggleCostMethod() {
+  const method = document.getElementById('cMethod').value;
+  document.getElementById('cDepFields').style.display = method === 'depreciation' ? '' : 'none';
+  document.getElementById('cNewnessFields').style.display = method === 'newness' ? '' : 'none';
+}
+
+function calcCost() {
+  const method = document.getElementById('cMethod').value;
+  const replaceCost = parseFloat(document.getElementById('cReplaceCost').value) || 0;
+  const burnRate = (parseFloat(document.getElementById('cBurnRate').value) || 0) / 100;
+  const residual = parseFloat(document.getElementById('cResidual').value) || 0;
+
+  let result, formula;
+
+  if (method === 'depreciation') {
+    const physical = parseFloat(document.getElementById('cPhysical').value) || 0;
+    const functional = parseFloat(document.getElementById('cFunctional').value) || 0;
+    const economic = parseFloat(document.getElementById('cEconomic').value) || 0;
+    result = (replaceCost - physical - functional - economic) * burnRate - residual;
+    const net = replaceCost - physical - functional - economic;
+    formula = `(${fmt(replaceCost)} - ${fmt(physical)} - ${fmt(functional)} - ${fmt(economic)}) × ${(burnRate*100).toFixed(1)}% - ${fmt(residual)}\n= ${fmt(net)} × ${(burnRate*100).toFixed(1)}% - ${fmt(residual)} = ${fmt(result)}`;
+  } else {
+    const usedYears = parseFloat(document.getElementById('cUsedYears').value) || 0;
+    const remainYears = parseFloat(document.getElementById('cRemainYears').value) || 0;
+    const newnessAdj = parseFloat(document.getElementById('cNewnessAdj').value) || 0;
+    const totalYears = usedYears + remainYears;
+    const yearNewness = totalYears > 0 ? (remainYears / totalYears) * 100 : 0;
+    const compositeNewness = Math.min(100, Math.max(0, yearNewness + newnessAdj));
+    result = replaceCost * (compositeNewness / 100) * burnRate - residual;
+    formula = `年限成新率 = ${remainYears} / ${totalYears} × 100% = ${yearNewness.toFixed(1)}%\n综合成新率 = ${yearNewness.toFixed(1)}% ${newnessAdj >= 0 ? '+' : ''} ${newnessAdj}% = ${compositeNewness.toFixed(1)}%\n评估价格 = ${fmt(replaceCost)} × ${compositeNewness.toFixed(1)}% × ${(burnRate*100).toFixed(1)}% - ${fmt(residual)} = ${fmt(result)}`;
+  }
+
+  showResult('c', result, formula);
+}
+
+/* ── Income method calculator ── */
+function calcIncome() {
+  const pv = parseFloat(document.getElementById('iPresentValue').value) || 0;
+  const burnRate = (parseFloat(document.getElementById('iBurnRate').value) || 0) / 100;
+  const residual = parseFloat(document.getElementById('iResidual').value) || 0;
+
+  const result = pv * burnRate - residual;
+  const formula = `${fmt(pv)} × ${(burnRate*100).toFixed(1)}% - ${fmt(residual)} = ${fmt(result)}`;
+  showResult('i', result, formula);
+}
+
+/* ── Repair cost calculator ── */
+function calcRepair() {
+  const main = parseFloat(document.getElementById('rMain').value) || 0;
+  const aux = parseFloat(document.getElementById('rAux').value) || 0;
+  const labor = parseFloat(document.getElementById('rLabor').value) || 0;
+  const other = parseFloat(document.getElementById('rOther').value) || 0;
+  const correction = parseFloat(document.getElementById('rCorrection').value) || 0;
+  const currentVal = parseFloat(document.getElementById('rCurrentValue').value);
+  const caseType = document.getElementById('rCaseType').value;
+
+  const repairCost = main + aux + labor + other;
+  let result = repairCost + correction;
+  let formula = `修复费用 = ${fmt(main)} + ${fmt(aux)} + ${fmt(labor)} + ${fmt(other)} = ${fmt(repairCost)}\n评估价格 = ${fmt(repairCost)} ${correction >= 0 ? '+' : ''} ${fmt(correction)} = ${fmt(result)}`;
+
+  if (caseType === 'civil' && !isNaN(currentVal) && repairCost > currentVal) {
+    result = currentVal;
+    formula += `\n\n⚠ 修复费用(${fmt(repairCost)}) > 火灾前现值(${fmt(currentVal)})，推定全损\n评估价格按火灾发生前财物现有价值计算 = ${fmt(result)}`;
+  }
+
+  showResult('r', result, formula);
+}
+
+/* ── Helper functions ── */
+function fmt(n) {
+  if (Math.abs(n) >= 0.01) {
+    return n.toLocaleString('zh-CN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  return '0.00';
+}
+
+function showResult(prefix, result, formula) {
+  const box = document.getElementById(prefix + 'Result');
+  box.style.display = '';
+  document.getElementById(prefix + 'ResultValue').textContent = '¥ ' + fmt(result);
+  document.getElementById(prefix + 'ResultFormula').textContent = formula;
+}
+
+/* ── Life table filter ── */
+function filterLifeTable() {
+  const query = document.getElementById('lifeSearchInput').value.trim().toLowerCase();
+  const rows = document.querySelectorAll('#lifeTable tbody tr');
+  rows.forEach(row => {
+    if (row.classList.contains('cat-row') || row.classList.contains('sub-cat-row')) {
+      row.style.display = query ? 'none' : '';
+      return;
+    }
+    if (!query) { row.style.display = ''; return; }
+    const keywords = (row.dataset.keywords || '').toLowerCase();
+    const text = row.textContent.toLowerCase();
+    row.style.display = (keywords.includes(query) || text.includes(query)) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>

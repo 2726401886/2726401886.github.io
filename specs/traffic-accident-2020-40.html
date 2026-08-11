@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>交通事故车辆及财物损失 · 价格鉴证评估系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090b0e;--bg2:#0f1218;--s:#141820;--s2:#1a2028;--bd:#252c38;--ac:#4a9eff;--ac2:#3078d0;--gl:rgba(74,158,255,0.12);--tx:#e0e6ee;--tx2:#8896a8;--tx3:#4a5568;--red:#e05555;--green:#48c78e;--yellow:#e8b84a;--serif:'Noto Serif SC',serif;--sans:'Noto Sans SC',sans-serif;--mono:'JetBrains Mono',monospace;--r:6px}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%;overflow:hidden}
+body{font-family:var(--sans);background:var(--bg);color:var(--tx);font-size:14px;line-height:1.6}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}::-webkit-scrollbar-thumb:hover{background:var(--ac2)}
+.app{display:grid;grid-template-columns:244px 1fr;grid-template-rows:52px 1fr;height:100vh}
+.top{grid-column:1/-1;background:var(--s);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 20px;gap:14px;z-index:100}
+.top .logo{font-family:var(--serif);font-weight:900;font-size:15px;color:var(--ac);white-space:nowrap;display:flex;align-items:center;gap:8px}
+.top .badge{font-family:var(--mono);font-size:9px;background:var(--red);color:#fff;padding:2px 7px;border-radius:3px}
+.sw{flex:1;max-width:480px;position:relative}
+.sw input{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:7px 12px 7px 30px;color:var(--tx);font-size:12px;font-family:var(--sans);outline:none;transition:.2s}
+.sw input:focus{border-color:var(--ac2);box-shadow:0 0 0 2px var(--gl)}
+.sw input::placeholder{color:var(--tx3)}
+.sw .ico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--tx3);font-size:12px;pointer-events:none}
+.sc{font-family:var(--mono);font-size:10px;color:var(--tx3);white-space:nowrap}
+.side{background:var(--bg2);border-right:1px solid var(--bd);overflow-y:auto;padding:12px 0}
+.ss{margin-bottom:4px}
+.st{font-family:var(--mono);font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.12em;padding:8px 16px 3px}
+.ni{display:flex;align-items:center;gap:7px;padding:5px 16px;cursor:pointer;transition:.12s;font-size:12px;color:var(--tx2);border-left:2px solid transparent}
+.ni:hover{background:var(--s);color:var(--tx)}.ni.a{background:var(--s);color:var(--ac);border-left-color:var(--ac);font-weight:500}
+.ni .ic{width:14px;text-align:center;font-size:10px;opacity:.6}.ni.a .ic{opacity:1}
+.ni .cn{font-family:var(--mono);font-size:10px;min-width:20px}
+.mc{overflow-y:auto}
+.p{display:none;padding:22px 24px 32px;animation:fi .2s ease}.p.a{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.ph{margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--bd)}
+.ph h2{font-family:var(--serif);font-weight:700;font-size:19px;color:var(--tx);margin-bottom:2px}
+.ph p{font-size:11px;color:var(--tx2)}
+.ac{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:12px 16px;margin-bottom:7px;transition:.12s;cursor:pointer}
+.ac:hover{border-color:var(--ac2);background:var(--s2)}.ac.hl{border-color:var(--ac);box-shadow:0 0 0 3px var(--gl)}
+.ac .an{font-family:var(--mono);font-size:10px;color:var(--ac);margin-bottom:4px;font-weight:500}
+.ac .at{font-size:12.5px;line-height:1.7;color:var(--tx2)}
+.ac .at mark{background:var(--gl);color:var(--ac);border-radius:2px;padding:0 2px}
+.sd{font-family:var(--serif);font-weight:700;font-size:14px;color:var(--ac);margin:14px 0 8px;display:flex;align-items:center;gap:7px}
+.sd::after{content:'';flex:1;height:1px;background:var(--bd)}
+.cc{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:16px 20px;margin-bottom:10px}
+.cc h3{font-family:var(--serif);font-size:13px;font-weight:600;color:var(--tx);margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.cc h3 .mt{font-family:var(--mono);font-size:9px;background:var(--gl);color:var(--ac);padding:1px 5px;border-radius:3px}
+.cc .cd{font-size:11px;color:var(--tx3);margin-bottom:10px;line-height:1.5}
+.fg{margin-bottom:8px}.fg label{display:block;font-size:11px;font-weight:500;color:var(--tx2);margin-bottom:3px}
+.fg input,.fg select{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:4px;padding:6px 9px;color:var(--tx);font-size:12px;font-family:var(--mono);outline:none;transition:.2s}
+.fg input:focus,.fg select:focus{border-color:var(--ac2);box-shadow:0 0 0 2px var(--gl)}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:8px}.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.fr4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.btn{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border:1px solid var(--bd);border-radius:4px;background:var(--s);color:var(--tx);font-size:11px;font-family:var(--sans);cursor:pointer;transition:.12s}
+.btn:hover{border-color:var(--ac2);background:var(--s2)}
+.bp{background:var(--ac);color:#fff;border-color:var(--ac);font-weight:600}.bp:hover{background:var(--ac2);border-color:var(--ac2)}
+.bs{padding:3px 9px;font-size:10px}
+.rb{background:var(--bg);border:1px solid var(--ac2);border-radius:var(--r);padding:12px 16px;margin-top:12px}
+.rb .rl{font-size:10px;color:var(--tx3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.rb .rv{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--ac)}
+.rb .rd{font-size:11px;color:var(--tx2);margin-top:5px;line-height:1.5}
+.rb .rr{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid var(--bd);font-size:11px}
+.rb .rr:last-child{border-bottom:none}.rb .rr .r2{color:var(--tx2)}.rb .rr .v2{font-family:var(--mono);color:var(--tx);font-weight:500}
+.sb{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.si2{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:8px 12px;flex:1;min-width:100px}
+.si2 .sl{font-size:9px;color:var(--tx3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+.si2 .sv{font-family:var(--serif);font-size:22px;font-weight:900;color:var(--ac);line-height:1.2}
+.si2 .ss{font-size:9px;color:var(--tx2)}
+.qa{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.qb{display:flex;align-items:center;gap:4px;padding:5px 10px;background:var(--s);border:1px solid var(--bd);border-radius:14px;color:var(--tx2);font-size:10px;cursor:pointer;transition:.12s}
+.qb:hover{border-color:var(--ac2);color:var(--ac)}
+.tab{display:flex;gap:0;margin-bottom:14px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.tb{padding:6px 12px;font-size:11px;color:var(--tx3);cursor:pointer;border-bottom:2px solid transparent;transition:.12s;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--sans)}
+.tb:hover{color:var(--tx)}.tb.a{color:var(--ac);border-bottom-color:var(--ac);font-weight:600}
+.sp{display:none}.sp.a{display:block;animation:fi .15s ease}
+.et{color:var(--red);font-size:10px;margin-top:2px}
+.dt{width:100%;border-collapse:collapse;margin:8px 0}
+.dt th,.dt td{padding:5px 8px;text-align:left;border-bottom:1px solid var(--bd);font-size:11px}
+.dt th{color:var(--tx3);font-weight:500;font-size:9px;text-transform:uppercase;letter-spacing:.04em;font-family:var(--mono)}
+.dt td{color:var(--tx2)}.dt td:first-child{font-family:var(--mono);color:var(--ac2)}
+.dt tr:hover{background:var(--s)}
+.dt .hl-row{background:var(--gl) !important}
+.dt .cat-row td{color:var(--ac);font-weight:700;font-size:12px;padding-top:10px;border-bottom-color:var(--ac2)}
+
+.doc{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
+.doc-h{background:var(--bg);border-bottom:1px solid var(--bd);padding:12px 18px;text-align:center}
+.doc-h .dm{font-family:var(--serif);font-weight:900;font-size:16px;color:var(--ac);letter-spacing:.04em}
+.doc-h .ds{font-size:10px;color:var(--tx3);font-family:var(--mono)}
+.doc-b{padding:18px 24px 32px;max-height:calc(100vh - 320px);overflow-y:auto;scroll-behavior:smooth}
+.doc-b.fs{font-size:12px;line-height:1.7}.doc-b.fm{font-size:14px;line-height:1.8}.doc-b.fl{font-size:16px;line-height:1.9}
+.dch{font-family:var(--serif);font-weight:700;font-size:15px;color:var(--ac);margin:20px 0 8px;padding-bottom:5px;border-bottom:1px solid var(--bd)}
+.dch:first-child{margin-top:0}
+.dca{margin:4px 0;padding:6px 10px;border-radius:4px;transition:.2s;line-height:1.75;color:var(--tx2);font-size:12.5px}
+.dca:hover{background:var(--gl)}.dca .dn{font-weight:600;color:var(--ac2);margin-right:2px}
+.dl-p{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:14px 18px;margin-top:14px}
+.dl-p h4{font-family:var(--serif);font-size:12px;color:var(--tx);margin-bottom:8px}
+.dl-c{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px}
+.dlc{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:10px;text-align:center;cursor:pointer;transition:.15s}
+.dlc:hover{border-color:var(--ac2);transform:translateY(-1px);box-shadow:0 3px 12px rgba(0,0,0,.3)}
+.dlc .dli{font-size:20px;margin-bottom:3px;display:block}.dlc .dlt{font-weight:600;font-size:11px;color:var(--tx)}
+.dlc .dlb{display:inline-block;margin-top:3px;font-size:8px;font-family:var(--mono);padding:1px 4px;border-radius:2px;background:var(--gl);color:var(--ac)}
+.toc{background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:12px 16px;margin-bottom:10px}
+.toc h4{font-family:var(--mono);font-size:9px;color:var(--tx3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.toc ul{list-style:none}.toc li{padding:2px 0;font-size:11px;color:var(--tx2);cursor:pointer;transition:.12s;display:flex;align-items:center;gap:4px}
+.toc li:hover{color:var(--ac)}.toc li .tn{font-family:var(--mono);font-size:9px;color:var(--ac2);min-width:18px}
+.prog{height:2px;background:var(--bd);border-radius:1px;margin-bottom:3px;overflow:hidden}
+.prog-bar{height:100%;background:var(--ac);width:0%;transition:width .3s}
+.tb2{display:flex;align-items:center;gap:4px;background:var(--s);border:1px solid var(--bd);border-radius:var(--r);padding:3px 5px}
+.tl{font-size:9px;color:var(--tx3);font-family:var(--mono);padding:0 4px}
+.fb{width:26px;height:26px;display:flex;align-items:center;justify-content:center;background:transparent;border:1px solid transparent;border-radius:3px;color:var(--tx2);font-size:11px;cursor:pointer;transition:.12s}
+.fb:hover{background:var(--bg);border-color:var(--bd)}.fb.a{background:var(--gl);border-color:var(--ac2);color:var(--ac)}
+.si3{display:flex;gap:5px;align-items:center}
+.si3 input{flex:1;background:var(--bg);border:1px solid var(--bd);border-radius:3px;padding:4px 7px;color:var(--tx);font-size:10px;font-family:var(--sans);outline:none}
+.si3 input:focus{border-color:var(--ac2)}.hc{font-family:var(--mono);font-size:9px;color:var(--tx3);white-space:nowrap}
+.na{width:20px;height:20px;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--bd);border-radius:2px;color:var(--tx2);cursor:pointer;font-size:9px;transition:.12s}
+.na:hover{border-color:var(--ac2);color:var(--ac)}
+.fb-box{background:var(--bg);border:1px solid var(--bd);border-left:3px solid var(--ac2);border-radius:0 var(--r) var(--r) 0;padding:8px 12px;margin:6px 0;font-family:var(--mono);font-size:11px;color:var(--tx2);line-height:1.5}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.02'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:.3}
+.wf{position:relative;padding-left:24px}.wf::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--bd)}
+.ws{position:relative;margin-bottom:3px;padding:10px 14px;background:var(--s);border:1px solid var(--bd);border-radius:var(--r);cursor:pointer;transition:.12s}
+.ws:hover{border-color:var(--ac2);background:var(--s2)}
+.ws::before{content:'';position:absolute;left:-20px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--bd);z-index:1;transition:.12s}
+.ws.done::before{background:var(--green);border-color:var(--green)}
+.ws.cur::before{background:var(--ac);border-color:var(--ac);box-shadow:0 0 6px var(--gl)}
+.ws .wt{font-weight:600;font-size:12px;color:var(--tx);margin-bottom:1px}
+.ws .wa{font-family:var(--mono);font-size:10px;color:var(--ac2)}
+.ws .wd{font-size:11px;color:var(--tx3);margin-top:3px;display:none}
+.ws.exp .wd{display:block}
+.rc{background:var(--bg);border:1px solid var(--bd);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.rc h4{font-family:var(--serif);font-size:12px;color:var(--ac);margin-bottom:5px}
+.rl2{margin-bottom:4px}.rl2 .rn{font-weight:600;font-size:11px;color:var(--tx)}.rl2 .rr2{font-family:var(--mono);font-size:11px;color:var(--ac);margin-left:5px}.rl2 .rd2{font-size:10px;color:var(--tx3);margin-top:1px}
+.warn{background:rgba(232,184,74,0.08);border:1px solid rgba(232,184,74,0.3);border-radius:var(--r);padding:8px 12px;margin-top:8px;font-size:11px;color:var(--yellow)}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="top">
+<div class="logo"><span>交通事故损失评估</span><span class="badge">TRAFFIC</span></div>
+<div class="sw"><span class="ico">⌕</span><input type="text" id="gs" placeholder="搜索条文、公式、配件…" autocomplete="off"></div>
+<div class="sc" id="sc"></div>
+</div>
+<div class="side">
+<div class="ss"><div class="st">功能模块</div>
+<div class="ni a" data-p="overview" onclick="sp('overview',this)"><span class="ic">◈</span><span>总览</span></div>
+<div class="ni" data-p="doc" onclick="sp('doc',this)"><span class="ic">▤</span><span>原文件查阅/下载</span></div>
+<div class="ni" data-p="calc" onclick="sp('calc',this)"><span class="ic">∿</span><span>评估方法计算</span></div>
+<div class="ni" data-p="life" onclick="sp('life',this)"><span class="ic">⏱</span><span>使用年限/里程参考</span></div>
+<div class="ni" data-p="replace" onclick="sp('replace',this)"><span class="ic">⚙</span><span>更换条件参考</span></div>
+<div class="ni" data-p="deprec" onclick="sp('deprec',this)"><span class="ic">📉</span><span>车辆贬值计算</span></div>
+<div class="ni" data-p="wf" onclick="sp('wf',this)"><span class="ic">⋯</span><span>评估流程跟踪</span></div>
+</div>
+<div class="ss"><div class="st">章节导航</div>
+<div class="ni" data-p="c1" onclick="sp('c1',this)"><span class="cn">§1</span><span>总则</span></div>
+<div class="ni" data-p="c2" onclick="sp('c2',this)"><span class="cn">§2</span><span>损失分类与原则</span></div>
+<div class="ni" data-p="c3" onclick="sp('c3',this)"><span class="cn">§3</span><span>评估程序</span></div>
+<div class="ni" data-p="c4" onclick="sp('c4',this)"><span class="cn">§4</span><span>评估方法</span></div>
+<div class="ni" data-p="c5" onclick="sp('c5',this)"><span class="cn">§5</span><span>注意事项</span></div>
+<div class="ni" data-p="c6" onclick="sp('c6',this)"><span class="cn">§6</span><span>附则</span></div>
+</div>
+<div class="ss"><div class="st">查询</div>
+<div class="ni" data-p="info" onclick="sp('info',this)"><span class="ic">◎</span><span>文件信息</span></div>
+<div class="ni" data-p="sr" onclick="sp('sr',this)"><span class="ic">⌕</span><span>搜索结果</span></div>
+</div>
+</div>
+<div class="mc" id="mc">
+
+<!-- Overview -->
+<div class="p a" id="p-overview">
+<div class="ph"><h2>交通事故车辆及财物损失价格鉴证评估技术规范</h2><p>中价协〔2020〕40号 · 自发布之日起执行</p></div>
+<div class="sb">
+<div class="si2"><div class="sl">总条文</div><div class="sv">23</div><div class="ss">条款 + 3附录</div></div>
+<div class="si2"><div class="sl">评估方法</div><div class="sv">3</div><div class="ss">修复·成本·市场</div></div>
+<div class="si2"><div class="sl">损失分类</div><div class="sv">4</div><div class="ss">车辆·货物·设施·第三者</div></div>
+<div class="si2"><div class="sl">贬值上限</div><div class="sv">30%</div><div class="ss">整车价值</div></div>
+</div>
+<div class="sd">快速操作</div>
+<div class="qa">
+<div class="qb" onclick="sp('doc',q('[data-p=doc]'))">▤ 原文件查阅</div>
+<div class="qb" onclick="sp('calc',q('[data-p=calc]'))">∿ 评估计算</div>
+<div class="qb" onclick="sp('deprec',q('[data-p=deprec]'))">📉 贬值计算</div>
+<div class="qb" onclick="sp('life',q('[data-p=life]'))">⏱ 使用年限</div>
+<div class="qb" onclick="sp('replace',q('[data-p=replace]'))">⚙ 更换条件</div>
+<div class="qb" onclick="sp('wf',q('[data-p=wf]'))">⋯ 流程跟踪</div>
+<div class="qb" onclick="fsc()">⌕ 全文搜索</div>
+</div>
+<div class="sd">规范概览</div>
+<div class="cc" style="margin-bottom:7px"><h3>第一章 · 总则 <span class="mt">第一条 — 第四条</span></h3><p class="at">规定适用范围、损失定义（车辆损失含贬值、车载物、乘车人携带物品、道路设施、公共设施及其他财物）及价格鉴证评估的定义。</p></div>
+<div class="cc" style="margin-bottom:7px"><h3>第二章 · 损失分类与原则 <span class="mt">第五条 — 第六条</span></h3><p class="at">四类损失：车辆损失、货物损失、道路设施损失、第三者损失。原则：以修为主更换为辅、质量对等、相关性、保证安全。</p></div>
+<div class="cc" style="margin-bottom:7px"><h3>第三章 · 评估程序 <span class="mt">第七条 — 第十条</span></h3><p class="at">13步基本程序、委托受理、基准日确定（一般以事故日期为准）、实物勘验要求（两人以上、拆解检验、拍照取证）。</p></div>
+<div class="cc" style="margin-bottom:7px"><h3>第四章 · 评估方法 <span class="mt">第十一条 — 第十六条</span></h3><p class="at">三种方法：修复费用加和法（部分损失）、成本法和市场法（全部损失/推定全损）。车辆贬值评估方法。</p></div>
+<div class="cc" style="margin-bottom:7px"><h3>第五章 · 注意事项 <span class="mt">第十七条 — 第二十一条</span></h3><p class="at">关注产权证件查验、修复方法选择、重置成本构成要素、市场法前提条件等。</p></div>
+<div class="cc"><h3>附录</h3><p class="at">附录1：机动车使用年限及行驶里程参考值。附录2：事故车辆总成及零配件更换条件参考标准。附件3：特殊情况的价格鉴证评估。</p></div>
+</div>
+
+<!-- Doc Viewer -->
+<div class="p" id="p-doc">
+<div class="ph"><h2>原文件查阅与下载</h2><p>中价协〔2020〕40号 · 全文在线查阅与多格式下载</p></div>
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+<div class="tb2"><span class="tl">字号</span><button class="fb" onclick="dfs('fs')" id="bfS">A-</button><button class="fb a" onclick="dfs('fm')" id="bfM">A</button><button class="fb" onclick="dfs('fl')" id="bfL">A+</button></div>
+<div class="tb2 si3"><span class="tl">查找</span><input type="text" id="dS" placeholder="搜索原文…" oninput="dse(this.value)"><span class="hc" id="dhc"></span><button class="na" onclick="dsn(-1)">↑</button><button class="na" onclick="dsn(1)">↓</button></div>
+<div class="tb2"><button class="btn bs bp" onclick="prDoc()">⎙ 打印/PDF</button></div>
+</div>
+<div class="prog"><div class="prog-bar" id="dpb"></div></div>
+<div class="toc"><h4>目录</h4><ul>
+<li onclick="dsc('dn')"><span class="tn"></span>通知正文</li>
+<li onclick="dsc('d1')"><span class="tn">§1</span>第一章 总则</li>
+<li onclick="dsc('d2')"><span class="tn">§2</span>第二章 损失分类与原则</li>
+<li onclick="dsc('d3')"><span class="tn">§3</span>第三章 评估程序</li>
+<li onclick="dsc('d4')"><span class="tn">§4</span>第四章 评估方法</li>
+<li onclick="dsc('d5')"><span class="tn">§5</span>第五章 注意事项</li>
+<li onclick="dsc('d6')"><span class="tn">§6</span>第六章 附则</li>
+<li onclick="dsc('da1')"><span class="tn">附1</span>附录1 使用年限及里程</li>
+<li onclick="dsc('da2')"><span class="tn">附2</span>附录2 更换条件标准</li>
+<li onclick="dsc('da3')"><span class="tn">附3</span>附件3 特殊情况</li>
+</ul></div>
+<div class="doc">
+<div class="doc-h"><div class="dm">交通事故车辆及财物损失价格鉴证评估技术规范</div><div class="ds">中价协〔2020〕40号 · 自发布之日起执行</div></div>
+<div class="doc-b fm" id="dkb">
+<div id="dn"><div class="dch">关于印发《交通事故车辆及财物损失价格鉴证评估技术规范》的通知</div>
+<div class="dca">为规范道路交通事故车辆及财物损失价格鉴证评估行为，统一交通事故车辆及财物损失价格鉴证评估程序和方法，保护当事人合法权益和公共利益，根据《中华人民共和国价格法》、《中华人民共和国资产评估法》、《报废机动车回收管理办法》（国务院令715号）和《事故汽车修复技术规范》（交通部运输行业标准JT/T795-2011）、中国价格协会《价格鉴证评估执业规范》等制定本技术规范。</div>
+<div class="dca">本技术规范已经会长办公会议研究通过，自发布之日起执行。</div>
+</div>
+<div id="d1"><div class="dch">第一章 总则</div>
+<div class="dca"><span class="dn">第一条</span> 为规范道路交通事故车辆及财物损失价格鉴证评估行为，统一交通事故车辆及财物损失价格鉴证评估程序和方法，保护当事人合法权益和公共利益，根据《中华人民共和国价格法》、《中华人民共和国资产评估法》、《报废机动车回收管理办法》（国务院令715号）和《事故汽车修复技术规范》（交通部运输行业标准JT/T795-2011）、中国价格协会《价格鉴证评估执业规范》等制定本技术规范。</div>
+<div class="dca"><span class="dn">第二条</span> 本规范适用于价格鉴证评估机构及其价格鉴证评估专业人员执行道路交通事故车辆及财物损失价格鉴证评估业务。</div>
+<div class="dca"><span class="dn">第三条</span> 本规范所称交通事故车辆及财物损失，是指因道路交通事故造成的车辆损失（含车辆贬值）、车载物、乘车人携带物品、道路设施、公共设施与道路交通事故相关的其他财物损失。</div>
+<div class="dca"><span class="dn">第四条</span> 本规范所称道路交通事故车辆及财物损失价格鉴证评估，是指价格鉴证评估机构及其价格鉴证评估专业人员根据委托，按照法定的标准和程序，运用科学的方法对道路交通事故车辆及财物损失进行评定、估算，并出具价格鉴证评估报告的专业服务行为。价格鉴定业务出具价格鉴定意见书，价格评估业务出具价格评估报告。</div>
+</div>
+<div id="d2"><div class="dch">第二章 交通事故车辆及财物损失的分类及价格鉴证评估原则</div>
+<div class="dca"><span class="dn">第五条</span> 根据道路交通事故造成的损失不同，分为四类：1.车辆损失，指由于道路交通事故引起的车辆自身的损失（包括贬值）；2.货物损失，指由于道路交通事故引起的车载货物的损失；3.道路设施损失，指在发生道路交通事故时，肇事车辆对道路设施造成的损坏；4.第三者损失，指在发生道路交通事故时，肇事车辆对第三人财物造成的损失。</div>
+<div class="dca"><span class="dn">第六条</span> 交通事故车辆损失价格鉴证评估应遵循以下原则：1.以修为主，更换为辅的原则；2.质量对等原则（进口配进口，国产配国产）；3.相关性原则（考虑未损坏零配件拆装因素）；4.保证安全原则（修复后能确保安全正常使用）。</div>
+</div>
+<div id="d3"><div class="dch">第三章 交通事故车辆及财物损失价格鉴证评估程序</div>
+<div class="dca"><span class="dn">第七条</span> 基本程序共13步：1.取得委托书；2.签订委托合同；3.指派专业人员；4.确定作业方案；5.实物勘验；6.收集整理资料；7.市场调查；8.选定方法；9.测算确定结论；10.撰写报告；11.审核报告；12.提交送达；13.归档。</div>
+<div class="dca"><span class="dn">第八条</span> 委托受理：须委托人填写《道路交通事故车辆及财物损失价格鉴证评估委托书》签订合同。无法提供实物或已修复的应提供照片、维修明细及证明资料。单方委托需标注说明原因。</div>
+<div class="dca"><span class="dn">第九条</span> 价格鉴证评估基准日一般应以事故发生日期为准，法律、法规和司法解释另有规定的除外。</div>
+<div class="dca"><span class="dn">第十条</span> 实物勘验：由两名以上人员共同进行；不能直接观察到损坏部位的应进行拆解检验；详细查勘、拍照、摄录取证，填写《现场勘查登记表》。</div>
+</div>
+<div id="d4"><div class="dch">第四章 交通事故车辆及财物损失价格鉴证评估方法</div>
+<div class="dca"><span class="dn">第十一条</span> 损失分为全部损失和部分损失。评估方法主要有修复费用加和法、成本法和市场法。应选择两种以上方法。修复费用加和法适用于部分损失；成本法和市场法适用于全部损失或推定全损。推定全损指车辆受损严重，失去修复价值或修复费用达到和超过车辆在事故发生时的实际价值。</div>
+<div class="dca"><span class="dn">第十二条</span> 修复费用加和法：价格评估值 = Σ(配件价格 + 配件管理费 + 工时费用 + 其他费用) - 残值。材料费用=配件价格×(1+管理费率)，如以零售价计算则不加管理费。</div>
+<div class="dca"><span class="dn">第十三条</span> 成本法：价格评估值 = (重置成本 - 残值) × 成新率。国产车辆重置成本=现行市价+购置税+其他费用。进口车辆重置成本=报关价+关税+消费税+增值税+其他费用。成新率确定方法：使用年限法、行驶里程法、部件鉴定法、整体观察法。</div>
+<div class="dca"><span class="dn">第十四条</span> 市场法：价格评估值 = 交通事故前市场价格 - 残值。用直接法（3个以上相同实例简单算术平均）或类比法（市场价格=参照物价格×(1±调整系数)）求取市场价格。</div>
+<div class="dca"><span class="dn">第十五条</span> 刑事案件价格鉴定，车辆配件损坏须更换的，鉴定价格为更换配件折旧后的余额与修复费用合计。</div>
+<div class="dca"><span class="dn">第十六条</span> 车辆贬值评估：价格评估值 = 交通事故前车辆市场交易价格 × 贬值系数。贬值系数一般不超过交通事故前整车价值的30%。</div>
+</div>
+<div id="d5"><div class="dch">第五章 交通事故车辆及财物损失价格鉴证评估注意事项</div>
+<div class="dca"><span class="dn">第十七条</span> 车载货物、道路设施、第三人财物的重置成本按照有关部门的相关规定进行价格评估，已有标准或规定的从其规定。</div>
+<div class="dca"><span class="dn">第十八条</span> 应关注产权证件的查验，如机动车登记证、营运证、其他权属证明，在报告中对评估对象概况进行描述。</div>
+<div class="dca"><span class="dn">第十九条</span> 采用修复费用加和法应注意修复方法的选择，按照经济、可行、实用、安全、美观的总体原则选择。</div>
+<div class="dca"><span class="dn">第二十条</span> 采用成本法应注意重置成本的构成要素，了解实体性贬值、功能性贬值和经济性贬值。</div>
+<div class="dca"><span class="dn">第二十一条</span> 采用市场法应注意活跃市场是前提条件，参照物与评估对象的相似性和可比性是基础。</div>
+</div>
+<div id="d6"><div class="dch">第六章 附则</div>
+<div class="dca"><span class="dn">第二十二条</span> 本规范由中国价格协会负责解释。</div>
+<div class="dca"><span class="dn">第二十三条</span> 本规范自发布之日起实施。</div>
+</div>
+</div>
+</div>
+<div class="dl-p"><h4>⬇ 文件下载</h4><div class="dl-c">
+<div class="dlc" onclick="dlT()"><span class="dli">📄</span><div class="dlt">纯文本</div><span class="dlb">.txt</span></div>
+<div class="dlc" onclick="dlH()"><span class="dli">📋</span><div class="dlt">格式化</div><span class="dlb">.html</span></div>
+<div class="dlc" onclick="prDoc()"><span class="dli">🖨</span><div class="dlt">打印/PDF</div><span class="dlb">.pdf</span></div>
+<div class="dlc" onclick="dlJ()"><span class="dli">📊</span><div class="dlt">JSON</div><span class="dlb">.json</span></div>
+<div class="dlc" onclick="dlM()"><span class="dli">📝</span><div class="dlt">Markdown</div><span class="dlb">.md</span></div>
+<div class="dlc" onclick="dlC()"><span class="dli">📑</span><div class="dlt">条文索引</div><span class="dlb">.csv</span></div>
+</div></div>
+</div>
+
+<!-- Calculator -->
+<div class="p" id="p-calc">
+<div class="ph"><h2>评估方法计算</h2><p>根据规范第四章（第十一条至第十六条）的评估方法进行在线计算</p></div>
+<div class="tab">
+<button class="tb a" onclick="sct('repair',this)">修复费用加和法</button>
+<button class="tb" onclick="sct('costm',this)">成本法</button>
+<button class="tb" onclick="sct('market',this)">市场法</button>
+</div>
+
+<div class="sp a" id="ct-repair">
+<div class="cc"><h3>修复费用加和法 <span class="mt">第十二条</span></h3>
+<div class="fb-box">价格评估值 = Σ(配件价格 + 配件管理费 + 工时费用 + 其他费用) - 残值<br>材料费用 = 配件价格 × (1 + 管理费率)</div>
+<p class="cd">适用于车辆及财物部分损失（可修复、技术上可行、经济上合理）。</p>
+<div id="repairItems"></div>
+<div style="display:flex;gap:6px;margin:8px 0">
+<button class="btn bs" onclick="addRepairItem()">+ 添加配件项</button>
+<button class="btn bs" onclick="clearRepairItems()">清空</button>
+</div>
+<div class="fr3">
+<div class="fg"><label>工时费用合计（元）</label><input type="text" id="rp_labor" placeholder="如：3000"></div>
+<div class="fg"><label>其他费用（元）</label><input type="text" id="rp_other" value="0" placeholder="0"></div>
+<div class="fg"><label>残值（元）</label><input type="text" id="rp_residual" value="0" placeholder="0"></div>
+</div>
+<button class="btn bp" onclick="calcRepair()" style="margin-top:6px">计算评估价格</button>
+<div id="rpResult"></div>
+</div>
+</div>
+
+<div class="sp" id="ct-costm">
+<div class="cc"><h3>成本法 <span class="mt">第十三条</span></h3>
+<div class="fb-box">价格评估值 = (重置成本 - 残值) × 成新率<br>成新率 = 1 - (实际使用年限/总使用年限) 或 1 - (实际里程/规定里程)</div>
+<div class="tab" style="margin-bottom:10px">
+<button class="tb a" onclick="sctc('domestic',this)">国产车辆</button>
+<button class="tb" onclick="sctc('import',this)">进口车辆</button>
+</div>
+<div class="sp a" id="ctc-domestic">
+<div class="fr3">
+<div class="fg"><label>现行市价（元）</label><input type="text" id="cd_price" placeholder="如：150000"></div>
+<div class="fg"><label>增值税率（%）</label><input type="text" id="cd_vat" value="13" placeholder="13"></div>
+<div class="fg"><label>购置税率（%）</label><input type="text" id="cd_tax" value="10" placeholder="10"></div>
+</div>
+<div class="fr">
+<div class="fg"><label>其他费用（元）</label><input type="text" id="cd_other" value="0" placeholder="0"></div>
+<div class="fg"></div>
+</div>
+</div>
+<div class="sp" id="ctc-import">
+<div class="fr3">
+<div class="fg"><label>报关价/CIF（元）</label><input type="text" id="ci_cif" placeholder="如：200000"></div>
+<div class="fg"><label>关税税率（%）</label><input type="text" id="ci_tariff" value="15" placeholder="15"></div>
+<div class="fg"><label>消费税率（%）</label><input type="text" id="ci_cons" value="0" placeholder="如：25"></div>
+</div>
+<div class="fr">
+<div class="fg"><label>增值税率（%）</label><input type="text" id="ci_vat" value="13" placeholder="13"></div>
+<div class="fg"><label>其他费用（元）</label><input type="text" id="ci_other" value="0" placeholder="0"></div>
+</div>
+</div>
+<div class="sd" style="margin-top:12px">成新率计算</div>
+<div class="tab" style="margin-bottom:8px">
+<button class="tb a" onclick="sctn('year',this)">使用年限法</button>
+<button class="tb" onclick="sctn('km',this)">行驶里程法</button>
+<button class="tb" onclick="sctn('manual',this)">手动输入</button>
+</div>
+<div class="sp a" id="ctn-year">
+<div class="fr">
+<div class="fg"><label>实际已使用年限</label><input type="text" id="cn_actual" placeholder="如：5"></div>
+<div class="fg"><label>总使用年限</label><input type="text" id="cn_total" placeholder="如：15"></div>
+</div>
+</div>
+<div class="sp" id="ctn-km">
+<div class="fr">
+<div class="fg"><label>实际累计里程（万千米）</label><input type="text" id="cn_km_actual" placeholder="如：8"></div>
+<div class="fg"><label>规定行驶里程（万千米）</label><input type="text" id="cn_km_total" placeholder="如：60"></div>
+</div>
+</div>
+<div class="sp" id="ctn-manual">
+<div class="fg"><label>成新率（%）</label><input type="text" id="cn_manual" placeholder="如：65"></div>
+</div>
+<div class="fr" style="margin-top:8px">
+<div class="fg"><label>残值（元）</label><input type="text" id="cn_residual" value="0" placeholder="0"></div>
+<div class="fg"></div>
+</div>
+<button class="btn bp" onclick="calcCost()" style="margin-top:6px">计算评估价格</button>
+<div id="costResult"></div>
+</div>
+</div>
+
+<div class="sp" id="ct-market">
+<div class="cc"><h3>市场法 <span class="mt">第十四条</span></h3>
+<div class="fb-box">价格评估值 = 交通事故前市场价格 - 残值<br>直接法：市场价格 = 简单算术平均（3个以上相同实例）<br>类比法：市场价格 = 参照物价格 × (1 ± 调整系数)</div>
+<div class="tab" style="margin-bottom:10px">
+<button class="tb a" onclick="sctm2('direct',this)">直接法</button>
+<button class="tb" onclick="sctm2('analogy',this)">类比法</button>
+</div>
+<div class="sp a" id="ctm2-direct">
+<div class="fg"><label>参照交易实例数量</label><select id="md_n" onchange="updMdInputs()"><option value="3">3个</option><option value="4">4个</option><option value="5">5个</option></select></div>
+<div id="mdInputs"></div>
+<div class="fg" style="margin-top:6px"><label>残值（元）</label><input type="text" id="md_res" value="0" placeholder="0"></div>
+<button class="btn bp" onclick="calcMktDirect()" style="margin-top:4px">计算评估价格</button>
+<div id="mdResult"></div>
+</div>
+<div class="sp" id="ctm2-analogy">
+<div class="fr3">
+<div class="fg"><label>参照物价格（元）</label><input type="text" id="ma_ref" placeholder="如：120000"></div>
+<div class="fg"><label>调整系数（%）</label><input type="text" id="ma_adj" value="0" placeholder="正数加/负数减"></div>
+<div class="fg"><label>残值（元）</label><input type="text" id="ma_res" value="0" placeholder="0"></div>
+</div>
+<button class="btn bp" onclick="calcMktAnalogy()" style="margin-top:4px">计算评估价格</button>
+<div id="maResult"></div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Depreciation -->
+<div class="p" id="p-deprec">
+<div class="ph"><h2>车辆贬值计算</h2><p>根据规范第十六条</p></div>
+<div class="cc"><h3>交通事故车辆贬值 <span class="mt">第十六条</span></h3>
+<div class="fb-box">价格评估值 = 交通事故前车辆市场交易价格 × 贬值系数<br>贬值系数一般不超过交通事故前整车价值的30%</div>
+<div class="fr">
+<div class="fg"><label>事故前车辆市场交易价格（元）</label><input type="text" id="dp_price" placeholder="如：150000"></div>
+<div class="fg"><label>贬值系数（%）</label><input type="text" id="dp_rate" placeholder="如：15（不超过30%）"></div>
+</div>
+<div class="cd">贬值系数确定步骤：1.收集资料（事故照片、修理方案等）；2.现场勘查；3.技术分析；4.根据受损总成重要程度确定权重，各分项贬值系数加总。</div>
+<button class="btn bp" onclick="calcDeprec()">计算贬值损失</button>
+<div id="dpResult"></div>
+</div>
+</div>
+
+<!-- Life Reference -->
+<div class="p" id="p-life">
+<div class="ph"><h2>机动车使用年限及行驶里程参考值</h2><p>附录1 · 用于成本法计算成新率</p></div>
+<div style="margin-bottom:10px"><input type="text" id="lfSearch" placeholder="搜索车辆类型…" oninput="filterLife(this.value)" style="width:100%;max-width:350px;background:var(--bg);border:1px solid var(--bd);border-radius:4px;padding:6px 10px;color:var(--tx);font-size:11px;outline:none"></div>
+<table class="dt" id="lfTable"><thead><tr><th style="width:30px">#</th><th>车辆类型与用途</th><th style="width:70px">年限(年)</th><th style="width:80px">里程(万千米)</th></tr></thead><tbody id="lfBody"></tbody></table>
+<div class="cc" style="margin-top:14px"><h3>成新率快速计算器</h3>
+<div class="fr3">
+<div class="fg"><label>计算方式</label><select id="lfMode"><option value="year">使用年限法</option><option value="km">行驶里程法</option></select></div>
+<div class="fg"><label>实际值</label><input type="text" id="lfActual" placeholder="年限或里程"></div>
+<div class="fg"><label>总值（参考上表）</label><input type="text" id="lfTotal" placeholder="总年限或总里程"></div>
+</div>
+<button class="btn bp" onclick="calcLfRate()">计算成新率</button>
+<div id="lfResult"></div>
+</div>
+</div>
+
+<!-- Replacement Conditions -->
+<div class="p" id="p-replace">
+<div class="ph"><h2>事故车辆总成及零配件更换条件参考标准</h2><p>附录2 · 确定是否需要更换配件的依据</p></div>
+<div style="margin-bottom:10px"><input type="text" id="rcSearch" placeholder="搜索配件名称…" oninput="filterReplace(this.value)" style="width:100%;max-width:350px;background:var(--bg);border:1px solid var(--bd);border-radius:4px;padding:6px 10px;color:var(--tx);font-size:11px;outline:none"></div>
+<div id="rcContent"></div>
+</div>
+
+<!-- Workflow -->
+<div class="p" id="p-wf">
+<div class="ph"><h2>评估流程跟踪</h2><p>根据规范第三章（第七条至第十条）</p></div>
+<div style="display:flex;gap:6px;margin-bottom:14px"><button class="btn bs" onclick="resetWf()">重置</button><button class="btn bs" onclick="expandWf()">全部展开</button></div>
+<div class="wf" id="wfSteps">
+<div class="ws cur" onclick="togWs(this)"><div class="wt">1. 取得委托书</div><div class="wa">第七条第1款</div><div class="wd">委托人出具价格鉴证评估委托书。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">2. 签订委托合同</div><div class="wa">第七条第2款 · 第八条</div><div class="wd">明确基本事项，签订合同。填写《委托书》，无法提供实物需提供照片、维修明细。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">3. 指派专业人员</div><div class="wa">第七条第3款</div><div class="wd">指定价格鉴证评估人员。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">4. 确定作业方案</div><div class="wa">第七条第4款</div><div class="wd">确定价格鉴证评估作业方案。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">5. 实物勘验</div><div class="wa">第七条第5款 · 第十条</div><div class="wd">两名以上人员共同进行。不能直接观察的应拆解检验。详细查勘、拍照、摄录取证，填写《现场勘查登记表》。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">6. 收集整理资料</div><div class="wa">第七条第6款</div><div class="wd">收集与整理价格鉴证评估资料。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">7. 市场调查</div><div class="wa">第七条第7款</div><div class="wd">进行市场调查收集价格数据。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">8. 选定评估方法</div><div class="wa">第七条第8款 · 第十一条</div><div class="wd">选择修复费用加和法、成本法、市场法。应选两种以上方法。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">9. 测算确定结论</div><div class="wa">第七条第9款</div><div class="wd">测算、分析、确定价格鉴证评估结论。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">10. 撰写报告</div><div class="wa">第七条第10款</div><div class="wd">撰写价格鉴证评估报告。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">11. 审核报告</div><div class="wa">第七条第11款</div><div class="wd">审核价格鉴证评估报告。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">12. 提交送达</div><div class="wa">第七条第12款</div><div class="wd">提交（送达）价格鉴证评估报告。</div></div>
+<div class="ws" onclick="togWs(this)"><div class="wt">13. 归档</div><div class="wa">第七条第13款</div><div class="wd">价格鉴证评估报告归档。</div></div>
+</div>
+</div>
+
+<!-- Chapter Panels -->
+<div class="p" id="p-c1"><div class="ph"><h2>第一章 · 总则</h2><p>第一条至第四条</p></div><div id="c1a"></div></div>
+<div class="p" id="p-c2"><div class="ph"><h2>第二章 · 损失分类与原则</h2><p>第五条至第六条</p></div><div id="c2a"></div></div>
+<div class="p" id="p-c3"><div class="ph"><h2>第三章 · 评估程序</h2><p>第七条至第十条</p></div><div id="c3a"></div></div>
+<div class="p" id="p-c4"><div class="ph"><h2>第四章 · 评估方法</h2><p>第十一条至第十六条</p></div><div id="c4a"></div></div>
+<div class="p" id="p-c5"><div class="ph"><h2>第五章 · 注意事项</h2><p>第十七条至第二十一条</p></div><div id="c5a"></div></div>
+<div class="p" id="p-c6"><div class="ph"><h2>第六章 · 附则</h2><p>第二十二条至第二十三条</p></div><div id="c6a"></div></div>
+
+<!-- Info -->
+<div class="p" id="p-info"><div class="ph"><h2>文件信息</h2></div>
+<table class="dt"><tbody>
+<tr><td style="width:120px">文件标题</td><td>交通事故车辆及财物损失价格鉴证评估技术规范</td></tr>
+<tr><td>文件编号</td><td>中价协〔2020〕40号</td></tr>
+<tr><td>发布机构</td><td>中国价格协会</td></tr>
+<tr><td>发布日期</td><td>2020年9月15日</td></tr>
+<tr><td>法律依据</td><td>《价格法》《资产评估法》《报废机动车回收管理办法》（国务院令715号）</td></tr>
+<tr><td>行业标准</td><td>《事故汽车修复技术规范》JT/T795-2011</td></tr>
+<tr><td>配套规范</td><td>中国价格协会《价格鉴证评估执业规范》</td></tr>
+<tr><td>解释权</td><td>中国价格协会</td></tr>
+</tbody></table>
+</div>
+
+<!-- Search Results -->
+<div class="p" id="p-sr"><div class="ph"><h2>搜索结果</h2><p id="srd">请输入关键词进行搜索</p></div><div id="sres"></div></div>
+
+</div>
+</div>
+
+<script>
+const A=[
+{id:1,ch:"c1",n:"第一条",ch2:"第一章 总则",t:"为规范道路交通事故车辆及财物损失价格鉴证评估行为，统一交通事故车辆及财物损失价格鉴证评估程序和方法，保护当事人合法权益和公共利益，根据《中华人民共和国价格法》、《中华人民共和国资产评估法》、《报废机动车回收管理办法》（国务院令715号）和《事故汽车修复技术规范》、中国价格协会《价格鉴证评估执业规范》等制定本技术规范。"},
+{id:2,ch:"c1",n:"第二条",ch2:"第一章 总则",t:"本规范适用于价格鉴证评估机构及其价格鉴证评估专业人员执行道路交通事故车辆及财物损失价格鉴证评估业务。"},
+{id:3,ch:"c1",n:"第三条",ch2:"第一章 总则",t:"本规范所称交通事故车辆及财物损失，是指因道路交通事故造成的车辆损失（含车辆贬值）、车载物、乘车人携带物品、道路设施、公共设施与道路交通事故相关的其他财物损失。"},
+{id:4,ch:"c1",n:"第四条",ch2:"第一章 总则",t:"道路交通事故车辆及财物损失价格鉴证评估，是指价格鉴证评估机构及其专业人员根据委托，按照法定的标准和程序，运用科学的方法对损失进行评定、估算，并出具价格鉴证评估报告的专业服务行为。"},
+{id:5,ch:"c2",n:"第五条",ch2:"第二章 损失分类",t:"分为四类：1.车辆损失（含贬值）；2.货物损失（车载货物）；3.道路设施损失（肇事车辆对道路设施的损坏）；4.第三者损失（肇事车辆对第三人财物的损失）。"},
+{id:6,ch:"c2",n:"第六条",ch2:"第二章 评估原则",t:"原则：1.以修为主，更换为辅；2.质量对等原则（进口配进口，国产配国产）；3.相关性原则（考虑未损坏零配件拆装因素）；4.保证安全原则。"},
+{id:7,ch:"c3",n:"第七条",ch2:"第三章 评估程序",t:"基本程序13步：取得委托书、签订合同、指派人员、确定方案、实物勘验、收集资料、市场调查、选定方法、测算结论、撰写报告、审核报告、提交送达、归档。不得随意删减。"},
+{id:8,ch:"c3",n:"第八条",ch2:"第三章 委托受理",t:"须填写《委托书》签订合同。无法提供实物的应提供照片、维修明细及证明资料。单方委托需标注说明原因。"},
+{id:9,ch:"c3",n:"第九条",ch2:"第三章 基准日",t:"基准日一般以事故发生日期为准，法律、法规和司法解释另有规定的除外。"},
+{id:10,ch:"c3",n:"第十条",ch2:"第三章 实物勘验",t:"由两名以上人员共同进行。不能直接观察的应拆解检验。详细查勘、拍照、摄录取证，填写《现场勘查登记表》。技术含量高的需提供专业检测报告。"},
+{id:11,ch:"c4",n:"第十一条",ch2:"第四章 评估方法",t:"分为全部损失和部分损失。方法：修复费用加和法（部分损失）、成本法和市场法（全部损失或推定全损）。应选两种以上方法。推定全损指失去修复价值或修复费用达到/超过事故时实际价值。"},
+{id:12,ch:"c4",n:"第十二条",ch2:"第四章 修复费用加和法",t:"价格评估值 = Σ(配件价格+配件管理费+工时费用+其他费用) - 残值。材料费用=配件价格×(1+管理费率)。以零售价计算不再加管理费。"},
+{id:13,ch:"c4",n:"第十三条",ch2:"第四章 成本法",t:"价格评估值 = (重置成本-残值)×成新率。国产重置成本=现行市价+购置税+其他。进口重置成本=报关价+关税+消费税+增值税+其他。成新率可用使用年限法、行驶里程法、部件鉴定法、整体观察法。"},
+{id:14,ch:"c4",n:"第十四条",ch2:"第四章 市场法",t:"价格评估值 = 事故前市场价格 - 残值。直接法：3个以上相同实例简单算术平均。类比法：市场价格=参照物价格×(1±调整系数)。"},
+{id:15,ch:"c4",n:"第十五条",ch2:"第四章 刑事案件",t:"刑事案件价格鉴定，车辆配件损坏须更换的，鉴定价格为更换配件折旧后的余额与修复费用合计。"},
+{id:16,ch:"c4",n:"第十六条",ch2:"第四章 车辆贬值",t:"价格评估值 = 事故前车辆市场交易价格 × 贬值系数。贬值系数一般不超过事故前整车价值的30%。"},
+{id:17,ch:"c5",n:"第十七条",ch2:"第五章 注意事项",t:"车载货物、道路设施、第三人财物的重置成本按照有关部门的相关规定进行价格评估，已有标准或规定的从其规定。"},
+{id:18,ch:"c5",n:"第十八条",ch2:"第五章 注意事项",t:"应关注产权证件查验：机动车登记证、营运证、其他权属证明，在报告中对评估对象概况进行描述。"},
+{id:19,ch:"c5",n:"第十九条",ch2:"第五章 注意事项",t:"修复费用加和法应注意修复方法选择，按照经济、可行、实用、安全、美观的总体原则选择。"},
+{id:20,ch:"c5",n:"第二十条",ch2:"第五章 注意事项",t:"成本法应注意重置成本的构成要素，了解实体性贬值、功能性贬值和经济性贬值，采用科学方法估算。"},
+{id:21,ch:"c5",n:"第二十一条",ch2:"第五章 注意事项",t:"市场法应注意活跃市场是前提条件，参照物与评估对象的相似性和可比性是基础，应对差异进行调整。"},
+{id:22,ch:"c6",n:"第二十二条",ch2:"第六章 附则",t:"本规范由中国价格协会负责解释。"},
+{id:23,ch:"c6",n:"第二十三条",ch2:"第六章 附则",t:"本规范自发布之日起实施。"},
+];
+
+const LF=[
+{cat:"汽车·载客"},
+{sub:"出租客运",rows:[["小、微型",8,60],["中型",10,50],["大型",12,60]]},
+{sub:"教练",rows:[["租赁",15,60],["小型",10,50],["中型",12,50]]},
+{sub:"其他",rows:[["大型",15,60],["公交客运",13,40],["小、微型",10,60]]},
+{sub:"非营运",rows:[["中型",15,50],["大型",15,80]]},
+{sub:"专用校车",rows:[["专用校车",15,40]]},
+{cat:"汽车·载货"},
+{rows:[["小、微型客车、大型轿车","无",60],["中型客车",20,50],["大型客车",20,60]]},
+{sub:"中、轻型",rows:[["中型",12,50],["中型",15,60],["重型",15,70]]},
+{sub:"危险品运输",rows:[["危险品运输",10,40]]},
+{rows:[["三轮汽车、单缸低速货车",9,"无"],["多缸低速货车",12,30]]},
+{sub:"专项作业",rows:[["有载货功能",15,50],["无载货功能",30,50]]},
+{cat:"挂车"},
+{sub:"半挂车",rows:[["集装箱",20,"无"],["危险品运输",10,"无"],["其他",15,"无"]]},
+{rows:[["全挂车",10,"无"]]},
+{cat:"摩托车"},
+{rows:[["正三轮",12,10],["其他",13,12]]},
+{cat:"其他"},
+{rows:[["轮式专用机械车","无",50]]},
+];
+
+const RC_DATA=[
+{title:"一、总成部分更换条件",items:[
+{name:"1. 车身总成",desc:"纵梁、前围板、车顶、侧围、立柱、后围板、底板等有4处以上严重损坏无法修复需更换的。车身严重扭曲（超过30°角）、折弯、撕裂、变形无法修复的。车身骨架2/3以上扭曲、折叠、变形的。"},
+{name:"2. 货车驾驶室总成",desc:"驾驶室主要附件严重损坏（仪表台、仪表、座椅和内饰大部需更换），或应换附件及壳体损失价值超过驾驶室总成损坏前实际价值80%的。"},
+{name:"3. 车架（大梁）",desc:"直梁在2米以内变形45度以上或弯曲超出整体长度2/4的。断裂在承受负荷部位5cm以上。严重弯曲需拆散开片校正。轿车车架严重变形伴有折曲、撕裂。"},
+{name:"4. 发动机、变速箱、前桥、中桥、后桥总成",desc:"总成基础件已损坏（气缸体、变速器壳、桥壳），同时又有2个以上主要零件损坏的。"},
+]},
+{title:"二、零配件更换条件",items:[
+{name:"1. 基础件",desc:"有开裂、断裂，且在受力部位的。如气缸体、变速器壳、差速器壳、后桥壳有裂缝。"},
+{name:"2. 安全件",desc:"已变形，如横拉杆、直拉杆、转向机、转向柱、转向节、方向盘、减震器、半轴、元宝梁、车门防撞梁、稳定杆、制动泵、ABS泵等。"},
+{name:"3. 塑料、铝合金、玻璃钢件",desc:"有粉碎性断裂，固定锁紧或受力位置撞膛后经修复不能达到原有外观形状的，如灯罩、饰条、中网、保险杠、轮辐等。"},
+{name:"4. 附件总成",desc:"水泵、中控锁、助力泵、暖风机、蒸发箱、空调泵、发电机等经撞击变形或转动不灵活的，有零件换零件，无零件换总成。"},
+{name:"5. 气囊系统",desc:"气囊弹出与之对应的气囊传感器（气囊电脑）需一并更换。"},
+{name:"6. 主线束",desc:"折断或超过1/3折断、插头破裂无插头更换且无法外修的。"},
+{name:"7. 蓄电池",desc:"破损、划伤（深度2mm）、明显变形。"},
+{name:"8. 三元催化器",desc:"断裂、明显变形、内部陶瓷物质受损。"},
+{name:"9. 气囊弹出致仪表台",desc:"仪表台破损或皮质表台划伤超过5cm。"},
+{name:"10. 前杠骨架",desc:"撕裂3cm以上、变形扭曲超过配件整体20%、折曲度达20°。"},
+{name:"11. 纵梁",desc:"变形弯曲10°、断裂2cm以上、有折叠死褶或溃缩达10cm、开焊长度10cm。"},
+{name:"12. 覆盖件",desc:"车门、发动机盖、后备箱盖：骨架扭曲变形无法恢复几何尺寸；蒙皮撕裂5cm以上或折曲撕裂2处以上；有色金属碳纤维蒙皮有折曲折叠撕裂；蒙皮变形面积50%以上需平整钣金打磨喷涂。叶子板、车顶、侧围等：折曲折叠撕裂无法恢复原状。保险杠：洞穿撕裂较重无法恢复原状。"},
+{name:"13. 灯光电器",desc:"灯具损坏无零配件更换；大灯固定脚断裂2个以上或缺失；灯罩刮花深度达1mm。线束起火烧损相关电器损坏无法修复。仪表损坏无元件更换。"},
+{name:"14. 其他零件",desc:"水箱冷凝器2处以上破裂；水室破裂无水室更换；散热片损坏严重无法恢复；内饰损坏变形无法恢复原状；座椅变形无骨架更换；轮胎有深度划痕凸包撕裂胎线折断等无法修复；轮胎钢圈变形或缺口超3mm；油箱有开裂变形较大渗漏等安全隐患。"},
+]},
+{title:"三、附件3：特殊情况",items:[
+{name:"1. 挡风玻璃特殊情况",desc:"事故前有沙眼经事故破裂，扣除不低于重置成本20%残值；有沙眼并伴裂痕的按残损玻璃鉴定且不超重置成本20%；事故前损坏严重应更换或报废车辆，鉴定值为零。"},
+{name:"2. 隐形损坏拆装",desc:"拆检维修过程中探明隐形损坏配件，需对未损坏相关零配件拆装的，应考虑此因素对鉴定价格的影响。"},
+{name:"3. 老旧/特殊车型",desc:"无原厂件供应的，参照类似车型配件价格出具结论。无原厂件又无类似配件的，可按维修加相应损失费鉴定。"},
+{name:"4. 使用年限起算",desc:"按注册登记日期计算，但自出厂之日起超过2年未办理注册登记的，按出厂日期计算。"},
+]},
+];
+
+function ra(id,c){const el=document.getElementById(id);if(!el)return;const f=A.filter(a=>a.ch===c);el.innerHTML=f.map(a=>`<div class="ac" id="a-${a.id}"><div class="an">${a.n}</div><div class="at">${a.t}</div></div>`).join('');}
+function raAll(){['c1','c2','c3','c4','c5','c6'].forEach(k=>ra(k+'a',k));}
+function sp(p,n){document.querySelectorAll('.p').forEach(x=>x.classList.remove('a'));document.querySelectorAll('.ni').forEach(x=>x.classList.remove('a'));const el=document.getElementById('p-'+p);if(el){el.classList.add('a');document.getElementById('mc').scrollTop=0;}if(n)n.classList.add('a');}
+function q(s){return document.querySelector(s);}
+function fsc(){document.getElementById('gs').focus();}
+
+// Search
+document.getElementById('gs').addEventListener('input',function(e){
+const q=e.value.trim();if(!q){document.getElementById('sc').textContent='';return;}
+const r=A.filter(a=>a.t.includes(q)||a.n.includes(q));
+document.getElementById('sc').textContent=r.length+'条';
+document.getElementById('srd').textContent=`"${q}" — ${r.length}条`;
+const c=document.getElementById('sres');
+if(!r.length){c.innerHTML='<div class="ac"><div class="at" style="color:var(--tx3)">无匹配</div></div>';}
+else{c.innerHTML=r.map(a=>{const h=a.t.replace(new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')})`,'g'),'<mark>$1</mark>');return`<div class="ac hl" onclick="ja(${a.id})"><div class="an">${a.n} · ${a.ch2}</div><div class="at">${h}</div></div>`;}).join('');}
+sp('sr',q('[data-p=sr]'));
+});
+function ja(id){const a=A.find(x=>x.id===id);if(!a)return;sp(a.ch,q(`[data-p=${a.ch}]`));setTimeout(()=>{const el=document.getElementById('a-'+id);if(el){el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.add('hl');setTimeout(()=>el.classList.remove('hl'),2000);}},100);}
+
+// Doc viewer
+function dfs(s){document.getElementById('dkb').className='doc-b f'+s;document.querySelectorAll('.fb').forEach(b=>b.classList.remove('a'));document.getElementById('bf'+s[1].toUpperCase()).classList.add('a');}
+function dsc(id){const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
+const dkb=document.getElementById('dkb');if(dkb)dkb.addEventListener('scroll',function(){document.getElementById('dpb').style.width=Math.min(this.scrollTop/(this.scrollHeight-this.clientHeight)*100,100)+'%';});
+let dh=[],di=-1;
+function dse(q){document.querySelectorAll('.dsh').forEach(el=>{el.outerHTML=el.textContent;});dh=[];di=-1;if(!q.trim()){document.getElementById('dhc').textContent='';return;}
+document.querySelectorAll('.dca').forEach(a=>{const t=a.innerHTML,es=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),re=new RegExp(`(${es})`,'g');if(re.test(t))a.innerHTML=t.replace(re,'<span class="dsh" style="background:var(--gl);color:var(--ac);border-radius:2px;padding:0 2px;">$1</span>');});
+dh=document.querySelectorAll('.dsh');document.getElementById('dhc').textContent=dh.length?dh.length+'处':'无';if(dh.length){di=0;dh[0].scrollIntoView({behavior:'smooth',block:'center'});dh[0].style.outline='2px solid var(--ac)';}}
+function dsn(dir){if(!dh.length)return;if(di>=0&&di<dh.length)dh[di].style.outline='none';di=(di+dir+dh.length)%dh.length;dh[di].scrollIntoView({behavior:'smooth',block:'center'});dh[di].style.outline='2px solid var(--ac)';}
+
+// Downloads
+function td(b,f){const u=URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download=f;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(u);}
+const ft=`中国价格协会文件\n中价协〔2020〕40号\n\n交通事故车辆及财物损失价格鉴证评估技术规范\n\n第一章 总则\n第一条至第四条（详见全文）\n\n第二章 损失分类与原则\n第五条至第六条（详见全文）\n\n第三章 评估程序\n第七条至第十条（详见全文）\n\n第四章 评估方法\n第十一条至第十六条（详见全文）\n\n第五章 注意事项\n第十七条至第二十一条（详见全文）\n\n第六章 附则\n第二十二条至第二十三条（详见全文）`;
+function dlT(){td(new Blob([ft],{type:'text/plain;charset=utf-8'}),'交通事故车辆损失评估技术规范.txt');}
+function dlJ(){td(new Blob([JSON.stringify({title:'交通事故车辆及财物损失价格鉴证评估技术规范',number:'中价协〔2020〕40号',articles:A},null,2)],{type:'application/json;charset=utf-8'}),'交通事故车辆损失评估技术规范.json');}
+function dlM(){let m='# 交通事故车辆及财物损失价格鉴证评估技术规范\n\n**中价协〔2020〕40号**\n\n---\n\n';let cc='';A.forEach(a=>{if(a.ch2.split('·')[0]!==cc){cc=a.ch2.split('·')[0];m+=`\n## ${cc}\n\n`;}m+=`**${a.n}** ${a.t}\n\n`;});td(new Blob([m],{type:'text/markdown;charset=utf-8'}),'交通事故车辆损失评估技术规范.md');}
+function dlC(){let c='\uFEFF条文编号,章节,摘要\n';A.forEach(a=>{const s=a.t.length>50?a.t.substring(0,50)+'...':a.t;c+=`"${a.n}","${a.ch2}","${s.replace(/"/g,'""')}"\n`;});td(new Blob([c],{type:'text/csv;charset=utf-8'}),'交通事故车辆损失评估_条文索引.csv');}
+function dlH(){td(new Blob([`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>交通事故车辆损失评估技术规范</title><style>body{font-family:SimSun,serif;max-width:800px;margin:40px auto;padding:0 20px;line-height:2;color:#333;}h1{text-align:center;}h2{border-bottom:1px solid #ccc;padding-bottom:4px;}</style></head><body><h1>交通事故车辆及财物损失价格鉴证评估技术规范</h1><p style="text-align:center;color:#666">中价协〔2020〕40号</p><hr>${A.map(a=>`<p><strong>${a.n}</strong> ${a.t}</p>`).join('\n')}</body></html>`],{type:'text/html;charset=utf-8'}),'交通事故车辆损失评估技术规范.html');}
+function prDoc(){const w=window.open('','_blank');w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>打印版</title><style>@page{margin:2cm;}body{font-family:SimSun,serif;font-size:14px;line-height:2;max-width:700px;margin:0 auto;padding:20px;}h1{text-align:center;font-size:20px;}h2{margin:20px 0 8px;border-bottom:1px solid #999;padding-bottom:4px;}p{margin:4px 0;}</style></head><body><div style="text-align:center;margin-bottom:16px;"><button onclick="window.print()" style="padding:8px 24px;cursor:pointer;">点击打印/另存为PDF</button></div><h1>交通事故车辆及财物损失价格鉴证评估技术规范</h1><p style="text-align:center;color:#666">中价协〔2020〕40号</p><hr>${A.map(a=>`<p><strong>${a.n}</strong> ${a.t}</p>`).join('\n')}</body></html>`);w.document.close();}
+
+// Tab switching
+function sct(t,b){document.querySelectorAll('#p-calc>.tab .tb').forEach(x=>x.classList.remove('a'));b.classList.add('a');document.querySelectorAll('#p-calc>.sp').forEach(x=>x.classList.remove('a'));document.getElementById('ct-'+t).classList.add('a');}
+function sctc(t,b){b.parentElement.querySelectorAll('.tb').forEach(x=>x.classList.remove('a'));b.classList.add('a');document.querySelectorAll('#ct-costm .sp').forEach(x=>x.classList.remove('a'));document.getElementById('ctc-'+t).classList.add('a');}
+function sctn(t,b){b.parentElement.querySelectorAll('.tb').forEach(x=>x.classList.remove('a'));b.classList.add('a');document.querySelectorAll('#ct-costm .sp').forEach(x=>{if(x.id&&x.id.startsWith('ctn-'))x.classList.remove('a');});document.getElementById('ctn-'+t).classList.add('a');}
+function sctm2(t,b){b.parentElement.querySelectorAll('.tb').forEach(x=>x.classList.remove('a'));b.classList.add('a');document.querySelectorAll('#ct-market .sp').forEach(x=>x.classList.remove('a'));document.getElementById('ctm2-'+t).classList.add('a');}
+
+function fmt(n){const p=n.toString().split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');return p.join('.');}
+function fv(id){return parseFloat(document.getElementById(id).value)||0;}
+
+// Repair
+let rpIdx=0;
+function addRepairItem(){
+const c=document.getElementById('repairItems');const d=document.createElement('div');d.className='fr';d.style.marginBottom='4px';d.id='rp_'+rpIdx;
+d.innerHTML=`<div class="fg"><label>配件名称</label><input type="text" id="rpn_${rpIdx}" placeholder="如：前保险杠"></div><div class="fg"><label>配件价格（元）</label><input type="text" id="rpp_${rpIdx}" placeholder="如：2500"></div><div class="fg"><label>管理费率（%）</label><input type="text" id="rpm_${rpIdx}" value="0" placeholder="0"></div><div class="fg" style="display:flex;align-items:flex-end"><button class="btn bs" onclick="this.closest('.fr').remove()" style="margin-bottom:8px;color:var(--red)">✕</button></div>`;
+c.appendChild(d);rpIdx++;}
+function clearRepairItems(){document.getElementById('repairItems').innerHTML='';rpIdx=0;}
+function calcRepair(){
+const items=document.getElementById('repairItems').children;let materialTotal=0,rows=[];
+for(let i=0;i<items.length;i++){const d=items[i];const name=d.querySelector('[id^=rpn_]')?.value||'';const price=parseFloat(d.querySelector('[id^=rpp_]')?.value)||0;const rate=parseFloat(d.querySelector('[id^=rpm_]')?.value)||0;
+const mat=price*(1+rate/100);materialTotal+=mat;rows.push({name,price,rate,mat});}
+const labor=fv('rp_labor'),other=fv('rp_other'),residual=fv('rp_residual');
+const total=materialTotal+labor+other-residual;
+if(!rows.length&&!labor){document.getElementById('rpResult').innerHTML='<div class="et">请添加配件项或输入工时费</div>';return;}
+let dh=rows.map(r=>`<div class="rr"><span class="r2">${r.name||'配件'}：${fmt(r.price)} × (1+${r.rate}%)</span><span class="v2">${fmt(r.mat.toFixed(2))}</span></div>`).join('');
+document.getElementById('rpResult').innerHTML=`<div class="rb"><div class="rl">评估价格（修复费用加和法）</div><div class="rv">¥ ${fmt(total.toFixed(2))}</div><div class="rd">${dh}<div class="rr"><span class="r2">材料费合计</span><span class="v2">¥ ${fmt(materialTotal.toFixed(2))}</span></div><div class="rr"><span class="r2">工时费</span><span class="v2">¥ ${fmt(labor.toFixed(2))}</span></div><div class="rr"><span class="r2">其他费用</span><span class="v2">¥ ${fmt(other.toFixed(2))}</span></div><div class="rr"><span class="r2">残值</span><span class="v2" style="color:var(--red)">-¥ ${fmt(residual.toFixed(2))}</span></div><div class="rr" style="font-weight:600"><span class="r2" style="color:var(--ac)">评估价格</span><span class="v2" style="color:var(--ac)">¥ ${fmt(total.toFixed(2))}</span></div></div></div>`;}
+
+// Cost Method
+function calcCost(){
+const isDomestic=document.getElementById('ctc-domestic').classList.contains('a');
+let replacement=0;
+if(isDomestic){const p=fv('cd_price'),vat=fv('cd_vat')/100,tax=fv('cd_tax')/100,other=fv('cd_other');
+const purchaseTax=p/(1+vat)*tax;replacement=p+purchaseTax+other;
+document.getElementById('costResult')._detail={price:p,purchaseTax,vat:vat*100,tax:tax*100,other};}
+else{const cif=fv('ci_cif'),tariff=fv('ci_tariff')/100,cons=fv('ci_cons')/100,vat=fv('ci_vat')/100,other=fv('ci_other');
+const tariffAmt=cif*tariff;const consAmt=(cif+tariffAmt)/(1-cons)*cons;const vatAmt=(cif+tariffAmt+consAmt)*vat;replacement=cif+tariffAmt+consAmt+vatAmt+other;
+document.getElementById('costResult')._detail={cif,tariffAmt,consAmt,vatAmt,other};}
+
+let newRate=0;const nm=document.querySelector('#ct-costm .tab .tb.a')?.textContent||'';
+const nyGroup=document.getElementById('ctn-year').classList.contains('a');
+const nkGroup=document.getElementById('ctn-km').classList.contains('a');
+const nmGroup=document.getElementById('ctn-manual').classList.contains('a');
+
+if(nmGroup){newRate=fv('cn_manual')/100;}
+else if(nyGroup){const a=fv('cn_actual'),t=fv('cn_total');if(!t){document.getElementById('costResult').innerHTML='<div class="et">请输入总使用年限</div>';return;}newRate=Math.max(0,1-a/t);}
+else{const a=fv('cn_km_actual'),t=fv('cn_km_total');if(!t){document.getElementById('costResult').innerHTML='<div class="et">请输入规定里程</div>';return;}newRate=Math.max(0,1-a/t);}
+
+const residual=fv('cn_residual');
+const value=(replacement-residual)*newRate;
+const deprecTotal=replacement*(1-newRate);
+
+document.getElementById('costResult').innerHTML=`<div class="rb"><div class="rl">评估价格（成本法）</div><div class="rv">¥ ${fmt(value.toFixed(2))}</div><div class="rd"><div class="rr"><span class="r2">重置成本</span><span class="v2">¥ ${fmt(replacement.toFixed(2))}</span></div><div class="rr"><span class="r2">残值</span><span class="v2">¥ ${fmt(residual.toFixed(2))}</span></div><div class="rr"><span class="r2">成新率</span><span class="v2">${(newRate*100).toFixed(2)}%</span></div><div class="rr"><span class="r2">贬值合计</span><span class="v2" style="color:var(--red)">¥ ${fmt(deprecTotal.toFixed(2))}</span></div><div class="rr" style="font-weight:600"><span class="r2" style="color:var(--ac)">评估价格 = (重置-残值)×成新率</span><span class="v2" style="color:var(--ac)">¥ ${fmt(value.toFixed(2))}</span></div></div></div>`;}
+
+// Market Direct
+function updMdInputs(){const n=parseInt(document.getElementById('md_n').value);let h='';for(let i=0;i<n;i++)h+=`<div class="fr" style="margin-bottom:3px"><div class="fg"><label>实例${i+1}价格（元）</label><input type="text" id="mdv_${i}" placeholder="如：${(100000+i*5000)}"></div></div>`;document.getElementById('mdInputs').innerHTML=h;}
+function calcMktDirect(){const n=parseInt(document.getElementById('md_n').value),res=fv('md_res');let sum=0,cnt=0;
+for(let i=0;i<n;i++){const v=fv(`mdv_${i}`);if(v){sum+=v;cnt++;}}
+if(!cnt){document.getElementById('mdResult').innerHTML='<div class="et">请输入交易实例价格</div>';return;}
+const avg=sum/cnt;const p=avg-res;
+document.getElementById('mdResult').innerHTML=`<div class="rb"><div class="rl">评估价格（市场法·直接法）</div><div class="rv">¥ ${fmt(p.toFixed(2))}</div><div class="rd"><div class="rr"><span class="r2">${cnt}个实例平均价</span><span class="v2">¥ ${fmt(avg.toFixed(2))}</span></div><div class="rr"><span class="r2">残值</span><span class="v2">¥ ${fmt(res.toFixed(2))}</span></div><div class="rr" style="font-weight:600"><span class="r2" style="color:var(--ac)">评估价格</span><span class="v2" style="color:var(--ac)">¥ ${fmt(p.toFixed(2))}</span></div></div></div>`;}
+
+// Market Analogy
+function calcMktAnalogy(){const ref=fv('ma_ref'),adj=fv('ma_adj')/100,res=fv('ma_res');
+if(!ref){document.getElementById('maResult').innerHTML='<div class="et">请输入参照物价格</div>';return;}
+const mp=ref*(1+adj);const p=mp-res;
+document.getElementById('maResult').innerHTML=`<div class="rb"><div class="rl">评估价格（市场法·类比法）</div><div class="rv">¥ ${fmt(p.toFixed(2))}</div><div class="rd"><div class="rr"><span class="r2">参照物价格</span><span class="v2">¥ ${fmt(ref.toFixed(2))}</span></div><div class="rr"><span class="r2">调整系数</span><span class="v2">${(adj*100).toFixed(1)}%</span></div><div class="rr"><span class="r2">调整后市场价格</span><span class="v2">¥ ${fmt(mp.toFixed(2))}</span></div><div class="rr" style="font-weight:600"><span class="r2" style="color:var(--ac)">评估价格</span><span class="v2" style="color:var(--ac)">¥ ${fmt(p.toFixed(2))}</span></div></div></div>`;}
+
+// Depreciation
+function calcDeprec(){const p=fv('dp_price'),r=fv('dp_rate')/100;
+if(!p||!r){document.getElementById('dpResult').innerHTML='<div class="et">请填写完整参数</div>';return;}
+const v=p*r;let warn='';
+if(r>0.3)warn='<div class="warn">贬值系数超过30%，请确认是否合理（规范规定一般不超过事故前整车价值的30%）</div>';
+document.getElementById('dpResult').innerHTML=`<div class="rb"><div class="rl">车辆贬值损失</div><div class="rv">¥ ${fmt(v.toFixed(2))}</div><div class="rd"><div class="rr"><span class="r2">事故前交易价格</span><span class="v2">¥ ${fmt(p.toFixed(2))}</span></div><div class="rr"><span class="r2">贬值系数</span><span class="v2">${(r*100).toFixed(1)}%</span></div><div class="rr" style="font-weight:600"><span class="r2" style="color:var(--ac)">贬值损失</span><span class="v2" style="color:var(--ac)">¥ ${fmt(v.toFixed(2))}</span></div></div>${warn}</div>`;}
+
+// Life table
+function renderLife(){const tb=document.getElementById('lfBody');let h='',idx=0;
+LF.forEach(item=>{
+if(item.cat)h+=`<tr class="cat-row"><td colspan="4">${item.cat}</td></tr>`;
+if(item.sub)h+=`<tr><td></td><td colspan="3" style="color:var(--tx);font-weight:500;padding-left:14px">${item.sub}</td></tr>`;
+if(item.rows)item.rows.forEach(r=>{idx++;h+=`<tr class="lr"><td>${idx}</td><td style="padding-left:28px">${r[0]}</td><td>${r[1]==='无'?'无限制':r[1]}</td><td>${r[2]==='无'?'—':r[2]}</td></tr>`;});
+});tb.innerHTML=h;}
+function filterLife(q){document.querySelectorAll('.lr').forEach(r=>{r.style.display=r.textContent.includes(q)?'':'none';});}
+
+// Replace conditions
+function renderReplace(){const c=document.getElementById('rcContent');let h='';
+RC_DATA.forEach(sec=>{h+=`<div class="sd">${sec.title}</div>`;sec.items.forEach(item=>{h+=`<div class="rc rci"><h4>${item.name}</h4><p style="font-size:11px;color:var(--tx2);line-height:1.6">${item.desc}</p></div>`;});});
+c.innerHTML=h;}
+function filterReplace(q){document.querySelectorAll('.rci').forEach(r=>{r.style.display=r.textContent.includes(q)?'':'none';});}
+
+// Workflow
+function togWs(el){el.classList.toggle('exp');if(!el.classList.contains('done')){el.classList.add('done');el.classList.remove('cur');const n=el.nextElementSibling;if(n&&n.classList.contains('ws'))n.classList.add('cur');}}
+function resetWf(){document.querySelectorAll('.ws').forEach((s,i)=>{s.classList.remove('done','cur','exp');if(!i)s.classList.add('cur');});}
+function expandWf(){document.querySelectorAll('.ws').forEach(s=>s.classList.toggle('exp'));}
+
+// Life calculator
+function calcLfRate(){const m=document.getElementById('lfMode').value,a=fv('lfActual'),t=fv('lfTotal');
+if(!t){document.getElementById('lfResult').innerHTML='<div class="et">请输入总值</div>';return;}
+const r=Math.max(0,1-a/t);const label=m==='year'?'使用年限':'行驶里程';
+document.getElementById('lfResult').innerHTML=`<div class="rb"><div class="rl">成新率（${label}法）</div><div class="rv">${(r*100).toFixed(2)}%</div><div class="rd"><div class="rr"><span class="r2">实际值</span><span class="v2">${a}</span></div><div class="rr"><span class="r2">总值</span><span class="v2">${t}</span></div><div class="rr" style="font-weight:600"><span class="r2" style="color:var(--ac)">成新率 = 1 - ${a}/${t}</span><span class="v2" style="color:var(--ac)">${(r*100).toFixed(2)}%</span></div></div></div>`;}
+
+// Init
+addRepairItem();addRepairItem();addRepairItem();updMdInputs();renderLife();renderReplace();raAll();
+</script>
+</body>
+</html>

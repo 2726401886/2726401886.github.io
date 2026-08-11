@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>房地产估价规范查询系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#1e3a5f;--blue-dark:#142a45;--blue-light:#dbeafe;--blue-glow:rgba(30,58,95,.12);
+  --gold:#b8860b;--gold-light:#fef3c7;
+  --bg:#f8f6f3;--surface:#fff;--text:#1a1a1a;--text2:#555;--text3:#999;
+  --border:#e2ded8;--border2:#eee;
+  --sidebar-w:280px;--header-h:50px;--tabs-h:42px;
+  --shadow:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 4px 12px rgba(0,0,0,.08);
+  --radius:5px;
+}
+html{font-size:14px}
+body{font-family:'Noto Sans SC',sans-serif;color:var(--text);background:var(--bg);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+h1,h2,h3,h4{font-family:'Noto Serif SC',serif;font-weight:600;line-height:1.4}
+.mono{font-family:'DM Mono',monospace}
+
+/* Header */
+.header{background:var(--blue);color:#fff;height:var(--header-h);display:flex;align-items:center;padding:0 20px;gap:12px;flex-shrink:0}
+.header .logo{width:26px;height:26px;background:var(--gold);border-radius:4px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.header h1{font-size:14.5px;font-weight:500;font-family:'Noto Sans SC',sans-serif}
+.header .ver{font-size:11px;color:rgba(255,255,255,.5);margin-left:auto;font-family:'DM Mono',monospace}
+
+/* Tabs */
+.tab-bar{background:var(--blue-dark);height:var(--tabs-h);display:flex;align-items:stretch;padding:0 10px;gap:1px;overflow-x:auto;flex-shrink:0}
+.tab-bar::-webkit-scrollbar{height:0}
+.tab-btn{background:none;border:none;color:rgba(255,255,255,.5);font-size:12.5px;padding:0 14px;cursor:pointer;font-family:'Noto Sans SC',sans-serif;position:relative;white-space:nowrap;transition:color .2s}
+.tab-btn:hover{color:rgba(255,255,255,.8)}
+.tab-btn.active{color:#fff}
+.tab-btn.active::after{content:'';position:absolute;bottom:0;left:10px;right:10px;height:2px;background:var(--gold);border-radius:2px 2px 0 0}
+
+/* Layout */
+.main{flex:1;display:flex;overflow:hidden}
+.tab-panel{display:none;width:100%;height:100%}
+.tab-panel.active{display:flex}
+
+/* Sidebar */
+.sidebar{width:var(--sidebar-w);background:var(--surface);border-right:1px solid var(--border2);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
+.sidebar-search{padding:10px;border-bottom:1px solid var(--border2)}
+.sidebar-search input{width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);font-size:12.5px;outline:none;font-family:'Noto Sans SC',sans-serif}
+.sidebar-search input:focus{border-color:var(--blue)}
+.sidebar-search input::placeholder{color:var(--text3)}
+.sidebar-nav{flex:1;overflow-y:auto;padding:6px 0}
+.sidebar-nav::-webkit-scrollbar{width:5px}
+.sidebar-nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.nav-ch{padding:7px 14px 3px;font-size:11.5px;font-weight:700;color:var(--text2);cursor:pointer;display:flex;align-items:center;gap:5px;letter-spacing:.3px}
+.nav-ch .arr{font-size:9px;transition:transform .2s;display:inline-block}
+.nav-ch.collapsed .arr{transform:rotate(-90deg)}
+.nav-ch.collapsed+.nav-its{display:none}
+.nav-its{margin-bottom:2px}
+.nav-it{display:block;padding:4px 14px 4px 26px;font-size:12px;color:var(--text2);cursor:pointer;border-left:2px solid transparent;transition:all .12s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nav-it:hover{background:var(--bg);color:var(--text)}
+.nav-it.active{border-left-color:var(--gold);color:var(--blue);background:var(--blue-light);font-weight:500}
+
+/* Content */
+.cnt{flex:1;overflow-y:auto;padding:24px 32px 60px;scroll-behavior:smooth}
+.cnt::-webkit-scrollbar{width:7px}
+.cnt::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+
+/* Articles */
+.art{padding:18px 0;border-bottom:1px solid var(--border2)}
+.art:last-child{border-bottom:none}
+.art-hd{font-size:15px;font-weight:700;color:var(--blue);margin-bottom:8px;font-family:'Noto Serif SC',serif;scroll-margin-top:16px}
+.art-bd{font-size:13.5px;line-height:1.9;color:var(--text)}
+.art-bd p{margin-bottom:8px;text-indent:2em}
+.art-bd ol,.art-bd ul{padding-left:2em;margin-bottom:8px}
+.art-bd li{margin-bottom:5px;line-height:1.8}
+.art-bd .formula{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 14px;margin:8px 0;font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.8;text-indent:0}
+.art-bd .note{background:var(--gold-light);border-left:3px solid var(--gold);padding:8px 12px;margin:8px 0;font-size:12.5px;text-indent:0}
+.art-bd table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12.5px}
+.art-bd table th{background:var(--blue-dark);color:#fff;padding:7px 10px;text-align:left;font-weight:500;font-size:12px}
+.art-bd table td{padding:6px 10px;border-bottom:1px solid var(--border2);vertical-align:top;line-height:1.6}
+.art-bd table tr:hover td{background:#fef}
+.hl{background:#fef08a;padding:0 2px;border-radius:2px}
+.intro-box{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;margin-bottom:20px}
+.intro-box h2{font-size:17px;margin-bottom:8px;color:var(--blue)}
+.intro-box p{font-size:13px;color:var(--text2);line-height:1.8}
+
+/* Content panels */
+.cp{flex:1;overflow-y:auto;padding:24px 32px 60px}
+.cp::-webkit-scrollbar{width:7px}
+.cp::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+.cp-hd{margin-bottom:20px}
+.cp-hd h2{font-size:20px;margin-bottom:4px}
+.cp-hd p{font-size:13px;color:var(--text2)}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card h3{font-size:14.5px;margin-bottom:10px;color:var(--blue)}
+.card h4{font-size:13px;margin-bottom:6px;color:var(--text2)}
+
+/* Principle cards */
+.p-list{display:grid;gap:10px}
+.p-card{background:var(--surface);border:1px solid var(--border2);border-left:3px solid var(--blue);border-radius:0 var(--radius) var(--radius) 0;padding:12px 16px}
+.p-card h4{font-size:13.5px;margin-bottom:3px}
+.p-card p{font-size:12.5px;line-height:1.7;color:var(--text2)}
+
+/* Procedure cards */
+.proc{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.proc h3{font-size:14px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.proc .num{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:var(--blue);color:#fff;border-radius:50%;font-size:12px;font-weight:700;flex-shrink:0}
+.proc .bd{font-size:13px;line-height:1.8;color:var(--text);padding-left:34px}
+.proc .bd p{margin-bottom:6px}
+
+/* Method cards */
+.m-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.m-card h3{font-size:16px;color:var(--blue);margin-bottom:12px;font-family:'Noto Serif SC',serif;padding-bottom:8px;border-bottom:1px solid var(--border2)}
+.m-card .bd{font-size:13px;line-height:1.85}
+.m-card .bd p{margin-bottom:8px}
+.m-card .bd ol,.m-card .bd ul{padding-left:1.5em;margin-bottom:8px}
+.m-card .bd li{margin-bottom:4px}
+.m-card .bd .fbox{background:var(--bg);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 14px;margin:8px 0;font-family:'DM Mono',monospace;font-size:12.5px;line-height:1.8}
+
+/* Purpose grid */
+.pur-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.pur-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px;transition:all .2s;cursor:default}
+.pur-card:hover{border-color:var(--blue);box-shadow:var(--shadow-md)}
+.pur-card h4{font-size:13.5px;margin-bottom:6px;color:var(--blue);font-family:'Noto Serif SC',serif}
+.pur-card p{font-size:12px;line-height:1.65;color:var(--text2)}
+
+/* Calculator */
+.calc-tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap}
+.calc-tab{padding:7px 14px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);cursor:pointer;font-size:12.5px;font-family:'Noto Sans SC',sans-serif;transition:all .2s}
+.calc-tab:hover{border-color:var(--blue)}
+.calc-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.calc-p{display:none}
+.calc-p.active{display:block}
+.fr{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.fg{flex:1;min-width:160px}
+.fg label{display:block;font-size:12px;color:var(--text2);margin-bottom:3px;font-weight:500}
+.fg input,.fg select{width:100%;padding:7px 9px;border:1px solid var(--border);border-radius:var(--radius);font-size:13px;font-family:'DM Mono',monospace;outline:none;background:var(--surface)}
+.fg input:focus,.fg select:focus{border-color:var(--blue)}
+.fg .u{font-size:10.5px;color:var(--text3);margin-top:2px}
+.btn{padding:9px 24px;background:var(--blue);color:#fff;border:none;border-radius:var(--radius);font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans SC',sans-serif;transition:background .2s;margin-top:6px}
+.btn:hover{background:var(--blue-dark)}
+.res{background:linear-gradient(135deg,#eff6ff,#fefce8);border:1px solid var(--blue-light);border-radius:var(--radius);padding:16px;margin-top:14px;display:none}
+.res .lbl{font-size:12px;color:var(--text2);margin-bottom:3px}
+.res .val{font-size:24px;font-weight:700;color:var(--blue);font-family:'DM Mono',monospace}
+.res .fm{font-size:11.5px;color:var(--text3);margin-top:6px;font-family:'DM Mono',monospace;line-height:1.6}
+.res .det{font-size:12px;color:var(--text2);margin-top:8px;line-height:1.7}
+
+/* Report checklist */
+.cl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.cl-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:14px}
+.cl-card h4{font-size:13.5px;margin-bottom:6px;color:var(--blue)}
+.cl-card ul{padding-left:1.3em;font-size:12.5px;line-height:1.7;color:var(--text2)}
+.cl-card ul li{margin-bottom:3px}
+
+/* Ethics */
+.eth-card{background:var(--surface);border:1px solid var(--border2);border-left:3px solid var(--gold);border-radius:0 var(--radius) var(--radius) 0;padding:12px 16px;margin-bottom:10px}
+.eth-card h4{font-size:13.5px;margin-bottom:4px;color:var(--blue)}
+.eth-card p{font-size:12.5px;line-height:1.7;color:var(--text2)}
+
+.cnt-note{margin-top:12px;padding:10px;background:var(--bg);border-radius:var(--radius);font-size:12px;color:var(--text2);line-height:1.7}
+
+::-webkit-scrollbar{width:7px;height:7px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">估</div>
+  <h1>房地产估价规范查询系统</h1>
+  <span class="ver">GB/T 50291</span>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" data-tab="t-full">规范全文</button>
+  <button class="tab-btn" data-tab="t-prin">估价原则</button>
+  <button class="tab-btn" data-tab="t-proc">估价程序</button>
+  <button class="tab-btn" data-tab="t-method">估价方法</button>
+  <button class="tab-btn" data-tab="t-purpose">估价目的</button>
+  <button class="tab-btn" data-tab="t-result">估价结果</button>
+  <button class="tab-btn" data-tab="t-report">估价报告</button>
+  <button class="tab-btn" data-tab="t-ethics">职业道德</button>
+  <button class="tab-btn" data-tab="t-calc">计算工具</button>
+</div>
+
+<div class="main">
+
+<!-- ═══════ 规范全文 ═══════ -->
+<div class="tab-panel active" id="t-full">
+<aside class="sidebar">
+  <div class="sidebar-search"><input type="text" id="searchInput" placeholder="搜索条款… (Ctrl+F)"></div>
+  <nav class="sidebar-nav" id="sideNav">
+    <div class="nav-ch" data-t="intro"><span class="arr">▾</span>前言</div>
+    <div class="nav-its"><a class="nav-it" data-t="intro">前言说明</a></div>
+    <div class="nav-ch" data-t="c1"><span class="arr">▾</span>1 总则</div>
+    <div class="nav-its"><a class="nav-it" data-t="s101">1.0.1</a><a class="nav-it" data-t="s102">1.0.2</a><a class="nav-it" data-t="s103">1.0.3</a></div>
+    <div class="nav-ch" data-t="c2"><span class="arr">▾</span>2 估价原则</div>
+    <div class="nav-its"><a class="nav-it" data-t="s201">2.0.1</a><a class="nav-it" data-t="s202">2.0.2</a><a class="nav-it" data-t="s203">2.0.3</a><a class="nav-it" data-t="s204">2.0.4</a><a class="nav-it" data-t="s205">2.0.5</a><a class="nav-it" data-t="s206">2.0.6</a></div>
+    <div class="nav-ch" data-t="c3"><span class="arr">▾</span>3 估价程序</div>
+    <div class="nav-its"><a class="nav-it" data-t="s301">3.0.1</a><a class="nav-it" data-t="s302">3.0.2</a><a class="nav-it" data-t="s303">3.0.3</a><a class="nav-it" data-t="s304">3.0.4</a><a class="nav-it" data-t="s305">3.0.5</a><a class="nav-it" data-t="s306">3.0.6</a><a class="nav-it" data-t="s307">3.0.7</a><a class="nav-it" data-t="s308">3.0.8</a><a class="nav-it" data-t="s309">3.0.9</a><a class="nav-it" data-t="s310">3.0.10</a><a class="nav-it" data-t="s311">3.0.11</a><a class="nav-it" data-t="s312">3.0.12</a><a class="nav-it" data-t="s313">3.0.13</a><a class="nav-it" data-t="s314">3.0.14</a></div>
+    <div class="nav-ch" data-t="c4"><span class="arr">▾</span>4 估价方法</div>
+    <div class="nav-its"><a class="nav-it" data-t="s411">4.1 方法选用</a><a class="nav-it" data-t="s421">4.2 比较法</a><a class="nav-it" data-t="s431">4.3 收益法</a><a class="nav-it" data-t="s441">4.4 成本法</a><a class="nav-it" data-t="s451">4.5 假设开发法</a><a class="nav-it" data-t="s461">4.6 其他方法</a></div>
+    <div class="nav-ch" data-t="c5"><span class="arr">▾</span>5 不同估价目的</div>
+    <div class="nav-its"><a class="nav-it" data-t="s501">5.1 抵押估价</a><a class="nav-it" data-t="s502">5.2 税收估价</a><a class="nav-it" data-t="s503">5.3 征收征用</a><a class="nav-it" data-t="s504">5.4 拍卖变卖</a><a class="nav-it" data-t="s505">5.5 分割合并</a><a class="nav-it" data-t="s506">5.6 损害赔偿</a><a class="nav-it" data-t="s507">5.7 保险估价</a><a class="nav-it" data-t="s508">5.8 转让估价</a><a class="nav-it" data-t="s509">5.9 租赁估价</a><a class="nav-it" data-t="s510">5.10 用地出让</a><a class="nav-it" data-t="s511">5.11 投资基金</a><a class="nav-it" data-t="s512">5.12 财务报告</a><a class="nav-it" data-t="s513">5.13 企业经济活动</a><a class="nav-it" data-t="s514">5.14 纠纷估价</a><a class="nav-it" data-t="s515">5.15 其他目的</a></div>
+    <div class="nav-ch" data-t="c6"><span class="arr">▾</span>6 估价结果</div>
+    <div class="nav-its"><a class="nav-it" data-t="s601">6.0.1-6.0.3</a><a class="nav-it" data-t="s604">6.0.4-6.0.6</a></div>
+    <div class="nav-ch" data-t="c7"><span class="arr">▾</span>7 估价报告</div>
+    <div class="nav-its"><a class="nav-it" data-t="s701">7.0.1-7.0.5</a><a class="nav-it" data-t="s706">7.0.6-7.0.8</a><a class="nav-it" data-t="s709">7.0.9-7.0.14</a><a class="nav-it" data-t="s715">7.0.15-7.0.16</a><a class="nav-it" data-t="s717">7.0.17</a><a class="nav-it" data-t="s718">7.0.18</a><a class="nav-it" data-t="s719">7.0.19-7.0.22</a></div>
+    <div class="nav-ch" data-t="c8"><span class="arr">▾</span>8 职业道德</div>
+    <div class="nav-its"><a class="nav-it" data-t="s801">8.0.1-8.0.4</a><a class="nav-it" data-t="s805">8.0.5-8.0.8</a></div>
+  </nav>
+</aside>
+<div class="cnt" id="specContent">
+
+<!-- 前言 -->
+<div class="intro-box" id="intro">
+  <h2>前言</h2>
+  <p>根据原建设部《关于印发〈二〇〇一至二〇二二年度工程建设国家标准制订、修订计划〉的通知》(建标[2002]85号)的要求，规范编制组经广泛深入的调查研究，认真总结实践经验，参考有关国际标准和国外先进标准，并在充分征求意见的基础上，修订了本规范。</p>
+  <p style="margin-top:6px"><strong>主编单位：</strong>中国房地产估价师与房地产经纪人学会</p>
+  <p><strong>主要技术内容：</strong>1.总则；2.估价原则；3.估价程序；4.估价方法；5.不同估价目的下的估价；6.估价结果；7.估价报告；8.估价职业道德。</p>
+  <p><strong>本次修订主要内容：</strong>调整了章节划分；增加了路线价法、标准价调整法、多元回归分析法、修复成本法、损失资本化法、价差法等方法；增加了房地产损害赔偿估价、房地产投资基金物业估价、为财务报告服务的房地产估价等目的的估价；细化、完善了估价原则、程序、方法等内容。</p>
+</div>
+
+<!-- 1 总则 -->
+<div class="art" id="s101"><div class="art-hd" id="c1">1.0.1</div><div class="art-bd"><p>为规范房地产估价活动，统一房地产估价程序和方法，保证房地产估价质量，制定本规范。</p></div></div>
+<div class="art" id="s102"><div class="art-hd">1.0.2</div><div class="art-bd"><p>本规范适用于房地产估价活动。</p></div></div>
+<div class="art" id="s103"><div class="art-hd">1.0.3</div><div class="art-bd"><p>房地产估价除应符合本规范外，尚应符合国家现行有关标准的规定。</p></div></div>
+
+<!-- 2 估价原则 -->
+<div class="art" id="s201"><div class="art-hd" id="c2">2.0.1</div><div class="art-bd"><p>房地产的市场价值评估，应遵循下列原则：</p><ol><li>独立、客观、公正原则；</li><li>合法原则；</li><li>价值时点原则；</li><li>替代原则；</li><li>最高最佳利用原则。</li></ol></div></div>
+<div class="art" id="s202"><div class="art-hd">2.0.2</div><div class="art-bd"><p>房地产的抵押价值和抵押净值评估，除应遵循市场价值评估的原则外，还应遵循<strong>谨慎原则</strong>。</p></div></div>
+<div class="art" id="s203"><div class="art-hd">2.0.3</div><div class="art-bd"><p>房地产的投资价值、现状价值等其他价值和价格评估，应根据估价目的和价值类型，从市场价值评估的原则中选择适用的原则，并可增加其他适用的原则。</p></div></div>
+<div class="art" id="s204"><div class="art-hd">2.0.4</div><div class="art-bd"><p>遵循不同估价原则的评估价值，应符合下列规定：</p><ol><li>遵循独立、客观、公正原则，评估价值应为对各方估价利害关系人均是公平合理的价值或价格；</li><li>遵循合法原则，评估价值应为在依法判定的估价对象状况下的价值或价格；</li><li>遵循价值时点原则，评估价值应为在根据估价目的确定的某一特定时间的价值或价格；</li><li>遵循替代原则，评估价值与估价对象的类似房地产在同等条件下的价值或价格偏差应在合理范围内；</li><li>遵循最高最佳利用原则，评估价值应为在估价对象最高最佳利用状况下的价值或价格；</li><li>遵循谨慎原则，评估价值应为在充分考虑导致估价对象价值或价格偏低的因素，慎重考虑导致估价对象价值或价格偏高因素下的价值或价格。</li></ol></div></div>
+<div class="art" id="s205"><div class="art-hd">2.0.5</div><div class="art-bd"><p>估价对象的最高最佳利用状况包括最佳的用途、规模和档次，应按<strong>法律上允许、技术上可能、财务上可行、价值最大化</strong>的次序进行分析、筛选或判断确定，并应符合下列规定：</p><ol><li>当估价对象的权利人和意向取得者对估价对象依法享有的开发利用权利不相同时，应先根据估价目的确定从权利人角度或意向取得者角度进行估价，再确定最高最佳利用状况；</li><li>当估价对象已为某种利用时，应在调查及分析其利用现状的基础上，对其最高最佳利用和相应的估价前提作出下列判断和选择：<ol><li>维持现状、继续利用最为合理的，应选择<strong>维持现状前提</strong>；</li><li>更新改造再予以利用最为合理的，应选择<strong>更新改造前提</strong>；</li><li>改变用途再予以利用最为合理的，应选择<strong>改变用途前提</strong>；</li><li>改变规模再予以利用最为合理的，应选择<strong>改变规模前提</strong>；</li><li>重新开发再予以利用最为合理的，应选择<strong>重新开发前提</strong>；</li><li>上述前提的某种组合或其他特殊利用最为合理的，应选择相应前提。</li></ol></li></ol></div></div>
+<div class="art" id="s206"><div class="art-hd">2.0.6</div><div class="art-bd"><p>当估价对象的实际用途、登记用途、规划用途之间不一致时，应按下列规定确定估价所依据的用途：</p><ol><li>政府或其有关部门对估价对象的用途有认定或处理的，应按其认定或处理结果进行估价；</li><li>政府或其有关部门对估价对象的用途没有认定或处理的：<ol><li>登记用途、规划用途之间不一致的，可根据估价目的或最高最佳利用原则选择其中一种用途；</li><li>实际用途与登记用途、规划用途均不一致的，应根据估价目的确定估价所依据的用途。</li></ol></li></ol></div></div>
+
+<!-- 3 估价程序 -->
+<div class="art" id="s301"><div class="art-hd" id="c3">3.0.1 房地产估价工作应按下列程序进行</div><div class="art-bd"><ol><li>受理估价委托；</li><li>确定估价基本事项；</li><li>编制估价作业方案；</li><li>搜集估价所需资料；</li><li>实地查勘估价对象；</li><li>选用估价方法进行测算；</li><li>确定估价结果；</li><li>撰写估价报告；</li><li>审核估价报告；</li><li>交付估价报告；</li><li>保存估价资料。</li></ol></div></div>
+<div class="art" id="s302"><div class="art-hd">3.0.2</div><div class="art-bd"><p>估价委托应由房地产估价机构统一受理，并应符合下列规定：</p><ol><li>应要求估价委托人出具估价委托书；</li><li>决定受理的，应与估价委托人订立书面估价委托合同；</li><li>应根据项目规模、难度和完成时间确定参加估价的注册房地产估价师数量，并<strong>至少选派两名</strong>能胜任该估价工作的注册房地产估价师共同进行估价，且应明确其中一人为项目负责人；</li><li>除批量估价项目外，每个估价项目应至少有一名注册房地产估价师全程参与。</li></ol></div></div>
+<div class="art" id="s303"><div class="art-hd">3.0.3 估价基本事项</div><div class="art-bd"><p>估价基本事项包括估价目的、价值时点、估价对象和价值类型，应在与估价委托人进行沟通及调查有关情况和规定的基础上确定，并应符合下列规定：</p><ol><li><strong>估价目的</strong>应根据估价委托人真实、具体的估价需要及估价报告的预期用途或预期使用者确定，对其表述应具体、准确、简洁。</li><li><strong>价值时点</strong>应根据估价目的确定，采用公允表示。宜具体到日。回顾性估价和预测性估价的价值时点在难以具体到日且能满足估价目的需要的情况下，可到周或旬、月、季、半年、年等。</li><li><strong>估价对象</strong>应在估价委托人指定及提供有关情况和资料的基础上，根据估价目的依法确定，并应明确界定其财产范围和空间范围，不得遗漏或虚构。</li><li><strong>价值类型</strong>应根据估价目的确定，并应包括价值或价格的名称、定义或内涵。</li></ol></div></div>
+<div class="art" id="s304"><div class="art-hd">3.0.4 估价作业方案</div><div class="art-bd"><p>估价作业方案应在对估价项目进行分析的基础上编制，并应包括下列内容：</p><ol><li>估价工作的主要内容及质量要求，包括拟采用的估价方法和估价技术路线，拟搜集的估价所需资料及其来源渠道等；</li><li>估价工作的具体步骤及时间进度；</li><li>估价工作的人员安排等。</li></ol></div></div>
+<div class="art" id="s305"><div class="art-hd">3.0.5 搜集估价所需资料</div><div class="art-bd"><p>估价所需资料应针对估价项目进行搜集，并应包括下列资料：</p><ol><li>反映估价对象区位、实物和权益状况的资料；</li><li>估价对象及其同类房地产的交易、收益、成本等资料；</li><li>对估价对象所在地区的房地产价值和价格有影响的资料；</li><li>对房地产价值和价格有普遍影响的资料。</li></ol></div></div>
+<div class="art" id="s306"><div class="art-hd">3.0.6</div><div class="art-bd"><p>对搜集的估价所需资料应进行检查。当估价委托人是估价对象权利人时，应查看估价对象的权属证明原件，并应将复印件与原件核对，不得仅凭复印件判断或假定估价对象的权属状况。</p></div></div>
+<div class="art" id="s307"><div class="art-hd">3.0.7 实地查勘</div><div class="art-bd"><p>估价对象的实地查勘应符合下列规定：</p><ol><li>应观察、询问、检查、核对估价对象的区位状况、实物状况和权益状况；</li><li>应拍摄反映估价对象内部状况、外部状况和周围环境状况的照片等影像资料，并应补充搜集估价所需的其他资料；</li><li>应制作实地查勘记录，并应记录实地查勘的对象、内容、结果、时间和人员及其签名。记载的内容应真实、客观、准确、完整、清晰。</li></ol></div></div>
+<div class="art" id="s308"><div class="art-hd">3.0.8</div><div class="art-bd"><p>当无法进入估价对象内部进行实地查勘时，应对估价对象的外部状况和区位状况进行实地查勘，并应在估价报告中说明未进入估价对象内部进行实地查勘及其原因。对未进行实地查勘的估价对象内部状况，应作为估算假设中的依据不足假设在估价报告中说明。</p></div></div>
+<div class="art" id="s309"><div class="art-hd">3.0.9</div><div class="art-bd"><p>在估价中遇有难以解决的复杂、疑难、特殊的估价技术问题时，应寻求相关估价专家或单位提供专业帮助，并应在估价报告中说明。</p></div></div>
+<div class="art" id="s310"><div class="art-hd">3.0.10</div><div class="art-bd"><p>对估价对象的房屋安全、质量缺陷、环境污染、建筑面积、财务状况等估价专业以外的专业问题，经实地查勘、查阅现有资料或向相关专业领域的专家咨询后，仍难以作出常规判断和相应假设的，应建议估价委托人聘请具有相应资质资格的专业机构或专家先行鉴定或检测、测量、审计等，再以专业机构或专家出具的专业意见为依据进行估价，并应在估价报告中说明。</p></div></div>
+<div class="art" id="s311"><div class="art-hd">3.0.11</div><div class="art-bd"><p>估价报告在交付估价委托人前，应对其内容和形式等进行审查核定，并应形成审核记录，记载审核的意见、结论、日期和人员及其签名。</p></div></div>
+<div class="art" id="s312"><div class="art-hd">3.0.12</div><div class="art-bd"><p>估价报告经审核合格后，应由<strong>不少于两名</strong>参加估价的注册房地产估价师签名及加盖房地产估价机构公章，并应按有关规定和估价委托合同约定交付估价委托人。</p></div></div>
+<div class="art" id="s313"><div class="art-hd">3.0.13 估价资料保存</div><div class="art-bd"><p>估价报告交付估价委托人后，不得擅自改动、更换、删除或销毁下列估价资料：</p><ol><li>估价报告；</li><li>估价委托书和估价委托合同；</li><li>估价所依据的估价委托人提供的资料；</li><li>估价项目来源和沟通情况记录；</li><li>估价对象实地查勘记录；</li><li>估价报告内部审核记录；</li><li>估价中的不同意见记录；</li><li>外部专业帮助的专业意见。</li></ol></div></div>
+<div class="art" id="s314"><div class="art-hd">3.0.14</div><div class="art-bd"><p>房地产估价机构应及时整理和保存估价资料，并应保存到估价服务的行为结束且<strong>不得少于10年</strong>。保存期限应自估价报告出具之日起计算。</p></div></div>
+
+<!-- 4 估价方法 -->
+<div class="art" id="s411"><div class="art-hd" id="c4">4.1.1-4.1.3 估价方法选用</div><div class="art-bd"><p>选用估价方法时，应根据估价对象及其所在地的房地产市场状况等客观条件，对比较法、收益法、成本法、假设开发法等估价方法进行适用性分析。</p><p>估价方法的选用应符合下列规定：</p><ol><li>估价对象的同类房地产有较多交易的，应选用<strong>比较法</strong>。</li><li>估价对象或其同类房地产通常有租金等经济收入的，应选用<strong>收益法</strong>。</li><li>估价对象可假定为独立的开发建设项目进行重新开发建设的，宜选用<strong>成本法</strong>；当估价对象的同类房地产没有交易或交易很少，且估价对象或其同类房地产没有租金等经济收入时，应选用成本法。</li><li>估价对象具有开发或再开发潜力且开发完成后的价值可采用除成本法以外的方法测算的，应选用<strong>假设开发法</strong>。</li></ol><p>当估价对象仅适用一种估价方法时，可只选用一种。适用两种或两种以上时，宜同时选用所有适用的估价方法，不得随意取舍；当必须取舍时，应在估价报告中说明并陈述理由。</p></div></div>
+
+<div class="art" id="s421"><div class="art-hd">4.2 比较法</div><div class="art-bd"><p><strong>运用比较法应按下列步骤进行：</strong>搜集交易实例→选取可比实例→建立比较基础→进行交易情况修正→进行市场状况调整→进行房地产状况调整→计算比较价值。</p><p><strong>可比实例选取规定：</strong>应从交易实例中选取且不得少于三个；交易方式应适合估价目的；房地产应与估价对象相类似；成交日期应接近价值时点，相差不宜超过一年，且不得超过两年；成交价格应为正常价格或可修正为正常价格。同等条件下，应将位置较近、成交日期较近的选为可比实例。</p><p><strong>不宜选为可比实例的特殊交易：</strong>利害关系人之间的交易；对交易对象或市场行情缺乏了解的交易；被迫出售或被迫购买的交易；人为哄抬价格的交易；对交易对象有特殊偏好的交易；相邻房地产合并的交易；受迷信影响的交易。</p><p><strong>标准化处理</strong>应包括统一财产范围、统一付款方式、统一融资条件、统一税费负担和统一计价单位。</p><p><strong>房地产状况调整</strong>应消除可比实例状况与估价对象状况不同造成的价格差异，包括<strong>区位状况调整、实物状况调整和权益状况调整</strong>。</p><p>修正和调整幅度规定：分别对可比实例成交价格的修正或调整幅度<strong>不宜超过20%</strong>，共同修正和调整幅度<strong>不宜超过30%</strong>；经修正和调整后的各可比实例价格中，最高价与最低价的比值<strong>不宜大于1.2</strong>。</p></div></div>
+
+<div class="art" id="s431"><div class="art-hd">4.3 收益法</div><div class="art-bd"><p><strong>运用收益法应按下列步骤进行：</strong>选择具体估价方法→测算收益期或持有期→测算未来收益→确定报酬率或资本化率、收益乘数→计算收益价值。</p><p>收益法估价时，应区分<strong>报酬资本化法</strong>和<strong>直接资本化法</strong>，并应优先选用报酬资本化法。报酬资本化法应区分<strong>全剩余寿命模式</strong>和<strong>持有加转售模式</strong>。</p><p><strong>全剩余寿命模式：</strong></p><div class="formula">V = Σ(i=1→n) Aᵢ / (1+Yᵢ)ᵢ</div><p><strong>持有加转售模式：</strong></p><div class="formula">V = Σ(i=1→t) Aᵢ / (1+Yᵢ)ᵢ + Vt / (1+Yt)ᵗ</div><p><strong>直接资本化法：</strong></p><div class="formula">V = NOI / R</div><p><strong>收益期规定：</strong>土地使用权剩余期限和建筑物剩余经济寿命同时结束的，选取其一；不同时结束的，选取较短者。持有期宜为5年~10年。</p><p><strong>净收益测算：</strong>应优先通过租赁收入测算。有效毛收入=潜在毛租金收入-空置和收租损失+其他收入。运营费用应包括房地产税、房屋保险费、物业服务费、管理费用、维修费、水电费等。</p><p><strong>报酬率确定方法：</strong></p><ol><li><strong>市场提取法</strong>：选取不少于三个可比实例，利用其价格、净收益等数据测算报酬率。</li><li><strong>累加法</strong>：安全利率+风险调整值。</li><li><strong>投资收益率排序插入法</strong>：按风险大小排序比较确定。</li></ol></div></div>
+
+<div class="art" id="s441"><div class="art-hd">4.4 成本法</div><div class="art-bd"><p><strong>运用成本法应按下列步骤进行：</strong>选择具体估价路径→测算重置成本或重建成本→测算折旧费→计算成本价值。</p><p><strong>估价路径：</strong>应选择房地合估路径或房地分估路径，并应<strong>优先选择房地合估路径</strong>。</p><p><strong>建筑物折旧</strong>应为各种原因造成的建筑物价值减损，包括<strong>物质折旧、功能折旧和外部折旧</strong>。测算方法可选用年龄-寿命法、市场提取法、分解法。</p><p><strong>直线法公式：</strong></p><div class="formula">V = C - (C-S) × t/N</div><p><strong>成新折扣法公式：</strong></p><div class="formula">V = C × q</div><p>其中：V=建筑物折旧后价值；C=重置成本或重建成本；S=预计净残值；t=有效年龄；N=经济寿命；q=成新率。</p><p><strong>成本价值计算：</strong>房地合估路径=房地产重置成本或重建成本-建筑物折旧；房地分估路径=土地重置成本+建筑物重置成本或重建成本-建筑物折旧。</p></div></div>
+
+<div class="art" id="s451"><div class="art-hd">4.5 假设开发法</div><div class="art-bd"><p><strong>运用假设开发法应按下列步骤进行：</strong>选择具体估价方法→选择估价前提→选择最佳开发经营方式→测算后续开发经营期→测算后续开发的必要支出→测算开发完成后的价值→确定折现率或测算后续开发的应得利润→计算开发价值。</p><p>应选择<strong>动态分析法</strong>或<strong>静态分析法</strong>，并应<strong>优先选用动态分析法</strong>。</p><p><strong>估价前提：</strong>业主自行开发前提；自愿转让开发前提；被迫转让开发前提。</p><p><strong>开发完成后的价值</strong>不应采用成本法测算。</p><p>动态分析法的开发价值=开发完成后的价值和后续开发的必要支出分别折现到价值时点后相减；静态分析法的开发价值=开发完成后的价值-后续开发的必要支出及应得利润。</p></div></div>
+
+<div class="art" id="s461"><div class="art-hd">4.6 其他估价方法</div><div class="art-bd"><table><thead><tr><th>序号</th><th>估价方法</th><th>适用范围</th></tr></thead><tbody><tr><td>1</td><td>基准地价修正法</td><td>政府或其有关部门已公布基准地价地区的土地估价</td></tr><tr><td>2</td><td>路线价法</td><td>城镇临街商业用地地价批量估价</td></tr><tr><td>3</td><td>标准价调整法</td><td>大量相似的房地产批量估价</td></tr><tr><td>4</td><td>多元回归分析法</td><td>大量相似的房地产批量估价</td></tr><tr><td>5</td><td>修复成本法</td><td>可修复的房地产价值减损评估</td></tr><tr><td>6</td><td>损失资本化法</td><td>不可修复的房地产价值减损评估</td></tr><tr><td>7</td><td>价差法</td><td>不可修复的房地产价值减损评估，房地产价值增加评估</td></tr></tbody></table><p style="margin-top:8px"><strong>修复成本法：</strong>应测算修复的必要支出及应得利润，将其作为房地产的价值减损额。</p><p><strong>损失资本化法：</strong>应先预测未来各年的净收益减少额或收入减少额、运营费用增加额，再计算其现值之和作为价值减损额。</p><p><strong>价差法：</strong>应先分别评估房地产在改变之前状况下的价值和在改变之后状况下的价值，再将两者之差作为价值减损额或价值增加额。</p></div></div>
+
+<!-- 5 不同估价目的 -->
+<div class="art" id="s501"><div class="art-hd" id="c5">5.1 房地产抵押估价</div><div class="art-bd"><p>应区分<strong>抵押贷款前估价</strong>和<strong>抵押贷款后重估</strong>。</p><p>抵押贷款前估价应包括：评估假定未设立法定优先受偿权下的价值；调查法定优先受偿权设立情况及法定优先受偿款；计算抵押价值或抵押净值；分析变现能力并作出风险提示。</p><p>抵押价值和抵押净值评估应遵循<strong>谨慎原则</strong>，不得高估假定未设立法定优先受偿权下的价值，不得低估法定优先受偿款及预期实现抵押权的费用和税金。</p><p>待开发房地产采用假设开发法的，应选择<strong>被迫转让开发前提</strong>进行估价。</p></div></div>
+<div class="art" id="s502"><div class="art-hd">5.2 房地产税收估价</div><div class="art-bd"><p>应区分房地产持有环节、交易环节和开发环节税收估价，并应按相应税种为核定其计税依据进行估价。应兼顾公平、精准、效率和成本。对同类房地产数量较多的，宜优先选用批量估价方法。</p></div></div>
+<div class="art" id="s503"><div class="art-hd">5.3 房地产征收、征用估价</div><div class="art-bd"><p>应区分国有土地上房屋征收评估和集体土地征收评估。</p><p>被征收房屋价值应为在正常交易情况下，由熟悉情况的交易双方以公平交易方式在<strong>房屋征收决定公告之日</strong>自愿进行交易的金额，且假定被征收房屋没有租赁、抵押、查封等情况。</p><p>被征收房地产为正常开发建设的待开发房地产且采用假设开发法估价时，应选择<strong>业主自行开发前提</strong>。</p><p>征用估价应评估被征用房地产的<strong>市场租金</strong>，为给予使用上的补偿提供参考依据。</p></div></div>
+<div class="art" id="s504"><div class="art-hd">5.4 房地产拍卖、变卖估价</div><div class="art-bd"><p>应区分<strong>司法拍卖估价</strong>和<strong>普通拍卖估价</strong>。司法拍卖估价应根据最高人民法院的有关规定和人民法院的委托要求进行。当拍卖房地产为待开发房地产且采用假设开发法估价时，应选择<strong>被迫转让开发前提</strong>。</p><p>普通拍卖估价可根据需要评估市场价值或市场价格、快速变现价值。快速变现价值可根据变现时限短于正常销售期的时间长短，在市场价值或市场价格基础上进行适当减价确定。</p></div></div>
+<div class="art" id="s505"><div class="art-hd">5.5 房地产分割、合并估价</div><div class="art-bd"><p>应分别以房地产的实物分割、合并为前提。分割估价不应简单按面积分摊，应对分割后的各部分分别进行估价。合并估价不应简单相加，应对合并后的整体进行估价。</p></div></div>
+<div class="art" id="s506"><div class="art-hd">5.6 房地产损害赔偿估价</div><div class="art-bd"><p>应区分被损害房地产价值减损评估、因房地产损害造成的其他财产损失评估、搬迁费用评估、临时安置费用评估、停产停业损失评估等。</p><p>对可修复的价值减损，宜采用<strong>修复成本法</strong>测算修复成本作为价值减损额。对不可修复的价值减损，应根据具体情况分析<strong>损失资本化法、价差法</strong>等方法的适用性。</p></div></div>
+<div class="art" id="s507"><div class="art-hd">5.7 房地产保险估价</div><div class="art-bd"><p>应区分投保时的保险价值评估和保险事故发生后的财产损失评估。投保时宜评估在价值时点因保险事故发生而可能遭受损失的房地产的<strong>重置成本或重建成本</strong>。保险事故发生后应评估因保险事故造成的财产损失，可选用修复成本法、价差法、损失资本化法等方法。</p></div></div>
+<div class="art" id="s508"><div class="art-hd">5.8 房地产转让估价</div><div class="art-bd"><p>应区分转让人需要的估价和受让人需要的估价。已出租的房地产转让估价，应评估<strong>出租人权益价值</strong>。以划拨方式取得建设用地使用权的房地产转让估价，估价对象应符合法律、法规规定的转让条件。</p></div></div>
+<div class="art" id="s509"><div class="art-hd">5.9 房地产租赁估价</div><div class="art-bd"><p>应区分出租人需要的估价和承租人需要的估价。以营利为目的出租划拨建设用地使用权上的房屋租赁估价，应根据土地收益处理规定，给出租金中所含的土地收益。</p></div></div>
+<div class="art" id="s510"><div class="art-hd">5.10 建设用地使用权出让估价</div><div class="art-bd"><p>应区分出让人需要的估价和意向用地者需要的估价。出让人需要的应评估市场价值或相应出让方式的底价。意向用地者需要的应评估市场价值或投资价值、最高报价等。</p></div></div>
+<div class="art" id="s511"><div class="art-hd">5.11 房地产投资基金物业估价</div><div class="art-bd"><p>应区分房地产投资信托基金物业评估和其他房地产投资基金物业估价。信托物业价值评估宜采用<strong>报酬资本化法中的持有加转售模式</strong>，应遵循一致性原则和一贯性原则。</p></div></div>
+<div class="art" id="s512"><div class="art-hd">5.12 为财务报告服务的房地产估价</div><div class="art-bd"><p>应区分投资性房地产公允价值评估、作为存货的房地产可变现净值评估、存在减值迹象的房地产可回收金额评估等。应与估价委托人及执行审计业务的注册会计师进行沟通，熟悉相关会计准则。对采用公允价值计量的，应评估<strong>市场价值</strong>。</p></div></div>
+<div class="art" id="s513"><div class="art-hd">5.13 企业各种经济活动涉及的房地产估价</div><div class="art-bd"><p>应在界定房地产和其他资产范围的基础上，明确估价对象的财产范围。根据企业经济活动的类型，按相应估价目的的房地产估价进行。企业破产清算等强制处分涉及的房地产估价，评估价值的影响因素应包括估价对象的通用性、可分割转让性等。</p></div></div>
+<div class="art" id="s514"><div class="art-hd">5.14 房地产纠纷估价</div><div class="art-bd"><p>应对有争议的房地产评估价值、赔偿金额等进行鉴别和判断，提出客观、公平、合理的鉴定意见。应了解纠纷双方的利益诉求，估价结果应平衡纠纷双方的利益，有利于化解纠纷。</p></div></div>
+<div class="art" id="s515"><div class="art-hd">5.15 其他目的的房地产估价</div><div class="art-bd"><p>包括分家析产估价、为出境提供财产证明的估价、为行政机关处理等服务的估价、改变土地使用条件补地价评估、国有土地上房屋征收预评估等。</p></div></div>
+
+<!-- 6 估价结果 -->
+<div class="art" id="s601"><div class="art-hd" id="c6">6.0.1-6.0.3 估价结果确定</div><div class="art-bd"><p>估价结果应包括评估价值和相关专业意见。在确定评估价值前，应对所选用的估价方法的测算结果进行校核。同时选用两种或两种以上方法的，还应对不同方法的测算结果进行比较分析。</p><p>校核和比较分析时应检查：估价计算的正确性；估价基础数据的正确性；估价参数的合理性；估价计算公式的恰当性；不同估价方法的估价对象财产范围的一致性；不同估价方法的估价前提的一致性；估价方法的适用性；估价假设的合理性；估价依据的正确性；估价原则的正确性；房地产市场状况的特殊性。</p></div></div>
+<div class="art" id="s604"><div class="art-hd">6.0.4-6.0.6</div><div class="art-bd"><p>估价基础数据和估价参数的来源或确定的依据或方法应在估价报告中说明。估价参数应<strong>优先选用房地产估价行业组织公布的估价参数</strong>。</p><p>综合测算结果的确定：对同时选用两种或两种以上方法的，应根据估价目的及不同方法的适用程度、数据可靠程度、测算结果之间差异程度等情况，选用简单算术平均、加权算术平均等方法得出综合测算结果。</p><p>最终评估价值的确定：应根据未能在综合测算结果中反映的价值或价格影响因素，对综合测算结果进行适当调整后确定。</p></div></div>
+
+<!-- 7 估价报告 -->
+<div class="art" id="s701"><div class="art-hd" id="c7">7.0.1-7.0.5 估价报告基本要求</div><div class="art-bd"><p>估价报告应采取书面形式，并应<strong>真实、客观、准确、完整、清晰、规范</strong>。</p><p>叙述式估价报告应包括：1.封面；2.致估价委托人函；3.目录；4.估价师声明；5.估价假设和限制条件；6.估价结果报告；7.估价技术报告；8.附件。</p><p>房地产抵押贷款前估价报告，应包括<strong>估价对象变现能力分析与风险提示</strong>。估价技术报告可按估价委托合同约定不向估价委托人提供。</p></div></div>
+<div class="art" id="s706"><div class="art-hd">7.0.6-7.0.8 封面与致估价委托人函</div><div class="art-bd"><p><strong>封面</strong>应包括：估价报告名称、估价报告编号、估价项目名称、估价委托人、房地产估价机构、注册房地产估价师、估价报告出具日期。</p><p><strong>致估价委托人函</strong>应包括：致函对象、估价目的、估价对象、价值时点、价值类型、估价方法、估价结果、特别提示、致函日期。应加盖房地产估价机构公章。</p></div></div>
+<div class="art" id="s709"><div class="art-hd">7.0.9-7.0.14 估价师声明</div><div class="art-bd"><p>估价师声明应写明所有参加估价的注册房地产估价师对其估价职业道德、专业胜任能力和勤勉尽责估价的承诺和保证。不得将估价师声明变成免责声明。</p><p>验证性估价报告的估价师声明应包括：对事实的说明是真实和准确的；分析、意见和结论是独立、客观、公正的专业分析；与估价对象没有利益关系；按有关标准规定进行估价。</p></div></div>
+<div class="art" id="s715"><div class="art-hd">7.0.15-7.0.16 估价假设和限制条件</div><div class="art-bd"><p>估价假设应针对估价对象状况等估价前提，作出必要、合理且有依据的假定，不得滥用估价假设。</p><p>估价假设和限制条件应说明：<strong>一般假设</strong>（对权属、面积、用途等资料的合理假定）；<strong>未定事项假设</strong>；<strong>背离事实假设</strong>；<strong>不相一致假设</strong>；<strong>依据不足假设</strong>；<strong>估价报告使用限制</strong>。使用期限应自估价报告出具之日起计算，<strong>不宜超过一年</strong>。</p></div></div>
+<div class="art" id="s717"><div class="art-hd">7.0.17 估价结果报告</div><div class="art-bd"><p>估价结果报告应包括：</p><ol><li><strong>估价委托人</strong>：单位写明名称、住所和法定代表人；个人写明姓名和住址。</li><li><strong>房地产估价机构</strong>：名称、住所、法定代表人、资质等级和资质证书编号。</li><li><strong>估价目的</strong>。</li><li><strong>估价对象</strong>：财产范围及名称、坐落、规模、用途、权属等基本状况。</li><li><strong>价值时点</strong>及确定的简要理由。</li><li><strong>价值类型</strong>：名称、定义或内涵。</li><li><strong>估价原则</strong>。</li><li><strong>估价依据</strong>。</li><li><strong>估价方法</strong>。</li><li><strong>估价结果</strong>：应注明总价和单价，总价应注明大写金额。</li><li><strong>注册房地产估价师</strong>：应由本人签名，不得以个人印章代替。</li><li><strong>实地查勘期</strong>。</li><li><strong>估价作业期</strong>。</li></ol></div></div>
+<div class="art" id="s718"><div class="art-hd">7.0.18 估价技术报告</div><div class="art-bd"><p>估价技术报告应包括：</p><ol><li><strong>估价对象描述与分析</strong>：区位、实物和权益状况。</li><li><strong>市场背景描述与分析</strong>：经济社会发展状况和房地产市场总体状况。</li><li><strong>估价对象最高最佳利用分析</strong>。</li><li><strong>估价方法适用性分析</strong>：逐一分析各方法的适用性。</li><li><strong>估价测算过程</strong>：详细说明测算步骤、计算公式和计算过程。</li><li><strong>估价结果确定</strong>：说明不同方法的测算结果和最终评估价值确定的方法和理由。</li></ol></div></div>
+<div class="art" id="s719"><div class="art-hd">7.0.19-7.0.22 附件与其他要求</div><div class="art-bd"><p><strong>附件</strong>应包括：估价委托书复印件；估价对象位置图；实地查勘情况和相关照片；权属证明复印件；法定优先受偿款调查情况（抵押估价时）；可比实例位置图和外观照片；专业帮助情况；估价所依据的其他文件资料；估价机构营业执照和资质证书复印件；估价师资格证书复印件。</p><p><strong>变现能力分析与风险提示</strong>应分析估价对象的通用性、独立使用性、可分割转让性等影响变现能力的因素。</p><p>成套住宅抵押估价或大量相似的房地产批量估价时，估价报告可采取<strong>表格形式</strong>。</p></div></div>
+
+<!-- 8 职业道德 -->
+<div class="art" id="s801"><div class="art-hd" id="c8">8.0.1-8.0.4</div><div class="art-bd"><p><strong>8.0.1</strong> 房地产估价师和房地产估价机构应<strong>回避</strong>与自己、近亲属、关联方及其他利害关系人有利害关系或与估价对象有利益关系的估价业务。</p><p><strong>8.0.2</strong> 不得承接超出自己专业胜任能力和本机构业务范围的估价业务，对部分超出的应聘请具有相应专业胜任能力的专家或单位提供专业帮助。</p><p><strong>8.0.3</strong> 应正直诚实，不得作任何虚假的估价，不得按高估或低估要求进行估价，且不得按预先设定的价值或价格进行估价。</p><p><strong>8.0.4</strong> 应勤勉尽责，应搜集合法、真实、准确、完整的估价所需资料，且应对搜集的资料进行检查，并应对估价对象进行实地查勘。</p></div></div>
+<div class="art" id="s805"><div class="art-hd">8.0.5-8.0.8</div><div class="art-bd"><p><strong>8.0.5</strong> 在估价假设等重大估价事项上，应向估价委托人清楚说明，使估价委托人了解估价的限制条件及估价报告、估价结果的使用限制。</p><p><strong>8.0.6</strong> 应保守在执业活动中知悉的国家秘密、商业秘密，不得泄露个人隐私；应妥善保管估价委托人提供的资料。</p><p><strong>8.0.7</strong> 应维护良好社会形象及行业声誉，不得采取迎合不当要求、恶性压价、支付回扣、贬低同行、虚假宣传等不正当手段招揽估价业务。</p><p><strong>8.0.8</strong> 不得允许其他个人和单位以自己的名义从事估价业务，不得以估价者身份在非自己估价的估价报告上签名、盖章。</p></div></div>
+
+</div>
+</div>
+
+<!-- ═══════ 估价原则 ═══════ -->
+<div class="tab-panel" id="t-prin">
+<div class="cp">
+<div class="cp-hd"><h2>房地产估价原则</h2><p>依据第2章（2.0.1-2.0.6）</p></div>
+<h3 style="margin-bottom:12px;font-size:16px">一、市场价值评估基本原则</h3>
+<div class="p-list" style="margin-bottom:20px">
+<div class="p-card"><h4>独立、客观、公正原则</h4><p>评估价值应为对各方估价利害关系人均是公平合理的价值或价格。</p></div>
+<div class="p-card"><h4>合法原则</h4><p>评估价值应为在依法判定的估价对象状况下的价值或价格。</p></div>
+<div class="p-card"><h4>价值时点原则</h4><p>评估价值应为在根据估价目的确定的某一特定时间的价值或价格。</p></div>
+<div class="p-card"><h4>替代原则</h4><p>评估价值与估价对象的类似房地产在同等条件下的价值或价格偏差应在合理范围内。</p></div>
+<div class="p-card"><h4>最高最佳利用原则</h4><p>评估价值应为在估价对象最高最佳利用状况下的价值或价格。应按法律上允许、技术上可能、财务上可行、价值最大化的次序进行分析。</p></div>
+</div>
+<h3 style="margin-bottom:12px;font-size:16px">二、特殊评估原则</h3>
+<div class="p-list" style="margin-bottom:20px">
+<div class="p-card"><h4>谨慎原则（抵押估价适用）</h4><p>评估价值应充分考虑导致价值或价格偏低的因素，慎重考虑导致价值或价格偏高的因素。</p></div>
+</div>
+<h3 style="margin-bottom:12px;font-size:16px">三、最高最佳利用估价前提</h3>
+<div class="p-list">
+<div class="p-card"><h4>维持现状前提</h4><p>维持现状、继续利用最为合理的。</p></div>
+<div class="p-card"><h4>更新改造前提</h4><p>更新改造再予以利用最为合理的。</p></div>
+<div class="p-card"><h4>改变用途前提</h4><p>改变用途再予以利用最为合理的。</p></div>
+<div class="p-card"><h4>改变规模前提</h4><p>改变规模再予以利用最为合理的。</p></div>
+<div class="p-card"><h4>重新开发前提</h4><p>重新开发再予以利用最为合理的。</p></div>
+</div>
+</div>
+</div>
+
+<!-- ═══════ 估价程序 ═══════ -->
+<div class="tab-panel" id="t-proc">
+<div class="cp">
+<div class="cp-hd"><h2>房地产估价程序</h2><p>依据第3章（3.0.1-3.0.14）</p></div>
+<div class="proc"><h3><span class="num">1</span>受理估价委托</h3><div class="bd"><p>应由估价机构统一受理。要求估价委托人出具估价委托书，订立书面委托合同，至少选派<strong>两名</strong>注册房地产估价师。</p></div></div>
+<div class="proc"><h3><span class="num">2</span>确定估价基本事项</h3><div class="bd"><p>确定<strong>估价目的、价值时点、估价对象和价值类型</strong>。估价目的应具体、准确、简洁；价值时点宜具体到日。</p></div></div>
+<div class="proc"><h3><span class="num">3</span>编制估价作业方案</h3><div class="bd"><p>包括主要内容及质量要求、具体步骤及时间进度、人员安排等。</p></div></div>
+<div class="proc"><h3><span class="num">4</span>搜集估价所需资料</h3><div class="bd"><p>搜集区位、实物和权益状况资料；交易、收益、成本资料；对所在地区和普遍影响的资料。</p></div></div>
+<div class="proc"><h3><span class="num">5</span>实地查勘估价对象</h3><div class="bd"><p>观察、询问、检查、核对估价对象状况，拍摄照片等影像资料，制作实地查勘记录。</p></div></div>
+<div class="proc"><h3><span class="num">6</span>选用估价方法进行测算</h3><div class="bd"><p>根据估价对象状况选用比较法、收益法、成本法、假设开发法等进行测算。</p></div></div>
+<div class="proc"><h3><span class="num">7</span>确定估价结果</h3><div class="bd"><p>对测算结果进行校核和比较分析，选用简单算术平均、加权算术平均等方法确定。</p></div></div>
+<div class="proc"><h3><span class="num">8</span>撰写估价报告</h3><div class="bd"><p>按照规范要求撰写叙述式或表格形式的估价报告。</p></div></div>
+<div class="proc"><h3><span class="num">9</span>审核估价报告</h3><div class="bd"><p>对内容和形式进行审查核定，形成审核记录。</p></div></div>
+<div class="proc"><h3><span class="num">10</span>交付估价报告</h3><div class="bd"><p>由不少于两名注册房地产估价师签名及加盖机构公章后交付。</p></div></div>
+<div class="proc"><h3><span class="num">11</span>保存估价资料</h3><div class="bd"><p>应保存到估价服务的行为结束且<strong>不得少于10年</strong>。</p></div></div>
+</div>
+</div>
+
+<!-- ═══════ 估价方法 ═══════ -->
+<div class="tab-panel" id="t-method">
+<div class="cp">
+<div class="cp-hd"><h2>估价方法</h2><p>依据第4章（4.1-4.6）</p></div>
+<div class="m-card"><h3>一、比较法（4.2节）</h3><div class="bd"><p>选取不少于三个可比实例，经交易情况修正、市场状况调整、房地产状况调整（区位、实物、权益），计算比较价值。</p><p><strong>关键规定：</strong>可比实例成交日期与价值时点相差不宜超过1年，最长不超过2年。单独修正/调整幅度不宜超过20%，共同不宜超过30%。最高价与最低价比值不宜大于1.2。</p></div></div>
+<div class="m-card"><h3>二、收益法（4.3节）</h3><div class="bd"><p>优先选用<strong>报酬资本化法</strong>，区分全剩余寿命模式和持有加转售模式。持有期宜为5~10年。</p><div class="fbox">全剩余寿命：V = Σ Aᵢ/(1+Yᵢ)ᵢ<br>持有加转售：V = Σ Aᵢ/(1+Yᵢ)ᵢ + Vt/(1+Yt)ᵗ<br>直接资本化：V = NOI/R</div><p><strong>报酬率确定：</strong>市场提取法（不少于3个可比实例）、累加法（安全利率+风险调整值）、投资收益率排序插入法。</p></div></div>
+<div class="m-card"><h3>三、成本法（4.4节）</h3><div class="bd"><p>优先选择<strong>房地合估路径</strong>。测算重置成本或重建成本，扣除折旧。</p><div class="fbox">直线法：V = C - (C-S) × t/N<br>成新折扣法：V = C × q<br>房地合估：成本价值 = 重置/重建成本 - 建筑物折旧<br>房地分估：成本价值 = 土地重置成本 + 建筑物重置/重建成本 - 建筑物折旧</div><p>折旧包括<strong>物质折旧、功能折旧、外部折旧</strong>。可选用年龄-寿命法、市场提取法、分解法。</p></div></div>
+<div class="m-card"><h3>四、假设开发法（4.5节）</h3><div class="bd"><p>优先选用<strong>动态分析法</strong>。估价前提：业主自行开发、自愿转让开发、被迫转让开发。</p><p>开发完成后的价值<strong>不应采用成本法</strong>测算。</p><p>动态法：开发价值=开发完成后价值折现-后续开发支出折现。静态法：开发价值=开发完成后价值-后续开发支出及应得利润。</p></div></div>
+<div class="m-card"><h3>五、其他方法（4.6节）</h3><div class="bd"><table><thead><tr><th>方法</th><th>适用范围</th></tr></thead><tbody><tr><td>基准地价修正法</td><td>已公布基准地价地区的土地估价</td></tr><tr><td>路线价法</td><td>城镇临街商业用地批量估价</td></tr><tr><td>标准价调整法</td><td>大量相似房地产批量估价</td></tr><tr><td>多元回归分析法</td><td>大量相似房地产批量估价</td></tr><tr><td>修复成本法</td><td>可修复的价值减损评估</td></tr><tr><td>损失资本化法</td><td>不可修复的价值减损评估</td></tr><tr><td>价差法</td><td>价值减损/价值增加评估</td></tr></tbody></table></div></div>
+</div>
+</div>
+
+<!-- ═══════ 估价目的 ═══════ -->
+<div class="tab-panel" id="t-purpose">
+<div class="cp">
+<div class="cp-hd"><h2>不同估价目的下的估价</h2><p>依据第5章（5.1-5.15）</p></div>
+<div class="pur-grid">
+<div class="pur-card"><h4>5.1 房地产抵押估价</h4><p>区分贷款前估价和贷款后重估。遵循谨慎原则。待开发房地产采用被迫转让开发前提。</p></div>
+<div class="pur-card"><h4>5.2 房地产税收估价</h4><p>区分持有环节、交易环节和开发环节。兼顾公平、精准、效率和成本，宜优先选用批量估价。</p></div>
+<div class="pur-card"><h4>5.3 征收、征用估价</h4><p>被征收房屋价值为征收决定公告之日的市场价值。征用估价评估市场租金。</p></div>
+<div class="pur-card"><h4>5.4 拍卖、变卖估价</h4><p>区分司法拍卖和普通拍卖。司法拍卖应按最高人民法院规定进行。</p></div>
+<div class="pur-card"><h4>5.5 分割、合并估价</h4><p>不应简单按面积分摊或直接相加，应对分割/合并后分别或整体进行估价。</p></div>
+<div class="pur-card"><h4>5.6 损害赔偿估价</h4><p>可修复的用修复成本法；不可修复的用损失资本化法或价差法。</p></div>
+<div class="pur-card"><h4>5.7 保险估价</h4><p>投保时评估重置/重建成本；事故后评估财产损失，可修复的用修复成本法。</p></div>
+<div class="pur-card"><h4>5.8 转让估价</h4><p>区分转让人和受让人需要。已出租的评估出租人权益价值。</p></div>
+<div class="pur-card"><h4>5.9 租赁估价</h4><p>区分出租人和承租人需要。划拨土地上的出租应给出土地收益。</p></div>
+<div class="pur-card"><h4>5.10 用地出让估价</h4><p>区分出让人和意向用地者需要。根据出让方式评估市场价值或底价、最高报价等。</p></div>
+<div class="pur-card"><h4>5.11 投资基金物业估价</h4><p>宜采用报酬资本化法中的持有加转售模式，遵循一致性原则和一贯性原则。</p></div>
+<div class="pur-card"><h4>5.12 财务报告服务估价</h4><p>应与注册会计师沟通，熟悉会计准则。对采用公允价值计量的应评估市场价值。</p></div>
+<div class="pur-card"><h4>5.13 企业经济活动估价</h4><p>明确估价对象财产范围。破产清算应考虑通用性、可分割转让性等。</p></div>
+<div class="pur-card"><h4>5.14 纠纷估价</h4><p>提出客观、公平、合理的鉴定意见，应平衡纠纷双方利益。</p></div>
+<div class="pur-card"><h4>5.15 其他目的估价</h4><p>包括分家析产、出境财产证明、补地价评估、征收预评估等。</p></div>
+</div>
+</div>
+</div>
+
+<!-- ═══════ 估价结果 ═══════ -->
+<div class="tab-panel" id="t-result">
+<div class="cp">
+<div class="cp-hd"><h2>估价结果</h2><p>依据第6章（6.0.1-6.0.6）</p></div>
+<div class="proc"><h3><span class="num">1</span>测算结果校核</h3><div class="bd"><p>在确定评估价值前，应对所选用的估价方法的测算结果进行校核。应检查：计算正确性、基础数据正确性、参数合理性、公式恰当性、财产范围一致性、估价前提一致性、方法适用性、假设合理性等。</p></div></div>
+<div class="proc"><h3><span class="num">2</span>综合测算结果确定</h3><div class="bd"><p>选用两种或两种以上方法的，应根据方法适用程度、数据可靠程度、差异程度等，选用<strong>简单算术平均、加权算术平均</strong>等方法得出综合测算结果。选用一种方法的，确认无差错后直接作为综合测算结果。</p></div></div>
+<div class="proc"><h3><span class="num">3</span>最终评估价值确定</h3><div class="bd"><p>应根据未能在综合测算结果中反映的价值或价格影响因素，对综合测算结果进行适当调整后确定最终评估价值。不存在此类因素时，可直接将综合测算结果确定为最终评估价值。最终评估价值的精度应满足估价目的需要的精度。</p></div></div>
+<div class="proc"><h3><span class="num">4</span>估价参数要求</h3><div class="bd"><p>估价基础数据和估价参数的来源或确定的依据或方法应在估价报告中说明。估价参数应<strong>优先选用房地产估价行业组织公布的估价参数</strong>；不选用的，应在估价报告中陈述理由。</p></div></div>
+</div>
+</div>
+
+<!-- ═══════ 估价报告 ═══════ -->
+<div class="tab-panel" id="t-report">
+<div class="cp">
+<div class="cp-hd"><h2>估价报告要求</h2><p>依据第7章（7.0.1-7.0.22）</p></div>
+<h3 style="margin-bottom:12px;font-size:16px">叙述式估价报告结构</h3>
+<div class="cl-grid" style="margin-bottom:20px">
+<div class="cl-card"><h4>1. 封面</h4><ul><li>估价报告名称</li><li>估价报告编号</li><li>估价项目名称</li><li>估价委托人</li><li>房地产估价机构</li><li>注册房地产估价师</li><li>估价报告出具日期</li></ul></div>
+<div class="cl-card"><h4>2. 致估价委托人函</h4><ul><li>致函对象</li><li>估价目的</li><li>估价对象</li><li>价值时点</li><li>价值类型</li><li>估价方法</li><li>估价结果（总价+大写+单价）</li><li>特别提示</li><li>致函日期</li></ul></div>
+<div class="cl-card"><h4>3. 目录</h4><ul><li>估价师声明</li><li>估价假设和限制条件</li><li>估价结果报告</li><li>估价技术报告</li><li>附件</li></ul></div>
+<div class="cl-card"><h4>4. 估价师声明</h4><ul><li>事实说明真实准确</li><li>分析意见独立客观公正</li><li>无利益关系和偏见</li><li>按规定标准估价</li></ul></div>
+<div class="cl-card"><h4>5. 估价假设和限制条件</h4><ul><li>一般假设</li><li>未定事项假设</li><li>背离事实假设</li><li>不相一致假设</li><li>依据不足假设</li><li>使用限制（不宜超过一年）</li></ul></div>
+<div class="cl-card"><h4>6. 估价结果报告</h4><ul><li>估价委托人信息</li><li>估价机构信息</li><li>估价目的</li><li>估价对象</li><li>价值时点</li><li>价值类型</li><li>估价原则、依据、方法</li><li>估价结果</li><li>注册估价师签名</li><li>实地查勘期、作业期</li></ul></div>
+<div class="cl-card"><h4>7. 估价技术报告</h4><ul><li>估价对象描述与分析</li><li>市场背景描述与分析</li><li>最高最佳利用分析</li><li>估价方法适用性分析</li><li>估价测算过程</li><li>估价结果确定</li></ul></div>
+<div class="cl-card"><h4>8. 附件</h4><ul><li>估价委托书复印件</li><li>估价对象位置图</li><li>实地查勘照片</li><li>权属证明复印件</li><li>法定优先受偿款调查</li><li>可比实例位置图和照片</li><li>专业帮助情况</li><li>机构资质证书复印件</li><li>估价师资格证书复印件</li></ul></div>
+</div>
+</div>
+</div>
+
+<!-- ═══════ 职业道德 ═══════ -->
+<div class="tab-panel" id="t-ethics">
+<div class="cp">
+<div class="cp-hd"><h2>估价职业道德</h2><p>依据第8章（8.0.1-8.0.8）</p></div>
+<div class="eth-card"><h4>8.0.1 回避义务</h4><p>应回避与自己、近亲属、关联方及其他利害关系人有利害关系或与估价对象有利益关系的估价业务。</p></div>
+<div class="eth-card"><h4>8.0.2 专业胜任能力</h4><p>不得承接超出自己专业胜任能力和本机构业务范围的估价业务。对部分超出的应聘请专家或单位提供专业帮助。</p></div>
+<div class="eth-card"><h4>8.0.3 正直诚实</h4><p>不得作任何虚假的估价，不得按高估或低估要求进行估价，不得按预先设定的价值或价格进行估价。</p></div>
+<div class="eth-card"><h4>8.0.4 勤勉尽责</h4><p>应搜集合法、真实、准确、完整的估价所需资料，应对搜集的资料进行检查，应对估价对象进行实地查勘。</p></div>
+<div class="eth-card"><h4>8.0.5 信息披露义务</h4><p>在估价假设等重大事项上应向委托人清楚说明，使其了解估价的限制条件及使用限制。</p></div>
+<div class="eth-card"><h4>8.0.6 保密义务</h4><p>应保守国家秘密、商业秘密，不得泄露个人隐私。应妥善保管委托人提供的资料。</p></div>
+<div class="eth-card"><h4>8.0.7 公平竞争</h4><p>不得采取迎合不当要求、恶性压价、支付回扣、贬低同行、虚假宣传等不正当手段招揽业务。</p></div>
+<div class="eth-card"><h4>8.0.8 禁止冒名</h4><p>不得允许他人以自己名义从事估价业务，不得在非自己估价的报告上签名、盖章。</p></div>
+</div>
+</div>
+
+<!-- ═══════ 计算工具 ═══════ -->
+<div class="tab-panel" id="t-calc">
+<div class="cp">
+<div class="cp-hd"><h2>估价计算工具</h2><p>依据第4章各估价方法中的计算公式</p></div>
+<div class="calc-tabs">
+<button class="calc-tab active" data-calc="ct-inc">收益法</button>
+<button class="calc-tab" data-calc="ct-cost">成本法</button>
+<button class="calc-tab" data-calc="ct-comp">比较法修正</button>
+<button class="calc-tab" data-calc="ct-cap">资本化率</button>
+</div>
+
+<!-- 收益法 -->
+<div class="calc-p active" id="ct-inc">
+<div class="card">
+<h3>收益法计算器（直接资本化法）</h3>
+<div class="fr">
+<div class="fg"><label>未来第一年净收益 NOI（元/年）</label><input type="number" id="iNOI" step="0.01"></div>
+<div class="fg"><label>资本化率 R（%）</label><input type="number" id="iR" step="0.01"></div>
+</div>
+<button class="btn" onclick="calcInc()">计算收益价值</button>
+<div class="res" id="iRes"><div class="lbl">收益价值</div><div class="val" id="iVal">—</div><div class="fm" id="iFm"></div></div>
+<div class="note" style="margin-top:12px;background:var(--gold-light);border-left:3px solid var(--gold);padding:8px 12px;font-size:12px;color:var(--text2)"><strong>公式：</strong>V = NOI / R</div>
+</div>
+</div>
+
+<!-- 成本法 -->
+<div class="calc-p" id="ct-cost">
+<div class="card">
+<h3>成本法计算器（直线法）</h3>
+<div class="fr">
+<div class="fg"><label>建筑物重置/重建成本 C（元）</label><input type="number" id="cC" step="0.01"></div>
+<div class="fg"><label>预计净残值 S（元）</label><input type="number" id="cS" value="0" step="0.01"></div>
+</div>
+<div class="fr">
+<div class="fg"><label>有效年龄 t（年）</label><input type="number" id="cT" step="0.1"></div>
+<div class="fg"><label>经济寿命 N（年）</label><input type="number" id="cN" step="0.1"></div>
+</div>
+<button class="btn" onclick="calcCost()">计算折旧后价值</button>
+<div class="res" id="cRes"><div class="lbl">建筑物折旧后价值</div><div class="val" id="cVal">—</div><div class="fm" id="cFm"></div></div>
+</div>
+<div class="card" style="margin-top:14px">
+<h3>成新折扣法</h3>
+<div class="fr">
+<div class="fg"><label>建筑物重置/重建成本 C（元）</label><input type="number" id="c2C" step="0.01"></div>
+<div class="fg"><label>建筑物成新率 q（%）</label><input type="number" id="c2Q" step="0.1" min="0" max="100"></div>
+</div>
+<button class="btn" onclick="calcCost2()">计算折旧后价值</button>
+<div class="res" id="c2Res"><div class="lbl">建筑物折旧后价值</div><div class="val" id="c2Val">—</div><div class="fm" id="c2Fm"></div></div>
+</div>
+</div>
+
+<!-- 比较法 -->
+<div class="calc-p" id="ct-comp">
+<div class="card">
+<h3>比较法修正计算器</h3>
+<div class="fr">
+<div class="fg"><label>可比实例成交价格（元/m²）</label><input type="number" id="pP" step="0.01"></div>
+<div class="fg"><label>交易情况修正（%）</label><input type="number" id="pT" value="100" step="0.1"><div class="u">100表示无修正，>100为上调</div></div>
+</div>
+<div class="fr">
+<div class="fg"><label>市场状况调整（%）</label><input type="number" id="pM" value="100" step="0.1"><div class="u">100表示无调整</div></div>
+<div class="fg"><label>区位状况调整（%）</label><input type="number" id="pL" value="100" step="0.1"></div>
+</div>
+<div class="fr">
+<div class="fg"><label>实物状况调整（%）</label><input type="number" id="pP2" value="100" step="0.1"></div>
+<div class="fg"><label>权益状况调整（%）</label><input type="number" id="pR" value="100" step="0.1"></div>
+</div>
+<button class="btn" onclick="calcComp()">计算修正后价格</button>
+<div class="res" id="pRes"><div class="lbl">修正后比较价值</div><div class="val" id="pVal">—</div><div class="fm" id="pFm"></div></div>
+</div>
+</div>
+
+<!-- 资本化率 -->
+<div class="calc-p" id="ct-cap">
+<div class="card">
+<h3>综合资本化率计算器（加权平均法）</h3>
+<p style="font-size:12.5px;color:var(--text2);margin-bottom:12px">根据贷款价值比和权益资金比例计算综合资本化率</p>
+<div class="fr">
+<div class="fg"><label>贷款价值比 M（%）</label><input type="number" id="rM" step="0.1"></div>
+<div class="fg"><label>抵押贷款资本化率 Rm（%）</label><input type="number" id="rRm" step="0.01"></div>
+</div>
+<div class="fr">
+<div class="fg"><label>权益资金资本化率 Re（%）</label><input type="number" id="rRe" step="0.01"></div>
+</div>
+<button class="btn" onclick="calcRate()">计算综合资本化率</button>
+<div class="res" id="rRes"><div class="lbl">综合资本化率 R₀</div><div class="val" id="rVal">—</div><div class="fm" id="rFm"></div></div>
+</div>
+<div class="card" style="margin-top:14px">
+<h3>综合资本化率计算器（土地/建筑物构成法）</h3>
+<div class="fr">
+<div class="fg"><label>土地价值占房地价值比率 L（%）</label><input type="number" id="r2L" step="0.1"></div>
+<div class="fg"><label>土地资本化率 Rl（%）</label><input type="number" id="r2Rl" step="0.01"></div>
+</div>
+<div class="fr">
+<div class="fg"><label>建筑物价值占房地价值比率 B（%）</label><input type="number" id="r2B" step="0.1"></div>
+<div class="fg"><label>建筑物资本化率 Rb（%）</label><input type="number" id="r2Rb" step="0.01"></div>
+</div>
+<button class="btn" onclick="calcRate2()">计算综合资本化率</button>
+<div class="res" id="r2Res"><div class="lbl">综合资本化率 R₀</div><div class="val" id="r2Val">—</div><div class="fm" id="r2Fm"></div></div>
+</div>
+</div>
+
+<div class="cnt-note"><strong>提示：</strong>以上计算工具仅供参考辅助使用。实际估价应由具备资质的注册房地产估价师依据规范完整程序开展。</div>
+</div>
+</div>
+
+</div><!-- main -->
+
+<script>
+/* Tabs */
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');document.getElementById(b.dataset.tab).classList.add('active');
+  });
+});
+
+/* Sidebar nav */
+document.querySelectorAll('.nav-it').forEach(i=>{
+  i.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-it').forEach(x=>x.classList.remove('active'));
+    i.classList.add('active');
+    const t=document.getElementById(i.dataset.t);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+});
+document.querySelectorAll('.nav-ch').forEach(c=>{
+  c.addEventListener('click',()=>c.classList.toggle('collapsed'));
+});
+
+/* Active nav tracking */
+const sc=document.getElementById('specContent');
+if(sc)sc.addEventListener('scroll',()=>{
+  const arts=sc.querySelectorAll('.art');let cur=null;
+  arts.forEach(a=>{if(a.getBoundingClientRect().top<220)cur=a});
+  if(cur)document.querySelectorAll('.nav-it').forEach(i=>i.classList.toggle('active',i.dataset.t===cur.id));
+});
+
+/* Search */
+document.getElementById('searchInput').addEventListener('input',function(){
+  const q=this.value.trim().toLowerCase();
+  const arts=document.querySelectorAll('#specContent .art');
+  if(!q){arts.forEach(a=>{a.style.display='';rmHL(a)});document.getElementById('intro').style.display='';return}
+  document.getElementById('intro').style.display='none';
+  arts.forEach(a=>{rmHL(a);const t=a.textContent.toLowerCase();if(t.includes(q)){a.style.display='';hl(a,q)}else a.style.display='none'});
+});
+function hl(el,q){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const ns=[];while(w.nextNode())ns.push(w.currentNode);
+ns.forEach(n=>{const i=n.textContent.toLowerCase().indexOf(q);if(i>=0){const s=document.createElement('span');s.className='hl';
+const b=document.createTextNode(n.textContent.slice(0,i)),m=document.createTextNode(n.textContent.slice(i,i+q.length)),a=document.createTextNode(n.textContent.slice(i+q.length));
+s.appendChild(m);const p=n.parentNode;p.replaceChild(a,n);p.insertBefore(s,a);p.insertBefore(b,s)}})}
+function rmHL(el){el.querySelectorAll('.hl').forEach(h=>{const p=h.parentNode;p.replaceChild(document.createTextNode(h.textContent),h);p.normalize()})}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='f'){const at=document.querySelector('.tab-panel.active');if(at&&at.id==='t-full'){e.preventDefault();document.getElementById('searchInput').focus()}}});
+
+/* Calc tabs */
+document.querySelectorAll('.calc-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.calc-tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.calc-p').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');document.getElementById(t.dataset.calc).classList.add('active');
+  });
+});
+
+function fmt(n){return n.toLocaleString('zh-CN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function show(id,v,f){const r=document.getElementById(id);r.style.display='';document.getElementById(id.replace('Res','Val')).textContent='¥ '+fmt(v);document.getElementById(id.replace('Res','Fm')).textContent=f}
+
+function calcInc(){const noi=parseFloat(document.getElementById('iNOI').value)||0;const r=(parseFloat(document.getElementById('iR').value)||0)/100;
+if(!r){alert('请输入资本化率');return}const v=noi/r;show('iRes',v,'V = '+fmt(noi)+' / '+(r*100).toFixed(2)+'% = '+fmt(v))}
+
+function calcCost(){const c=parseFloat(document.getElementById('cC').value)||0;const s=parseFloat(document.getElementById('cS').value)||0;
+const t=parseFloat(document.getElementById('cT').value)||0;const n=parseFloat(document.getElementById('cN').value)||0;
+if(!n){alert('请输入经济寿命');return}const v=c-(c-s)*t/n;const dep=(c-s)*t/n;
+show('cRes',v,'V = '+fmt(c)+'-('+fmt(c)+'-'+fmt(s)+')×'+t+'/'+n+' = '+fmt(c)+'-'+fmt(dep)+' = '+fmt(v))}
+
+function calcCost2(){const c=parseFloat(document.getElementById('c2C').value)||0;const q=(parseFloat(document.getElementById('c2Q').value)||0)/100;
+const v=c*q;show('c2Res',v,'V = '+fmt(c)+'×'+(q*100).toFixed(1)+'% = '+fmt(v))}
+
+function calcComp(){const p=parseFloat(document.getElementById('pP').value)||0;
+const t=(parseFloat(document.getElementById('pT').value)||100)/100;const m=(parseFloat(document.getElementById('pM').value)||100)/100;
+const l=(parseFloat(document.getElementById('pL').value)||100)/100;const p2=(parseFloat(document.getElementById('pP2').value)||100)/100;
+const r=(parseFloat(document.getElementById('pR').value)||100)/100;
+const v=p*t*m*l*p2*r;show('pRes',v,fmt(p)+'×'+(t*100).toFixed(1)+'%×'+(m*100).toFixed(1)+'%×'+(l*100).toFixed(1)+'%×'+(p2*100).toFixed(1)+'%×'+(r*100).toFixed(1)+'% = '+fmt(v))}
+
+function calcRate(){const m=(parseFloat(document.getElementById('rM').value)||0)/100;const rm=(parseFloat(document.getElementById('rRm').value)||0)/100;
+const re=(parseFloat(document.getElementById('rRe').value)||0)/100;const r0=m*rm+(1-m)*re;
+show('rRes',r0*100,'R₀ = '+fmt(m*100)+'%×'+(rm*100).toFixed(2)+'%+'+fmt((1-m)*100)+'%×'+(re*100).toFixed(2)+'% = '+(r0*100).toFixed(2)+'%');
+document.getElementById('rVal').textContent=(r0*100).toFixed(2)+'%'}
+
+function calcRate2(){const l=(parseFloat(document.getElementById('r2L').value)||0)/100;const rl=(parseFloat(document.getElementById('r2Rl').value)||0)/100;
+const b=(parseFloat(document.getElementById('r2B').value)||0)/100;const rb=(parseFloat(document.getElementById('r2Rb').value)||0)/100;
+const r0=l*rl+b*rb;
+show('r2Res',r0*100,'R₀ = '+fmt(l*100)+'%×'+(rl*100).toFixed(2)+'%+'+fmt(b*100)+'%×'+(rb*100).toFixed(2)+'% = '+(r0*100).toFixed(2)+'%');
+document.getElementById('r2Val').textContent=(r0*100).toFixed(2)+'%'}
+</script>
+</body>
+</html>

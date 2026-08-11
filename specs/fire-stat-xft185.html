@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>火灾直接经济损失统计方法系统 — XF/T 185—2025</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060810;--s1:#0b0d16;--s2:#111422;--s3:#181c2e;--s4:#212740;
+  --bd:#2a3050;--ac:#ff7043;--ac2:#e65100;--acg:rgba(255,112,67,.1);
+  --gld:#ffb300;--gldg:rgba(255,179,0,.1);--gn:#66bb6a;--gng:rgba(102,187,106,.1);
+  --rd:#ef5350;--rdg:rgba(239,83,80,.1);--cy:#29b6f6;--cyg:rgba(41,182,246,.1);
+  --pn:#ab47bc;--png:rgba(171,71,188,.1);
+  --t1:#e4e8f0;--t2:#8690a8;--t3:#555e78;--r:10px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+
+.titlebar{background:#080a14;border-bottom:1px solid var(--bd);padding:0 18px;height:44px;display:flex;align-items:center;gap:12px;flex-shrink:0;user-select:none;}
+.tdots{display:flex;gap:7px;}.tdots span{width:12px;height:12px;border-radius:50%;}
+.dr{background:#ff5f57;}.dy{background:#febc2e;}.dg{background:#28c840;}
+.ttitle{flex:1;text-align:center;font-size:13px;font-weight:500;color:var(--t2);letter-spacing:1.2px;}
+.tbadge{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--ac);background:var(--acg);padding:3px 10px;border-radius:20px;border:1px solid rgba(255,112,67,.25);}
+
+.main{display:flex;flex:1;overflow:hidden;}
+.sidebar{width:260px;min-width:260px;background:var(--s1);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;}
+.sb-hd{padding:12px;border-bottom:1px solid var(--bd);}
+.sb-search{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:8px 11px;color:var(--t1);font-size:12px;outline:none;font-family:'Noto Sans SC',sans-serif;transition:border-color .2s;}
+.sb-search:focus{border-color:var(--ac);}.sb-search::placeholder{color:var(--t3);}
+.nav{flex:1;overflow-y:auto;padding:4px 0;}.nav::-webkit-scrollbar{width:3px;}.nav::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px;}
+.nc{padding:9px 14px 4px;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:2px;}
+.ni{display:flex;align-items:center;gap:9px;padding:7px 14px 7px 16px;cursor:pointer;font-size:12px;color:var(--t2);transition:all .15s;border-left:3px solid transparent;}
+.ni:hover{background:var(--s2);color:var(--t1);}
+.ni.a{background:var(--acg);color:var(--ac);border-left-color:var(--ac);}
+.ni i{font-size:13px;width:18px;text-align:center;font-style:normal;}
+
+.content{flex:1;overflow-y:auto;padding:0;}.content::-webkit-scrollbar{width:5px;}.content::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px;}
+.sec{display:none;padding:28px 34px;animation:fi .25s ease;}.sec.a{display:block;}
+@keyframes fi{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
+
+.sh{margin-bottom:24px;}.sh h1{font-size:20px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.sh p{font-size:12.5px;color:var(--t3);line-height:1.7;}
+
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:20px;}
+.sc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px;transition:all .2s;}
+.sc:hover{border-color:var(--ac);box-shadow:0 0 18px var(--acg);}
+.sc .lb{font-size:10.5px;color:var(--t3);margin-bottom:6px;letter-spacing:1px;}
+.sc .vl{font-size:22px;font-weight:700;color:var(--ac);font-family:'JetBrains Mono',monospace;}
+.sc .sb{font-size:11.5px;color:var(--t2);margin-top:3px;}
+
+.tw{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:20px;}
+.th{padding:12px 16px;font-size:12.5px;font-weight:600;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;}
+.th .tf{margin-left:auto;}.th input{background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:4px 9px;color:var(--t1);font-size:11.5px;outline:none;width:160px;font-family:'Noto Sans SC',sans-serif;}.th input:focus{border-color:var(--ac);}
+table{width:100%;border-collapse:collapse;}
+th{background:var(--s2);padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:var(--t2);border-bottom:1px solid var(--bd);white-space:nowrap;position:sticky;top:0;}
+td{padding:7px 12px;font-size:12px;border-bottom:1px solid rgba(42,48,80,.4);color:var(--t1);}
+tr:hover td{background:var(--acg);}
+.nc2{font-family:'JetBrains Mono',monospace;text-align:center;font-weight:500;color:var(--ac);}
+.gr{font-weight:600;color:var(--gld);background:rgba(255,179,0,.04);}
+
+.in{background:var(--acg);border-left:3px solid var(--ac);padding:12px 16px;margin-bottom:16px;border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--t2);line-height:1.7;}
+.wn{background:var(--gldg);border-left:3px solid var(--gld);padding:12px 16px;margin-bottom:16px;border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--t2);line-height:1.7;}
+.dn{background:var(--rdg);border-left:3px solid var(--rd);padding:12px 16px;margin-bottom:16px;border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--t2);line-height:1.7;}
+.cn{background:var(--cyg);border-left:3px solid var(--cy);padding:12px 16px;margin-bottom:16px;border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--t2);line-height:1.7;}
+
+.cp{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:24px;margin-bottom:20px;}
+.cp h3{font-size:14px;font-weight:600;margin-bottom:16px;display:flex;align-items:center;gap:7px;}
+.fr{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;}
+.fg{flex:1;min-width:160px;}
+.fg label{display:block;font-size:11px;color:var(--t3);margin-bottom:4px;font-weight:500;}
+.fg input,.fg select{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:8px 11px;color:var(--t1);font-size:12.5px;outline:none;transition:border-color .2s;font-family:'Noto Sans SC',sans-serif;}
+.fg input:focus,.fg select:focus{border-color:var(--ac);}
+select option{background:var(--s2);}
+.btn{padding:8px 20px;border:none;border-radius:5px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Noto Sans SC',sans-serif;}
+.bp{background:var(--ac);color:#fff;}.bp:hover{background:var(--ac2);box-shadow:0 0 14px var(--acg);}
+.bg{background:var(--gld);color:#000;}.bg:hover{background:#e0a000;}
+.bn{background:var(--gn);color:#000;}.bn:hover{background:#4caf50;}
+.bs{background:var(--s3);color:var(--t2);border:1px solid var(--bd);}.bs:hover{background:var(--bd);color:var(--t1);}
+.bcy{background:var(--cy);color:#000;}
+.bpn{background:var(--pn);color:#fff;}
+
+.rb{margin-top:16px;background:var(--s2);border:1px solid var(--ac);border-radius:var(--r);padding:16px;display:none;}
+.rb.show{display:block;animation:fi .3s ease;}
+.rb .rt{font-size:10.5px;color:var(--t3);margin-bottom:5px;letter-spacing:1px;}
+.rb .rv{font-size:26px;font-weight:700;color:var(--gn);font-family:'JetBrains Mono',monospace;}
+.rb .rd{margin-top:10px;font-size:12px;color:var(--t2);line-height:1.9;}
+.rb .rv.warn{color:var(--gld);}
+.rb .rv.danger{color:var(--rd);}
+
+.fb{background:linear-gradient(135deg,var(--s2),var(--s3));border:1px solid var(--bd);border-left:3px solid var(--gld);border-radius:0 var(--r) var(--r) 0;padding:14px 18px;margin-bottom:16px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--gld);line-height:1.8;overflow-x:auto;}
+
+.tb{display:flex;gap:0;margin-bottom:18px;border-bottom:1px solid var(--bd);flex-wrap:wrap;}
+.tb button{padding:9px 14px;font-size:12px;color:var(--t3);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:'Noto Sans SC',sans-serif;transition:all .15s;}
+.tb button:hover{color:var(--t1);}.tb button.a{color:var(--ac);border-bottom-color:var(--ac);}
+.tp{display:none;}.tp.a{display:block;}
+
+.tag{display:inline-block;padding:2px 7px;border-radius:3px;font-size:10.5px;margin:2px;font-family:'JetBrains Mono',monospace;}
+.tg-ac{background:var(--acg);color:var(--ac);}
+.tg-gd{background:var(--gldg);color:var(--gld);}
+.tg-gn{background:var(--gng);color:var(--gn);}
+.tg-rd{background:var(--rdg);color:var(--rd);}
+.tg-cy{background:var(--cyg);color:var(--cy);}
+.tg-pn{background:var(--png);color:var(--pn);}
+
+.statusbar{background:var(--s1);border-top:1px solid var(--bd);padding:3px 14px;display:flex;align-items:center;gap:12px;font-size:10px;color:var(--t3);height:24px;flex-shrink:0;}
+.statusbar .dt{width:5px;height:5px;border-radius:50%;background:var(--gn);}
+</style>
+</head>
+<body>
+<div class="titlebar">
+  <div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div>
+  <div class="ttitle">火灾直接经济损失统计方法系统</div>
+  <div class="tbadge">XF/T 185—2025</div>
+</div>
+<div class="main">
+  <div class="sidebar">
+    <div class="sb-hd"><input type="text" class="sb-search" placeholder="🔍 搜索功能模块..." id="ss" oninput="fn(this.value)"></div>
+    <div class="nav" id="nl">
+      <div class="nc">概览</div>
+      <div class="ni a" onclick="sh('home',this)"><i>🔥</i>工作台</div>
+      <div class="ni" onclick="sh('terms',this)"><i>📖</i>术语和定义</div>
+      <div class="ni" onclick="sh('scope',this)"><i>📌</i>统计要求</div>
+      <div class="nc">统计方法</div>
+      <div class="ni" onclick="sh('simple',this)"><i>⚡</i>简易统计</div>
+      <div class="ni" onclick="sh('general',this)"><i>📊</i>一般统计</div>
+      <div class="ni" onclick="sh('methods',this)"><i>📐</i>评估方法与公式</div>
+      <div class="nc">计算器</div>
+      <div class="ni" onclick="sh('calc-dmg',this)"><i>🧮</i>残值法计算器</div>
+      <div class="ni" onclick="sh('calc-repair',this)"><i>🔧</i>修复价值法计算器</div>
+      <div class="ni" onclick="sh('calc-market',this)"><i>🏪</i>市值法计算器</div>
+      <div class="ni" onclick="sh('calc-cost',this)"><i>💰</i>成本法计算器</div>
+      <div class="ni" onclick="sh('calc-heritage',this)"><i>🏛️</i>文物建筑重建价值法</div>
+      <div class="nc">附录数据</div>
+      <div class="ni" onclick="sh('class-a',this)"><i>📂</i>损失分类界定(A)</div>
+      <div class="ni" onclick="sh('life-b',this)"><i>📅</i>成新率方法(B)</div>
+      <div class="ni" onclick="sh('burn-c',this)"><i>🌡️</i>损坏等级/烧损率(C)</div>
+      <div class="ni" onclick="sh('heritage-d',this)"><i>🏛️</i>文物建筑系数(D)</div>
+      <div class="ni" onclick="sh('disposal',this)"><i>🚨</i>现场处置费</div>
+      <div class="ni" onclick="sh('injury',this)"><i>🩹</i>人身伤亡支出费</div>
+    </div>
+  </div>
+  <div class="content">
+
+    <!-- HOME -->
+    <div class="sec a" id="home">
+      <div class="sh"><h1>🔥 工作台</h1><p>火灾直接经济损失统计方法 · XF/T 185—2025 · 2025年8月1日实施 · 国家消防救援局发布</p></div>
+      <div class="cg">
+        <div class="sc"><div class="lb">标准编号</div><div class="vl" style="font-size:15px;">XF/T 185</div><div class="sb">代替XF 185—2014</div></div>
+        <div class="sc"><div class="lb">经济损失构成</div><div class="vl">3</div><div class="sb">直接财产+处置费+伤亡费</div></div>
+        <div class="sc"><div class="lb">统计方法</div><div class="vl">6</div><div class="sb">种核心计算方法</div></div>
+        <div class="sc"><div class="lb">损坏等级</div><div class="vl">4</div><div class="sb">轻/中/重/完全</div></div>
+        <div class="sc"><div class="lb">设备年限参考</div><div class="vl">40+</div><div class="sb">类设备使用年限</div></div>
+        <div class="sc"><div class="lb">文物建筑保护级别</div><div class="vl">4</div><div class="sb">国家级至县市级</div></div>
+      </div>
+      <div class="in"><strong>核心公式：</strong>火灾直接经济损失 = 火灾直接财产损失 + 火灾现场处置费 + 人身伤亡支出费</div>
+      <div class="cn"><strong>适用范围：</strong>本文本适用于单起火灾直接经济损失的统计。</div>
+      <div class="dn"><strong>主要变化（对比2014版）：</strong><br>· 标准性质由强制性改为推荐性<br>· 增加"整体消算法"简易统计方法<br>· 增加"火灾现场处置费"和"人身伤亡支出费"统计章节<br>· 剔除了"实际价值法"<br>· 增加了"案例比照要求"</div>
+      <div class="tw"><div class="th">📑 标准目录</div>
+      <table><thead><tr><th>#</th><th>章节</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td class="nc2">1</td><td>范围</td><td>适用单起火灾直接经济损失统计</td></tr>
+        <tr><td class="nc2">2</td><td>规范性引用文件</td><td>GB/T 5907.4、GB/T 6721</td></tr>
+        <tr><td class="nc2">3</td><td>术语和定义</td><td>9项核心术语</td></tr>
+        <tr><td class="nc2">4</td><td>统计要求</td><td>货币计量/采信/价格取值/案例比照</td></tr>
+        <tr><td class="nc2">5</td><td>火灾直接财产损失统计</td><td>简易统计+一般统计</td></tr>
+        <tr><td class="nc2">6</td><td>火灾现场处置费统计</td><td>单起统计法+平均值统计法</td></tr>
+        <tr><td class="nc2">7</td><td>人身伤亡支出费统计</td><td>医疗费/丧葬抚恤/补助救济</td></tr>
+        <tr><td class="nc2">附录A</td><td>损失分类界定范围</td><td>规范性附录</td></tr>
+        <tr><td class="nc2">附录B</td><td>成新率确定方法</td><td>规范性附录</td></tr>
+        <tr><td class="nc2">附录C</td><td>损坏等级及烧损率确定</td><td>规范性附录</td></tr>
+        <tr><td class="nc2">附录D</td><td>文物建筑保护级别/调整系数</td><td>规范性附录</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <!-- TERMS -->
+    <div class="sec" id="terms">
+      <div class="sh"><h1>📖 术语和定义</h1><p>9项核心术语</p></div>
+      <div class="tw"><div class="th">术语定义一览</div>
+      <table><thead><tr><th style="width:28%">术语</th><th>定义</th></tr></thead>
+      <tbody>
+        <tr><td><strong>3.1 火灾直接经济损失</strong></td><td>单起火灾导致的火灾直接财产损失、火灾现场处置费、人身伤亡支出费之和。</td></tr>
+        <tr><td><strong>3.2 火灾直接财产损失</strong></td><td>在火灾中直接被烧毁、烧损、烟熏、淹压、辐射以及在灭火抢险中因破拆、水灌等所造成财产（不包括货币、票据、有价证券等）减少的价值。</td></tr>
+        <tr><td><strong>3.3 火灾现场处置费</strong></td><td>灭火救援费（包括灭火剂等消耗材料费、水带等消防器材损耗费、消防装备维护或损坏费、现场清障调用车辆大型设备及人力费）及灾后现场清理费之和。</td></tr>
+        <tr><td><strong>3.4 人身伤亡</strong></td><td>在发生火灾之日起30日内，人员因火灾或灭火救援中的烧灼、爆炸、窒息、中毒、触电、高温、辐射、砸压、碰撞、坠落、跌落等原因导致的死亡、重伤、轻伤、轻微伤的情况。</td></tr>
+        <tr><td><strong>3.5 烧损率</strong></td><td>财产在火灾中直接被烧毁、烧损、烟熏、淹压、辐射、爆炸以及在灭火抢险中因破拆、水灌等所造成的外观、结构、使用功能、精确度等损坏的程度。用百分比(%)表示。</td></tr>
+        <tr><td><strong>3.6 重置价值</strong></td><td>重新建造或重新购置财产所需的全部费用。</td></tr>
+        <tr><td><strong>3.7 成新率</strong></td><td>灾前建筑、设备等财产的新旧程度。用百分比(%)表示。</td></tr>
+        <tr><td><strong>3.8 残值</strong></td><td>财产因火灾损失剩余的残值价值。</td></tr>
+        <tr><td><strong>3.9 过火面积</strong></td><td>火灾高温作用所涉及的范围。</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <!-- SCOPE -->
+    <div class="sec" id="scope">
+      <div class="sh"><h1>📌 统计要求</h1><p>4项基本要求：货币计量、采信要求、价格取值、案例比照</p></div>
+      <div class="tw"><div class="th">4.1 货币计量要求</div>
+      <table><tbody>
+        <tr><td>计量货币</td><td><strong>人民币</strong>，单位为元，计算过程中不足一元的四舍五入</td></tr>
+        <tr><td>外币折算</td><td>按失火当日中国人民银行人民币兑换牌价的<strong>现钞买入价</strong>折算成人民币</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">4.2 采信要求</div>
+      <table><thead><tr><th>#</th><th>可作为统计依据的机构</th></tr></thead>
+      <tbody>
+        <tr><td class="nc2">a</td><td>地方政府价格主管部门设立的价格认证机构</td></tr>
+        <tr><td class="nc2">b</td><td>人力资源和社会保障部、民政等部门设立的社会保险、社会救助等经办机构</td></tr>
+        <tr><td class="nc2">c</td><td>建设主管部门设立的房屋质量安全鉴定检测机构</td></tr>
+        <tr><td class="nc2">d</td><td>文物主管部门设立的文物鉴定机构</td></tr>
+        <tr><td class="nc2">e</td><td>医疗机构、伤残鉴定机构</td></tr>
+        <tr><td class="nc2">f</td><td>会计师事务所、律师事务所</td></tr>
+        <tr><td class="nc2">g</td><td>保险公司、保险公估机构</td></tr>
+        <tr><td class="nc2">h</td><td>其他有资质的专业机构</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">4.3 价格取值要求</div>
+      <table><tbody>
+        <tr><td><strong>a) 政府定价</strong></td><td>包括工程定额的商品、货物或其他财产，按政府定价计算</td></tr>
+        <tr><td><strong>b) 政府指导价</strong></td><td>按照规定的基准价及其浮动幅度确定价格</td></tr>
+        <tr><td><strong>c) 市场调节价</strong></td><td>参照同类商品市场中间价格计算</td></tr>
+      </tbody></table></div>
+      <div class="in"><strong>4.4 案例比照要求：</strong>内容中未提供详细规定，但标准新增了此要求。</div>
+    </div>
+
+    <!-- SIMPLE -->
+    <div class="sec" id="simple">
+      <div class="sh"><h1>⚡ 简易统计</h1><p>5.1 简易统计方法：调查验证法和整体消算法</p></div>
+      <div class="in"><strong>适用范围：</strong>简易统计适用于特定场景下的火灾直接财产损失统计。标准将"调查验证法"和"整体消算法"一并归为"简易统计方法"。</div>
+      <div class="tw"><div class="th">5.1.2 简易统计方法</div>
+      <table><thead><tr><th>方法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>调查验证法</strong></td><td>对受损单位/个人申报的火灾直接财产损失进行调查验证</td></tr>
+        <tr><td><strong>整体消算法（新增）</strong></td><td>标准新增的简易统计方法，具体详细规定见标准正文</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <!-- GENERAL -->
+    <div class="sec" id="general">
+      <div class="sh"><h1>📊 一般统计</h1><p>5.2 一般统计适用于所有火灾直接财产损失的统计</p></div>
+      <div class="tw"><div class="th">5.2.3 统计步骤</div>
+      <table><thead><tr><th>步骤</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>5.2.3.1 调查验证</strong></td><td>有效证明材料复核；查问当事人、证人；现场点验等</td></tr>
+        <tr><td><strong>5.2.3.2 损失物识别</strong></td><td>①直观判定：现场点验辨识清点<br>②证据推定：借助账目、视听资料、电子数据和现场残留物痕迹等证据<br>③最大量判别：损失物数量不能超过可容纳总量</td></tr>
+        <tr><td><strong>5.2.3.3 方法选择</strong></td><td>根据损失物类型选择合适的评估方法（见下方详细说明）</td></tr>
+        <tr><td><strong>5.2.3.4 统计计算</strong></td><td>按选定方法进行计算</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">5.2.3.3 方法选择对照表</div>
+      <table><thead><tr><th>#</th><th>损失物类型</th><th>推荐方法</th></tr></thead>
+      <tbody>
+        <tr><td class="nc2">a</td><td>完全烧损或部分烧损且修复不经济的建筑构件、设施、装修、设备、家电家具等</td><td><strong>残值法</strong> (5.2.4.1)</td></tr>
+        <tr><td class="nc2">b</td><td>部分烧损可修复且修复经济的建筑构件、设施、装修、设备、家电家具等</td><td><strong>修复价值法</strong> (5.2.4.2)</td></tr>
+        <tr><td class="nc2">c</td><td>消防装备损坏毁损</td><td><strong>修复价值法</strong> (5.2.4.2)</td></tr>
+        <tr><td class="nc2">d</td><td>贵重物品、图书期刊、城市绿化、农村增绿等</td><td><strong>市值法（市场法）</strong> (5.2.4.3)</td></tr>
+        <tr><td class="nc2">e</td><td>产品商品类</td><td><strong>成本法</strong> (5.2.4.3/5.2.4.4)</td></tr>
+        <tr><td class="nc2">f</td><td>文物建筑损失</td><td><strong>文物建筑重建价值法</strong> (5.2.4.5)</td></tr>
+        <tr><td class="nc2">g</td><td>珍贵文物、保护动植物等难以计算的</td><td>专家组评估或文字描述</td></tr>
+        <tr><td class="nc2">h</td><td>无法统计的损失物</td><td>可不做损失价值统计或仅做文字图片描述</td></tr>
+        <tr><td class="nc2">i</td><td>车辆损失</td><td>保单出险费用、修复费用或参考二手车市场价格</td></tr>
+        <tr><td class="nc2">j</td><td>低值易耗品、衣物杂品类</td><td>按烧损前财产总量价值<strong>20%</strong>计算</td></tr>
+      </tbody></table></div>
+      <div class="cn"><strong>简易统计公式（5.1 概述区）：</strong><br>L = P × A₁ × R₁ × k₁<br>其中：L=损失额(元)，P=建设工程造价数据(元/m²)，A₁=过火面积(m²)，R₁=烧损率，k₁=起火场所调整系数</div>
+      <div class="tw"><div class="th">起火场所调整系数 k₁</div>
+      <table><thead><tr><th>类别</th><th>场所</th><th>调整系数</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4"><strong>居住类</strong></td><td>砖混结构单层建筑</td><td class="nc2">1.00</td></tr>
+        <tr><td>钢筋混凝土结构单层建筑</td><td class="nc2">1.10</td></tr>
+        <tr><td>高层建筑</td><td class="nc2">1.80</td></tr>
+        <tr><td>木结构</td><td class="nc2">0.80</td></tr>
+        <tr><td rowspan="3"><strong>室外类</strong></td><td>木结构、简易搭建</td><td class="nc2">0.50</td></tr>
+        <tr><td>室外电线、农业大棚</td><td class="nc2">0.50~1.00</td></tr>
+        <tr><td>室外杂物类</td><td class="nc2">0.01~1.00</td></tr>
+      </tbody></table></div>
+      <div class="wn"><strong>烧损率取值（简易统计）：</strong>根据现场过火区域整体情况综合判定，按<strong>轻微(5%)、轻(20%)、中(50%)、重(100%)</strong>四种情况取值。工程造价数据可通过建设工程造价信息网等官方网站查询。</div>
+    </div>
+
+    <!-- METHODS -->
+    <div class="sec" id="methods">
+      <div class="sh"><h1>📐 评估方法与公式</h1><p>5.2.4 一般统计的6种核心计算方法</p></div>
+      <div class="tb">
+        <button class="a" onclick="swTp('mt1',this)">残值法</button>
+        <button onclick="swTp('mt2',this)">修复价值法</button>
+        <button onclick="swTp('mt3',this)">市值法</button>
+        <button onclick="swTp('mt4',this)">成本-残值法</button>
+        <button onclick="swTp('mt5',this)">文物建筑重建价值法</button>
+      </div>
+
+      <div class="tp a" id="mt1">
+        <div class="in"><strong>5.2.4.1 残值法</strong> — 适用于完全烧损或部分烧损且修复不经济的损失</div>
+        <div class="fb"><strong>公式(3)：</strong>L = V × R₁ - V₀<br><br>L — 损失额(元)<br>V — 重置价值(元)<br>R₁ — 烧损率(%)<br>V₀ — 残值(元)</div>
+        <div class="cn"><strong>说明：</strong>烧损率等于100%时，扣减全部残值；烧损率小于100%时，扣减毁损部分残值。</div>
+      </div>
+
+      <div class="tp" id="mt2">
+        <div class="in"><strong>5.2.4.2 修复价值法</strong> — 适用于部分烧损可修复且修复经济的损失</div>
+        <div class="fb"><strong>公式(4)：</strong>L = (J + F + G + Q) × R₂ - V₀<br><br>L — 损失额(元)<br>J — 主材价格(元)<br>F — 辅料价格(元)<br>G — 工时费(元)<br>Q — 其他费用(元)<br>R₂ — 修复后与烧损前状态差异修正系数<br>V₀ — 残值(元)</div>
+        <div class="dn"><strong>重要：</strong>当修复费用大于财物现有价值的70%时，推定全损，应选择残值法计算。</div>
+      </div>
+
+      <div class="tp" id="mt3">
+        <div class="in"><strong>5.2.4.3 市值法（市场法）</strong> — 适用于贵重物品、图书期刊等</div>
+        <div class="fb"><strong>公式(3)变体：</strong>L = M × R₁ - V₀<br><br>L — 损失额(元)<br>M — 市值(元)<br>R₁ — 烧损率(%)<br>V₀ — 残值(元)</div>
+      </div>
+
+      <div class="tp" id="mt4">
+        <div class="in"><strong>5.2.4.4 成本—残值法</strong> — 适用于产品类、商品类</div>
+        <div class="fb"><strong>公式(5)：</strong>L = C - V₀<br><br>L — 损失额(元)<br>C — 成本(元)<br>V₀ — 残值(元)</div>
+        <div class="cn">产品类、商品类成本按4.3取值。商品的成本只计算购进价、税金、运输费、仓储费等。<br><strong>注意：</strong>随着时间推移价值不降反升的商品不适用此法，如古董、文物等。</div>
+      </div>
+
+      <div class="tp" id="mt5">
+        <div class="in"><strong>5.2.4.5 文物建筑重建价值法</strong> — 适用于文物建筑损失</div>
+        <div class="fb"><strong>公式(6)：</strong>L = C₁ × (k₁ + k₂) × R₁<br><br>L — 文物建筑损失(元)<br>C₁ — 文物建筑重建费(元)，按古建筑修缮概(预)算定额取费<br>k₁ — 保护级别系数(见附录D)<br>k₂ — 调整系数(见附录D)<br>R₁ — 烧损率(%)，按附录C"结构体系"规定确定</div>
+      </div>
+    </div>
+
+    <!-- CALC: DAMAGED VALUE -->
+    <div class="sec" id="calc-dmg">
+      <div class="sh"><h1>🧮 残值法计算器</h1><p>L = V × R₁ - V₀</p></div>
+      <div class="cp">
+        <h3>📋 参数输入</h3>
+        <div class="fr">
+          <div class="fg"><label>重置价值 V（元）</label><input type="number" id="dmgV" placeholder="重新建造/购置全部费用"></div>
+          <div class="fg"><label>烧损率 R₁（%）</label><input type="number" id="dmgR" placeholder="如: 80" min="0" max="100" step="1"></div>
+          <div class="fg"><label>残值 V₀（元）</label><input type="number" id="dmgV0" placeholder="火灾后剩余残值" value="0"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button class="btn bp" onclick="calcDmg()">计算损失</button>
+          <button class="btn bs" onclick="clr('calc-dmg')">重置</button>
+        </div>
+        <div id="dmgRb" class="rb"><div class="rt">损失额 L</div><div class="rv" id="dmgRv">—</div><div class="rd" id="dmgRd"></div></div>
+      </div>
+    </div>
+
+    <!-- CALC: REPAIR -->
+    <div class="sec" id="calc-repair">
+      <div class="sh"><h1>🔧 修复价值法计算器</h1><p>L = (J + F + G + Q) × R₂ - V₀</p></div>
+      <div class="cp">
+        <h3>📋 参数输入</h3>
+        <div class="fr">
+          <div class="fg"><label>主材价格 J（元）</label><input type="number" id="repJ" placeholder="主材价格"></div>
+          <div class="fg"><label>辅料价格 F（元）</label><input type="number" id="repF" placeholder="辅料价格"></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>工时费 G（元）</label><input type="number" id="repG" placeholder="工时费"></div>
+          <div class="fg"><label>其他费用 Q（元）</label><input type="number" id="repQ" placeholder="其他费用" value="0"></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>修正系数 R₂</label><input type="number" id="repR2" placeholder="修复后与烧损前状态差异修正系数" step="0.01" value="1"></div>
+          <div class="fg"><label>残值 V₀（元）</label><input type="number" id="repV0" placeholder="残值" value="0"></div>
+          <div class="fg"><label>财物现有价值（元，用于判断是否推定全损）</label><input type="number" id="repCur" placeholder="财物灾前现有价值"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button class="btn bp" onclick="calcRep()">计算损失</button>
+          <button class="btn bs" onclick="clr('calc-repair')">重置</button>
+        </div>
+        <div id="repRb" class="rb"><div class="rt">损失额 L</div><div class="rv" id="repRv">—</div><div class="rd" id="repRd"></div></div>
+      </div>
+    </div>
+
+    <!-- CALC: MARKET -->
+    <div class="sec" id="calc-market">
+      <div class="sh"><h1>🏪 市值法计算器</h1><p>L = M × R₁ - V₀</p></div>
+      <div class="cp">
+        <h3>📋 参数输入</h3>
+        <div class="fr">
+          <div class="fg"><label>市值 M（元）</label><input type="number" id="mktM" placeholder="同类商品市场中间价格"></div>
+          <div class="fg"><label>烧损率 R₁（%）</label><input type="number" id="mktR" placeholder="如: 60" min="0" max="100" step="1"></div>
+          <div class="fg"><label>残值 V₀（元）</label><input type="number" id="mktV0" placeholder="残值" value="0"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button class="btn bp" onclick="calcMkt()">计算损失</button>
+          <button class="btn bs" onclick="clr('calc-market')">重置</button>
+        </div>
+        <div id="mktRb" class="rb"><div class="rt">损失额 L</div><div class="rv" id="mktRv">—</div><div class="rd" id="mktRd"></div></div>
+      </div>
+    </div>
+
+    <!-- CALC: COST -->
+    <div class="sec" id="calc-cost">
+      <div class="sh"><h1>💰 成本法计算器</h1><p>L = C - V₀（成本-残值法）</p></div>
+      <div class="cp">
+        <h3>📋 参数输入</h3>
+        <div class="fr">
+          <div class="fg"><label>成本 C（元）</label><input type="number" id="costC" placeholder="购进价+税金+运输费+仓储费等"></div>
+          <div class="fg"><label>残值 V₀（元）</label><input type="number" id="costV0" placeholder="残值" value="0"></div>
+        </div>
+        <div class="wn">产品类、商品类成本按4.3取值。商品的成本只计算购进价、税金、运输费、仓储费等。随着时间推移价值不降反升的商品（如古董、文物）不适用此法。</div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button class="btn bp" onclick="calcCost()">计算损失</button>
+          <button class="btn bs" onclick="clr('calc-cost')">重置</button>
+        </div>
+        <div id="costRb" class="rb"><div class="rt">损失额 L</div><div class="rv" id="costRv">—</div><div class="rd" id="costRd"></div></div>
+      </div>
+      <div class="cp">
+        <h3>📦 简易统计总公式计算器</h3>
+        <div class="fr">
+          <div class="fg"><label>建设工程造价数据 P（元/m²）</label><input type="number" id="smpP" placeholder="可通过建设工程造价信息网查询"></div>
+          <div class="fg"><label>过火面积 A₁（m²）</label><input type="number" id="smpA" placeholder="火灾高温作用涉及范围"></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>烧损率 R₁</label><select id="smpR"><option value="5">轻微 (5%)</option><option value="20">轻 (20%)</option><option value="50" selected>中 (50%)</option><option value="100">重 (100%)</option></select></div>
+          <div class="fg"><label>起火场所调整系数 k₁</label><select id="smpK"><option value="1">砖混结构单层 (1.00)</option><option value="1.1">钢筋混凝土单层 (1.10)</option><option value="1.8">高层建筑 (1.80)</option><option value="0.8">木结构 (0.80)</option><option value="0.5">木结构/简易搭建-室外 (0.50)</option></select></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button class="btn bcy" onclick="calcSmp()">计算简易统计损失</button>
+          <button class="btn bs" onclick="clr2()">重置</button>
+        </div>
+        <div id="smpRb" class="rb"><div class="rt">损失额 L</div><div class="rv" id="smpRv">—</div><div class="rd" id="smpRd"></div></div>
+      </div>
+    </div>
+
+    <!-- CALC: HERITAGE -->
+    <div class="sec" id="calc-heritage">
+      <div class="sh"><h1>🏛️ 文物建筑重建价值法计算器</h1><p>L = C₁ × (k₁ + k₂) × R₁</p></div>
+      <div class="cp">
+        <h3>📋 参数输入</h3>
+        <div class="fr">
+          <div class="fg"><label>文物建筑重建费 C₁（元）</label><input type="number" id="herC" placeholder="按古建筑修缮概(预)算定额取费"></div>
+          <div class="fg"><label>保护级别系数 k₁</label><select id="herK1"><option value="4">全国重点文物保护单位 (4.0)</option><option value="3">省/自治区/直辖市级 (3.0)</option><option value="2">县/自治县/市级 (2.0)</option></select></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><label>调整系数 k₂</label><input type="number" id="herK2" placeholder="见附录D，一般情况0，增值0.5~2.0，减值-1.0~-0.5" step="0.5" value="0"></div>
+          <div class="fg"><label>烧损率 R₁（%）</label><select id="herR"><option value="10">轻度 (0~20%，取10%)</option><option value="35" selected>中度 (20~50%，取35%)</option><option value="65">重度 (50~80%，取65%)</option><option value="90">完全 (80~100%，取90%)</option></select></div>
+        </div>
+        <div class="in">文物建筑组、群中的单座文物建筑，调整系数可取负值（减值情况：-1.0, -0.5），代表次要附属建筑、现代重建建筑等。</div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button class="btn bpn" onclick="calcHer()">计算文物建筑损失</button>
+          <button class="btn bs" onclick="clr('calc-heritage')">重置</button>
+        </div>
+        <div id="herRb" class="rb"><div class="rt">文物建筑损失 L</div><div class="rv" id="herRv">—</div><div class="rd" id="herRd"></div></div>
+      </div>
+    </div>
+
+    <!-- CLASS A -->
+    <div class="sec" id="class-a">
+      <div class="sh"><h1>📂 火灾直接经济损失分类界定范围</h1><p>附录A（规范性）· 损失统计分类及界定范围</p></div>
+      <div class="tw"><div class="th">表A.1 火灾直接财产损失统计分类界定范围
+        <div class="tf"><input placeholder="搜索..." oninput="ft(this,'tblA')"></div></div>
+      <table id="tblA"><thead><tr><th>损失分类</th><th>界定范围</th></tr></thead>
+      <tbody>
+        <tr class="gr"><td colspan="2">建筑类损失</td></tr>
+        <tr><td>建筑构件损失</td><td>在建、在用建筑的构件损坏损失，如梁、柱、楼板、墙体、门窗等，不包括文物建筑损失</td></tr>
+        <tr><td>建筑设施损失</td><td>工业、民用建筑中供水、供电、供暖、空气调节、通信、消防等设施设备损失</td></tr>
+        <tr><td>房屋装修损失</td><td>工业、民用建筑中室内外装修损失</td></tr>
+        <tr class="gr"><td colspan="2">装置装备及设备损失</td></tr>
+        <tr><td>装置装备及设备</td><td>各种生产线、机械设备、特种设备（如场(厂)内专用车辆、吊车等）、化工装置、各种罐、电子设备、医疗设备、机电设备、大型农机具、铁路车辆等损失，不包括家用电器和车辆损失</td></tr>
+        <tr class="gr"><td colspan="2">家庭物品类损失</td></tr>
+        <tr><td>家电家具等物品</td><td>家用电器、家具、灯具、乐器、健身器械等较大件的家庭财产损失，不包括木器家具乐器收藏品等贵重物品损失，红木家具等归贵重物品类</td></tr>
+        <tr><td>衣物杂品</td><td>家庭中使用衣物鞋帽、炊具、餐具、玩具、化妆品、床上用品等家庭日常生活用品的损失</td></tr>
+        <tr class="gr"><td colspan="2">车辆类损失</td></tr>
+        <tr><td>车辆</td><td>除场(厂)内专用车辆之外的在用/在售车辆（含新能源车辆），如各类轿车、客车、载货汽车、城市交通车辆等。车辆制造厂成品车按产品类损失统计</td></tr>
+        <tr class="gr"><td colspan="2">产品类损失</td></tr>
+        <tr><td>产品</td><td>农业类（养殖、种植、畜牧、林木、草原）和工业类在生产过程中的成品、半成品、在产品、原材料等（含企业库存）以及车辆制造厂成品车等</td></tr>
+        <tr class="gr"><td colspan="2">商品类损失</td></tr>
+        <tr><td>商品</td><td>商业流通领域的产品（含商业仓储）损失，包括零售商品、装修材料、原材料、燃料、4S店仓储车辆等，不包括商品房</td></tr>
+        <tr class="gr"><td colspan="2">保护类财产损失</td></tr>
+        <tr><td>文物建筑损失</td><td>被县、市级以上人民政府列为文物保护单位的古建筑、古建筑群、纪念建筑等</td></tr>
+        <tr><td>珍贵文物损失</td><td>珍贵文物</td></tr>
+        <tr><td>保护动植物</td><td>保护动物</td></tr>
+        <tr class="gr"><td colspan="2">其他财产损失</td></tr>
+        <tr><td>贵重物品损失</td><td>古玩等收藏品、金银制品、珠宝、红木家具、贵重工艺品、贵重服装箱包等</td></tr>
+        <tr><td>图书期刊损失</td><td>图书、期刊、资料、磁盘（不包括信息存储）等</td></tr>
+        <tr><td>低值易耗品</td><td>本身非固定资产的各种常用物品，如工具、管理用具、玻璃器皿、劳动保护用品等。特征：单位价值较低、使用期限短、易损耗</td></tr>
+        <tr><td>城市绿化损失</td><td>城市绿化损失</td></tr>
+        <tr><td>农村增绿损失</td><td>农村家庭小粮仓及粮食被道路损毁损失等</td></tr>
+      </tbody></table></div>
+      <div class="wn">家庭住宅按建筑类损失统计，家用车辆按车辆类损失统计，家庭贵重物品按贵重物品类损失统计。</div>
+    </div>
+
+    <!-- LIFE B -->
+    <div class="sec" id="life-b">
+      <div class="sh"><h1>📅 成新率确定方法</h1><p>附录B（规范性）· 设备总使用年限参考值及成新率计算</p></div>
+      <div class="cp">
+        <h3>🧮 成新率辅助计算器</h3>
+        <div class="fr">
+          <div class="fg"><label>总使用年限 L₁（年）</label><input type="number" id="ageL" placeholder="见表B.2"></div>
+          <div class="fg"><label>实际已使用年限（年）</label><input type="number" id="ageU" placeholder="如: 5"></div>
+          <div class="fg"><label>调整系数 k</label><select id="ageK"><option value="1">使用0.5年内 (k=1)</option><option value="0.9">使用0.5~3年 (k=0.9)</option><option value="1">使用3年以上 (k=1)</option></select></div>
+        </div>
+        <div class="in"><strong>成新率公式：</strong>成新率 = (总使用年限 - 已使用年限) / 总使用年限 × 调整系数 k × 100%<br><strong>年限成新率 =</strong> 预计尚可使用年限 / 总使用年限 × 100%</div>
+        <div style="display:flex;gap:10px;margin-top:6px;">
+          <button class="btn bcy" onclick="calcAge()">计算成新率</button>
+        </div>
+        <div id="ageRb" class="rb"><div class="rt">成新率</div><div class="rv" id="ageRv">—</div><div class="rd" id="ageRd"></div></div>
+      </div>
+      <div class="tw"><div class="th">表B.2 设备类总使用年限参考值
+        <div class="tf"><input placeholder="搜索设备..." oninput="ft(this,'tblB')"></div></div>
+      <table id="tblB"><thead><tr><th>设备名称</th><th>总使用年限(年)</th></tr></thead>
+      <tbody>
+        <tr class="gr"><td colspan="2">通用设备</td></tr>
+        <tr><td>动力设备、传导设备、非生产设备及器具等</td><td class="nc2">18</td></tr>
+        <tr><td>复印机、文字处理机、电脑、手机等</td><td class="nc2">5</td></tr>
+        <tr><td>运输设备、机械设备、自动化控制设备等通用设备</td><td class="nc2">10</td></tr>
+        <tr><td>储能柜</td><td class="nc2">10~15</td></tr>
+        <tr class="gr"><td colspan="2">电力工业</td></tr>
+        <tr><td>电力工业专用输电线路</td><td class="nc2">32</td></tr>
+        <tr><td>电力工业专用配电线路</td><td class="nc2">15</td></tr>
+        <tr><td>电力工业专用发电及供热设备、变电配电设备</td><td class="nc2">20</td></tr>
+        <tr class="gr"><td colspan="2">其他工业</td></tr>
+        <tr><td>造船工业专用设备</td><td class="nc2">18</td></tr>
+        <tr><td>核工业专用设备、核能发电设备</td><td class="nc2">22</td></tr>
+        <tr><td>公用事业企业专用自来水、燃气设备</td><td class="nc2">29</td></tr>
+        <tr><td>机械/石油/化工等工业专用设备</td><td class="nc2">10</td></tr>
+        <tr class="gr"><td colspan="2">车辆类</td></tr>
+        <tr><td>微型出租客运汽车</td><td class="nc2">8</td></tr>
+        <tr><td>三轮车/装有单缸发动机的低速车</td><td class="nc2">9</td></tr>
+        <tr><td>中型出租客运汽车、小型教练载客汽车等</td><td class="nc2">10</td></tr>
+        <tr><td>大型出租客运汽车、中型教练载客汽车、二轮摩托车等</td><td class="nc2">12</td></tr>
+        <tr><td>公交客车、其他摩托车</td><td class="nc2">15</td></tr>
+        <tr><td>租赁经营汽车、大型教练载客汽车、其他载货汽车等</td><td class="nc2">15</td></tr>
+        <tr><td>大型非经营载客汽车（大型轿车除外）</td><td class="nc2">20</td></tr>
+        <tr><td>无载货功能的专项作业车</td><td class="nc2">30</td></tr>
+        <tr><td>小/微型非经营载客汽车、大型非经营轿车</td><td class="nc2">60万km</td></tr>
+        <tr><td>轮式专用机械车</td><td class="nc2">50万km</td></tr>
+        <tr><td>飞机</td><td class="nc2">10</td></tr>
+        <tr><td>专用运钞车</td><td class="nc2">7</td></tr>
+        <tr><td>电动自行车</td><td class="nc2">5</td></tr>
+        <tr class="gr"><td colspan="2">交通运输</td></tr>
+        <tr><td>电气化铁路供电系统</td><td class="nc2">10</td></tr>
+        <tr><td>港口装卸机械及设备、运输船舶、铁路机车等</td><td class="nc2">16</td></tr>
+        <tr><td>铁路通信信号设备、通信导航设备等</td><td class="nc2">7</td></tr>
+        <tr><td>邮电通信线路、邮政机械设备</td><td class="nc2">10</td></tr>
+        <tr><td>集装箱</td><td class="nc2">7</td></tr>
+        <tr class="gr"><td colspan="2">建筑设施</td></tr>
+        <tr><td>供电/供热系统设备、中央空调设备</td><td class="nc2">18</td></tr>
+        <tr><td>电梯、自动扶梯</td><td class="nc2">10</td></tr>
+        <tr><td>消防安全设施、设备</td><td class="nc2">10</td></tr>
+        <tr class="gr"><td colspan="2">营业/办公/家用</td></tr>
+        <tr><td>经营柜台、货架</td><td class="nc2">4</td></tr>
+        <tr><td>音响设备、电冰箱、空调器、电视机</td><td class="nc2">10</td></tr>
+        <tr><td>纯毛地毯</td><td class="nc2">8</td></tr>
+        <tr><td>办公用家具设备</td><td class="nc2">15</td></tr>
+        <tr><td>洗涤设备、营业用家具、游乐场/健身房设备</td><td class="nc2">8</td></tr>
+        <tr class="gr"><td colspan="2">乐器</td></tr>
+        <tr><td>钢琴</td><td class="nc2">16</td></tr>
+        <tr><td>电子乐器</td><td class="nc2">7</td></tr>
+        <tr><td>其他乐器</td><td class="nc2">8</td></tr>
+        <tr class="gr"><td colspan="2">农业机械</td></tr>
+        <tr><td>农用飞机及作业设备、联合收获机等</td><td class="nc2">8~12</td></tr>
+        <tr><td>起重机械、挖掘机等</td><td class="nc2">8~10</td></tr>
+        <tr><td>单轮电动起重机、混凝土泵等</td><td class="nc2">5</td></tr>
+        <tr class="gr"><td colspan="2">专用设备</td></tr>
+        <tr><td>材料试验设备、测量/计量/测绘仪器</td><td class="nc2">8</td></tr>
+        <tr><td>编辑/录音/录像/印刷等设备</td><td class="nc2">6</td></tr>
+        <tr><td>电影/照相/监控/闭路电视等设备</td><td class="nc2">10</td></tr>
+        <tr><td>影片加工/印刷设备</td><td class="nc2">12</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">表B.3 调整系数取值</div>
+      <table><thead><tr><th>条件</th><th>调整系数 k</th></tr></thead>
+      <tbody>
+        <tr><td>使用0.5年内（含0.5年）</td><td class="nc2">1</td></tr>
+        <tr><td>使用0.5年~3年（含3年）</td><td class="nc2">0.9</td></tr>
+        <tr><td>使用3年以上</td><td class="nc2">1</td></tr>
+      </tbody></table></div>
+      <div class="wn">设备铭牌或产品说明书等证明材料注明具体使用年限的，总使用年限宜参照标注的使用年限值。</div>
+    </div>
+
+    <!-- BURN C -->
+    <div class="sec" id="burn-c">
+      <div class="sh"><h1>🌡️ 损坏等级及烧损率确定方法</h1><p>附录C（规范性）· 建筑类和设备/车辆类损坏等级评定</p></div>
+      <div class="cp">
+        <h3>🌡️ 烧损率在线估算</h3>
+        <div class="fr">
+          <div class="fg"><label>财产类型</label><select id="brType" onchange="brUpdate()"><option value="">请选择...</option><option value="bld">建筑类</option><option value="dev">设备/车辆类</option></select></div>
+          <div class="fg"><label>损坏等级</label><select id="brLevel" onchange="brShow()"><option value="">请先选择财产类型...</option></select></div>
+        </div>
+        <div id="brRb" class="rb"><div class="rt">烧损率范围</div><div class="rv" id="brRv">—</div><div class="rd" id="brRd"></div></div>
+      </div>
+      <div class="tw"><div class="th">表C.1 建筑类损坏等级及烧损率</div>
+      <table><thead><tr><th>损坏等级</th><th>烧损率</th><th>评定标准概述</th></tr></thead>
+      <tbody>
+        <tr><td><strong>轻度损坏 Ⅰ</strong></td><td class="nc2">0~20%</td><td>轻微或间接遭受烧灼作用，结构材料仅轻微影响，未降低构件承载能力，可不采取措施或仅提高耐久性措施即可恢复</td></tr>
+        <tr><td><strong>中度损坏 Ⅱ</strong></td><td class="nc2">20%~50%</td><td>中度烧伤未对结构材料及性能产生明显影响，尚不影响结构安全，采取局部处理和修复措施方能恢复</td></tr>
+        <tr><td><strong>重度损坏 Ⅲ</strong></td><td class="nc2">50%~80%</td><td>重度烧伤明显影响结构材料或性能，明显受热后开裂，需加固或局部更换措施方能恢复</td></tr>
+        <tr><td><strong>完全损坏 Ⅳ</strong></td><td class="nc2">80%~100%</td><td>结构破坏或部件垮塌，承载能力丧失或大部分丧失，需彻底加固或拆除更换，或已无修复价值需拆除重建</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">表C.2 设备/车辆类损坏等级及烧损率</div>
+      <table><thead><tr><th>损坏等级</th><th>烧损率</th><th>评定标准概述</th></tr></thead>
+      <tbody>
+        <tr><td><strong>轻度损坏 Ⅰ</strong></td><td class="nc2">0~20%</td><td>仅外观或少量零部件受损，使用功能和精确度未受影响，通过一般维护保养小修即可修复</td></tr>
+        <tr><td><strong>中度损坏 Ⅱ</strong></td><td class="nc2">20%~50%</td><td>部分零部件损坏，部分使用功能降低或丧失，需中修工程修复</td></tr>
+        <tr><td><strong>重度损坏 Ⅲ</strong></td><td class="nc2">50%~80%</td><td>大部分或关键零部件损坏，大部分功能降低或丧失，需大修工程修复</td></tr>
+        <tr><td><strong>完全损坏 Ⅳ</strong></td><td class="nc2">80%~100%</td><td>烧损后无法修复使用，或失去全部使用价值，或修复不经济</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <!-- HERITAGE D -->
+    <div class="sec" id="heritage-d">
+      <div class="sh"><h1>🏛️ 文物建筑保护级别系数、调整系数</h1><p>附录D（规范性）</p></div>
+      <div class="tw"><div class="th">表D.1 文物建筑保护级别系数</div>
+      <table><thead><tr><th>文物建筑保护级别</th><th>保护级别系数 k₁</th></tr></thead>
+      <tbody>
+        <tr><td>全国重点文物保护单位</td><td class="nc2">4.0</td></tr>
+        <tr><td>省、自治区、直辖市文物保护单位</td><td class="nc2">3.0</td></tr>
+        <tr><td>县、自治县、市级文物保护单位</td><td class="nc2">2.0</td></tr>
+        <tr><td>法定文物保护单位</td><td class="nc2">2.0~4.0</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">表D.2 单座文物建筑保护级别调整系数</div>
+      <table><thead><tr><th>保护级别</th><th>一般情况 k₂</th><th>增值情况 k₂</th><th>取值说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>全国重点文物保护单位</strong></td><td class="nc2">0</td><td class="nc2">0.5, 1.0, 1.5, 2.0</td><td>依文物价值高低取值。属下列情况之一者取值不得小于1.0：<br>a) 在国际、国内仅有、有极高文物价值<br>b) 有极高文物价值的典型实物<br>c) 建筑上有创造发明<br>d) 与重大科学成就有关</td></tr>
+        <tr><td><strong>省级和县级文物保护单位</strong></td><td class="nc2">0</td><td class="nc2">0.5, 1.0</td><td>依文物价值高低取值，应组织专家评审</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">表D.3 文物建筑组、群中单座文物建筑调整系数</div>
+      <table><thead><tr><th>保护级别</th><th>一般 k₂</th><th>增值 k₂</th><th>减值 k₂</th></tr></thead>
+      <tbody>
+        <tr><td><strong>全国重点</strong></td><td class="nc2">0</td><td class="nc2">0.5, 1.0, 1.5, 2.0</td><td class="nc2">-1.0, -0.5</td></tr>
+        <tr><td><strong>省级</strong></td><td class="nc2">0</td><td class="nc2">0.5, 1.0</td><td class="nc2">-1.0, -0.5</td></tr>
+        <tr><td><strong>县市级</strong></td><td class="nc2">0</td><td class="nc2">0.5, 1.0</td><td class="nc2">-0.5</td></tr>
+      </tbody></table></div>
+      <div class="wn"><strong>减值情况适用条件：</strong><br>a) 次要的附属建筑<br>b) 现代重建的文物建筑或现代经过重大维修（新构件占70%以上）的文物建筑<br>c) 文物价值明显低于该文物建筑组、群中其他文物的</div>
+      <div class="cn">文物建筑中现代纪念建筑调整系数均取0。</div>
+    </div>
+
+    <!-- DISPOSAL -->
+    <div class="sec" id="disposal">
+      <div class="sh"><h1>🚨 火灾现场处置费统计</h1><p>第6章 · 单起火灾统计法 + 平均值统计法</p></div>
+      <div class="tw"><div class="th">表A.2 火灾现场处置费统计分类界定范围</div>
+      <table><thead><tr><th>损失类别</th><th>细分</th><th>界定范围</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="4"><strong>灭火救援费</strong></td><td>灭火剂等消耗材料费</td><td>灭火救援过程中使用的灭火剂、水、汽油、煤油、电池用电等消耗的材料费用</td></tr>
+        <tr><td>水带等消防器材损耗费</td><td>灭火救援过程中使用的水带、手提器材消耗费用</td></tr>
+        <tr><td>消防装备维护或损坏费</td><td>现场使用的各种消防车辆、水泵及其附属装备造成的维护或损坏费用</td></tr>
+        <tr><td>清障调用车辆、大型设备及人力费</td><td>调用清障车、吊装车、大型特种机械设备等相关费用（含运输费）及雇用人员清障搬运等费用</td></tr>
+        <tr><td><strong>灾后现场清理费</strong></td><td></td><td>火灾扑灭后的现场进行第一次清理的全部费用，包括人工、设备租赁折旧等</td></tr>
+      </tbody></table></div>
+      <div class="tw"><div class="th">统计方法</div>
+      <table><thead><tr><th>方法</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>6.2 单起火灾统计法</strong></td><td>a) 灭火救援中损耗的物品按当时当地实际价值统计<br>b) 调用车辆、大型设备、人力及灾后清理费用按实际发生额统计</td></tr>
+        <tr><td><strong>6.3 平均值统计法</strong></td><td>以消防救援站为统计单位，以上一年度或季度平均值方法统计火灾现场处置费</td></tr>
+      </tbody></table></div>
+    </div>
+
+    <!-- INJURY -->
+    <div class="sec" id="injury">
+      <div class="sh"><h1>🩹 人身伤亡支出费统计</h1><p>第7章</p></div>
+      <div class="tw"><div class="th">人身伤亡支出费统计</div>
+      <table><tbody>
+        <tr><td><strong>7.1 费用构成</strong></td><td>医疗费、丧葬及抚恤费、补助及救济费等</td></tr>
+        <tr><td><strong>7.2 统计依据</strong></td><td>可依据有关人民政府火灾事故调查组、社会保障、民政等部门、医疗机构等单位提供的数据进行统计，也可按照GB/T 6721的有关规定统计</td></tr>
+      </tbody></table></div>
+      <div class="in"><strong>人身伤亡时间界定：</strong>在发生火灾之日起<strong>30日内</strong>，人员因火灾或灭火救援中的烧灼、爆炸、窒息、中毒、触电、高温、辐射、砸压、碰撞、坠落、跌落等原因导致的死亡、重伤、轻伤、轻微伤。</div>
+    </div>
+
+  </div>
+</div>
+<div class="statusbar"><span class="dt"></span><span>系统就绪</span><span>|</span><span>XF/T 185—2025 · 火灾直接经济损失统计方法</span><span style="margin-left:auto">国家消防救援局</span></div>
+
+<script>
+function sh(id,el){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('a'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));document.getElementById(id).classList.add('a');if(el)el.classList.add('a');document.querySelector('.content').scrollTop=0;}
+function fn(q){q=q.toLowerCase();document.querySelectorAll('.ni').forEach(i=>{i.style.display=i.textContent.toLowerCase().includes(q)?'':'none';});document.querySelectorAll('.nc').forEach(c=>{let n=c.nextElementSibling,h=false;while(n&&!n.classList.contains('nc')){if(n.classList.contains('ni')&&n.style.display!=='none')h=true;n=n.nextElementSibling;}c.style.display=h?'':'none';});}
+function swTp(id,btn){const bar=btn.parentElement;bar.querySelectorAll('button').forEach(b=>b.classList.remove('a'));btn.classList.add('a');bar.parentElement.querySelectorAll(':scope > .tp').forEach(t=>t.classList.remove('a'));document.getElementById(id).classList.add('a');}
+function ft(inp,tblId){const q=inp.value.toLowerCase();document.querySelectorAll('#'+tblId+' tbody tr').forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q)?'':'none';});}
+
+// CALC: DAMAGED VALUE
+function calcDmg(){const V=parseFloat(document.getElementById('dmgV').value);const R=parseFloat(document.getElementById('dmgR').value);const V0=parseFloat(document.getElementById('dmgV0').value)||0;if(isNaN(V)||isNaN(R)){alert('请填写重置价值和烧损率');return;}const L=V*R/100-V0;sr('dmgRb','dmgRv','dmgRd',L,`L = ${V.toLocaleString()} × ${R}% − ${V0.toLocaleString()} = <strong>¥${L.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`);}
+
+// CALC: REPAIR
+function calcRep(){const J=parseFloat(document.getElementById('repJ').value)||0;const F=parseFloat(document.getElementById('repF').value)||0;const G=parseFloat(document.getElementById('repG').value)||0;const Q=parseFloat(document.getElementById('repQ').value)||0;const R2=parseFloat(document.getElementById('repR2').value)||1;const V0=parseFloat(document.getElementById('repV0').value)||0;const cur=parseFloat(document.getElementById('repCur').value);const repairCost=J+F+G+Q;let warn='';if(!isNaN(cur)&&cur>0&&repairCost>cur*0.7){warn=`<br><strong style="color:var(--rd);">⚠ 修复费用(${repairCost.toLocaleString()}) > 财物现值70%(${(cur*0.7).toLocaleString()})，推定全损！应选择残值法。</strong>`;}const L=repairCost*R2-V0;sr('repRb','repRv','repRd',L,`修复费用 = ${J.toLocaleString()}+${F.toLocaleString()}+${G.toLocaleString()}+${Q.toLocaleString()} = ${repairCost.toLocaleString()}<br>L = ${repairCost.toLocaleString()} × ${R2} − ${V0.toLocaleString()} = <strong>¥${L.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>${warn}`);}
+
+// CALC: MARKET
+function calcMkt(){const M=parseFloat(document.getElementById('mktM').value);const R=parseFloat(document.getElementById('mktR').value);const V0=parseFloat(document.getElementById('mktV0').value)||0;if(isNaN(M)||isNaN(R)){alert('请填写市值和烧损率');return;}const L=M*R/100-V0;sr('mktRb','mktRv','mktRd',L,`L = ${M.toLocaleString()} × ${R}% − ${V0.toLocaleString()} = <strong>¥${L.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`);}
+
+// CALC: COST
+function calcCost(){const C=parseFloat(document.getElementById('costC').value);const V0=parseFloat(document.getElementById('costV0').value)||0;if(isNaN(C)){alert('请填写成本');return;}const L=C-V0;sr('costRb','costRv','costRd',L,`L = ${C.toLocaleString()} − ${V0.toLocaleString()} = <strong>¥${L.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`);}
+
+// CALC: SIMPLE
+function calcSmp(){const P=parseFloat(document.getElementById('smpP').value);const A=parseFloat(document.getElementById('smpA').value);const R=parseFloat(document.getElementById('smpR').value);const K=parseFloat(document.getElementById('smpK').value);if(isNaN(P)||isNaN(A)){alert('请填写造价数据和过火面积');return;}const L=P*A*R/100*K;sr('smpRb','smpRv','smpRd',L,`L = P × A₁ × R₁ × k₁<br>= ${P.toLocaleString()} × ${A} × ${R}% × ${K}<br>= <strong>¥${L.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`);}
+
+// CALC: HERITAGE
+function calcHer(){const C=parseFloat(document.getElementById('herC').value);const k1=parseFloat(document.getElementById('herK1').value);const k2=parseFloat(document.getElementById('herK2').value)||0;const R=parseFloat(document.getElementById('herR').value);if(isNaN(C)){alert('请填写文物建筑重建费');return;}const L=C*(k1+k2)*R/100;sr('herRb','herRv','herRd',L,`L = C₁ × (k₁ + k₂) × R₁<br>= ${C.toLocaleString()} × (${k1} + ${k2}) × ${R}%<br>= <strong>¥${L.toLocaleString('zh-CN',{maximumFractionDigits:0})}</strong>`);}
+
+// CALC: AGE
+function calcAge(){const L=parseFloat(document.getElementById('ageL').value);const U=parseFloat(document.getElementById('ageU').value);const k=parseFloat(document.getElementById('ageK').value);if(isNaN(L)||isNaN(U)){alert('请填写总使用年限和已使用年限');return;}const remain=Math.max(0,L-U);const rate=remain/L*k*100;const rb=document.getElementById('ageRb');document.getElementById('ageRv').textContent=rate.toFixed(1)+'%';document.getElementById('ageRd').innerHTML=`成新率 = (${L} − ${U}) / ${L} × ${k} × 100% = <strong>${rate.toFixed(1)}%</strong><br>预计尚可使用年限 = ${remain}年`;rb.classList.add('show');}
+
+// BURN ESTIMATOR
+const brData={bld:{'轻度损坏 Ⅰ (0~20%)':'0-20','中度损坏 Ⅱ (20%~50%)':'20-50','重度损坏 Ⅲ (50%~80%)':'50-80','完全损坏 Ⅳ (80%~100%)':'80-100'},dev:{'轻度损坏 Ⅰ (0~20%)':'0-20','中度损坏 Ⅱ (20%~50%)':'20-50','重度损坏 Ⅲ (50%~80%)':'50-80','完全损坏 Ⅳ (80%~100%)':'80-100'}};
+const brDesc={bld:{'轻度损坏 Ⅰ (0~20%)':'轻微或间接遭受烧灼作用，结构材料仅轻微影响，未降低构件承载能力，可不采取措施或仅提高耐久性措施即可恢复','中度损坏 Ⅱ (20%~50%)':'中度烧伤未对结构材料及性能产生明显影响，尚不影响结构安全，采取局部处理和修复措施方能恢复','重度损坏 Ⅲ (50%~80%)':'重度烧伤明显影响结构材料或性能，明显受热后开裂，需加固或局部更换措施方能恢复','完全损坏 Ⅳ (80%~100%)':'结构破坏或部件垮塌，承载能力丧失或大部分丧失，需彻底加固或拆除更换，或已无修复价值需拆除重建'},dev:{'轻度损坏 Ⅰ (0~20%)':'仅外观或少量零部件受损，使用功能和精确度未受影响，通过一般维护保养小修即可修复','中度损坏 Ⅱ (20%~50%)':'部分零部件损坏，部分使用功能降低或丧失，需中修工程修复','重度损坏 Ⅲ (50%~80%)':'大部分或关键零部件损坏，大部分功能降低或丧失，需大修工程修复','完全损坏 Ⅳ (80%~100%)':'烧损后无法修复使用，或失去全部使用价值，或修复不经济'}};
+function brUpdate(){const t=document.getElementById('brType').value;const lSel=document.getElementById('brLevel');const rb=document.getElementById('brRb');if(!t){lSel.innerHTML='<option value="">请先选择财产类型...</option>';rb.classList.remove('show');return;}let h='<option value="">请选择损坏等级...</option>';Object.keys(brData[t]).forEach(k=>{h+=`<option value="${k}">${k}</option>`;});lSel.innerHTML=h;rb.classList.remove('show');}
+function brShow(){const t=document.getElementById('brType').value;const l=document.getElementById('brLevel').value;const rb=document.getElementById('brRb');if(!t||!l){rb.classList.remove('show');return;}document.getElementById('brRv').textContent=brData[t][l]+'%';document.getElementById('brRd').innerHTML=`<strong>${l}</strong><br>${brDesc[t][l]}`;rb.classList.add('show');}
+
+function sr(rbId,rvId,rdId,result,formula){const rb=document.getElementById(rbId);document.getElementById(rvId).textContent='¥'+Math.max(0,result).toLocaleString('zh-CN',{maximumFractionDigits:0});document.getElementById(rdId).innerHTML=formula;rb.classList.add('show');}
+function clr(id){document.querySelectorAll('#'+id+' input[type=number]').forEach(i=>i.value='');document.querySelectorAll('#'+id+' .rb').forEach(r=>r.classList.remove('show'));}
+function clr2(){clr('calc-cost');document.getElementById('smpRb').classList.remove('show');}
+</script>
+</body>
+</html>

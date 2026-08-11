@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>二手车鉴定评估技术规范系统 — GB/T 30323—2013</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060810;--s1:#0b0d16;--s2:#111422;--s3:#181c2e;--s4:#212740;--bd:#2a3050;--ac:#42a5f5;--ac2:#1e88e5;--acg:rgba(66,165,245,.1);--gld:#ffd54f;--gldg:rgba(255,213,79,.1);--gn:#66bb6a;--gng:rgba(102,187,106,.1);--rd:#ef5350;--rdg:rgba(239,83,80,.1);--cy:#26c6da;--cyg:rgba(38,198,218,.1);--org:#ffa726;--orgg:rgba(255,167,38,.1);--t1:#e4e8f0;--t2:#8690a8;--t3:#555e78;--r:10px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans SC',sans-serif;background:var(--bg);color:var(--t1);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+.titlebar{background:#080a14;border-bottom:1px solid var(--bd);padding:0 18px;height:44px;display:flex;align-items:center;gap:12px;flex-shrink:0;user-select:none}
+.tdots{display:flex;gap:7px}.tdots span{width:12px;height:12px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.ttitle{flex:1;text-align:center;font-size:13px;font-weight:500;color:var(--t2);letter-spacing:1.2px}
+.tbadge{font-size:10px;font-family:'JetBrains Mono',monospace;color:var(--ac);background:var(--acg);padding:3px 10px;border-radius:20px;border:1px solid rgba(66,165,245,.25)}
+.main{display:flex;flex:1;overflow:hidden}
+.sidebar{width:262px;min-width:262px;background:var(--s1);border-right:1px solid var(--bd);display:flex;flex-direction:column;overflow:hidden}
+.sb-hd{padding:12px;border-bottom:1px solid var(--bd)}
+.sb-search{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:8px 11px;color:var(--t1);font-size:12px;outline:none;font-family:'Noto Sans SC',sans-serif;transition:border-color .2s}
+.sb-search:focus{border-color:var(--ac)}.sb-search::placeholder{color:var(--t3)}
+.nav{flex:1;overflow-y:auto;padding:4px 0}.nav::-webkit-scrollbar{width:3px}.nav::-webkit-scrollbar-thumb{background:var(--bd);border-radius:2px}
+.nc{padding:9px 14px 4px;font-size:10px;font-weight:700;color:var(--t3);letter-spacing:2px}
+.ni{display:flex;align-items:center;gap:9px;padding:7px 14px 7px 16px;cursor:pointer;font-size:12px;color:var(--t2);transition:all .15s;border-left:3px solid transparent}
+.ni:hover{background:var(--s2);color:var(--t1)}.ni.a{background:var(--acg);color:var(--ac);border-left-color:var(--ac)}
+.ni i{font-size:13px;width:18px;text-align:center;font-style:normal}
+.content{flex:1;overflow-y:auto}.content::-webkit-scrollbar{width:5px}.content::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+.sec{display:none;padding:28px 34px;animation:fi .25s ease}.sec.a{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.sh{margin-bottom:24px}.sh h1{font-size:20px;font-weight:700;margin-bottom:4px}.sh p{font-size:12.5px;color:var(--t3);line-height:1.7}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:20px}
+.sc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:16px;transition:all .2s}
+.sc:hover{border-color:var(--ac);box-shadow:0 0 18px var(--acg)}
+.sc .lb{font-size:10.5px;color:var(--t3);margin-bottom:6px;letter-spacing:1px}.sc .vl{font-size:22px;font-weight:700;color:var(--ac);font-family:'JetBrains Mono',monospace}.sc .sb{font-size:11.5px;color:var(--t2);margin-top:3px}
+.tw{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden;margin-bottom:20px}
+.th{padding:12px 16px;font-size:12.5px;font-weight:600;background:var(--s2);border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse}
+th{background:var(--s2);padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:var(--t2);border-bottom:1px solid var(--bd);white-space:nowrap;position:sticky;top:0}
+td{padding:7px 12px;font-size:12px;border-bottom:1px solid rgba(42,48,80,.4);color:var(--t1)}
+tr:hover td{background:var(--acg)}
+.nc2{font-family:'JetBrains Mono',monospace;text-align:center;font-weight:500;color:var(--ac)}
+.in{background:var(--acg);border-left:3px solid var(--ac);padding:12px 16px;margin-bottom:16px;border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--t2);line-height:1.7}
+.wn{background:var(--gldg);border-left:3px solid var(--gld);padding:12px 16px;margin-bottom:16px;border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--t2);line-height:1.7}
+.cn{background:var(--cyg);border-left:3px solid var(--cy);padding:12px 16px;margin-bottom:16px;border-radius:0 var(--r) var(--r) 0;font-size:12px;color:var(--t2);line-height:1.7}
+.cp{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:24px;margin-bottom:20px}
+.cp h3{font-size:14px;font-weight:600;margin-bottom:16px}
+.fr{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
+.fg{flex:1;min-width:160px}.fg label{display:block;font-size:11px;color:var(--t3);margin-bottom:4px;font-weight:500}
+.fg input,.fg select,.fg textarea{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:8px 11px;color:var(--t1);font-size:12.5px;outline:none;transition:border-color .2s;font-family:'Noto Sans SC',sans-serif}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--ac)}
+select option{background:var(--s2)}
+textarea{resize:vertical;min-height:60px}
+.btn{padding:8px 20px;border:none;border-radius:5px;font-size:12.5px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Noto Sans SC',sans-serif}
+.bp{background:var(--ac);color:#fff}.bp:hover{background:var(--ac2)}
+.bn{background:var(--gn);color:#000}.bn:hover{background:#4caf50}
+.bs{background:var(--s3);color:var(--t2);border:1px solid var(--bd)}.bs:hover{background:var(--bd);color:var(--t1)}
+.rb{margin-top:16px;background:var(--s2);border:1px solid var(--ac);border-radius:var(--r);padding:16px;display:none}
+.rb.show{display:block;animation:fi .3s ease}
+.rb .rv{font-size:26px;font-weight:700;color:var(--gn);font-family:'JetBrains Mono',monospace}
+.rb .rd{margin-top:10px;font-size:12px;color:var(--t2);line-height:1.9}
+.rb .rv.danger{color:var(--rd)}
+.tb{display:flex;gap:0;margin-bottom:18px;border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.tb button{padding:9px 14px;font-size:12px;color:var(--t3);cursor:pointer;border:none;border-bottom:2px solid transparent;background:none;font-family:'Noto Sans SC',sans-serif;transition:all .15s}
+.tb button:hover{color:var(--t1)}.tb button.a{color:var(--ac);border-bottom-color:var(--ac)}
+.tp{display:none}.tp.a{display:block}
+.statusbar{background:var(--s1);border-top:1px solid var(--bd);padding:3px 14px;display:flex;align-items:center;gap:12px;font-size:10px;color:var(--t3);height:24px;flex-shrink:0}
+.statusbar .dt{width:5px;height:5px;border-radius:50%;background:var(--gn)}
+.grade-badge{display:inline-block;padding:4px 14px;border-radius:20px;font-size:14px;font-weight:700;font-family:'JetBrains Mono',monospace}
+.g1{background:var(--gng);color:var(--gn);border:1px solid rgba(102,187,106,.3)}
+.g2{background:var(--acg);color:var(--ac);border:1px solid rgba(66,165,245,.3)}
+.g3{background:var(--gldg);color:var(--gld);border:1px solid rgba(255,213,79,.3)}
+.g4{background:var(--orgg);color:var(--org);border:1px solid rgba(255,167,38,.3)}
+.g5{background:var(--rdg);color:var(--rd);border:1px solid rgba(239,83,80,.3)}
+.wiz-head{display:flex;align-items:center;gap:4px;margin-bottom:28px;flex-wrap:wrap}
+.wh-step{display:flex;align-items:center;gap:4px;cursor:pointer}
+.wh-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--t3);transition:all .2s;flex-shrink:0}
+.wh-label{font-size:11px;color:var(--t3);white-space:nowrap;transition:all .2s}
+.wh-line{width:20px;height:2px;background:var(--bd);flex-shrink:0}
+.wh-step.done .wh-dot{background:var(--gn);border-color:var(--gn);color:#fff}
+.wh-step.active .wh-dot{background:var(--ac);border-color:var(--ac);color:#fff;box-shadow:0 0 12px var(--acg)}
+.wh-step.active .wh-label{color:var(--ac);font-weight:600}
+.wh-step.done .wh-label{color:var(--gn)}
+.wiz-panel{display:none;animation:fi .25s ease}.wiz-panel.active{display:block}
+.wiz-nav{display:flex;justify-content:space-between;margin-top:24px;padding-top:16px;border-top:1px solid var(--bd)}
+.wtbl{width:100%;font-size:11.5px}.wtbl th{font-size:10.5px;padding:6px 8px}.wtbl td{padding:5px 8px}
+.wtbl select{background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:4px 6px;color:var(--t1);font-size:11px;outline:none;font-family:'Noto Sans SC',sans-serif}
+.wtbl select:focus{border-color:var(--ac)}
+.wtbl input[type=text]{background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:4px 6px;color:var(--t1);font-size:11px;outline:none;width:100%;font-family:'Noto Sans SC',sans-serif}
+.wtbl .sc-col{width:60px;text-align:center;color:var(--ac);font-weight:600;font-family:'JetBrains Mono',monospace;font-size:11px}
+.live-score{position:fixed;bottom:80px;right:24px;background:var(--s2);border:1px solid var(--ac);border-radius:var(--r);padding:14px 20px;z-index:99;box-shadow:0 4px 24px rgba(0,0,0,.5);display:none}
+.live-score.show{display:block}
+.live-score .ls-title{font-size:10px;color:var(--t3);letter-spacing:1px;margin-bottom:4px}
+.live-score .ls-val{font-size:22px;font-weight:700;color:var(--ac);font-family:'JetBrains Mono',monospace}
+.live-score .ls-grade{font-size:11px;margin-top:3px}
+.sec-anchor{scroll-margin-top:16px}
+.sec-anchor .sec-head{display:flex;align-items:center;gap:8px;margin-bottom:2px;padding:8px 0;user-select:none}
+.sec-anchor .sec-head .sh-icon{width:22px;height:22px;border-radius:50%;background:var(--acg);border:1px solid var(--ac);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--ac);flex-shrink:0}
+.sec-anchor .sec-head .sh-text{font-size:14px;font-weight:600;color:var(--ac)}
+.sec-anchor .sec-head .sh-score{margin-left:auto;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--t3)}
+@media print{.sidebar,.titlebar,.statusbar,.btn,.wiz-head,.wiz-nav,.live-score,.sb-search,.sec-anchor .sec-head{display:none!important}.content{overflow:visible!important}.sec,.wiz-panel{display:block!important;padding:8px!important}body{background:#fff;color:#000;height:auto;overflow:visible}.tw,.cp{border-color:#ccc;page-break-inside:avoid}th{background:#f0f0f0;color:#333}td{color:#333}}
+</style>
+</head>
+<body>
+<div class="titlebar"><div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><div class="ttitle">二手车鉴定评估技术规范系统</div><div class="tbadge">GB/T 30323—2013</div></div>
+<div class="main">
+<div class="sidebar">
+  <div class="sb-hd"><input type="text" class="sb-search" placeholder="🔍 搜索功能模块..." oninput="fn(this.value)"></div>
+  <div class="nav">
+    <div class="nc">概览</div><div class="ni a" onclick="sh('home',this)"><i>🚗</i>工作台</div>
+    <div class="ni" onclick="sh('terms',this)"><i>📖</i>术语和定义</div><div class="ni" onclick="sh('req',this)"><i>🏢</i>机构条件</div>
+    <div class="nc">评估流程</div><div class="ni" onclick="sh('flow',this)"><i>📋</i>作业流程</div>
+    <div class="ni" onclick="sh('tradable',this)"><i>✅</i>可交易判别</div><div class="ni" onclick="sh('accident',this)"><i>⚠️</i>事故车判别</div>
+    <div class="nc">核心功能</div><div class="ni" onclick="sh('wizard',this);initWiz()"><i>📝</i>全流程鉴定</div>
+    <div class="ni" onclick="sh('score',this)"><i>🧮</i>评分计算器</div><div class="ni" onclick="sh('value',this)"><i>💰</i>价值评估</div>
+    <div class="nc">下载</div><div class="ni" onclick="sh('forms',this)"><i>📄</i>规范表格</div>
+  </div>
+</div>
+<div class="content">
+  <div class="sec a" id="home"><div class="sh"><h1>🚗 工作台</h1><p>GB/T 30323—2013 · 2014年6月1日实施</p></div>
+    <div class="cg"><div class="sc"><div class="lb">标准</div><div class="vl" style="font-size:15px">GB/T 30323</div></div><div class="sc"><div class="lb">等级</div><div class="vl">5</div><div class="sb">一级~五级</div></div><div class="sc"><div class="lb">满分</div><div class="vl">100</div></div><div class="sc"><div class="lb">方法</div><div class="vl">2</div><div class="sb">市价法+重置成本法</div></div></div>
+    <div class="cn"><strong>全流程鉴定：</strong>点击左侧"📝 全流程鉴定"，逐步填写，系统自动计算并生成Word格式完整评估报告供下载。</div>
+  </div>
+  <div class="sec" id="terms"><div class="sh"><h1>📖 术语和定义</h1></div><div class="tw"><div class="th">术语定义</div><table><tbody>
+    <tr><td><strong>3.1 二手车</strong></td><td>从办理完毕注册登记手续到强制报废标准之前进行交易并转移所有权的汽车。</td></tr>
+    <tr><td><strong>3.2 鉴定评估</strong></td><td>对二手车进行技术状况检测、鉴定，确定某一时点价值的过程。</td></tr>
+    <tr><td><strong>3.2.2.1 现行市价法</strong></td><td>根据车辆技术状况按照市场价格计算价值。</td></tr>
+    <tr><td><strong>3.2.2.2 重置成本法</strong></td><td>重置全新状态评估对象，减去三种贬值后的差额。</td></tr></tbody></table></div></div>
+  <div class="sec" id="req"><div class="sh"><h1>🏢 机构条件</h1></div><div class="tw"><div class="th">要求</div><table><tbody><tr><td>场所</td><td><strong>≥200m²</strong></td></tr><tr><td>评估师</td><td><strong>≥3名</strong></td></tr><tr><td>高级评估师</td><td><strong>≥1名</strong></td></tr></tbody></table></div></div>
+  <div class="sec" id="flow"><div class="sh"><h1>📋 作业流程</h1></div><div class="tw"><div class="th">8步</div><table><tbody>
+    <tr><td class="nc2">1</td><td>受理委托</td><td class="nc2">5</td><td>判别事故车</td></tr>
+    <tr><td class="nc2">2</td><td>查验可交易车辆</td><td class="nc2">6</td><td>鉴定技术状况</td></tr>
+    <tr><td class="nc2">3</td><td>签订委托书</td><td class="nc2">7</td><td>评估价值</td></tr>
+    <tr><td class="nc2">4</td><td>登记信息</td><td class="nc2">8</td><td>出具报告</td></tr></tbody></table></div></div>
+  <div class="sec" id="tradable"><div class="sh"><h1>✅ 可交易车辆判别</h1></div><div class="in">8项全部判别为Y方可继续。</div><div class="cp"><div id="tradChecklist"></div><div style="display:flex;gap:10px;margin-top:12px"><button class="btn bp" onclick="checkTradable()">判别</button><button class="btn bs" onclick="resetTrad()">重置</button></div><div id="tradRb" class="rb"><div class="rv" id="tradRv">—</div><div class="rd" id="tradRd"></div></div></div></div>
+  <div class="sec" id="accident"><div class="sh"><h1>⚠️ 事故车判别</h1></div><div class="cp"><div id="accChecklist"></div><div style="display:flex;gap:10px;margin-top:12px"><button class="btn bp" onclick="checkAccident()">判别</button><button class="btn bs" onclick="resetAcc()">重置</button></div><div id="accRb" class="rb"><div class="rv" id="accRv">—</div><div class="rd" id="accRd"></div></div></div></div>
+  <div class="sec" id="wizard"><div class="sh"><h1>📝 全流程鉴定</h1><p>逐步填写，完成后下载Word格式完整评估报告</p></div><div class="wiz-head" id="wizHead"></div><div id="wizBody"></div><div class="wiz-nav"><button class="btn bs" id="wizPrev" onclick="wizNav(-1)">← 上一步</button><div id="wizStepInfo" style="font-size:12px;color:var(--t3);line-height:34px"></div><button class="btn bp" id="wizNext" onclick="wizNav(1)">下一步 →</button></div></div>
+  <div class="sec" id="score"><div class="sh"><h1>🧮 综合评分</h1></div><div class="cp"><div class="fr"><div class="fg"><label>车身外观(0~20)</label><input type="number" id="sc1"></div><div class="fg"><label>发动机舱(0~20)</label><input type="number" id="sc2"></div><div class="fg"><label>驾驶舱(0~10)</label><input type="number" id="sc3"></div><div class="fg"><label>启动(0~20)</label><input type="number" id="sc4"></div><div class="fg"><label>路试(0~15)</label><input type="number" id="sc5"></div><div class="fg"><label>底盘(0~15)</label><input type="number" id="sc6"></div></div><div class="fr"><div class="fg"><label>事故车</label><select id="scAcc"><option value="0">否</option><option value="1">是</option></select></div></div><button class="btn bp" onclick="calcScore()">计算</button><div id="scRb" class="rb"><div class="rv" id="scRv">—</div><div class="rd" id="scRd"></div></div></div></div>
+  <div class="sec" id="value"><div class="sh"><h1>💰 价值评估</h1></div><div class="tb"><button class="a" onclick="swTp('vm1',this)">现行市价法</button><button onclick="swTp('vm2',this)">重置成本法</button></div>
+    <div class="tp a" id="vm1"><div class="cp"><div class="fr"><div class="fg"><label>交易价格(元)</label><input type="number" id="mp1"></div><div class="fg"><label>修正率(%)</label><input type="number" id="mp2" value="0" step="0.5"></div></div><button class="btn bp" onclick="calcMarket()">计算</button><div id="mpRb" class="rb"><div class="rv" id="mpRv">—</div><div class="rd" id="mpRd"></div></div></div></div>
+    <div class="tp" id="vm2"><div class="cp"><div class="fr"><div class="fg"><label>重置成本(元)</label><input type="number" id="rc1"></div><div class="fg"><label>实体性贬值率(%)</label><input type="number" id="rc2"></div></div><div class="fr"><div class="fg"><label>功能性贬值率(%)</label><input type="number" id="rc3" value="0"></div><div class="fg"><label>经济性贬值率(%)</label><input type="number" id="rc4" value="0"></div></div><button class="btn bp" onclick="calcRC()">计算</button><div id="rcRb" class="rb"><div class="rv" id="rcRv">—</div><div class="rd" id="rcRd"></div></div></div></div></div>
+  <div class="sec" id="forms"><div class="sh"><h1>📄 规范表格</h1></div><div class="tw"><div class="th">可下载</div><table><tbody>
+    <tr><td class="nc2">A</td><td>鉴定评估作业表</td><td><button class="btn bp" style="padding:4px 12px;font-size:11px" onclick="dlForm('A')">下载Word</button></td></tr>
+    <tr><td class="nc2">B</td><td>技术状况表</td><td><button class="btn bp" style="padding:4px 12px;font-size:11px" onclick="dlForm('B')">下载Word</button></td></tr>
+    <tr><td class="nc2">C</td><td>委托书</td><td><button class="btn bp" style="padding:4px 12px;font-size:11px" onclick="dlForm('C')">下载Word</button></td></tr>
+    <tr><td class="nc2">D</td><td>评估报告</td><td><button class="btn bp" style="padding:4px 12px;font-size:11px" onclick="dlForm('D')">下载Word</button></td></tr></tbody></table></div></div>
+</div>
+</div>
+<div class="statusbar"><span class="dt"></span><span>GB/T 30323—2013</span><span style="margin-left:auto">商务部提出</span></div>
+<div class="live-score" id="liveScore"><div class="ls-title">实时评分</div><div class="ls-val" id="lsVal">100</div><div class="ls-grade" id="lsGrade"></div></div>
+
+<script>
+function sh(id,el){document.querySelectorAll('.sec').forEach(s=>s.classList.remove('a'));document.querySelectorAll('.ni').forEach(n=>n.classList.remove('a'));document.getElementById(id).classList.add('a');if(el)el.classList.add('a');document.querySelector('.content').scrollTop=0;if(id!=='wizard')document.getElementById('liveScore').classList.remove('show')}
+function fn(q){q=q.toLowerCase();document.querySelectorAll('.ni').forEach(i=>{i.style.display=i.textContent.toLowerCase().includes(q)?'':'none'});document.querySelectorAll('.nc').forEach(c=>{let n=c.nextElementSibling,h=false;while(n&&!n.classList.contains('nc')){if(n.classList.contains('ni')&&n.style.display!=='none')h=true;n=n.nextElementSibling}c.style.display=h?'':'none'})}
+function swTp(id,btn){btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.remove('a'));btn.classList.add('a');btn.parentElement.parentElement.querySelectorAll(':scope > .tp').forEach(t=>t.classList.remove('a'));document.getElementById(id).classList.add('a')}
+const gv=id=>{const el=document.getElementById(id);return el?el.value:''};
+
+/* ====== Word下载 ====== */
+function downloadWord(filename, htmlBody){
+  const wordHtml=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>@page{size:A4;margin:20mm 15mm 20mm 20mm}body{font-family:'宋体',SimSun,serif;font-size:10.5pt;line-height:1.6;color:#000}h1{font-size:18pt;text-align:center;font-family:'黑体',SimHei;margin-bottom:6pt}h2{font-size:14pt;font-family:'黑体',SimHei;margin-top:14pt;margin-bottom:4pt;border-bottom:1pt solid #000;padding-bottom:3pt}p{margin:3pt 0}table{width:100%;border-collapse:collapse;margin:4pt 0}td,th{border:0.5pt solid #000;padding:3pt 5pt;font-size:9pt;vertical-align:middle}th{background:#f0f0f0;font-weight:bold;text-align:center}.note{font-size:8pt;color:#666;margin-top:4pt}</style></head><body>${htmlBody}</body></html>`;
+  const blob=new Blob(['\ufeff'+wordHtml],{type:'application/msword'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(a.href)},200);
+}
+
+/* ---- Data ---- */
+const tradItems=[{id:'t1',label:'是否达到国家强制报废标准',pass:'N',yLabel:'是',nLabel:'否'},{id:'t2',label:'是否抵押/海关监管期间',pass:'N',yLabel:'是',nLabel:'否'},{id:'t3',label:'是否被依法查封、扣押',pass:'N',yLabel:'是',nLabel:'否'},{id:'t4',label:'是否违法犯罪手段获得',pass:'N',yLabel:'是',nLabel:'否'},{id:'t5',label:'发动机号码与登记证书一致',pass:'Y',yLabel:'是',nLabel:'否'},{id:'t6',label:'VIN码与登记证书一致',pass:'Y',yLabel:'是',nLabel:'否'},{id:'t7',label:'是否走私、非法拼装',pass:'N',yLabel:'是',nLabel:'否'},{id:'t8',label:'是否禁营车辆',pass:'N',yLabel:'是',nLabel:'否'}];
+const accParts=[{id:'a1',label:'车体左右对称性'},{id:'a2',label:'左A柱'},{id:'a3',label:'左B柱'},{id:'a4',label:'左C柱'},{id:'a5',label:'右A柱'},{id:'a6',label:'右B柱'},{id:'a7',label:'右C柱'},{id:'a8',label:'左前纵梁'},{id:'a9',label:'右前纵梁'},{id:'a10',label:'左前减震器悬挂'},{id:'a11',label:'右前减震器悬挂'},{id:'a12',label:'左后减震器悬挂'},{id:'a13',label:'右后减震器悬挂'}];
+const BI=[[14,'发动机舱盖表面'],[15,'左前翼子板'],[16,'左后翼子板'],[17,'右前翼子板'],[18,'右后翼子板'],[19,'左前门'],[20,'右前门'],[21,'左后门'],[22,'右后门'],[23,'行李箱盖'],[24,'行李箱内侧'],[25,'车顶'],[26,'前保杠'],[27,'后保杠'],[28,'左前轮'],[29,'左后轮'],[30,'右前轮'],[31,'右后轮'],[32,'前大灯'],[33,'后挡灯'],[34,'前挡风玻璃'],[35,'后挡风玻璃'],[36,'四门车窗玻璃'],[37,'左后视镜'],[38,'右后视镜'],[39,'轮胎']];
+const EI=[[40,'机油有无冷却液混入',{B:15,C:15}],[41,'缸盖外有机油渗漏',{B:5,C:5}],[42,'左翼子板内缘、水箱框架、横梁凹凸或修复痕迹',{B:1.5,C:3}],[43,'散热器格栅破损',{B:1.5,C:3}],[44,'蓄电池电极柱腐蚀',{B:2,C:4}],[45,'蓄电池电解液渗漏缺少',{B:1.5,C:3}],[46,'发动机皮带老化',{B:1.5,C:3}],[47,'油管水管老化裂痕',{B:1.5,C:3}],[48,'线束老化破损',{B:1.5,C:3}],[49,'其他',null]];
+const CI=[[50,'车内无水泡痕迹',{C:1.5}],[51,'后视镜座垫整洁无破损',{C:0.5}],[52,'车内整洁无异味',{C:0.5}],[53,'方向盘自由行程<20°',{C:1}],[54,'车顶车饰无破损松裂',{C:1}],[55,'仪表台无划痕',{C:1}],[56,'排挡把手护罩完好',{C:1}],[57,'储物盒无裂痕',{C:1}],[58,'天窗灵活正常',{C:1}],[59,'门窗密封条良好',{C:1}],[60,'安全带完整正常',{C:1}],[61,'驻车制动灵活有效',{C:1}],[62,'门窗升降正常',{C:1}],[63,'后视镜折叠正常',{C:1}],[64,'其他',null]];
+const SI=[[65,'启动顺畅(<5s)',{C:2}],[66,'仪表板无故障报警',{C:2}],[67,'灯光调节功能正常',{C:1}],[68,'泊车辅助正常',{C:0.5}],[69,'ABS正常',{C:0.5}],[70,'空调系统正常',{C:0.5}],[71,'怠速运转稳定',{C:0.5}],[72,'发动机无异响',{C:10}],[73,'排气无异常',{C:10}],[74,'其他',null]];
+const RI=[[75,'发动机加速正常',{C:2}],[76,'制动踏板保持无下移',{C:2}],[77,'踩制动启动踏板无下移',{C:2}],[78,'最大制动效能4/5内',{C:2}],[79,'行驶无跑偏',{C:2}],[80,'制动有效不跑偏',{C:2}],[81,'变速箱无异响',{C:2}],[82,'底盘无异响',{C:2}],[83,'转向无异响',{C:2}],[84,'其他',null]];
+const HI=[[85,'油底壳无渗漏',{C:4}],[86,'变速箱无渗漏',{C:4}],[87,'转向节臂球销无松动',{C:3}],[88,'三角臂球销无松动',{C:3}],[89,'传动轴十字轴无松旷',{C:2}],[90,'减震器无渗漏',{C:2}],[91,'减震弹簧无损坏',{C:2}],[92,'其他',null]];
+const FI=[[93,'发动机舱盖锁止'],[94,'发动机舱盖液压撑杆'],[95,'后门后备箱液压支撑杆'],[96,'各车门锁止'],[97,'前后雨刮器'],[98,'立柱密封胶条'],[99,'排气管消音器'],[100,'车轮毂'],[101,'车内后视镜'],[102,'座椅调节加热'],[103,'仪表板出风管道'],[104,'中央集控'],[105,'备胎'],[106,'千斤顶'],[107,'轮胎扳手工具'],[108,'三角警示牌'],[109,'灭火器'],[110,'全套钥匙'],[111,'遥控器功能'],[112,'喇叭音色'],[113,'玻璃加热功能']];
+
+function mkSel(arr,pre){let h='';arr.forEach((it,i)=>{const id=pre?pre+it.id:it.id;h+=`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:10px 12px"><div style="font-weight:600;margin-bottom:4px;font-size:12px;color:var(--t1)">${i+1}. ${it.label}</div><select id="${id}" style="width:100%;background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:5px 8px;color:var(--t1);font-size:12px;outline:none"><option value="">未选择</option><option value="Y">Y (${it.yLabel})</option><option value="N">N (${it.nLabel})</option></select></div>`});return'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+h+'</div>'}
+function mkAccSel(arr,pre){let h='';arr.forEach((it,i)=>{const id=pre?pre+it.id:it.id;h+=`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:10px 12px"><div style="font-weight:600;margin-bottom:4px;font-size:12px;color:var(--t1)">${i+1}. ${it.label}</div><select id="${id}" style="width:100%;background:var(--s3);border:1px solid var(--bd);border-radius:4px;padding:5px 8px;color:var(--t1);font-size:12px;outline:none"><option value="">未检</option><option value="OK">无缺陷</option><option value="DX">变形</option><option value="NQ">扭曲</option><option value="GH">更换</option><option value="SH">烧焊</option><option value="ZZ">焊缝</option></select></div>`});return'<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">'+h+'</div>'}
+
+function initTrad(){document.getElementById('tradChecklist').innerHTML=mkSel(tradItems)}
+function checkTradable(){let hasN=false;tradItems.forEach(it=>{const v=gv(it.id);if(v&&v!==it.pass)hasN=true});const rb=document.getElementById('tradRb');if(hasN){document.getElementById('tradRv').textContent='❌ 不可交易';document.getElementById('tradRv').className='rv danger';document.getElementById('tradRd').innerHTML='存在不合格项'}else{document.getElementById('tradRv').textContent='✅ 可交易';document.getElementById('tradRv').className='rv';document.getElementById('tradRd').innerHTML='所有项目合格'}rb.classList.add('show')}
+function resetTrad(){tradItems.forEach(it=>document.getElementById(it.id).value='');document.getElementById('tradRb').classList.remove('show')}
+function initAcc(){document.getElementById('accChecklist').innerHTML=mkAccSel(accParts)}
+function checkAccident(){let d=[];accParts.forEach(it=>{const v=gv(it.id);if(v&&v!=='OK'&&v!=='')d.push(it.label+'('+v+')')});const rb=document.getElementById('accRb');if(d.length>0){document.getElementById('accRv').textContent='⚠️ 事故车';document.getElementById('accRv').className='rv danger';document.getElementById('accRd').innerHTML=`缺陷：${d.join('、')}`}else{document.getElementById('accRv').textContent='✅ 非事故车';document.getElementById('accRv').className='rv';document.getElementById('accRd').innerHTML='无缺陷'}rb.classList.add('show')}
+function resetAcc(){accParts.forEach(it=>document.getElementById(it.id).value='');document.getElementById('accRb').classList.remove('show')}
+function calcScore(){const isA=document.getElementById('scAcc').value==='1';if(isA){document.getElementById('scRv').textContent='五级';document.getElementById('scRv').className='rv danger';document.getElementById('scRd').innerHTML='事故车';document.getElementById('scRb').classList.add('show');return}const mx=[20,20,10,20,15,15];let t=0;['sc1','sc2','sc3','sc4','sc5','sc6'].forEach((k,i)=>{const v=parseFloat(document.getElementById(k).value);if(!isNaN(v))t+=Math.max(0,Math.min(v,mx[i]))});let g,c;if(t>=90){g='一级';c='g1'}else if(t>=60){g='二级';c='g2'}else if(t>=20){g='三级';c='g3'}else{g='四级';c='g4'}document.getElementById('scRv').innerHTML=`<span class="grade-badge ${c}">${g}</span> ${t}分`;document.getElementById('scRv').className='rv';document.getElementById('scRd').innerHTML=`总分=${t}`;document.getElementById('scRb').classList.add('show')}
+function calcMarket(){const p=parseFloat(document.getElementById('mp1').value),f=parseFloat(document.getElementById('mp2').value)||0;if(isNaN(p))return;const v=p*(1+f/100);document.getElementById('mpRv').textContent='¥'+Math.round(v).toLocaleString();document.getElementById('mpRd').innerHTML=`${p.toLocaleString()}×(1+${f}%)=¥${Math.round(v).toLocaleString()}`;document.getElementById('mpRb').classList.add('show')}
+function calcRC(){const r=parseFloat(document.getElementById('rc1').value),d1=parseFloat(document.getElementById('rc2').value)||0,d2=parseFloat(document.getElementById('rc3').value)||0,d3=parseFloat(document.getElementById('rc4').value)||0;if(isNaN(r))return;const v=Math.max(0,r*(1-(d1+d2+d3)/100));document.getElementById('rcRv').textContent='¥'+Math.round(v).toLocaleString();document.getElementById('rcRd').innerHTML=`${r.toLocaleString()}×(1-${d1+d2+d3}%)=¥${Math.round(v).toLocaleString()}`;document.getElementById('rcRb').classList.add('show')}
+
+const WS=[{title:'委托及车辆信息'},{title:'可交易判别'},{title:'事故车判别'},{title:'技术状况鉴定'},{title:'价值评估'},{title:'生成报告'}];
+let wizStep=0,wizInited=false;
+
+function initWiz(){
+  if(wizInited)return;wizInited=true;
+  let hh='';WS.forEach((s,i)=>{if(i)hh+='<div class="wh-line"></div>';hh+=`<div class="wh-step${i===0?' active':''}" onclick="goWiz(${i})"><div class="wh-dot">${i+1}</div><div class="wh-label">${s.title}</div></div>`});
+  document.getElementById('wizHead').innerHTML=hh;
+  let bp='';
+  bp+=`<div class="wiz-panel active" id="wp0"><div class="cp"><h3>📋 委托方信息</h3><div class="fr"><div class="fg"><label>委托方名称</label><input type="text" id="w_comName"></div><div class="fg"><label>联系电话</label><input type="text" id="w_comTel"></div><div class="fg"><label>评估目的</label><select id="w_purpose"><option>交易</option><option>典当</option><option>拍卖</option><option>置换</option><option>抵押</option><option>担保</option><option>咨询</option><option>司法裁决</option><option>其他</option></select></div></div><div class="fr"><div class="fg"><label>评估基准日</label><input type="date" id="w_baseDate"></div></div></div><div class="cp"><h3>🚗 车辆信息</h3><div class="fr"><div class="fg"><label>厂牌型号</label><input type="text" id="w_model"></div><div class="fg"><label>号牌号码</label><input type="text" id="w_plate"></div><div class="fg"><label>VIN码</label><input type="text" id="w_vin"></div></div><div class="fr"><div class="fg"><label>发动机号</label><input type="text" id="w_engNo"></div><div class="fg"><label>车身颜色</label><input type="text" id="w_color"></div><div class="fg"><label>注册日期</label><input type="date" id="w_regDate"></div></div><div class="fr"><div class="fg"><label>表征里程(万km)</label><input type="number" id="w_mile" step="0.1"></div><div class="fg"><label>使用性质</label><select id="w_usage"><option>家庭用车</option><option>公务用车</option><option>营运用车</option><option>出租车</option><option>其他</option></select></div><div class="fg"><label>燃料种类</label><select id="w_fuel"><option>汽油</option><option>柴油</option><option>天然气</option><option>电动</option><option>混合动力</option></select></div></div><div class="fr"><div class="fg"><label>排放标准</label><input type="text" id="w_emission"></div><div class="fg"><label>驱动方式</label><select id="w_drive"><option>前驱</option><option>后驱</option><option>四驱</option></select></div><div class="fg"><label>安全气囊</label><select id="w_airbag"><option>有</option><option>无</option></select></div><div class="fg"><label>ABS</label><select id="w_abs"><option>有</option><option>无</option></select></div></div></div></div>`;
+  bp+=`<div class="wiz-panel" id="wp1"><div class="in">8项全部Y方可继续。</div><div class="cp"><h3>✅ 可交易车辆判别（表1）</h3><div id="wTL"></div></div></div>`;
+  bp+=`<div class="wiz-panel" id="wp2"><div class="in">任一部位有缺陷即为事故车。</div><div class="cp"><h3>⚠️ 事故车判别（表2/表3）</h3><div id="wAL"></div></div></div>`;
+
+  let s3='';
+  let bR='';BI.forEach(([c,n])=>{const isT=c===39;bR+=isT?`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="wb_${c}" onchange="rCalc()"><option value="0">无缺陷</option><option value="1">花纹深度&lt;1.6mm(-1)</option></select></td><td class="sc-col" id="wbs_${c}">0</td></tr>`:`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="wb_${c}" onchange="rCalc()"><option value="0">无缺陷</option><option value="1">程度1:≤100×100mm(-0.5)</option><option value="2">程度2:&gt;100×100且≤200×300mm(-1)</option><option value="3">程度3:&gt;200×300mm(-1.5)</option></select></td><td class="sc-col" id="wbs_${c}">0</td></tr>`});
+  s3+=`<div class="sec-anchor"><div class="sec-head"><div class="sh-icon">🔍</div><div class="sh-text">6.1 车身外观检查</div><div class="sh-score">满分20分 · 扣分:<span id="bDed">0</span> · 得分:<span id="bSc" style="color:var(--gn);font-weight:700">20</span></div></div><div class="wn">程度1=面积≤100×100mm | 程度2=面积&gt;100×100且≤200×300mm | 程度3=面积&gt;200×300mm | 轮胎花纹深度&lt;1.6mm扣1分</div><div class="tw"><table class="wtbl"><thead><tr><th>代码</th><th>部位</th><th>程度(含面积描述)</th><th>扣分</th></tr></thead><tbody>${bR}</tbody></table></div></div>`;
+
+  let eR='';EI.forEach(([c,n,r])=>{eR+=r?`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="we_${c}" onchange="rCalc()"><option value="A">A(无)</option><option value="B">B(轻微-${r.B})</option><option value="C">C(严重-${r.C})</option></select></td><td class="sc-col" id="wes_${c}">0</td></tr>`:`<tr><td class="nc2">${c}</td><td>${n}</td><td colspan="2"><input type="text" id="we_${c}" placeholder="缺陷描述"></td></tr>`});
+  s3+=`<div class="sec-anchor"><div class="sec-head"><div class="sh-icon">🔧</div><div class="sh-text">6.2 发动机舱检查</div><div class="sh-score">满分20分 · 扣分:<span id="eDed">0</span> · 得分:<span id="eSc" style="color:var(--gn);font-weight:700">20</span></div></div><div class="tw"><table class="wtbl"><thead><tr><th>序号</th><th>检查项目</th><th>选择</th><th>扣分</th></tr></thead><tbody>${eR}</tbody></table></div></div>`;
+
+  let cR='';CI.forEach(([c,n,r])=>{cR+=r?`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="wc_${c}" onchange="rCalc()"><option value="A">A(是)</option><option value="C">C(否-${r.C})</option></select></td><td class="sc-col" id="wcs_${c}">0</td></tr>`:`<tr><td class="nc2">${c}</td><td>${n}</td><td colspan="2"><input type="text" id="wc_${c}" placeholder="缺陷描述"></td></tr>`});
+  s3+=`<div class="sec-anchor"><div class="sec-head"><div class="sh-icon">💺</div><div class="sh-text">6.3 驾驶舱检查</div><div class="sh-score">满分10分 · 扣分:<span id="cDed">0</span> · 得分:<span id="cSc" style="color:var(--gn);font-weight:700">10</span></div></div><div class="tw"><table class="wtbl"><thead><tr><th>序号</th><th>检查项目</th><th>选择</th><th>扣分</th></tr></thead><tbody>${cR}</tbody></table></div></div>`;
+
+  let stR='';SI.forEach(([c,n,r])=>{stR+=r?`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="wst_${c}" onchange="rCalc()"><option value="A">A(是)</option><option value="C">C(否-${r.C})</option></select></td><td class="sc-col" id="wsts_${c}">0</td></tr>`:`<tr><td class="nc2">${c}</td><td>${n}</td><td colspan="2"><input type="text" id="wst_${c}" placeholder="缺陷描述"></td></tr>`});
+  s3+=`<div class="sec-anchor"><div class="sec-head"><div class="sh-icon">🔑</div><div class="sh-text">6.4 启动检查</div><div class="sh-score">满分20分 · 扣分:<span id="stDed">0</span> · 得分:<span id="stSc" style="color:var(--gn);font-weight:700">20</span></div></div><div class="tw"><table class="wtbl"><thead><tr><th>序号</th><th>检查项目</th><th>选择</th><th>扣分</th></tr></thead><tbody>${stR}</tbody></table></div></div>`;
+
+  let roR='';RI.forEach(([c,n,r])=>{roR+=r?`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="wr_${c}" onchange="rCalc()"><option value="A">A(是)</option><option value="C">C(否-${r.C})</option></select></td><td class="sc-col" id="wrs_${c}">0</td></tr>`:`<tr><td class="nc2">${c}</td><td>${n}</td><td colspan="2"><input type="text" id="wr_${c}" placeholder="缺陷描述"></td></tr>`});
+  s3+=`<div class="sec-anchor"><div class="sec-head"><div class="sh-icon">🛣️</div><div class="sh-text">6.5 路试检查</div><div class="sh-score">满分15分 · 扣分:<span id="rDed">0</span> · 得分:<span id="rSc" style="color:var(--gn);font-weight:700">15</span></div></div><div class="tw"><table class="wtbl"><thead><tr><th>序号</th><th>检查项目</th><th>选择</th><th>扣分</th></tr></thead><tbody>${roR}</tbody></table></div></div>`;
+
+  let hR='';HI.forEach(([c,n,r])=>{hR+=r?`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="wch_${c}" onchange="rCalc()"><option value="A">A(是)</option><option value="C">C(否-${r.C})</option></select></td><td class="sc-col" id="wchs_${c}">0</td></tr>`:`<tr><td class="nc2">${c}</td><td>${n}</td><td colspan="2"><input type="text" id="wch_${c}" placeholder="缺陷描述"></td></tr>`});
+  s3+=`<div class="sec-anchor"><div class="sec-head"><div class="sh-icon">🔩</div><div class="sh-text">6.6 底盘检查</div><div class="sh-score">满分15分 · 扣分:<span id="chDed">0</span> · 得分:<span id="chSc" style="color:var(--gn);font-weight:700">15</span></div></div><div class="tw"><table class="wtbl"><thead><tr><th>序号</th><th>检查项目</th><th>选择</th><th>扣分</th></tr></thead><tbody>${hR}</tbody></table></div></div>`;
+
+  let fR='';FI.forEach(([c,n])=>{fR+=`<tr><td class="nc2">${c}</td><td>${n}</td><td><select id="wf_${c}"><option value="OK">正常</option><option value="NG">坏损</option></select></td><td><input type="text" id="wfd_${c}" placeholder="备注"></td></tr>`});
+  s3+=`<div class="sec-anchor"><div class="sec-head"><div class="sh-icon">⚙️</div><div class="sh-text">6.7 功能性零部件</div><div class="sh-score">不计分(93~113)</div></div><div class="tw"><table class="wtbl"><thead><tr><th>序号</th><th>零部件</th><th>状态</th><th>备注</th></tr></thead><tbody>${fR}</tbody></table></div></div>`;
+
+  bp+=`<div class="wiz-panel" id="wp3">${s3}</div>`;
+  bp+=`<div class="wiz-panel" id="wp4"><div class="in">推荐现行市价法，无参照物时用重置成本法。</div><div class="cp"><h3>💰 价值评估</h3><div class="fr"><div class="fg"><label>评估方法</label><select id="wvM"><option value="m">现行市价法</option><option value="r">重置成本法</option></select></div></div><div id="wvMkt"><div class="fr"><div class="fg"><label>同车型交易价(元)</label><input type="number" id="wvP"></div><div class="fg"><label>修正率(%)</label><input type="number" id="wvF" value="0" step="0.5"></div></div></div><div id="wvRC" style="display:none"><div class="fr"><div class="fg"><label>重置成本(元)</label><input type="number" id="wvR1"></div><div class="fg"><label>实体性贬值率(%)</label><input type="number" id="wvR2"></div></div><div class="fr"><div class="fg"><label>功能性贬值率(%)</label><input type="number" id="wvR3" value="0"></div><div class="fg"><label>经济性贬值率(%)</label><input type="number" id="wvR4" value="0"></div></div></div><div class="fr"><div class="fg"><label>特别事项说明</label><textarea id="wvN" rows="3"></textarea></div></div></div></div>`;
+  bp+=`<div class="wiz-panel" id="wp5"><div class="in">系统自动生成Word格式完整评估报告。</div><div id="repSum"></div><div style="display:flex;gap:10px;margin-top:16px"><button class="btn bn" onclick="genReport()">📄 下载Word报告</button><button class="btn bp" onclick="genSummary()">🔄 刷新预览</button></div></div>`;
+
+  document.getElementById('wizBody').innerHTML=bp;
+  document.getElementById('wTL').innerHTML=mkSel(tradItems,'wt_');
+  document.getElementById('wAL').innerHTML=mkAccSel(accParts,'wa_');
+  document.getElementById('wvM').onchange=function(){document.getElementById('wvMkt').style.display=this.value==='m'?'':'none';document.getElementById('wvRC').style.display=this.value==='r'?'':'none'};
+  upNav();rCalc();
+}
+
+function rCalc(){
+  let bD=0;BI.forEach(([c])=>{const v=parseInt(document.getElementById('wb_'+c)?.value||0);const d=c===39?v:0.5*v;bD+=d;const el=document.getElementById('wbs_'+c);if(el)el.textContent=d>0?'-'+d:'0'});const bS=Math.max(0,20-bD);document.getElementById('bDed').textContent=bD;document.getElementById('bSc').textContent=bS;
+  let eD=0;EI.forEach(([c,,r])=>{if(!r)return;const v=document.getElementById('we_'+c)?.value||'A';const d=v==='B'?r.B:v==='C'?r.C:0;eD+=d;const el=document.getElementById('wes_'+c);if(el)el.textContent=d>0?'-'+d:'0'});const eS=Math.max(0,20-eD);document.getElementById('eDed').textContent=eD;document.getElementById('eSc').textContent=eS;
+  let cD=0;CI.forEach(([c,,r])=>{if(!r)return;const v=document.getElementById('wc_'+c)?.value||'A';const d=v==='C'?r.C:0;cD+=d;const el=document.getElementById('wcs_'+c);if(el)el.textContent=d>0?'-'+d:'0'});const cS=Math.max(0,10-cD);document.getElementById('cDed').textContent=cD;document.getElementById('cSc').textContent=cS;
+  let stD=0;SI.forEach(([c,,r])=>{if(!r)return;const v=document.getElementById('wst_'+c)?.value||'A';const d=v==='C'?r.C:0;stD+=d;const el=document.getElementById('wsts_'+c);if(el)el.textContent=d>0?'-'+d:'0'});const stS=Math.max(0,20-stD);document.getElementById('stDed').textContent=stD;document.getElementById('stSc').textContent=stS;
+  let rD=0;RI.forEach(([c,,r])=>{if(!r)return;const v=document.getElementById('wr_'+c)?.value||'A';const d=v==='C'?r.C:0;rD+=d;const el=document.getElementById('wrs_'+c);if(el)el.textContent=d>0?'-'+d:'0'});const rS=Math.max(0,15-rD);document.getElementById('rDed').textContent=rD;document.getElementById('rSc').textContent=rS;
+  let chD=0;HI.forEach(([c,,r])=>{if(!r)return;const v=document.getElementById('wch_'+c)?.value||'A';const d=v==='C'?r.C:0;chD+=d;const el=document.getElementById('wchs_'+c);if(el)el.textContent=d>0?'-'+d:'0'});const chS=Math.max(0,15-chD);document.getElementById('chDed').textContent=chD;document.getElementById('chSc').textContent=chS;
+  const total=bS+eS+cS+stS+rS+chS;let grade,gc;if(total>=90){grade='一级';gc='g1'}else if(total>=60){grade='二级';gc='g2'}else if(total>=20){grade='三级';gc='g3'}else{grade='四级';gc='g4'}
+  document.getElementById('lsVal').textContent=total+'分';document.getElementById('lsGrade').innerHTML=`<span class="grade-badge ${gc}" style="font-size:12px">${grade}</span>`;
+  return{body:bS,engine:eS,cabin:cS,start:stS,road:rS,chassis:chS,total,grade,gc}
+}
+
+function goWiz(n){if(n<0||n>=WS.length)return;wizStep=n;document.querySelectorAll('.wiz-panel').forEach(p=>p.classList.remove('active'));document.getElementById('wp'+n).classList.add('active');document.querySelectorAll('.wh-step').forEach((s,i)=>{s.classList.remove('active','done');if(i<n)s.classList.add('done');if(i===n)s.classList.add('active')});upNav();if(n===5)genSummary();document.getElementById('liveScore').classList.toggle('show',n>=3);rCalc()}
+function wizNav(d){goWiz(wizStep+d)}
+function upNav(){document.getElementById('wizPrev').style.visibility=wizStep===0?'hidden':'visible';const nb=document.getElementById('wizNext');if(wizStep===WS.length-1){nb.textContent='✅ 完成';nb.className='btn bn'}else{nb.textContent='下一步 →';nb.className='btn bp'}document.getElementById('wizStepInfo').textContent=`步骤 ${wizStep+1}/${WS.length} · ${WS[wizStep].title}`}
+
+function genSummary(){
+  const sc=rCalc();const isAcc=accParts.some(it=>{const v=gv('wa_'+it.id);return v&&v!=='OK'&&v!==''});
+  const fg=isAcc?'五级(事故车)':sc.grade;const fs=isAcc?'—':sc.total+'分';const gc2=isAcc?'g5':sc.gc;
+  const method=gv('wvM')==='m'?'现行市价法':'重置成本法';let val='—';
+  if(method==='现行市价法'){const p=parseFloat(gv('wvP')),f=parseFloat(gv('wvF'))||0;if(!isNaN(p))val='¥'+Math.round(p*(1+f/100)).toLocaleString()}else{const r=parseFloat(gv('wvR1')),d1=parseFloat(gv('wvR2'))||0,d2=parseFloat(gv('wvR3'))||0,d3=parseFloat(gv('wvR4'))||0;if(!isNaN(r))val='¥'+Math.max(0,Math.round(r*(1-(d1+d2+d3)/100))).toLocaleString()}
+  document.getElementById('repSum').innerHTML=`<div class="cp" style="border-color:var(--ac)"><h3>📋 结果摘要</h3><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px"><div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center"><div style="font-size:10px;color:var(--t3)">车辆</div><div style="font-size:14px;font-weight:600;margin-top:4px">${gv('w_model')||'____'}</div><div style="font-size:11px;color:var(--t2)">${gv('w_plate')||'____'}</div></div><div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center"><div style="font-size:10px;color:var(--t3)">鉴定总分</div><div style="font-size:24px;font-weight:700;color:var(--ac);font-family:'JetBrains Mono',monospace;margin-top:4px">${fs}</div></div><div style="background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:16px;text-align:center"><div style="font-size:10px;color:var(--t3)">等级</div><div style="margin-top:4px"><span class="grade-badge ${gc2}">${fg}</span></div></div></div><div style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin-top:16px">${['车身外观','发动机舱','驾驶舱','启动','路试','底盘'].map((n,i)=>{const s=[sc.body,sc.engine,sc.cabin,sc.start,sc.road,sc.chassis][i];return`<div style="background:var(--s2);border:1px solid var(--bd);border-radius:5px;padding:8px;text-align:center"><div style="font-size:10px;color:var(--t3)">${n}</div><div style="font-size:15px;font-weight:600;color:var(--ac);font-family:'JetBrains Mono',monospace">${s}/${[20,20,10,20,15,15][i]}</div></div>`}).join('')}</div></div>`
+}
+
+function genReport(){
+  const sc=rCalc();const isAcc=accParts.some(it=>{const v=gv('wa_'+it.id);return v&&v!=='OK'&&v!==''});
+  const fg=isAcc?'五级(事故车)':sc.grade;
+  const method=gv('wvM')==='m'?'现行市价法':'重置成本法';let val=0;
+  if(method==='现行市价法'){const p=parseFloat(gv('wvP')),f=parseFloat(gv('wvF'))||0;if(!isNaN(p))val=Math.round(p*(1+f/100))}else{const r=parseFloat(gv('wvR1')),d1=parseFloat(gv('wvR2'))||0,d2=parseFloat(gv('wvR3'))||0,d3=parseFloat(gv('wvR4'))||0;if(!isNaN(r))val=Math.max(0,Math.round(r*(1-(d1+d2+d3)/100)))}
+  let tradR='';tradItems.forEach((it,i)=>{const v=gv('wt_'+it.id);const ok=v===it.pass;tradR+=`<tr><td>${i+1}</td><td>${it.label}</td><td>${v||'—'}</td><td style="color:${ok?'#2e7d32':'#c62828'};font-weight:bold">${ok?'合格':'不合格'}</td></tr>`});
+  let accR='';accParts.forEach((it,i)=>{const v=gv('wa_'+it.id);const ok=!v||v==='OK';accR+=`<tr><td>${i+1}</td><td>${it.label}</td><td>${v||'未检'}</td><td style="color:${ok?'#2e7d32':'#c62828'};font-weight:bold">${ok?'无缺陷':'有缺陷'}</td></tr>`});
+  let bodyR='';BI.forEach(([c,n])=>{const v=parseInt(document.getElementById('wb_'+c)?.value||0);const d=c===39?v:0.5*v;const lb=c===39?(v?'花纹<1.6mm':'无缺陷'):['无缺陷','程度1:≤100×100mm','程度2:>100×100且≤200×300mm','程度3:>200×300mm'][v];bodyR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td>${lb}</td><td style="text-align:center">${d>0?'-'+d:'0'}</td></tr>`});
+  let engR='';EI.forEach(([c,n,r])=>{if(!r){engR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td colspan="2">${gv('we_'+c)||'无'}</td></tr>`}else{const v=gv('we_'+c)||'A';const d=v==='B'?r.B:v==='C'?r.C:0;engR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td>${v==='A'?'无':v==='B'?'轻微':'严重'}</td><td style="text-align:center">${d>0?'-'+d:'0'}</td></tr>`}});
+  let cabR='';CI.forEach(([c,n,r])=>{if(!r){cabR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td colspan="2">${gv('wc_'+c)||'无'}</td></tr>`}else{const v=gv('wc_'+c)||'A';const d=v==='C'?r.C:0;cabR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td>${v==='A'?'是':'否'}</td><td style="text-align:center">${d>0?'-'+d:'0'}</td></tr>`}});
+  let strR='';SI.forEach(([c,n,r])=>{if(!r){strR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td colspan="2">${gv('wst_'+c)||'无'}</td></tr>`}else{const v=gv('wst_'+c)||'A';const d=v==='C'?r.C:0;strR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td>${v==='A'?'是':'否'}</td><td style="text-align:center">${d>0?'-'+d:'0'}</td></tr>`}});
+  let roadR='';RI.forEach(([c,n,r])=>{if(!r){roadR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td colspan="2">${gv('wr_'+c)||'无'}</td></tr>`}else{const v=gv('wr_'+c)||'A';const d=v==='C'?r.C:0;roadR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td>${v==='A'?'是':'否'}</td><td style="text-align:center">${d>0?'-'+d:'0'}</td></tr>`}});
+  let chasR='';HI.forEach(([c,n,r])=>{if(!r){chasR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td colspan="2">${gv('wch_'+c)||'无'}</td></tr>`}else{const v=gv('wch_'+c)||'A';const d=v==='C'?r.C:0;chasR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td>${v==='A'?'是':'否'}</td><td style="text-align:center">${d>0?'-'+d:'0'}</td></tr>`}});
+  let funcR='';FI.forEach(([c,n])=>{const v=gv('wf_'+c);funcR+=`<tr><td style="text-align:center">${c}</td><td>${n}</td><td style="color:${v==='NG'?'#c62828':'#2e7d32'}">${v==='NG'?'坏损':'正常'}</td><td>${gv('wfd_'+c)||''}</td></tr>`});
+
+  const htmlBody=`<h1>二手车鉴定评估报告</h1><p style="text-align:right;font-size:9pt">评报字(20__年)第___号</p><h2>一、绪言</h2><p>接受${gv('w_comName')||'______'}的委托，根据GB/T 30323的规定，对牌号为${gv('w_plate')||'______'}的车辆进行了鉴定。对其在${gv('w_baseDate')||'____年____月____日'}所表现的市场价值做出公允反映。</p><h2>二、委托方信息</h2><table><tr><td>委托方</td><td>${gv('w_comName')}</td><td>联系电话</td><td>${gv('w_comTel')}</td></tr><tr><td>评估目的</td><td>${gv('w_purpose')}</td><td>评估基准日</td><td>${gv('w_baseDate')}</td></tr></table><h2>三、车辆信息</h2><table><tr><td>厂牌型号</td><td>${gv('w_model')}</td><td>牌照号码</td><td>${gv('w_plate')}</td></tr><tr><td>发动机号</td><td>${gv('w_engNo')}</td><td>VIN码</td><td>${gv('w_vin')}</td></tr><tr><td>车身颜色</td><td>${gv('w_color')}</td><td>注册日期</td><td>${gv('w_regDate')}</td></tr><tr><td>表征里程</td><td>${gv('w_mile')}万km</td><td>使用性质</td><td>${gv('w_usage')}</td></tr><tr><td>燃料种类</td><td>${gv('w_fuel')}</td><td>排放标准</td><td>${gv('w_emission')}</td></tr><tr><td>驱动方式</td><td>${gv('w_drive')}</td><td>气囊/ABS</td><td>${gv('w_airbag')}/${gv('w_abs')}</td></tr></table><h2>四、可交易车辆判别（表1）</h2><table><tr><th style="width:30px">序号</th><th>检查项目</th><th style="width:40px">选择</th><th style="width:50px">结果</th></tr>${tradR}</table><h2>五、事故车判别（表2/表3）</h2><table><tr><th style="width:30px">序号</th><th>车体部位</th><th style="width:60px">检测结果</th><th style="width:50px">状态</th></tr>${accR}</table><p><strong>判定：</strong>${isAcc?'该车为事故车（五级）':'该车非事故车'}</p><h2>六、技术状况鉴定</h2><p><strong>6.1 车身外观检查（满分20分）— 得分：${sc.body}分</strong></p><table><tr><th style="width:35px">代码</th><th>部位</th><th>状态/程度</th><th style="width:35px">扣分</th></tr>${bodyR}<tr style="font-weight:bold"><td colspan="3" style="text-align:right">扣分合计</td><td style="text-align:center;color:#c62828">-${20-sc.body}</td></tr></table><p><strong>6.2 发动机舱检查（满分20分）— 得分：${sc.engine}分</strong></p><table><tr><th style="width:35px">序号</th><th>检查项目</th><th style="width:60px">选择</th><th style="width:35px">扣分</th></tr>${engR}<tr style="font-weight:bold"><td colspan="3" style="text-align:right">扣分合计</td><td style="text-align:center;color:#c62828">-${20-sc.engine}</td></tr></table><p><strong>6.3 驾驶舱检查（满分10分）— 得分：${sc.cabin}分</strong></p><table><tr><th style="width:35px">序号</th><th>检查项目</th><th style="width:60px">选择</th><th style="width:35px">扣分</th></tr>${cabR}<tr style="font-weight:bold"><td colspan="3" style="text-align:right">扣分合计</td><td style="text-align:center;color:#c62828">-${10-sc.cabin}</td></tr></table><p><strong>6.4 启动检查（满分20分）— 得分：${sc.start}分</strong></p><table><tr><th style="width:35px">序号</th><th>检查项目</th><th style="width:60px">选择</th><th style="width:35px">扣分</th></tr>${strR}<tr style="font-weight:bold"><td colspan="3" style="text-align:right">扣分合计</td><td style="text-align:center;color:#c62828">-${20-sc.start}</td></tr></table><p><strong>6.5 路试检查（满分15分）— 得分：${sc.road}分</strong></p><table><tr><th style="width:35px">序号</th><th>检查项目</th><th style="width:60px">选择</th><th style="width:35px">扣分</th></tr>${roadR}<tr style="font-weight:bold"><td colspan="3" style="text-align:right">扣分合计</td><td style="text-align:center;color:#c62828">-${15-sc.road}</td></tr></table><p><strong>6.6 底盘检查（满分15分）— 得分：${sc.chassis}分</strong></p><table><tr><th style="width:35px">序号</th><th>检查项目</th><th style="width:60px">选择</th><th style="width:35px">扣分</th></tr>${chasR}<tr style="font-weight:bold"><td colspan="3" style="text-align:right">扣分合计</td><td style="text-align:center;color:#c62828">-${15-sc.chassis}</td></tr></table><p><strong>6.7 功能性零部件（不计分）</strong></p><table><tr><th style="width:35px">序号</th><th>零部件</th><th style="width:50px">状态</th><th>备注</th></tr>${funcR}</table><h2>七、鉴定总分与等级</h2><table><tr><th>鉴定科目</th><th>满分</th><th>得分</th></tr><tr><td>车身外观</td><td style="text-align:center">20</td><td style="text-align:center;font-weight:bold">${sc.body}</td></tr><tr><td>发动机舱</td><td style="text-align:center">20</td><td style="text-align:center;font-weight:bold">${sc.engine}</td></tr><tr><td>驾驶舱</td><td style="text-align:center">10</td><td style="text-align:center;font-weight:bold">${sc.cabin}</td></tr><tr><td>启动</td><td style="text-align:center">20</td><td style="text-align:center;font-weight:bold">${sc.start}</td></tr><tr><td>路试</td><td style="text-align:center">15</td><td style="text-align:center;font-weight:bold">${sc.road}</td></tr><tr><td>底盘</td><td style="text-align:center">15</td><td style="text-align:center;font-weight:bold">${sc.chassis}</td></tr><tr style="font-weight:bold;background:#f5f5f5"><td>合计</td><td style="text-align:center">100</td><td style="text-align:center;font-size:12pt">${isAcc?'—':sc.total}</td></tr></table><p style="font-size:12pt"><strong>技术状况等级：${fg}</strong></p><h2>八、价值评估</h2><p><strong>方法：</strong>${method}</p>${method==='现行市价法'?`<p><strong>计算：</strong>${parseFloat(gv('wvP'))||0}元 × (1+${parseFloat(gv('wvF'))||0}%)</p>`:`<p><strong>计算：</strong>${parseFloat(gv('wvR1'))||0}元 × (1-${(parseFloat(gv('wvR2'))||0)+(parseFloat(gv('wvR3'))||0)+(parseFloat(gv('wvR4'))||0)}%)</p>`}<p style="font-size:14pt"><strong>评估价值：人民币 ${val.toLocaleString()} 元</strong></p><h2>九、特别事项说明</h2><p>${gv('wvN')||'无'}</p><h2>十、声明</h2><p>(1)本机构对报告承担法律责任；(2)评估价值为基准日价值；(3)使用权归委托方；(4)未经许可不公开。</p><p class="note">有效期90天。</p><p>&nbsp;</p><table style="border:none"><tr style="border:none"><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>评估师签字<br>复核人签字</td><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>机构盖章<br>年&emsp;月&emsp;日</td></tr></table><p class="note">备注：1.本报告书和作业表一式三份，委托方二份，受托方一份；2.鉴定评估基准日即为《二手车鉴定评估委托书》签订的日期。</p>`;
+
+  const date=new Date().toISOString().slice(0,10).replace(/-/g,'');
+  downloadWord(`二手车鉴定评估报告_${gv('w_plate')||'报告'}_${date}.doc`, htmlBody);
+}
+
+function dlForm(t){
+  const date=new Date().toISOString().slice(0,10).replace(/-/g,'');
+  const css=`body{font-family:'宋体',SimSun,serif;font-size:12pt;margin:20mm;line-height:1.8;color:#000}h1{text-align:center;font-size:16pt;font-family:'黑体',SimHei}table{width:100%;border-collapse:collapse}td,th{border:1px solid #000;padding:4px 8px;font-size:11pt}th{background:#f0f0f0}table.sig{border:none}table.sig td{border:none}.note{font-size:9pt;color:#666}`;
+  let h='';
+  if(t==='A')h=`<h1>二手车鉴定评估作业表</h1><p>流水号：______ 日期：____</p><table><tr><th>鉴定科目</th><th>得分</th><th>缺陷描述</th></tr><tr><td>车身外观(20)</td><td></td><td></td></tr><tr><td>发动机舱(20)</td><td></td><td></td></tr><tr><td>驾驶舱(10)</td><td></td><td></td></tr><tr><td>启动(20)</td><td></td><td></td></tr><tr><td>路试(15)</td><td></td><td></td></tr><tr><td>底盘(15)</td><td></td><td></td></tr><tr><td><strong>总分/等级</strong></td><td colspan="2"></td></tr></table><p>&nbsp;</p><table class="sig"><tr><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>评估师签字</td><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>鉴定单位盖章</td></tr></table>`;
+  else if(t==='B')h=`<h1>二手车技术状况表</h1><table><tr><td>厂牌型号</td><td></td><td>牌照号码</td><td></td></tr><tr><td>VIN码</td><td colspan="3"></td></tr><tr><td>是否事故车</td><td>□是 □否</td><td>技术等级</td><td></td></tr></table><p><strong>鉴定缺陷描述</strong></p><table><tr><th>科目</th><th>得分</th><th>缺陷描述</th></tr><tr><td>车身外观</td><td></td><td></td></tr><tr><td>发动机舱</td><td></td><td></td></tr><tr><td>驾驶舱</td><td></td><td></td></tr><tr><td>启动</td><td></td><td></td></tr><tr><td>路试</td><td></td><td></td></tr><tr><td>底盘</td><td></td><td></td></tr></table><p>&nbsp;</p><table class="sig"><tr><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>评估师签字</td><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>鉴定单位盖章</td></tr></table>`;
+  else if(t==='C')h=`<h1>二手车鉴定评估委托书</h1><p>委托书编号：______</p><table><tr><td>委托方</td><td></td><td>受托方</td><td></td></tr></table><p>因 □交易 □典当 □拍卖 □置换 □抵押 □担保 □咨询 □司法裁决 □其他 需要</p><table><tr><td>号牌</td><td></td><td>类型</td><td></td></tr><tr><td>VIN码</td><td colspan="3"></td></tr><tr><td>厂牌型号</td><td></td><td>使用用途</td><td>□营运 □非营运</td></tr><tr><td>注册日期</td><td></td><td>累计里程</td><td></td></tr></table><p>&nbsp;</p><table class="sig"><tr><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>委托方签字盖章</td><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>受托方签字盖章</td></tr></table>`;
+  else if(t==='D')h=`<h1>二手车鉴定评估报告</h1><p>评报字(20__年)第___号</p><h2>一、绪言</h2><p>接受______的委托，根据GB/T 30323的规定，对牌号为______的车辆进行了鉴定。</p><h2>二、委托方信息</h2><table><tr><td>委托方</td><td></td><td>联系电话</td><td></td></tr><tr><td>评估目的</td><td></td><td>评估基准日</td><td></td></tr></table><h2>三、车辆信息</h2><table><tr><td>厂牌型号</td><td></td><td>牌照号码</td><td></td></tr><tr><td>发动机号</td><td></td><td>VIN码</td><td></td></tr></table><h2>四、技术鉴定</h2><table><tr><th>科目</th><th>满分</th><th>得分</th></tr><tr><td>车身外观</td><td style="text-align:center">20</td><td></td></tr><tr><td>发动机舱</td><td style="text-align:center">20</td><td></td></tr><tr><td>驾驶舱</td><td style="text-align:center">10</td><td></td></tr><tr><td>启动</td><td style="text-align:center">20</td><td></td></tr><tr><td>路试</td><td style="text-align:center">15</td><td></td></tr><tr><td>底盘</td><td style="text-align:center">15</td><td></td></tr><tr style="font-weight:bold"><td>合计</td><td style="text-align:center">100</td><td></td></tr></table><p><strong>技术状况等级：</strong></p><h2>五、价值评估</h2><p><strong>方法：</strong>□现行市价法 □重置成本法</p><p><strong>评估价值：</strong>人民币 ______ 元</p><h2>六、特别事项说明</h2><h2>七、声明</h2><p>(1)本机构对报告承担法律责任；(2)评估价值为基准日价值；(3)使用权归委托方；(4)未经许可不公开。</p><p class="note">有效期90天。</p><p>&nbsp;</p><table class="sig"><tr><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>评估师签字<br>复核人签字</td><td style="border:none;width:50%;text-align:center"><div style="border-bottom:1pt solid #000;height:28mm">&nbsp;</div>机构盖章<br>年&emsp;月&emsp;日</td></tr></table>`;
+  downloadWord(`二手车鉴定评估_附录${t}_${date}.doc`, `<style>${css}</style>${h}`);
+}
+
+initTrad();initAcc()
+</script>
+</body>
+</html>

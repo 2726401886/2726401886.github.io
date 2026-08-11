@@ -1,0 +1,1913 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>广东省价格认定技术参数参照标准系统</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0c1117;
+  --surface: #161b22;
+  --surface2: #1c2333;
+  --surface3: #232d3d;
+  --border: #2d3748;
+  --accent: #4da6ff;
+  --accent2: #3d8bdb;
+  --accent-glow: rgba(77,166,255,0.15);
+  --gold: #f0c040;
+  --green: #56d364;
+  --red: #f85149;
+  --orange: #e3a340;
+  --text-primary: #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  --radius: 8px;
+  --shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== TITLE BAR ===== */
+.titlebar {
+  background: #0d1117;
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  user-select: none;
+}
+.titlebar-dots {
+  display: flex; gap: 7px;
+}
+.titlebar-dots span {
+  width: 13px; height: 13px; border-radius: 50%; display: block;
+}
+.dot-r { background: #ff5f57; }
+.dot-y { background: #febc2e; }
+.dot-g { background: #28c840; }
+.titlebar-title {
+  flex:1; text-align:center; font-size:14px; font-weight:500;
+  color: var(--text-secondary); letter-spacing: 1px;
+}
+.titlebar-info {
+  font-size: 12px; color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===== MAIN LAYOUT ===== */
+.main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.sidebar-search {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.sidebar-search:focus {
+  border-color: var(--accent);
+}
+.sidebar-search::placeholder { color: var(--text-muted); }
+
+.nav-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+.nav-list::-webkit-scrollbar { width: 4px; }
+.nav-list::-webkit-scrollbar-track { background: transparent; }
+.nav-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.nav-category {
+  padding: 10px 16px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px 9px 20px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover {
+  background: var(--surface2);
+  color: var(--text-primary);
+}
+.nav-item.active {
+  background: var(--accent-glow);
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+.nav-item .nav-icon {
+  font-size: 15px;
+  width: 20px;
+  text-align: center;
+  flex-shrink: 0;
+}
+.nav-item .nav-num {
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--text-muted);
+  background: var(--surface3);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* ===== CONTENT ===== */
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0;
+}
+.content::-webkit-scrollbar { width: 6px; }
+.content::-webkit-scrollbar-track { background: transparent; }
+.content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.content-section {
+  display: none;
+  padding: 32px 40px;
+  animation: fadeIn 0.3s ease;
+}
+.content-section.active { display: block; }
+
+@keyframes fadeIn {
+  from { opacity:0; transform: translateY(8px); }
+  to { opacity:1; transform: translateY(0); }
+}
+
+.section-header {
+  margin-bottom: 28px;
+}
+.section-header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+.section-header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ===== CARDS ===== */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: all 0.2s;
+}
+.stat-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.stat-card .label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.stat-card .value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+}
+.stat-card .unit { font-size: 14px; color: var(--text-secondary); font-weight: 400; }
+
+/* ===== TABLES ===== */
+.table-wrapper {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.table-title {
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.table-filter {
+  margin-left: auto;
+}
+.table-filter input {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 5px 10px;
+  color: var(--text-primary);
+  font-size: 12px;
+  outline: none;
+  width: 180px;
+}
+.table-filter input:focus { border-color: var(--accent); }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th {
+  background: var(--surface2);
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  white-space: nowrap;
+}
+td {
+  padding: 9px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(45,55,72,0.5);
+  color: var(--text-primary);
+}
+tr:hover td { background: var(--accent-glow); }
+tr.highlight td { background: rgba(240,192,64,0.1); }
+.num-cell {
+  font-family: 'JetBrains Mono', monospace;
+  text-align: center;
+  font-weight: 500;
+  color: var(--accent);
+}
+.sub-cell { padding-left: 32px; color: var(--text-secondary); }
+
+/* ===== CALCULATOR ===== */
+.calc-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 24px;
+}
+.calc-panel h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.form-group {
+  flex: 1;
+  min-width: 200px;
+}
+.form-group label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+.form-group input, .form-group select {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  color: var(--text-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--accent);
+}
+select option { background: var(--surface2); }
+
+.btn {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-primary:hover {
+  background: var(--accent2);
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+.btn-secondary {
+  background: var(--surface3);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+}
+.btn-secondary:hover {
+  background: var(--border);
+  color: var(--text-primary);
+}
+.result-box {
+  margin-top: 20px;
+  background: var(--surface2);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: none;
+}
+.result-box.show { display: block; animation: fadeIn 0.3s ease; }
+.result-box .result-title {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.result-box .result-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--green);
+  font-family: 'JetBrains Mono', monospace;
+}
+.result-box .result-detail {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* ===== INFO NOTE ===== */
+.info-note {
+  background: rgba(77,166,255,0.08);
+  border-left: 3px solid var(--accent);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.warn-note {
+  background: rgba(240,192,64,0.08);
+  border-left: 3px solid var(--gold);
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ===== WILDLIFE TREE ===== */
+.tree-group {
+  margin-bottom: 8px;
+}
+.tree-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.tree-header:hover { background: var(--surface2); }
+.tree-header .arrow {
+  transition: transform 0.2s;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.tree-header.open .arrow { transform: rotate(90deg); }
+.tree-content {
+  display: none;
+  padding-left: 24px;
+}
+.tree-content.open { display: block; }
+.tree-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 16px;
+  font-size: 13px;
+  border-radius: 4px;
+}
+.tree-item:hover { background: var(--accent-glow); }
+.tree-item .price {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* ===== STATUS BAR ===== */
+.statusbar {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 4px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-muted);
+  height: 28px;
+  flex-shrink: 0;
+}
+.statusbar .dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  display: inline-block;
+}
+
+/* ===== TABS ===== */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.tab-btn {
+  padding: 10px 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  font-family: 'Noto Sans SC', sans-serif;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar { width: 220px; min-width: 220px; }
+  .content-section { padding: 20px; }
+  .card-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TITLE BAR -->
+<div class="titlebar">
+  <div class="titlebar-dots">
+    <span class="dot-r"></span>
+    <span class="dot-y"></span>
+    <span class="dot-g"></span>
+  </div>
+  <div class="titlebar-title">广东省价格认定技术参数参照标准系统（2018）</div>
+  <div class="titlebar-info">v2.0</div>
+</div>
+
+<div class="main">
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <input type="text" class="sidebar-search" placeholder="🔍 搜索功能模块..." id="sidebarSearch" oninput="filterNav(this.value)">
+    </div>
+    <div class="nav-list" id="navList">
+      <div class="nav-category">概览</div>
+      <div class="nav-item active" data-target="home" onclick="showSection('home', this)">
+        <span class="nav-icon">📊</span> 工作台
+      </div>
+
+      <div class="nav-category">设备类</div>
+      <div class="nav-item" data-target="general-equip" onclick="showSection('general-equip', this)">
+        <span class="nav-icon">⚙️</span> 通用设备经济寿命
+        <span class="nav-num">15类</span>
+      </div>
+      <div class="nav-item" data-target="special-equip" onclick="showSection('special-equip', this)">
+        <span class="nav-icon">🏭</span> 专用设备经济寿命
+        <span class="nav-num">19类</span>
+      </div>
+      <div class="nav-item" data-target="daily-goods" onclick="showSection('daily-goods', this)">
+        <span class="nav-icon">🏠</span> 日常用品折旧年限
+        <span class="nav-num">25项</span>
+      </div>
+      <div class="nav-item" data-target="install-rate" onclick="showSection('install-rate', this)">
+        <span class="nav-icon">🔧</span> 安装调试费率
+        <span class="nav-num">26项</span>
+      </div>
+      <div class="nav-item" data-target="condition" onclick="showSection('condition', this)">
+        <span class="nav-icon">📋</span> 新旧程度判断标准
+        <span class="nav-num">7级</span>
+      </div>
+
+      <div class="nav-category">车辆类</div>
+      <div class="nav-item" data-target="vehicle-parts" onclick="showSection('vehicle-parts', this)">
+        <span class="nav-icon">🚗</span> 机动车辆部件权重
+      </div>
+      <div class="nav-item" data-target="vehicle-life" onclick="showSection('vehicle-life', this)">
+        <span class="nav-icon">📅</span> 机动车使用年限
+      </div>
+      <div class="nav-item" data-target="vehicle-calc" onclick="showSection('vehicle-calc', this)">
+        <span class="nav-icon">🧮</span> 车辆成新率计算器
+      </div>
+      <div class="nav-item" data-target="wheel-machine" onclick="showSection('wheel-machine', this)">
+        <span class="nav-icon">🚜</span> 轮式专用机械车
+      </div>
+      <div class="nav-item" data-target="tractor" onclick="showSection('tractor', this)">
+        <span class="nav-icon">🌾</span> 拖拉机/收割机
+      </div>
+      <div class="nav-item" data-target="other-vehicle" onclick="showSection('other-vehicle', this)">
+        <span class="nav-icon">🚲</span> 其他车辆
+      </div>
+      <div class="nav-item" data-target="auto-parts" onclick="showSection('auto-parts', this)">
+        <span class="nav-icon">🔩</span> 汽车易耗配件
+      </div>
+
+      <div class="nav-category">船舶类</div>
+      <div class="nav-item" data-target="ship" onclick="showSection('ship', this)">
+        <span class="nav-icon">🚢</span> 船舶使用年限
+      </div>
+
+      <div class="nav-category">其他</div>
+      <div class="nav-item" data-target="wildlife" onclick="showSection('wildlife', this)">
+        <span class="nav-icon">🦁</span> 野生陆生动物价值
+      </div>
+      <div class="nav-item" data-target="precious-metal" onclick="showSection('precious-metal', this)">
+        <span class="nav-icon">💎</span> 贵金属含量折算
+      </div>
+      <div class="nav-item" data-target="building" onclick="showSection('building', this)">
+        <span class="nav-icon">🏗️</span> 房屋/构筑物寿命
+      </div>
+      <div class="nav-item" data-target="land" onclick="showSection('land', this)">
+        <span class="nav-icon">🌍</span> 土地/海域使用权
+      </div>
+      <div class="nav-item" data-target="tree" onclick="showSection('tree', this)">
+        <span class="nav-icon">🌳</span> 古树名木价格认定
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- HOME -->
+    <div class="content-section active" id="home">
+      <div class="section-header">
+        <h1>📊 工作台</h1>
+        <p>广东省价格认定技术参数参照标准（2018年） · 仅供全省价格认定系统参考使用</p>
+      </div>
+      <div class="card-grid">
+        <div class="stat-card"><div class="label">通用设备分类</div><div class="value">15<span class="unit"> 大类</span></div></div>
+        <div class="stat-card"><div class="label">专用设备分类</div><div class="value">19<span class="unit"> 大类</span></div></div>
+        <div class="stat-card"><div class="label">日用品折旧项</div><div class="value">25<span class="unit"> 项</span></div></div>
+        <div class="stat-card"><div class="label">野生动物类群</div><div class="value">200+<span class="unit"> 种</span></div></div>
+        <div class="stat-card"><div class="label">船舶类型</div><div class="value">11<span class="unit"> 类</span></div></div>
+        <div class="stat-card"><div class="label">计算工具</div><div class="value">5<span class="unit"> 个</span></div></div>
+      </div>
+      <div class="info-note">
+        <strong>使用说明：</strong>本标准仅用于全省价格认定系统在价格认定过程中有关技术参数的确定与参考，不作其他用途。经过大修、换件、技术升级或软件更新的产品或设备，应根据实际情况修正相关因素。
+      </div>
+      <div class="warn-note">
+        <strong>注意：</strong>收藏类名牌钟表等特殊物品不宜采用年限法直线折旧确定成新率。奢侈品类箱包不宜采用年限法直线折旧确定成新率。
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📑 目录索引</div>
+        <table>
+          <thead><tr><th>#</th><th>模块名称</th><th>页码</th></tr></thead>
+          <tbody>
+            <tr><td class="num-cell">1</td><td>通用设备经济寿命参考表</td><td class="num-cell">3</td></tr>
+            <tr><td class="num-cell">2</td><td>专用设备经济寿命参考表</td><td class="num-cell">7</td></tr>
+            <tr><td class="num-cell">3</td><td>部分日常用品价格认定折旧年限参考表</td><td class="num-cell">15</td></tr>
+            <tr><td class="num-cell">4</td><td>机器设备安装调试费率参考表</td><td class="num-cell">16</td></tr>
+            <tr><td class="num-cell">5</td><td>机器设备新旧程度判断标准参考表</td><td class="num-cell">17</td></tr>
+            <tr><td class="num-cell">6</td><td>机动车辆部件价值权重系数参考表</td><td class="num-cell">18</td></tr>
+            <tr><td class="num-cell">7</td><td>机动车使用年限及行驶里程参考值汇总表</td><td class="num-cell">19</td></tr>
+            <tr><td class="num-cell">8</td><td>轮式专用机械车价格认定折旧年限参考表</td><td class="num-cell">20</td></tr>
+            <tr><td class="num-cell">9</td><td>拖拉机、联合收割机使用年限参考表</td><td class="num-cell">20</td></tr>
+            <tr><td class="num-cell">10</td><td>其他车辆使用年限参考表</td><td class="num-cell">20</td></tr>
+            <tr><td class="num-cell">11</td><td>部分汽车易耗配件使用年限参考表</td><td class="num-cell">21</td></tr>
+            <tr><td class="num-cell">12</td><td>船舶使用年限参考表</td><td class="num-cell">22</td></tr>
+            <tr><td class="num-cell">13</td><td>野生陆生动物基准价值标准目录</td><td class="num-cell">24</td></tr>
+            <tr><td class="num-cell">14</td><td>常见贵金属含量折算及印记方式参考表</td><td class="num-cell">37</td></tr>
+            <tr><td class="num-cell">15</td><td>房屋(构筑物)经济寿命参考表</td><td class="num-cell">38</td></tr>
+            <tr><td class="num-cell">16</td><td>土地及海域使用权出让最高年限标准</td><td class="num-cell">41</td></tr>
+            <tr><td class="num-cell">17</td><td>古树名木价格认定相关系数</td><td class="num-cell">42</td></tr>
+            <tr><td class="num-cell">18</td><td>非营运小微型载客汽车和大型轿车价格认定成新率评定参考</td><td class="num-cell">45</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- GENERAL EQUIPMENT -->
+    <div class="content-section" id="general-equip">
+      <div class="section-header">
+        <h1>⚙️ 通用设备经济寿命参考表</h1>
+        <p>涵盖机械设备、动力设备、传导设备等15大类通用设备的经济寿命年限</p>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">🔍 数据查询 <div class="table-filter"><input type="text" placeholder="搜索设备名称..." oninput="filterTable(this, 'generalTable')"></div></div>
+        <div style="max-height:600px; overflow-y:auto;">
+        <table id="generalTable">
+          <thead><tr><th>设备分类</th><th>年限(年)</th><th>设备分类</th><th>年限(年)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>(一) 机械设备</strong></td><td></td><td>混砂机</td><td class="num-cell">12</td></tr>
+            <tr><td class="sub-cell">1.普通金属切削机床</td><td class="num-cell">18</td><td><strong>(二) 动力设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">其中: 数控机床</td><td class="num-cell">15</td><td class="sub-cell">4T/H以上蒸汽或热水锅炉</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">剪床</td><td class="num-cell">14</td><td class="sub-cell">4T/H以下快装锅</td><td class="num-cell">14</td></tr>
+            <tr><td class="sub-cell">冲床</td><td class="num-cell">16</td><td class="sub-cell">清水泵</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">电动剪板机</td><td class="num-cell">10</td><td class="sub-cell">污水泵、耐酸泵</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">龙门刨床</td><td class="num-cell">20</td><td class="sub-cell">空压机(移动式)</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">摇臂钻床</td><td class="num-cell">20</td><td class="sub-cell">空压机(固定式)</td><td class="num-cell">14</td></tr>
+            <tr><td class="sub-cell">折弯机</td><td class="num-cell">14</td><td class="sub-cell">储气/油罐(室外)</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">砂轮机</td><td class="num-cell">10</td><td class="sub-cell">储气/油罐(室内)</td><td class="num-cell">30</td></tr>
+            <tr><td class="sub-cell">切割机</td><td class="num-cell">10</td><td class="sub-cell">风机(不含除尘)</td><td class="num-cell">12</td></tr>
+            <tr><td class="sub-cell">抛光、磨光机</td><td class="num-cell">10</td><td class="sub-cell">冷却塔</td><td class="num-cell">12</td></tr>
+            <tr><td class="sub-cell">2.锻压设备</td><td class="num-cell">17</td><td class="sub-cell">除尘设备</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">其中: 锻锤设备</td><td class="num-cell">14</td><td class="sub-cell">有腐蚀管线</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">3.试验设备(机械式)</td><td class="num-cell">12</td><td class="sub-cell">无腐蚀管线</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">试验设备(电子式)</td><td class="num-cell">10</td><td class="sub-cell">电动机</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">4.起重设备</td><td class="num-cell">18</td><td><strong>(三) 传导设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">单双梁吊车</td><td class="num-cell">16</td><td class="sub-cell">电器设备</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">电动葫芦</td><td class="num-cell">15</td><td class="sub-cell">变电设备</td><td class="num-cell">25</td></tr>
+            <tr><td class="sub-cell">电梯</td><td class="num-cell">25</td><td class="sub-cell">配电设备</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">自动扶梯</td><td class="num-cell">12</td><td class="sub-cell">输电线路(电缆)</td><td class="num-cell">30</td></tr>
+            <tr><td class="sub-cell">叉车</td><td class="num-cell">12</td><td class="sub-cell">电讯设备</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">铲车</td><td class="num-cell">12</td><td class="sub-cell">铁塔水泥杆</td><td class="num-cell">30</td></tr>
+            <tr><td class="sub-cell">5.工程机械</td><td class="num-cell">15</td><td><strong>(四) 通讯设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">6.铸造设备</td><td class="num-cell">14</td><td class="sub-cell">通讯电路(弱电)</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">其中: 冲天炉</td><td class="num-cell">16</td><td class="sub-cell">通讯光缆</td><td class="num-cell">20-25</td></tr>
+            <tr><td class="sub-cell">7.电锻设备</td><td class="num-cell">12</td><td class="sub-cell">电话通讯设备</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">8.其他机械设备</td><td class="num-cell">10-20</td><td class="sub-cell">交换机</td><td class="num-cell">10</td></tr>
+            <tr><td><strong>(五) 自动化控制及仪器仪表</strong></td><td></td><td class="sub-cell">对讲机</td><td class="num-cell">5</td></tr>
+            <tr><td class="sub-cell">自动控制设备</td><td class="num-cell">10</td><td class="sub-cell">固定电话</td><td class="num-cell">5</td></tr>
+            <tr><td class="sub-cell">半自动控制设备</td><td class="num-cell">8</td><td class="sub-cell">镍氢/镍镉/锂充电电池</td><td class="num-cell">2</td></tr>
+            <tr><td class="sub-cell">设备专用电子计算机</td><td class="num-cell">10</td><td class="sub-cell">太阳能/铅酸电池</td><td class="num-cell">8-10</td></tr>
+            <tr><td class="sub-cell">探伤/测绘仪器</td><td class="num-cell">8</td><td><strong>(六) 工具及其他生产用具</strong></td><td></td></tr>
+            <tr><td class="sub-cell">检验用平板</td><td class="num-cell">20</td><td class="sub-cell">金属切割用电动工具</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">通用测试仪器及设备</td><td class="num-cell">20</td><td class="sub-cell">砂磨电动工具</td><td class="num-cell">12</td></tr>
+            <tr><td><strong>(七) 办公设备</strong></td><td></td><td class="sub-cell">装配用电动工具</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">中央空调系统设备</td><td class="num-cell">25</td><td class="sub-cell">建筑道路/矿山/铁道电动工具</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">传真机</td><td class="num-cell">5</td><td class="sub-cell">林木加工电动工具</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">复印机/扫描仪/文字处理机</td><td class="num-cell">6</td><td class="sub-cell">电焊工具</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">编程器</td><td class="num-cell">8</td><td><strong>(八) 卫生医疗设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">稳压电源</td><td class="num-cell">10</td><td class="sub-cell">大型卫生医疗设备</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">打印机</td><td class="num-cell">5</td><td class="sub-cell">小型卫生医疗设备</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">投影机</td><td class="num-cell">8</td><td><strong>(九) 炊事设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">保险箱</td><td class="num-cell">10</td><td class="sub-cell">冰柜</td><td class="num-cell">8</td></tr>
+            <tr><td><strong>(十) 教学设备</strong></td><td></td><td class="sub-cell">洗涤设备</td><td class="num-cell">6</td></tr>
+            <tr><td class="sub-cell">闭路电视播放设备</td><td class="num-cell">10</td><td class="sub-cell">炊具</td><td class="num-cell">5</td></tr>
+            <tr><td class="sub-cell">电影播放机</td><td class="num-cell">10</td><td class="sub-cell">餐具</td><td class="num-cell">3-5</td></tr>
+            <tr><td class="sub-cell">高级乐器</td><td class="num-cell">15</td><td class="sub-cell">开水器</td><td class="num-cell">5</td></tr>
+            <tr><td class="sub-cell">其中: 钢琴</td><td class="num-cell">20</td><td><strong>(十一) 公用事业设备</strong></td><td></td></tr>
+            <tr><td><strong>(十二) 港务设备</strong></td><td></td><td class="sub-cell">水/油/煤气管道</td><td class="num-cell">50</td></tr>
+            <tr><td class="sub-cell">16吨以上汽动吊车</td><td class="num-cell">20</td><td class="sub-cell">储气柜(煤气)</td><td class="num-cell">40</td></tr>
+            <tr><td class="sub-cell">大型门式起重机</td><td class="num-cell">20</td><td class="sub-cell">焊接式储气柜</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">输送机械</td><td class="num-cell">10</td><td class="sub-cell">室外照明设备</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">集装箱</td><td class="num-cell">7</td><td class="sub-cell">广告灯箱(室内)</td><td class="num-cell">3</td></tr>
+            <tr><td><strong>(十三) 工业炉窑</strong></td><td></td><td class="sub-cell">广告灯箱(室外)</td><td class="num-cell">5</td></tr>
+            <tr><td class="sub-cell">熔铸炉</td><td class="num-cell">13</td><td><strong>(十四) 非生产设备及器具</strong></td><td></td></tr>
+            <tr><td class="sub-cell">加热炉</td><td class="num-cell">13</td><td class="sub-cell">洗涤设备</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">热处理炉窑</td><td class="num-cell">15</td><td class="sub-cell">营业用家具设备</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">干燥炉</td><td class="num-cell">16</td><td class="sub-cell">娱乐/游乐场设备</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">电子专用炉</td><td class="num-cell">10</td><td class="sub-cell">大型机动游戏设备</td><td class="num-cell">8</td></tr>
+            <tr><td><strong>(十五) 自动化设备电路板/易耗件</strong></td><td class="num-cell">3-5</td><td class="sub-cell">安全监控设备</td><td class="num-cell">15</td></tr>
+            <tr><td></td><td></td><td class="sub-cell">消防安全设施</td><td class="num-cell">10</td></tr>
+            <tr><td></td><td></td><td class="sub-cell">灭火器</td><td class="num-cell">5</td></tr>
+            <tr><td></td><td></td><td class="sub-cell">不锈钢构件</td><td class="num-cell">20</td></tr>
+            <tr><td></td><td></td><td class="sub-cell">塑料构件</td><td class="num-cell">5</td></tr>
+            <tr><td></td><td></td><td class="sub-cell">家用缝纫机</td><td class="num-cell">10</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPECIAL EQUIPMENT -->
+    <div class="content-section" id="special-equip">
+      <div class="section-header">
+        <h1>🏭 专用设备经济寿命参考表</h1>
+        <p>涵盖冶金、电力、机械、石化、医药、建材等19大行业专用设备</p>
+      </div>
+      <div class="info-note">专用设备按行业分类，包含冶金工业、电力工业、机械工业、石油/化工工业、医药工业、仪表电讯、建材、纺织、轻工、矿山、森林、煤炭、造船、渔港、交通运输、建筑施工、商业、粮油、金融等19大类。</div>
+      <div class="table-wrapper">
+        <div class="table-title">🔍 数据查询 <div class="table-filter"><input type="text" placeholder="搜索设备名称..." oninput="filterTable(this, 'specialTable')"></div></div>
+        <div style="max-height:600px; overflow-y:auto;">
+        <table id="specialTable">
+          <thead><tr><th>设备分类</th><th>年限(年)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>(一) 冶金工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">平炉</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">电炉</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">转炉</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">特种冶炼设备</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">连铸机</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">制氧机</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">高炉、电炉(炼铁)</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">烧结机</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">初轧机</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">大中型轧机</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">冷轧机</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">拉伸机</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">机械化焦炉</td><td class="num-cell">18</td></tr>
+            <tr><td><strong>(二) 电力工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">水轮发电机组</td><td class="num-cell">32</td></tr>
+            <tr><td class="sub-cell">汽轮发电机组</td><td class="num-cell">23</td></tr>
+            <tr><td class="sub-cell">内燃发电机组</td><td class="num-cell">25</td></tr>
+            <tr><td class="sub-cell">铁塔/水泥杆</td><td class="num-cell">30</td></tr>
+            <tr><td class="sub-cell">变电设备</td><td class="num-cell">25</td></tr>
+            <tr><td class="sub-cell">配电设备</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">小型发电机</td><td class="num-cell">12</td></tr>
+            <tr><td><strong>(三) 机械工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">生产标准件加工设备</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">汽车/拖拉机/内燃机加工设备</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">组合机床</td><td class="num-cell">12</td></tr>
+            <tr><td class="sub-cell">数控加工机床</td><td class="num-cell">12</td></tr>
+            <tr><td class="sub-cell">生产纺织机械专用设备</td><td class="num-cell">14</td></tr>
+            <tr><td><strong>(四) 石油、化工工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">蒸馏/裂化/加氢设备</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">乙烯、丙烯</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">乙烯/丙烯裂解炉</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">合成氨(中型)</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">合成氨(小型)</td><td class="num-cell">14</td></tr>
+            <tr><td class="sub-cell">化肥尿素</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">硫酸</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">烧碱</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">纯碱</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">电石</td><td class="num-cell">17</td></tr>
+            <tr><td class="sub-cell">橡胶加工设备</td><td class="num-cell">12</td></tr>
+            <tr><td><strong>(五) 医药工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">抗菌素设备</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">医药合成设备</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">西药制剂设备</td><td class="num-cell">14</td></tr>
+            <tr><td class="sub-cell">中成药专用设备</td><td class="num-cell">12</td></tr>
+            <tr><td><strong>(六) 仪表电讯工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">半导体器件加工设备</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">电真空器件加工设备</td><td class="num-cell">12</td></tr>
+            <tr><td class="sub-cell">电子元件专用设备</td><td class="num-cell">12</td></tr>
+            <tr><td><strong>(七) 建材工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">水泥(回转窑)</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">水泥(立窑)</td><td class="num-cell">12</td></tr>
+            <tr><td class="sub-cell">玻璃</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">砖瓦/陶瓷(轮窑/隧道窑)</td><td class="num-cell">13</td></tr>
+            <tr><td><strong>(八) 纺织工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">棉纺前纺/精纺设备</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">织造设备</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">染整设备</td><td class="num-cell">10</td></tr>
+            <tr><td><strong>(九) 轻工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">造纸设备</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">木工机械/人造板流水线</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">印刷设备</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">陶瓷生产加工设备</td><td class="num-cell">18</td></tr>
+            <tr><td><strong>(十) 矿山专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">挖掘机</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">准轨电机车</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">矿井提升卷扬机</td><td class="num-cell">20</td></tr>
+            <tr><td><strong>(十一) 森林工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">采伐机械</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">木材加工机械</td><td class="num-cell">15</td></tr>
+            <tr><td><strong>(十二) 煤炭工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">综采设备</td><td class="num-cell">10</td></tr>
+            <tr><td class="sub-cell">液压支架</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">提运机械</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">通风机械</td><td class="num-cell">18</td></tr>
+            <tr><td><strong>(十三) 造船工业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">大型吊车</td><td class="num-cell">30</td></tr>
+            <tr><td class="sub-cell">浮吊</td><td class="num-cell">25</td></tr>
+            <tr><td class="sub-cell">浮船坞</td><td class="num-cell">20</td></tr>
+            <tr><td><strong>(十四) 渔港专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">装卸机械</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">挖泥船</td><td class="num-cell">18</td></tr>
+            <tr><td><strong>(十五) 交通运输及邮电专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">蒸汽/内燃/电力机车</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">铁路客车</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">铁路货车</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">固定翼飞机</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">直升机</td><td class="num-cell">10</td></tr>
+            <tr><td><strong>(十六) 建筑施工专业设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">起重机械</td><td class="num-cell">16</td></tr>
+            <tr><td class="sub-cell">挖掘机械</td><td class="num-cell">18</td></tr>
+            <tr><td class="sub-cell">筑路机械</td><td class="num-cell">19</td></tr>
+            <tr><td><strong>(十七) 商业专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">立式金属油罐</td><td class="num-cell">20</td></tr>
+            <tr><td class="sub-cell">肉联加工和冷冻设备</td><td class="num-cell">16</td></tr>
+            <tr><td><strong>(十八) 粮油专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">碾米/制粉/制油设备</td><td class="num-cell">15</td></tr>
+            <tr><td class="sub-cell">油脂浸出设备</td><td class="num-cell">10</td></tr>
+            <tr><td><strong>(十九) 金融专用设备</strong></td><td></td></tr>
+            <tr><td class="sub-cell">自动存取款机/缴费机/售票机</td><td class="num-cell">8</td></tr>
+            <tr><td class="sub-cell">验钞机/点钞机</td><td class="num-cell">5</td></tr>
+          </tbody>
+        </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAILY GOODS -->
+    <div class="content-section" id="daily-goods">
+      <div class="section-header">
+        <h1>🏠 部分日常用品价格认定折旧年限参考表</h1>
+        <p>涵盖电子产品、家用电器、钟表、箱包等25类日常用品</p>
+      </div>
+      <div class="warn-note">
+        <strong>注意：</strong>1. 收藏类名牌钟表等特殊物品不宜采用年限法直线折旧确定成新率。<br>
+        2. 箱包类折旧年限适用于灭失物情形。有实物情形的首选以观察法确定成新率，奢侈品类箱包不宜采用年限法直线折旧确定成新率。
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 日常用品折旧年限
+          <div class="table-filter"><input type="text" placeholder="搜索物品名称..." oninput="filterTable(this, 'dailyTable')"></div>
+        </div>
+        <table id="dailyTable">
+          <thead><tr><th>#</th><th>物品分类</th><th>折旧年限(年)</th></tr></thead>
+          <tbody>
+            <tr><td class="num-cell">1</td><td>电子计算机(个人电脑)、数码产品</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">2</td><td>移动电话</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">3</td><td>普通照相机、录(摄)像机</td><td class="num-cell">8</td></tr>
+            <tr><td class="num-cell">3</td><td>专业照相机、录(摄)像机</td><td class="num-cell">15</td></tr>
+            <tr><td class="num-cell">4</td><td>空调机（窗式/分体式/柜式）</td><td class="num-cell">10</td></tr>
+            <tr><td class="num-cell">5</td><td>彩色电视机(含LCD/PDP/LED/OLED)</td><td class="num-cell">10</td></tr>
+            <tr><td class="num-cell">5</td><td>黑白电视机</td><td class="num-cell">12</td></tr>
+            <tr><td class="num-cell">6</td><td>洗衣机、甩干机</td><td class="num-cell">8</td></tr>
+            <tr><td class="num-cell">7</td><td>电冰箱、冰吧</td><td class="num-cell">12</td></tr>
+            <tr><td class="num-cell">8</td><td>电暖器、电热炉、电热毯</td><td class="num-cell">8</td></tr>
+            <tr><td class="num-cell">9</td><td>煤气炉、微波炉</td><td class="num-cell">10</td></tr>
+            <tr><td class="num-cell">9</td><td>电磁炉、电陶炉</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">10</td><td>电饭煲、电烤箱、电蒸箱</td><td class="num-cell">10</td></tr>
+            <tr><td class="num-cell">11</td><td>洗碗机、消毒碗柜</td><td class="num-cell">10</td></tr>
+            <tr><td class="num-cell">12</td><td>电热水器</td><td class="num-cell">10</td></tr>
+            <tr><td class="num-cell">12</td><td>燃气热水器</td><td class="num-cell">8</td></tr>
+            <tr><td class="num-cell">13</td><td>电吹风、电动剃须刀</td><td class="num-cell">4</td></tr>
+            <tr><td class="num-cell">14</td><td>电风扇、电熨斗</td><td class="num-cell">8</td></tr>
+            <tr><td class="num-cell">15</td><td>咖啡机</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">16</td><td>料理机(含豆浆机/搅拌机/榨汁机/破壁机等)</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">17</td><td>家用清洁设备(含吸尘器/空气净化器/电动擦窗器等)</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">18</td><td>家用健身器材(按摩器/摇摆机/电疗仪/理疗仪等)</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">19</td><td>音响</td><td class="num-cell">10</td></tr>
+            <tr><td class="num-cell">20</td><td>收录机</td><td class="num-cell">8</td></tr>
+            <tr><td class="num-cell">21</td><td>电子播放器</td><td class="num-cell">3</td></tr>
+            <tr><td class="num-cell">22</td><td>学习机、复读机、游戏机</td><td class="num-cell">3</td></tr>
+            <tr><td class="num-cell">23</td><td>移动存储器</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">24</td><td>液晶显示电子钟表</td><td class="num-cell">3</td></tr>
+            <tr><td class="num-cell">24</td><td>石英钟表</td><td class="num-cell">15</td></tr>
+            <tr><td class="num-cell">24</td><td>机械钟表</td><td class="num-cell">25</td></tr>
+            <tr><td class="num-cell">25</td><td>箱包类</td><td class="num-cell">3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- INSTALL RATE -->
+    <div class="content-section" id="install-rate">
+      <div class="section-header">
+        <h1>🔧 机器设备安装调试费率参考表</h1>
+        <p>26类机器设备的安装调试费率（占设备价值百分比）</p>
+      </div>
+      <div class="info-note">注：专用生产线或成套设备试生产过程费用未包括在内。设备基础费用另计。锅炉安装包括砌炉、炉体保温等工程。</div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 安装调试费率
+          <div class="table-filter"><input type="text" placeholder="搜索设备..." oninput="filterTable(this, 'installTable')"></div>
+        </div>
+        <table id="installTable">
+          <thead><tr><th>#</th><th>设备类型</th><th>费率(%)</th></tr></thead>
+          <tbody>
+            <tr><td class="num-cell">1</td><td>轻型通用设备</td><td class="num-cell">0.5-1</td></tr>
+            <tr><td class="num-cell">2</td><td>一般机加工设备</td><td class="num-cell">0.5-2</td></tr>
+            <tr><td class="num-cell">3</td><td>大型机加工设备</td><td class="num-cell">1-4</td></tr>
+            <tr><td class="num-cell">4</td><td>数控机床和精密加工机床</td><td class="num-cell">2-4</td></tr>
+            <tr><td class="num-cell">5</td><td>铸造设备</td><td class="num-cell">3-6</td></tr>
+            <tr><td class="num-cell">6</td><td>锻造、冲压设备</td><td class="num-cell">4-8</td></tr>
+            <tr><td class="num-cell">7</td><td>起重设备</td><td class="num-cell">4-10</td></tr>
+            <tr><td class="num-cell">8</td><td>焊接、切割设备</td><td class="num-cell">0.5-2</td></tr>
+            <tr><td class="num-cell">9</td><td>泵站设备</td><td class="num-cell">8-15</td></tr>
+            <tr><td class="num-cell">10</td><td>制冷、通风设备</td><td class="num-cell">8-12</td></tr>
+            <tr><td class="num-cell">11</td><td>集中空调设备</td><td class="num-cell">5-8</td></tr>
+            <tr><td class="num-cell">12</td><td>冷却塔</td><td class="num-cell">8-12</td></tr>
+            <tr><td class="num-cell">13</td><td>工业炉窑及冶炼设备</td><td class="num-cell">10-20</td></tr>
+            <tr><td class="num-cell">14</td><td>电梯</td><td class="num-cell">10-16</td></tr>
+            <tr><td class="num-cell">15</td><td>变、配电设备</td><td class="num-cell">8-15</td></tr>
+            <tr><td class="num-cell">16</td><td>电气设备</td><td class="num-cell">6-12</td></tr>
+            <tr><td class="num-cell">17</td><td>气体压缩机</td><td class="num-cell">8-14</td></tr>
+            <tr><td class="num-cell">18</td><td>电话总机</td><td class="num-cell">10-15</td></tr>
+            <tr><td class="num-cell">19</td><td>检测、试验设备</td><td class="num-cell">1-4</td></tr>
+            <tr><td class="num-cell">20</td><td>快装锅炉</td><td class="num-cell">15-20</td></tr>
+            <tr><td class="num-cell">21</td><td>蒸汽锅炉(10吨/时及以下)</td><td class="num-cell">35-45</td></tr>
+            <tr><td class="num-cell">22</td><td>蒸汽锅炉(20吨/时及以下)</td><td class="num-cell">30-40</td></tr>
+            <tr><td class="num-cell">23</td><td>热水锅炉</td><td class="num-cell">25-30</td></tr>
+            <tr><td class="num-cell">24</td><td>电镀、镀装设备</td><td class="num-cell">5-12</td></tr>
+            <tr><td class="num-cell">25</td><td>热处理设备</td><td class="num-cell">2-5</td></tr>
+            <tr><td class="num-cell">26</td><td>化工工业专用设备</td><td class="num-cell">6-15</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONDITION -->
+    <div class="content-section" id="condition">
+      <div class="section-header">
+        <h1>📋 机器设备新旧程度判断标准参考表</h1>
+        <p>一般机器设备成新率确定参考，7级分类评定标准</p>
+      </div>
+      <div class="calc-panel">
+        <h3>📐 成新率估算工具</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>设备状况</label>
+            <select id="condSelect" onchange="updateCondition()">
+              <option value="">请选择设备状况...</option>
+              <option value="95-100">全新 — 未启封/启封后未安装或安装后未使用</option>
+              <option value="85-94">尚新 — 已使用,运转正常,不必更换配件</option>
+              <option value="65-84">良好 — 已使用一年以上或第一次大修后恢复性能</option>
+              <option value="40-64">一般 — 已使用二年以上,明显陈旧,使用故障较多</option>
+              <option value="20-39">能用 — 能够使用,但需更新许多零配件</option>
+              <option value="10-19">很差 — 不能使用,需经大修理更新零件后方可使用</option>
+              <option value="0-9">废品 — 性能严重劣化,技术上难以修复,即将报废</option>
+            </select>
+          </div>
+        </div>
+        <div id="condResult" class="result-box">
+          <div class="result-title">成新率范围</div>
+          <div class="result-value" id="condResultVal">—</div>
+          <div class="result-detail" id="condResultDetail"></div>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📊 新旧程度判断标准</div>
+        <table>
+          <thead><tr><th>状况分类</th><th>实际状况说明</th><th>成新率(%)</th></tr></thead>
+          <tbody>
+            <tr><td><strong>全新</strong></td><td>未启封，启封后未安装或安装后未使用。</td><td class="num-cell">95-100</td></tr>
+            <tr><td><strong>尚新</strong></td><td>已经使用，运转正常，不必更换配件，无需修理。</td><td class="num-cell">85-94</td></tr>
+            <tr><td><strong>良好</strong></td><td>已使用一年以上或经过第一次大修恢复原设计性能的设备，在用状态良好。</td><td class="num-cell">65-84</td></tr>
+            <tr><td><strong>一般</strong></td><td>已使用二年以上或大修后使用一段时间，明显陈旧，使用故障较多。</td><td class="num-cell">40-64</td></tr>
+            <tr><td><strong>能用</strong></td><td>能够使用，但需要更新许多零配件。</td><td class="num-cell">20-39</td></tr>
+            <tr><td><strong>很差</strong></td><td>不能使用，需经大修理更新零件后方可使用。</td><td class="num-cell">10-19</td></tr>
+            <tr><td><strong>废品</strong></td><td>性能严重劣化，目前不能正常使用或停用，技术上难以修复，即将报废。已超过国家规定使用年限或淘汰禁止使用的设备。</td><td class="num-cell">≤9</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VEHICLE PARTS -->
+    <div class="content-section" id="vehicle-parts">
+      <div class="section-header">
+        <h1>🚗 机动车辆部件价值权重系数参考表</h1>
+        <p>轿车、客车、货车三大类车辆的10大部件价值权重占比（%）</p>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📊 部件价值权重系数</div>
+        <table>
+          <thead><tr><th>#</th><th>部件名称</th><th>轿车</th><th>客车</th><th>货车</th></tr></thead>
+          <tbody>
+            <tr><td class="num-cell">1</td><td>发动机及离合器总成</td><td class="num-cell">25</td><td class="num-cell">28</td><td class="num-cell">25</td></tr>
+            <tr><td class="num-cell">2</td><td>变速器及传动轴总成</td><td class="num-cell">19</td><td class="num-cell">6</td><td class="num-cell">15</td></tr>
+            <tr><td class="num-cell">3</td><td>前桥及转向器前悬总成</td><td class="num-cell">5</td><td class="num-cell">7</td><td class="num-cell">15</td></tr>
+            <tr><td class="num-cell">4</td><td>后桥及后悬架总成</td><td class="num-cell">5</td><td class="num-cell">6</td><td class="num-cell">15</td></tr>
+            <tr><td class="num-cell">5</td><td>制动系统</td><td class="num-cell">3</td><td class="num-cell">5</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">6</td><td>车架总成</td><td class="num-cell">0</td><td class="num-cell">5</td><td class="num-cell">6</td></tr>
+            <tr><td class="num-cell">7</td><td>电动仪表系统</td><td class="num-cell">6</td><td class="num-cell">3</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">8</td><td>车身总成</td><td class="num-cell">28</td><td class="num-cell">28</td><td class="num-cell">9</td></tr>
+            <tr><td class="num-cell">9</td><td>轮胎</td><td class="num-cell">3</td><td class="num-cell">3</td><td class="num-cell">5</td></tr>
+            <tr><td class="num-cell">10</td><td>空调系统</td><td class="num-cell">6</td><td class="num-cell">9</td><td class="num-cell">0*</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-note">* 无空调系统的货车，其空调系统权重系数为0；有空调系统的货车，其空调系统的权重系数取1-3。</div>
+    </div>
+
+    <!-- VEHICLE LIFE -->
+    <div class="content-section" id="vehicle-life">
+      <div class="section-header">
+        <h1>📅 机动车使用年限及行驶里程参考值汇总表</h1>
+        <p>依据《商务部、发改委、公安局、环境保护部令2012年第12号机动车强制报废标准规定》</p>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 机动车使用年限及行驶里程
+          <div class="table-filter"><input type="text" placeholder="搜索车辆类型..." oninput="filterTable(this, 'vehicleTable')"></div>
+        </div>
+        <table id="vehicleTable">
+          <thead><tr><th>车辆类型</th><th>用途</th><th>具体分类</th><th>年限(年)</th><th>行驶里程(万km)</th></tr></thead>
+          <tbody>
+            <tr><td rowspan="3"><strong>汽车·出租客运</strong></td><td>载客</td><td>小、微型</td><td class="num-cell">8</td><td class="num-cell">60</td></tr>
+            <tr><td></td><td>中型</td><td class="num-cell">10</td><td class="num-cell">50</td></tr>
+            <tr><td></td><td>大型</td><td class="num-cell">12</td><td class="num-cell">60</td></tr>
+            <tr><td><strong>汽车·租赁</strong></td><td>营运</td><td>租赁</td><td class="num-cell">15</td><td class="num-cell">60</td></tr>
+            <tr><td rowspan="2"><strong>汽车·教练</strong></td><td>营运</td><td>小型</td><td class="num-cell">10</td><td class="num-cell">50</td></tr>
+            <tr><td></td><td>中型</td><td class="num-cell">12</td><td class="num-cell">50</td></tr>
+            <tr><td rowspan="2"><strong>汽车·公交客运</strong></td><td>营运</td><td>小、微型</td><td class="num-cell">13</td><td class="num-cell">40</td></tr>
+            <tr><td></td><td>中型</td><td class="num-cell">10</td><td class="num-cell">60</td></tr>
+            <tr><td><strong>汽车·专用校车</strong></td><td>营运</td><td>大型</td><td class="num-cell">15</td><td class="num-cell">50</td></tr>
+            <tr><td><strong>汽车·非营运</strong></td><td>非营运</td><td>小/微型客车、大型轿车</td><td class="num-cell">15</td><td class="num-cell">40</td></tr>
+            <tr><td></td><td></td><td>中型客车</td><td class="num-cell">20</td><td class="num-cell">50</td></tr>
+            <tr><td><strong>汽车·载货</strong></td><td>载货</td><td>微型</td><td class="num-cell">12</td><td class="num-cell">50</td></tr>
+            <tr><td></td><td></td><td>中、轻型</td><td class="num-cell">12</td><td class="num-cell">50</td></tr>
+            <tr><td></td><td></td><td>重型(含半挂/全挂车)</td><td class="num-cell">15</td><td class="num-cell">60</td></tr>
+            <tr><td></td><td></td><td>危险品运输</td><td class="num-cell">15</td><td class="num-cell">70</td></tr>
+            <tr><td><strong>三轮汽车/低速货车</strong></td><td></td><td>单缸发动机</td><td class="num-cell">9</td><td class="num-cell">40</td></tr>
+            <tr><td></td><td></td><td>多缸发动机</td><td class="num-cell">12</td><td class="num-cell">30</td></tr>
+            <tr><td><strong>专项作业车</strong></td><td></td><td>有载货功能</td><td class="num-cell">15</td><td class="num-cell">50</td></tr>
+            <tr><td></td><td></td><td>无载货功能</td><td class="num-cell">30</td><td class="num-cell">50</td></tr>
+            <tr><td rowspan="3"><strong>半挂车</strong></td><td>挂车</td><td>集装箱</td><td class="num-cell">20</td><td class="num-cell">—</td></tr>
+            <tr><td></td><td>危险品运输</td><td class="num-cell">10</td><td class="num-cell">—</td></tr>
+            <tr><td></td><td>其他</td><td class="num-cell">15</td><td class="num-cell">—</td></tr>
+            <tr><td><strong>全挂车</strong></td><td></td><td></td><td class="num-cell">10</td><td class="num-cell">—</td></tr>
+            <tr><td><strong>摩托车</strong></td><td></td><td>正三轮</td><td class="num-cell">12</td><td class="num-cell">10</td></tr>
+            <tr><td></td><td></td><td>其他</td><td class="num-cell">13</td><td class="num-cell">12</td></tr>
+            <tr><td><strong>轮式专用机械车</strong></td><td></td><td></td><td class="num-cell">—</td><td class="num-cell">50</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-note">注：非营运小、微型客车、大型轿车、轮式专用机械车只有引导报废参考行驶里程，无强制报废年限。</div>
+    </div>
+
+    <!-- VEHICLE CALC -->
+    <div class="content-section" id="vehicle-calc">
+      <div class="section-header">
+        <h1>🧮 非营运小微型载客汽车和大型轿车成新率计算器</h1>
+        <p>公式：成新率 = (R1 + R2) × R3 × R4</p>
+      </div>
+      <div class="info-note">
+        <strong>R1</strong>：使用时间对价值的影响（权重50%）<br>
+        <strong>R2</strong>：使用强度（行驶里程）对价值的影响（权重50%）<br>
+        <strong>R3</strong>：使用维护保养状况对价值的影响<br>
+        <strong>R4</strong>：尾气排放对价值的影响率
+      </div>
+      <div class="calc-panel">
+        <h3>📐 车辆成新率计算</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>车辆购置价格（万元）</label>
+            <input type="number" id="vPrice" placeholder="如: 15" step="0.1">
+          </div>
+          <div class="form-group">
+            <label>已使用年限（月）</label>
+            <input type="number" id="vMonth" placeholder="如: 36">
+          </div>
+          <div class="form-group">
+            <label>已行驶里程（万公里）</label>
+            <input type="number" id="vMile" placeholder="如: 5" step="0.1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>技术状况</label>
+            <select id="vTech">
+              <option value="100">好 (100%)</option>
+              <option value="85" selected>较好 (85%)</option>
+              <option value="70">一般 (70%)</option>
+              <option value="50">差 (50%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>维护保养状况</label>
+            <select id="vMaint">
+              <option value="100">好 (100%)</option>
+              <option value="85" selected>较好 (85%)</option>
+              <option value="70">一般 (70%)</option>
+              <option value="50">差 (50%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>大修次数</label>
+            <select id="vRepair">
+              <option value="100">无大修 (100%)</option>
+              <option value="85">大修1次 (85%)</option>
+              <option value="70">大修2次 (70%)</option>
+              <option value="50">大修3次以上 (50%)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>尾气排放标准</label>
+            <select id="vEmission">
+              <option value="55">国Ⅰ (50%-60%)</option>
+              <option value="65">国Ⅱ (60%-70%)</option>
+              <option value="75" selected>国Ⅲ (70%-80%)</option>
+              <option value="85">国Ⅳ (80%-90%)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>报废行驶里程参考值（万公里）</label>
+            <input type="number" id="vLimit" value="60" step="1">
+          </div>
+        </div>
+        <div style="margin-top:8px; display:flex; gap:12px;">
+          <button class="btn btn-primary" onclick="calcVehicle()">计算成新率</button>
+          <button class="btn btn-secondary" onclick="resetCalc()">重置</button>
+        </div>
+        <div id="vResult" class="result-box">
+          <div class="result-title">计算结果</div>
+          <div class="result-value" id="vResultVal">—</div>
+          <div class="result-detail" id="vResultDetail"></div>
+        </div>
+      </div>
+      <div class="calc-panel">
+        <h3>📊 不同档次车辆调整系数(A)参考</h3>
+        <table>
+          <thead><tr><th>10万以下</th><th>10-20万</th><th>20-40万</th><th>40-60万</th><th>60-80万</th><th>80-100万</th><th>100万以上</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="num-cell">0.68</td>
+              <td class="num-cell">0.62</td>
+              <td class="num-cell">0.57</td>
+              <td class="num-cell">0.53</td>
+              <td class="num-cell">0.50</td>
+              <td class="num-cell">0.48</td>
+              <td class="num-cell">0.47</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WHEEL MACHINE -->
+    <div class="content-section" id="wheel-machine">
+      <div class="section-header">
+        <h1>🚜 轮式专用机械车价格认定折旧年限参考表</h1>
+        <p>不同使用场景下轮式专用机械车的折旧年限及行驶里程参考</p>
+      </div>
+      <div class="info-note">本表中的折旧年限非机动车强制报废标准。</div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 轮式专用机械车折旧年限</div>
+        <table>
+          <thead><tr><th>车辆类型与用途</th><th>年限(年)</th><th>行驶里程(万km)</th></tr></thead>
+          <tbody>
+            <tr><td>轮式专用机械车(厂/园区使用，不用上牌)·有载货功能</td><td class="num-cell">8-10</td><td class="num-cell">50</td></tr>
+            <tr><td>轮式专用机械车(厂/园区使用)·无载货功能</td><td class="num-cell">15</td><td class="num-cell">50</td></tr>
+            <tr><td>轮式专用机械车(公路行驶，需上牌)·有载货功能</td><td class="num-cell">15</td><td class="num-cell">50</td></tr>
+            <tr><td>轮式专用机械车(公路行驶)·无载货功能</td><td class="num-cell">30</td><td class="num-cell">50</td></tr>
+            <tr><td>消防车</td><td class="num-cell">20</td><td class="num-cell">60</td></tr>
+            <tr><td>槽罐车</td><td class="num-cell">10</td><td class="num-cell">60</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TRACTOR -->
+    <div class="content-section" id="tractor">
+      <div class="section-header">
+        <h1>🌾 拖拉机、联合收割机使用年限参考表</h1>
+        <p>拖拉机行驶里程折旧参考数为15000-20000公里/年</p>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 拖拉机/收割机使用年限</div>
+        <table>
+          <thead><tr><th>类别</th><th>年限(年)</th></tr></thead>
+          <tbody>
+            <tr><td>大中型拖拉机（发动机标定功率>18千瓦）</td><td class="num-cell">15</td></tr>
+            <tr><td>小型拖拉机（发动机标定功率≤18千瓦）</td><td class="num-cell">10</td></tr>
+            <tr><td>履带拖拉机</td><td class="num-cell">12</td></tr>
+            <tr><td>自走式联合收割机（自带动力和行走系统）</td><td class="num-cell">12</td></tr>
+            <tr><td>悬挂式联合收割机（悬装在拖拉机上）</td><td class="num-cell">10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- OTHER VEHICLE -->
+    <div class="content-section" id="other-vehicle">
+      <div class="section-header">
+        <h1>🚲 其他车辆使用年限参考表</h1>
+        <p>自行车、助力车、电瓶车、共享单车等</p>
+      </div>
+      <div class="warn-note">
+        注：1. 几乎超过折旧年限尚在使用的车辆，应重新评定尚可使用年限。<br>
+        2. 自行车、山地车、变速车、电瓶车也可按每月1%折旧。<br>
+        3. 其他车辆的最低残值为该车基价的5%。<br>
+        4. 助力车、电瓶车电池建议使用年限为3年。
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 其他车辆使用年限</div>
+        <table>
+          <thead><tr><th>类别</th><th>年限(年)</th></tr></thead>
+          <tbody>
+            <tr><td>自行车、山地车、变速车</td><td class="num-cell">8</td></tr>
+            <tr><td>助力车、客货运三轮车、人力车</td><td class="num-cell">6</td></tr>
+            <tr><td>电瓶车</td><td class="num-cell">8</td></tr>
+            <tr><td>共享单车</td><td class="num-cell">3</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- AUTO PARTS -->
+    <div class="content-section" id="auto-parts">
+      <div class="section-header">
+        <h1>🔩 部分汽车易耗配件使用年限参考表</h1>
+        <p>汽车轮胎、备胎、蓄电池、雨刮片、汽车膜等</p>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 汽车易耗配件使用年限</div>
+        <table>
+          <thead><tr><th>#</th><th>名称</th><th>使用年限</th></tr></thead>
+          <tbody>
+            <tr><td class="num-cell">1</td><td>汽车轮胎</td><td class="num-cell">3年或5万公里</td></tr>
+            <tr><td class="num-cell">2</td><td>汽车备胎</td><td class="num-cell">4年</td></tr>
+            <tr><td class="num-cell">3</td><td>汽车启动电源(蓄电池)</td><td class="num-cell">2年</td></tr>
+            <tr><td class="num-cell">4</td><td>雨刮刮片</td><td class="num-cell">2年或2万公里</td></tr>
+            <tr><td class="num-cell">5</td><td>汽车膜</td><td class="num-cell">8年</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SHIP -->
+    <div class="content-section" id="ship">
+      <div class="section-header">
+        <h1>🚢 船舶使用年限参考表</h1>
+        <p>包含运输船舶和渔业船舶的船龄标准</p>
+      </div>
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('shipTab1', this)">运输船舶</button>
+        <button class="tab-btn" onclick="switchTab('shipTab2', this)">渔业船舶</button>
+      </div>
+      <div class="tab-content active" id="shipTab1">
+        <div class="table-wrapper">
+          <div class="table-title">📋 运输船舶船龄标准（海船）</div>
+          <table>
+            <thead><tr><th>类别</th><th>船舶类型</th><th>特别定期检验船龄</th><th>强制报废船龄</th></tr></thead>
+            <tbody>
+              <tr><td>一类(客船类)</td><td>高速客船</td><td class="num-cell">18年以上</td><td class="num-cell">25年以上</td></tr>
+              <tr><td>二类(客船类)</td><td>客滚船/客货船/客渡船/旅游船/客船</td><td class="num-cell">24年以上</td><td class="num-cell">30年以上</td></tr>
+              <tr><td>三类(液体货船类)</td><td>油船/散装化学品船/液化气船</td><td class="num-cell">26年以上</td><td class="num-cell">31年以上</td></tr>
+              <tr><td>四类(散货船类)</td><td>散货船/矿砂船</td><td class="num-cell">28年以上</td><td class="num-cell">33年以上</td></tr>
+              <tr><td>五类(杂货船类)</td><td>滚装船/集装箱船/冷藏船/拖轮/驳船等</td><td class="num-cell">29年以上</td><td class="num-cell">34年以上</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrapper">
+          <div class="table-title">📋 运输船舶船龄标准（河船）</div>
+          <table>
+            <thead><tr><th>类别</th><th>船舶类型</th><th>特别定期检验船龄</th><th>强制报废船龄</th></tr></thead>
+            <tbody>
+              <tr><td>一类(客船类)</td><td>高速客船</td><td class="num-cell">18年以上</td><td class="num-cell">25年以上</td></tr>
+              <tr><td>二类(客船类)</td><td>客滚船/客货船/旅游船/客船</td><td class="num-cell">24年以上</td><td class="num-cell">30年以上</td></tr>
+              <tr><td>三类(液体货船类)</td><td>油船/散装化学品船/液化气船</td><td class="num-cell">26年以上</td><td class="num-cell">31年以上</td></tr>
+              <tr><td>四类(散货船类)</td><td>散货船/矿砂船</td><td class="num-cell">28年以上</td><td class="num-cell">33年以上</td></tr>
+              <tr><td>四类(黑龙江水系)</td><td>散货船/矿砂船</td><td class="num-cell">33年以上</td><td class="num-cell">39年以上</td></tr>
+              <tr><td>五类(杂货船类)</td><td>滚装船/集装箱船/拖轮/驳船等</td><td class="num-cell">29年以上</td><td class="num-cell">35年以上</td></tr>
+              <tr><td>五类(黑龙江水系)</td><td>同上</td><td class="num-cell">35年以上</td><td class="num-cell">41年以上</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="info-note">注：本标准适用于从事水路运输的海船和河船，从事港区内作业的拖船、工作船等船舶不适用。</div>
+      </div>
+      <div class="tab-content" id="shipTab2">
+        <div class="table-wrapper">
+          <div class="table-title">📋 渔业船舶船龄标准</div>
+          <table>
+            <thead><tr><th>船舶类型</th><th>具体分类</th><th>一般船龄</th><th>强制报废船龄</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="2"><strong>钢质捕捞船</strong></td><td>船长<12米</td><td class="num-cell">16年以上</td><td class="num-cell">21年以上</td></tr>
+              <tr><td>船长≥12米且<24米</td><td class="num-cell">20年以上</td><td class="num-cell">25年以上</td></tr>
+              <tr><td rowspan="2"><strong>木质捕捞船</strong></td><td>船长≥24米</td><td class="num-cell">24年以上</td><td class="num-cell">29年以上</td></tr>
+              <tr><td>专门制造远洋作业渔船</td><td class="num-cell">30年以上</td><td class="num-cell">35年以上</td></tr>
+              <tr><td><strong>玻璃钢捕捞船</strong></td><td></td><td class="num-cell">25年以上</td><td class="num-cell">30年以上</td></tr>
+              <tr><td><strong>养殖船</strong></td><td></td><td class="num-cell">20年以上</td><td class="num-cell">25年以上</td></tr>
+              <tr><td><strong>水产品冷藏加工船</strong></td><td></td><td class="num-cell">29年以上</td><td class="num-cell">34年以上</td></tr>
+              <tr><td><strong>渔业公务船</strong></td><td></td><td class="num-cell">30年以上</td><td class="num-cell">35年以上</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="info-note">注：本标准于2007年4月30日起执行。船长指渔业船舶登记(国籍)证书中的船舶登记长度。</div>
+      </div>
+    </div>
+
+    <!-- WILDLIFE -->
+    <div class="content-section" id="wildlife">
+      <div class="section-header">
+        <h1>🦁 野生陆生动物基准价值标准目录</h1>
+        <p>涵盖哺乳纲、鸟纲、爬行纲、两栖纲、昆虫纲等200余种/科/属的基准价值</p>
+      </div>
+      <div style="margin-bottom:16px;">
+        <input type="text" class="sidebar-search" style="width:100%;max-width:400px;" placeholder="🔍 搜索动物名称（中文学名/拉丁学名）..." oninput="filterWildlife(this.value)">
+      </div>
+      <div id="wildlifeList">
+        <div class="table-wrapper">
+          <div class="table-title">🐾 哺乳纲 MAMMALIA</div>
+          <div style="max-height:500px; overflow-y:auto;">
+          <table id="wildlifeMammal">
+            <thead><tr><th>类群/物种</th><th>基准价值(元)</th></tr></thead>
+            <tbody>
+              <tr><td><strong>食虫目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">猬科 所有种</td><td class="num-cell">200</td></tr>
+              <tr><td class="sub-cell">鼹鼠科 所有种</td><td class="num-cell">100</td></tr>
+              <tr><td class="sub-cell">鼩鼱科 所有种</td><td class="num-cell">100</td></tr>
+              <tr><td><strong>翼手目 所有种</strong></td><td class="num-cell">50</td></tr>
+              <tr><td><strong>灵长目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">蜂猴属</td><td class="num-cell">2,000</td></tr>
+              <tr><td class="sub-cell">猕猴属</td><td class="num-cell">2,000</td></tr>
+              <tr><td class="sub-cell">叶猴属</td><td class="num-cell">15,000</td></tr>
+              <tr><td class="sub-cell">仰鼻猴属(金丝猴)</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">长臂猿科 所有种</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">猩猩属</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">黑猩猩属</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">大猩猩属</td><td class="num-cell">50,000</td></tr>
+              <tr><td><strong>长鼻目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">亚洲象</td><td class="num-cell">200,000</td></tr>
+              <tr><td class="sub-cell">非洲象</td><td class="num-cell">100,000</td></tr>
+              <tr><td><strong>鳞甲目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">穿山甲科 所有种</td><td class="num-cell">8,000</td></tr>
+              <tr><td><strong>食肉目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">豺属</td><td class="num-cell">1,500</td></tr>
+              <tr><td class="sub-cell">棕熊属</td><td class="num-cell">8,000</td></tr>
+              <tr><td class="sub-cell">黑熊属</td><td class="num-cell">8,000</td></tr>
+              <tr><td class="sub-cell">马来熊属</td><td class="num-cell">10,000</td></tr>
+              <tr><td class="sub-cell"><strong>大熊猫</strong></td><td class="num-cell">500,000</td></tr>
+              <tr><td class="sub-cell">小熊猫</td><td class="num-cell">8,000</td></tr>
+              <tr><td class="sub-cell"><strong>虎</strong></td><td class="num-cell">100,000</td></tr>
+              <tr><td class="sub-cell"><strong>豹</strong></td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">雪豹属</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">云豹属</td><td class="num-cell">30,000</td></tr>
+              <tr><td class="sub-cell">猎豹属</td><td class="num-cell">10,000</td></tr>
+              <tr><td><strong>奇蹄目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">白犀</td><td class="num-cell">100,000</td></tr>
+              <tr><td class="sub-cell">其他犀科所有种</td><td class="num-cell">200,000</td></tr>
+              <tr><td class="sub-cell">貘科 所有种</td><td class="num-cell">5,000</td></tr>
+              <tr><td class="sub-cell">马科 所有种</td><td class="num-cell">60,000</td></tr>
+              <tr><td><strong>偶蹄目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">骆驼属</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">野牛属</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">山羊属</td><td class="num-cell">10,000</td></tr>
+              <tr><td class="sub-cell">藏羚属</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">羚牛属</td><td class="num-cell">50,000</td></tr>
+              <tr><td class="sub-cell">普氏原羚</td><td class="num-cell">20,000</td></tr>
+              <tr><td><strong>啮齿目</strong></td><td></td></tr>
+              <tr><td class="sub-cell">巨松鼠属</td><td class="num-cell">300</td></tr>
+              <tr><td class="sub-cell">河狸科 所有种</td><td class="num-cell">500</td></tr>
+              <tr><td class="sub-cell">豪猪科 所有种</td><td class="num-cell">500</td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <div class="table-title">🐦 鸟纲 AVES（部分重点物种）</div>
+          <table>
+            <thead><tr><th>物种</th><th>基准价值(元)</th></tr></thead>
+            <tbody>
+              <tr><td>朱鹮</td><td class="num-cell">100,000</td></tr>
+              <tr><td>东方白鹳</td><td class="num-cell">10,000</td></tr>
+              <tr><td>黑鹳</td><td class="num-cell">10,000</td></tr>
+              <tr><td>中华秋沙鸭</td><td class="num-cell">10,000</td></tr>
+              <tr><td>天鹅属 所有种</td><td class="num-cell">3,000</td></tr>
+              <tr><td>金雕</td><td class="num-cell">8,000</td></tr>
+              <tr><td>虎头海雕</td><td class="num-cell">8,000</td></tr>
+              <tr><td>白尾海雕</td><td class="num-cell">8,000</td></tr>
+              <tr><td>绿孔雀</td><td class="num-cell">15,000</td></tr>
+              <tr><td>犀鸟目 所有种</td><td class="num-cell">50,000</td></tr>
+              <tr><td>画眉</td><td class="num-cell">1,000</td></tr>
+              <tr><td>红嘴相思鸟</td><td class="num-cell">1,000</td></tr>
+              <tr><td>八色鸫科 所有种</td><td class="num-cell">500</td></tr>
+              <tr><td>企鹅目 所有种</td><td class="num-cell">3,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrapper">
+          <div class="table-title">🦎 爬行纲 REPTILIA（部分重点物种）</div>
+          <table>
+            <thead><tr><th>物种</th><th>基准价值(元)</th></tr></thead>
+            <tbody>
+              <tr><td>扬子鳄</td><td class="num-cell">10,000</td></tr>
+              <tr><td>四爪陆龟</td><td class="num-cell">8,000</td></tr>
+              <tr><td>鳄蜥科 所有种</td><td class="num-cell">10,000</td></tr>
+              <tr><td>蟒</td><td class="num-cell">3,000</td></tr>
+              <tr><td>莽山烙铁头</td><td class="num-cell">3,000</td></tr>
+              <tr><td>大壁虎</td><td class="num-cell">1,000</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrapper">
+          <div class="table-title">🐸 两栖纲/昆虫纲（部分）</div>
+          <table>
+            <thead><tr><th>物种</th><th>基准价值(元)</th></tr></thead>
+            <tbody>
+              <tr><td>安吉小鲵</td><td class="num-cell">2,500</td></tr>
+              <tr><td>版纳鱼螈</td><td class="num-cell">500</td></tr>
+              <tr><td>金斑喙凤蝶</td><td class="num-cell">1,000</td></tr>
+              <tr><td>凤蝶科 其他所有种</td><td class="num-cell">200</td></tr>
+              <tr><td>步甲科 所有种</td><td class="num-cell">200</td></tr>
+              <tr><td>臂金龟科 所有种</td><td class="num-cell">200</td></tr>
+              <tr><td>犀金龟科 所有种</td><td class="num-cell">200</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRECIOUS METAL -->
+    <div class="content-section" id="precious-metal">
+      <div class="section-header">
+        <h1>💎 常见贵金属含量折算及印记方式参考表</h1>
+        <p>依据GB 11887-2012《首饰 贵金属纯度的规定及命名方法》</p>
+      </div>
+      <div class="calc-panel">
+        <h3>🔍 贵金属含量查询</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>贵金属类别</label>
+            <select id="metalType" onchange="filterMetal()">
+              <option value="all">全部</option>
+              <option value="au">金(Au)及合金</option>
+              <option value="pt">铂(Pt)及合金</option>
+              <option value="pd">钯(Pd)及合金</option>
+              <option value="ag">银(Ag)及合金</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="table-wrapper">
+        <div class="table-title">📋 贵金属含量折算及印记</div>
+        <table id="metalTable">
+          <thead><tr><th>类别</th><th>名称</th><th>纯度千分数最小值</th><th>纯度其他表示</th><th>印记</th></tr></thead>
+          <tbody>
+            <tr data-cat="au"><td rowspan="5"><strong>金(Au)</strong></td><td>足金</td><td class="num-cell">990</td><td>足金</td><td>足金/金990/Au990/G990</td></tr>
+            <tr data-cat="au"><td>22K金</td><td class="num-cell">916</td><td>22K</td><td>金916(22K金)/Au916/G916</td></tr>
+            <tr data-cat="au"><td>18K金</td><td class="num-cell">750</td><td>18K</td><td>金750(18K金)/Au750/G750</td></tr>
+            <tr data-cat="au"><td>14K金</td><td class="num-cell">585</td><td>14K</td><td>金585(14K金)/Au585/G585</td></tr>
+            <tr data-cat="au"><td>9K金</td><td class="num-cell">375</td><td>9K</td><td>金375(9K金)/Au375/G375</td></tr>
+            <tr data-cat="pt"><td rowspan="4"><strong>铂(Pt)</strong></td><td>足铂</td><td class="num-cell">990</td><td>足铂/足铂金/足白金</td><td>足铂/Pt990</td></tr>
+            <tr data-cat="pt"><td>950铂</td><td class="num-cell">950</td><td></td><td>铂950/Pt950</td></tr>
+            <tr data-cat="pt"><td>900铂</td><td class="num-cell">900</td><td></td><td>铂900/Pt900</td></tr>
+            <tr data-cat="pt"><td>850铂</td><td class="num-cell">850</td><td></td><td>铂850/Pt850</td></tr>
+            <tr data-cat="pd"><td rowspan="3"><strong>钯(Pd)</strong></td><td>足钯</td><td class="num-cell">990</td><td>足钯/足钯金</td><td>足钯/Pd990</td></tr>
+            <tr data-cat="pd"><td>950钯</td><td class="num-cell">950</td><td></td><td>钯950/Pd950</td></tr>
+            <tr data-cat="pd"><td>500钯</td><td class="num-cell">500</td><td></td><td>钯500/Pd500</td></tr>
+            <tr data-cat="ag"><td rowspan="3"><strong>银(Ag)</strong></td><td>足银</td><td class="num-cell">990</td><td>足银</td><td>足银/S990/Ag990</td></tr>
+            <tr data-cat="ag"><td>925银</td><td class="num-cell">925</td><td></td><td>银925/S925/Ag925</td></tr>
+            <tr data-cat="ag"><td>800银</td><td class="num-cell">800</td><td></td><td>银800/S800/Ag800</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="info-note">包金含金量应不低于375‰，金覆盖层厚度不小于0.5μm。镀金含金量应不低于585‰，金覆盖层厚度不小于0.5μm。详见QB 1131-2005。</div>
+    </div>
+
+    <!-- BUILDING -->
+    <div class="content-section" id="building">
+      <div class="section-header">
+        <h1>🏗️ 房屋（构筑物）经济寿命参考表</h1>
+        <p>包含房屋、构筑物及与房屋有关的各类设备经济寿命</p>
+      </div>
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('buildTab1', this)">房屋</button>
+        <button class="tab-btn" onclick="switchTab('buildTab2', this)">构筑物</button>
+        <button class="tab-btn" onclick="switchTab('buildTab3', this)">房屋设备</button>
+      </div>
+      <div class="tab-content active" id="buildTab1">
+        <div class="table-wrapper">
+          <div class="table-title">📋 房屋经济寿命</div>
+          <table>
+            <thead><tr><th>房屋分类</th><th>用途</th><th>年限(年)</th></tr></thead>
+            <tbody>
+              <tr><td rowspan="4"><strong>1.钢结构</strong></td><td>生产用房</td><td class="num-cell">70</td></tr>
+              <tr><td>受腐蚀生产用房</td><td class="num-cell">50</td></tr>
+              <tr><td>受强腐蚀生产用房</td><td class="num-cell">15</td></tr>
+              <tr><td>非生产用房</td><td class="num-cell">80</td></tr>
+              <tr><td rowspan="4"><strong>2.钢筋混凝土结构</strong></td><td>生产用房</td><td class="num-cell">50</td></tr>
+              <tr><td>受腐蚀生产用房</td><td class="num-cell">35</td></tr>
+              <tr><td>受强腐蚀生产用房</td><td class="num-cell">15</td></tr>
+              <tr><td>非生产用房</td><td class="num-cell">60</td></tr>
+              <tr><td rowspan="4"><strong>3.砖混结构</strong></td><td>生产用房</td><td class="num-cell">40</td></tr>
+              <tr><td>受腐蚀生产用房</td><td class="num-cell">30</td></tr>
+              <tr><td>受强腐蚀生产用房</td><td class="num-cell">15</td></tr>
+              <tr><td>非生产用房</td><td class="num-cell">50</td></tr>
+              <tr><td rowspan="4"><strong>4.砖木结构</strong></td><td>生产用房</td><td class="num-cell">30</td></tr>
+              <tr><td>受腐蚀生产用房</td><td class="num-cell">20</td></tr>
+              <tr><td>受强腐蚀生产用房</td><td class="num-cell">10</td></tr>
+              <tr><td>非生产用房</td><td class="num-cell">40</td></tr>
+              <tr><td><strong>5.简易结构</strong></td><td></td><td class="num-cell">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-content" id="buildTab2">
+        <div class="table-wrapper">
+          <div class="table-title">📋 构筑物经济寿命</div>
+          <table>
+            <thead><tr><th>构筑物分类</th><th>年限(年)</th></tr></thead>
+            <tbody>
+              <tr><td>长输油(气)管道</td><td class="num-cell">16</td></tr>
+              <tr><td>其他管道</td><td class="num-cell">30</td></tr>
+              <tr><td>露天库</td><td class="num-cell">20</td></tr>
+              <tr><td>露天框架</td><td class="num-cell">30</td></tr>
+              <tr><td>冷藏库</td><td class="num-cell">30</td></tr>
+              <tr><td>简易冷藏库</td><td class="num-cell">15</td></tr>
+              <tr><td>烘房</td><td class="num-cell">30</td></tr>
+              <tr><td>冷却塔</td><td class="num-cell">30</td></tr>
+              <tr><td>水塔</td><td class="num-cell">30</td></tr>
+              <tr><td>蓄水池</td><td class="num-cell">30</td></tr>
+              <tr><td>污水池</td><td class="num-cell">20</td></tr>
+              <tr><td>储油罐/池</td><td class="num-cell">20</td></tr>
+              <tr><td>水井</td><td class="num-cell">30</td></tr>
+              <tr><td>船坞</td><td class="num-cell">30</td></tr>
+              <tr><td>加油站</td><td class="num-cell">30</td></tr>
+              <tr><td>水电站大坝/水库</td><td class="num-cell">50</td></tr>
+              <tr><td>机场跑道/停机坪/港口码头基础设施</td><td class="num-cell">35</td></tr>
+              <tr><td>铁路线路桥梁/涵洞/隧道</td><td class="num-cell">40</td></tr>
+              <tr><td>其他构筑物</td><td class="num-cell">20</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-content" id="buildTab3">
+        <div class="table-wrapper">
+          <div class="table-title">📋 与房屋有关的各类设备经济寿命</div>
+          <table>
+            <thead><tr><th>名称</th><th>年限(年)</th><th>备注</th></tr></thead>
+            <tbody>
+              <tr><td>屋面</td><td class="num-cell">10-25</td><td></td></tr>
+              <tr><td>外墙水刷石</td><td class="num-cell">15</td><td></td></tr>
+              <tr><td>玻璃幕墙</td><td class="num-cell">25</td><td></td></tr>
+              <tr><td>铝合金/塑钢门窗</td><td class="num-cell">25</td><td></td></tr>
+              <tr><td>不锈钢门窗</td><td class="num-cell">30</td><td></td></tr>
+              <tr><td>木门窗</td><td class="num-cell">25</td><td></td></tr>
+              <tr><td>白铁自来水管</td><td class="num-cell">20</td><td></td></tr>
+              <tr><td>铸铁下水管</td><td class="num-cell">30</td><td></td></tr>
+              <tr><td>内装修</td><td class="num-cell">10</td><td></td></tr>
+              <tr><td>强电系统</td><td class="num-cell">25</td><td>含变配电/照明/动力配线/防雷</td></tr>
+              <tr><td>弱电系统</td><td class="num-cell">10</td><td>含电话/电视/防灾报警/保安监视</td></tr>
+              <tr><td>卫生设备</td><td class="num-cell">30</td><td></td></tr>
+              <tr><td>电梯</td><td class="num-cell">15</td><td></td></tr>
+              <tr><td>脚手架(铁)</td><td class="num-cell">15</td><td>建筑专用</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- LAND -->
+    <div class="content-section" id="land">
+      <div class="section-header">
+        <h1>🌍 土地及海域使用权出让最高年限标准</h1>
+        <p>各类土地和海域使用权出让的法定最高年限</p>
+      </div>
+      <div class="card-grid">
+        <div class="table-wrapper">
+          <div class="table-title">📋 土地使用权出让最高年限</div>
+          <table>
+            <thead><tr><th>出让土地类别</th><th>最高出让年限(年)</th></tr></thead>
+            <tbody>
+              <tr><td>居住用地</td><td class="num-cell">70</td></tr>
+              <tr><td>工业用地</td><td class="num-cell">50</td></tr>
+              <tr><td>教育/科技/文化/卫生/体育用地</td><td class="num-cell">50</td></tr>
+              <tr><td>商业/旅游/娱乐用地</td><td class="num-cell">40</td></tr>
+              <tr><td>综合或其他用地</td><td class="num-cell">50</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrapper">
+          <div class="table-title">📋 海域使用权出让最高年限</div>
+          <table>
+            <thead><tr><th>海域使用类别</th><th>最高出让年限(年)</th></tr></thead>
+            <tbody>
+              <tr><td>养殖用海</td><td class="num-cell">15</td></tr>
+              <tr><td>拆船用海</td><td class="num-cell">20</td></tr>
+              <tr><td>旅游/娱乐用海</td><td class="num-cell">25</td></tr>
+              <tr><td>盐业/矿业用海</td><td class="num-cell">30</td></tr>
+              <tr><td>公益事业用海</td><td class="num-cell">40</td></tr>
+              <tr><td>港口/修造船厂等建设工程用海</td><td class="num-cell">50</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TREE -->
+    <div class="content-section" id="tree">
+      <div class="section-header">
+        <h1>🌳 古树名木价格认定相关系数</h1>
+        <p>树种价值系数 × 地方园林绿化苗木每厘米胸径价格 × 树胸径 × 各调整系数</p>
+      </div>
+      <div class="calc-panel">
+        <h3>📐 古树名木价值计算器</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>树种类型</label>
+            <select id="tType">
+              <option value="12">软阔叶类 (系数12)</option>
+              <option value="16">硬阔叶类 (系数16)</option>
+              <option value="18">针叶类 (系数18)</option>
+              <option value="18">名木 (系数18)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>地方园林绿化苗木每厘米胸径价格（元/cm）</label>
+            <input type="number" id="tPricePerCm" placeholder="如: 50" step="0.1">
+          </div>
+          <div class="form-group">
+            <label>树胸径（厘米）</label>
+            <input type="number" id="tDiameter" placeholder="如: 80" step="0.1">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>生长势</label>
+            <select id="tGrowth">
+              <option value="1">生长正常 (系数1.0)</option>
+              <option value="0.8">生长衰弱 (系数0.8)</option>
+              <option value="0.5">生长濒危 (系数0.5)</option>
+              <option value="0.1">死亡 (系数0.1)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>树木级别</label>
+            <select id="tLevel">
+              <option value="2.5">一级古树 500年以上 (系数2.5)</option>
+              <option value="1.5">二级古树 300-499年 (系数1.5)</option>
+              <option value="1">三级古树 100-299年 (系数1.0)</option>
+              <option value="3">名木 (系数3.0)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>树木场所</label>
+            <select id="tPlace">
+              <option value="1.5">郊区 (系数1.5)</option>
+              <option value="2">县城乡镇街道 (系数2.0)</option>
+              <option value="2.5">农村祠堂庙宇及聚会议事场所 (系数2.5)</option>
+              <option value="3">市区 (系数3.0)</option>
+              <option value="4">风景区/名胜古迹/自然保护区/历史文化街道等 (系数4.0)</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:8px; display:flex; gap:12px;">
+          <button class="btn btn-primary" onclick="calcTree()">计算总价值</button>
+          <button class="btn btn-secondary" onclick="document.getElementById('tResult').classList.remove('show')">清除</button>
+        </div>
+        <div id="tResult" class="result-box">
+          <div class="result-title">古树名木基准价值</div>
+          <div class="result-value" id="tResultVal">—</div>
+          <div class="result-detail" id="tResultDetail"></div>
+        </div>
+      </div>
+      <div class="calc-panel">
+        <h3>📊 古树名木损失计算参考</h3>
+        <div class="info-note">
+          <strong>全部损失：</strong>树木损失部分超过树干周长的50%或受伤根系占全部根系40%以上。<br><br>
+          <strong>部分损失计算标准：</strong>
+        </div>
+        <table>
+          <thead><tr><th>受伤部分占树干周长%</th><th>价值降低%</th><th>受伤根系占全部根系%</th><th>价值降低%</th></tr></thead>
+          <tbody>
+            <tr><td>20以下</td><td class="num-cell">至少20%</td><td>20以下</td><td class="num-cell">至少30%</td></tr>
+            <tr><td>21-30</td><td class="num-cell">40%</td><td>21-30</td><td class="num-cell">40%</td></tr>
+            <tr><td>31-40</td><td class="num-cell">60%</td><td>31-35</td><td class="num-cell">80%</td></tr>
+            <tr><td>41-50</td><td class="num-cell">80%</td><td>36-40</td><td class="num-cell">90%</td></tr>
+            <tr><td>50以上</td><td class="num-cell">100%</td><td>40以上</td><td class="num-cell">100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- end content -->
+</div><!-- end main -->
+
+<!-- STATUS BAR -->
+<div class="statusbar">
+  <span class="dot"></span>
+  <span>系统就绪</span>
+  <span>|</span>
+  <span>数据来源：广东省价格认定技术参数参照标准（2018年）</span>
+  <span style="margin-left:auto">联系电话：020-83333859</span>
+</div>
+
+<script>
+// ===== NAVIGATION =====
+function showSection(id, el) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(el) el.classList.add('active');
+  document.querySelector('.content').scrollTop = 0;
+}
+
+// ===== SIDEBAR SEARCH =====
+function filterNav(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('.nav-item').forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(q) ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-category').forEach(cat => {
+    let next = cat.nextElementSibling;
+    let hasVisible = false;
+    while(next && !next.classList.contains('nav-category')) {
+      if(next.classList.contains('nav-item') && next.style.display !== 'none') hasVisible = true;
+      next = next.nextElementSibling;
+    }
+    cat.style.display = hasVisible ? '' : 'none';
+  });
+}
+
+// ===== TABLE FILTER =====
+function filterTable(input, tableId) {
+  const q = input.value.toLowerCase();
+  const rows = document.getElementById(tableId).querySelectorAll('tbody tr');
+  rows.forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+// ===== TABS =====
+function switchTab(tabId, btn) {
+  const parent = btn.closest('.content-section');
+  parent.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tabId).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== CONDITION ESTIMATOR =====
+function updateCondition() {
+  const sel = document.getElementById('condSelect');
+  const result = document.getElementById('condResult');
+  const val = document.getElementById('condResultVal');
+  const detail = document.getElementById('condResultDetail');
+  if(!sel.value) { result.classList.remove('show'); return; }
+  const [lo, hi] = sel.value.split('-').map(Number);
+  const mid = ((lo + hi) / 2).toFixed(1);
+  val.textContent = mid + '%';
+  detail.innerHTML = `范围：${lo}% ~ ${hi}%<br>建议取值：上限 ${hi}%（设备状况较好）/ 中值 ${mid}%（一般情况）/ 下限 ${lo}%（设备状况较差）`;
+  result.classList.add('show');
+}
+
+// ===== VEHICLE CALCULATOR =====
+function getA(price) {
+  if(price < 10) return 0.68;
+  if(price < 20) return 0.62;
+  if(price < 40) return 0.57;
+  if(price < 60) return 0.53;
+  if(price < 80) return 0.50;
+  if(price < 100) return 0.48;
+  return 0.47;
+}
+
+function calcVehicle() {
+  const price = parseFloat(document.getElementById('vPrice').value);
+  const months = parseFloat(document.getElementById('vMonth').value);
+  const mileage = parseFloat(document.getElementById('vMile').value) * 10000;
+  const tech = parseFloat(document.getElementById('vTech').value) / 100;
+  const maint = parseFloat(document.getElementById('vMaint').value) / 100;
+  const repair = parseFloat(document.getElementById('vRepair').value) / 100;
+  const emission = parseFloat(document.getElementById('vEmission').value) / 100;
+  const limit = parseFloat(document.getElementById('vLimit').value) * 10000;
+
+  if(isNaN(price) || isNaN(months) || isNaN(mileage)) {
+    alert('请填写完整的车辆信息');
+    return;
+  }
+
+  const A = getA(price);
+  const P1 = 0.5, P2 = 0.5;
+  const R1_val = P1 * (1 - (months * A) / 100);
+  const R2_val = P2 * (1 - mileage / limit);
+  const R1 = Math.max(0, R1_val);
+  const R2 = Math.max(0, R2_val);
+
+  const R3 = tech * 0.35 + maint * 0.30 + repair * 0.35;
+  const R4 = emission;
+
+  const result = (R1 + R2) * R3 * R4;
+  const resultPct = Math.max(0, Math.min(100, result * 100)).toFixed(1);
+
+  const resultBox = document.getElementById('vResult');
+  document.getElementById('vResultVal').textContent = resultPct + '%';
+  document.getElementById('vResultDetail').innerHTML =
+    `<strong>计算过程：</strong><br>` +
+    `调整系数 A = ${A}（${price}万元档）<br>` +
+    `R1（时间折旧）= ${P1} × [1 - (${months} × ${A})/100] = ${R1_val.toFixed(4)}<br>` +
+    `R2（里程折旧）= ${P2} × [1 - ${(mileage/10000).toFixed(1)}万/${(limit/10000).toFixed(0)}万] = ${R2_val.toFixed(4)}<br>` +
+    `R3（维护保养）= ${tech}×35% + ${maint}×30% + ${repair}×35% = ${R3.toFixed(4)}<br>` +
+    `R4（尾气排放）= ${R4}<br>` +
+    `成新率 = (${R1_val.toFixed(4)} + ${R2_val.toFixed(4)}) × ${R3.toFixed(4)} × ${R4} = ${resultPct}%` +
+    (R1_val < 0 || R2_val < 0 ? '<br><strong style="color:#f0c040;">⚠ 注意：存在负值，说明已超出设计使用年限或报废里程参考值，应参照特殊情况处理。</strong>' : '');
+  resultBox.classList.add('show');
+}
+
+function resetCalc() {
+  ['vPrice','vMonth','vMile'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('vResult').classList.remove('show');
+}
+
+// ===== TREE CALCULATOR =====
+function calcTree() {
+  const type = parseFloat(document.getElementById('tType').value);
+  const pricePerCm = parseFloat(document.getElementById('tPricePerCm').value);
+  const diameter = parseFloat(document.getElementById('tDiameter').value);
+  const growth = parseFloat(document.getElementById('tGrowth').value);
+  const level = parseFloat(document.getElementById('tLevel').value);
+  const place = parseFloat(document.getElementById('tPlace').value);
+
+  if(isNaN(pricePerCm) || isNaN(diameter)) {
+    alert('请填写每厘米胸径价格和树胸径');
+    return;
+  }
+
+  const baseValue = type * pricePerCm * diameter;
+  const totalValue = baseValue * growth * level * place;
+
+  const resultBox = document.getElementById('tResult');
+  document.getElementById('tResultVal').textContent = '¥' + totalValue.toLocaleString('zh-CN', {maximumFractionDigits: 0});
+  document.getElementById('tResultDetail').innerHTML =
+    `<strong>计算过程：</strong><br>` +
+    `树种基准价值 = ${type} × ${pricePerCm}元/cm × ${diameter}cm = ¥${baseValue.toLocaleString('zh-CN')}<br>` +
+    `生长势系数 = ${growth}，树木级别系数 = ${level}，场所系数 = ${place}<br>` +
+    `总价值 = ¥${baseValue.toLocaleString('zh-CN')} × ${growth} × ${level} × ${place} = ¥${totalValue.toLocaleString('zh-CN', {maximumFractionDigits: 0})}`;
+  resultBox.classList.add('show');
+}
+
+// ===== METAL FILTER =====
+function filterMetal() {
+  const cat = document.getElementById('metalType').value;
+  const rows = document.querySelectorAll('#metalTable tbody tr');
+  rows.forEach(row => {
+    if(cat === 'all') {
+      row.style.display = '';
+    } else {
+      row.style.display = row.dataset.cat === cat ? '' : 'none';
+    }
+  });
+}
+
+// ===== WILDLIFE FILTER =====
+function filterWildlife(q) {
+  q = q.toLowerCase();
+  document.querySelectorAll('#wildlifeList table tbody tr').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+// Keyboard shortcut: Ctrl+F or Cmd+F in sidebar focuses search
+document.addEventListener('keydown', e => {
+  if((e.ctrlKey || e.metaKey) && e.key === 'f') {
+    e.preventDefault();
+    document.getElementById('sidebarSearch').focus();
+  }
+});
+</script>
+</body>
+</html>
