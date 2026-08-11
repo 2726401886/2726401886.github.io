@@ -1256,6 +1256,8 @@ ${fullDocText.split('\n\n').map(p => {
   if (trimmed.match(/^第[一二三四五六七八九十百]+条/)) return `<p>${trimmed}</p>`;
   return `<p>${trimmed}</p>`;
 }).join('\n')}
+<script>window.EFFBOX_STATS_API="https://effbox-stats.2726401886.workers.dev";</script>
+  <script src="/stats.js"></script>
 </body></html>`;
   const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
   triggerDownload(blob, '价格鉴证评估执业规范_中价协〔2024〕13号.html');
