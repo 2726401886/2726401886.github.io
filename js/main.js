@@ -56,7 +56,7 @@ function renderRelatedTools(containerId, currentToolId) {
   if (!container) return;
   const related = TOOLS.filter(t => t.id !== currentToolId);
   container.innerHTML = related.map(tool => `
-    <a href="${tool.path}">${tool.name}</a>
+    <a href="../${tool.path}">${tool.name}</a>
   `).join("");
 }
 
