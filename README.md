@@ -28,7 +28,7 @@ effbox2026.txt              IndexNow 验证密钥文件
 由于全站使用相对路径，本项目在子路径下同样正常。
 
 ## 上线后必做：替换域名
-搜索并替换所有 `2726401886.github.io` 为新地址（sitemap.xml、robots.txt、index.html 的 og:url 等）：
+搜索并替换所有 `toolshe.cn` 为新地址（sitemap.xml、robots.txt、index.html 的 og:url 等）：
 ```
 node ../migrate-domain.js <你的新域名>
 # 例如：node ../migrate-domain.js zhangsan.github.io
