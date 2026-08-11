@@ -35,6 +35,7 @@ const TOOLS = [
   { id: "http-status", name: "HTTP状态码", icon: "码", desc: "HTTP状态码含义速查表", path: "tools/http-status.html" },
   { id: "price-assessment", name: "价格鉴证评估", icon: "鉴", desc: "市场法/成本法/收益法计算、报告清单", path: "tools/price-assessment.html" },
   { id: "used-car-eval", name: "二手车鉴定评估", icon: "车", desc: "GB/T 30323 技术状况鉴定、评分与价值评估", path: "tools/used-car-eval.html" },
+  { id: "name-generator", name: "起名工具", icon: "名", desc: "八字五行·五格数理·三才，人名/公司起名与测名", path: "tools/name-generator.html" },
 ];
 
 // 渲染首页工具网格

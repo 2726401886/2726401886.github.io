@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>起名工具 - 中华姓名学·八字五行·五格数理起名 | 效率盒子</title>
+  <meta name="description" content="免费在线起名工具，融合中华姓名学精髓：八字五行、喜用神推算、五格数理（81数理吉凶）、三才配置、康熙笔画字库，支持人名起名、公司起名与测名评分。">
+  <meta name="keywords" content="起名,取名,宝宝起名,公司起名,姓名学,八字,五行,喜用神,五格数理,三才,康熙字典,周易,易经,命理">
+  <meta property="og:title" content="起名工具 - 中华姓名学·八字五行·五格数理起名">
+  <meta property="og:description" content="融合八字五行、五格数理、三才配置与中华易学文化，智能生成人名与公司名。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .ng-tabs{display:flex;gap:0;margin:8px 0 18px;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0}
+    .ng-tabs button{flex:1;padding:11px 8px;border:none;background:#f8fafc;color:#64748b;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+    .ng-tabs button.active{background:#4f46e5;color:#fff}
+    .ng-panel{display:none}
+    .ng-panel.active{display:block}
+    .ng-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+    .ng-grid .full{grid-column:1/-1}
+    @media(max-width:640px){.ng-grid{grid-template-columns:1fr}}
+    .ng-field label{display:block;font-size:13px;color:#64748b;margin-bottom:6px;font-weight:600}
+    .ng-field input,.ng-field select{width:100%;padding:10px 12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;background:#f8fafc;color:#1e293b;outline:none}
+    .ng-field input:focus,.ng-field select:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.12);background:#fff}
+    .ng-check{display:flex;align-items:center;gap:8px;font-size:14px;color:#334155;margin:6px 0 14px}
+    .ng-check input{width:16px;height:16px}
+    .btn-primary{background:#4f46e5;color:#fff;border:none;padding:12px 22px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+    .btn-primary:hover{background:#4338ca}
+    .btn-block{width:100%}
+    .ng-hint{font-size:12px;color:#94a3b8;margin-top:6px}
+
+    .ng-bazi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+    .ng-pillar{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:12px 6px;text-align:center}
+    .ng-pillar .pl{font-size:12px;color:#94a3b8;margin-bottom:6px}
+    .ng-pillar .gz{font-size:22px;font-weight:700;line-height:1.3}
+    .ng-pillar .el{font-size:11px;margin-top:4px}
+    .el-wood{color:#16a34a}.el-fire{color:#dc2626}.el-earth{color:#ca8a04}.el-metal{color:#6b7280}.el-water{color:#2563eb}
+
+    .ng-wuxing{display:flex;gap:6px;margin:10px 0;height:26px;border-radius:8px;overflow:hidden}
+    .ng-wuxing span{flex:1;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:600;min-width:18px}
+    .ng-xi{background:#eef2ff;border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;font-size:14px;color:#3730a3;line-height:1.7;margin:12px 0}
+
+    .ng-result{margin-top:18px}
+    .ng-name-card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:12px;border-left:4px solid #4f46e5}
+    .ng-name-card .nm{font-size:24px;font-weight:700;color:#1e293b}
+    .ng-name-card .py{font-size:13px;color:#64748b;margin-left:8px}
+    .ng-name-card .score{float:right;font-size:20px;font-weight:700;color:#4f46e5}
+    .ng-name-card .meta{font-size:13px;color:#475569;margin-top:8px;line-height:1.8}
+    .ng-grid-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px}
+    .ng-grid-table th,.ng-grid-table td{border:1px solid #e2e8f0;padding:6px 4px;text-align:center}
+    .ng-grid-table th{background:#f1f5f9;color:#64748b}
+    .lv-ji{color:#16a34a;font-weight:700}.lv-ban{color:#ca8a04;font-weight:700}.lv-xiong{color:#dc2626;font-weight:700}
+    .ng-badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;background:#e0f2fe;color:#0369a1;margin:2px}
+    .ng-badge.match{background:#dcfce7;color:#15803d}
+    .ng-section{margin:22px 0}
+    .ng-section h3{font-size:16px;font-weight:700;color:#1e293b;margin-bottom:10px;border-left:4px solid #4f46e5;padding-left:10px}
+    .ng-section p{font-size:14px;color:#475569;line-height:1.8;margin-bottom:8px}
+    .ng-section ul{margin:0 0 8px 20px;font-size:14px;color:#475569;line-height:1.8}
+    .hint-box{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:12px 16px;font-size:13px;color:#92400e;line-height:1.7;margin:14px 0}
+    .info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:12px 16px;font-size:13px;color:#1e40af;line-height:1.7;margin:14px 0}
+    .ng-char-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:6px;font-size:13px;flex-wrap:wrap}
+    .ng-char-row .ch{font-size:20px;font-weight:700;width:28px;text-align:center}
+    .ng-char-row input{width:64px;padding:6px 8px;border:1px solid #e2e8f0;border-radius:6px;font-size:13px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>起名工具</h1>
+      <p>融合中华姓名学精髓 —— 八字五行、喜用神、五格数理（81数理）、三才配置，辅以《康熙字典》笔画字库，智能生成人名与公司名，并提供测名评分。</p>
+    </div>
+
+    <div class="tool-box">
+      <div class="ng-tabs">
+        <button id="tab-person" class="active" onclick="switchTab('person')">人名起名</button>
+        <button id="tab-company" onclick="switchTab('company')">公司起名</button>
+        <button id="tab-check" onclick="switchTab('check')">测名评分</button>
+      </div>
+
+      <!-- ============ 人名起名 ============ -->
+      <div id="panel-person" class="ng-panel active">
+        <div class="ng-grid">
+          <div class="ng-field">
+            <label>姓氏</label>
+            <input id="p-surname" type="text" placeholder="如：李 / 欧阳" maxlength="4">
+          </div>
+          <div class="ng-field">
+            <label>姓氏康熙笔画（自动，可改）</label>
+            <input id="p-surname-stroke" type="number" min="0" placeholder="自动识别">
+          </div>
+          <div class="ng-field">
+            <label>性别倾向</label>
+            <select id="p-gender">
+              <option value="2">中性</option>
+              <option value="0">男</option>
+              <option value="1">女</option>
+            </select>
+          </div>
+          <div class="ng-field">
+            <label>名字字数</label>
+            <select id="p-len">
+              <option value="2">双名（两字）</option>
+              <option value="1">单名（一字）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="ng-check">
+          <input id="p-use-bazi" type="checkbox" checked>
+          <label for="p-use-bazi">按生辰八字推算喜用神（更精准补全五行）</label>
+        </div>
+
+        <div id="p-bazi-inputs" class="ng-grid">
+          <div class="ng-field">
+            <label>出生年</label>
+            <select id="p-year"></select>
+          </div>
+          <div class="ng-field">
+            <label>出生月</label>
+            <select id="p-month"></select>
+          </div>
+          <div class="ng-field">
+            <label>出生日</label>
+            <select id="p-day"></select>
+          </div>
+          <div class="ng-field">
+            <label>出生时辰</label>
+            <select id="p-hour">
+              <option value="0">子时 23:00-01:00</option>
+              <option value="1">丑时 01:00-03:00</option>
+              <option value="2">寅时 03:00-05:00</option>
+              <option value="3">卯时 05:00-07:00</option>
+              <option value="4">辰时 07:00-09:00</option>
+              <option value="5">巳时 09:00-11:00</option>
+              <option value="6">午时 11:00-13:00</option>
+              <option value="7">未时 13:00-15:00</option>
+              <option value="8">申时 15:00-17:00</option>
+              <option value="9">酉时 17:00-19:00</option>
+              <option value="10">戌时 19:00-21:00</option>
+              <option value="11">亥时 21:00-23:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="ng-hint">若不确定时辰，可选「子时」近似；不勾选「按八字推算」则仅按字形五行与五格吉凶起名。</div>
+
+        <div style="margin-top:16px"><button class="btn btn-primary btn-block" onclick="generatePerson()">生成名字</button></div>
+        <div id="p-result" class="ng-result"></div>
+      </div>
+
+      <!-- ============ 公司起名 ============ -->
+      <div id="panel-company" class="ng-panel">
+        <div class="ng-grid">
+          <div class="ng-field">
+            <label>所属行业</label>
+            <select id="c-industry">
+              <option value="tech">科技 / 互联网（属火）</option>
+              <option value="culture">文化 / 传媒 / 教育（属木）</option>
+              <option value="trade">商贸 / 电商 / 物流（属水）</option>
+              <option value="build">建筑 / 地产（属土）</option>
+              <option value="food">食品 / 餐饮（属火）</option>
+              <option value="medical">医疗 / 健康（属水）</option>
+              <option value="finance">金融 / 投资（属金）</option>
+              <option value="cloth">服饰 / 纺织（属木）</option>
+              <option value="any">不限行业</option>
+            </select>
+          </div>
+          <div class="ng-field">
+            <label>名称字数</label>
+            <select id="c-len">
+              <option value="2">两字</option>
+              <option value="3">三字</option>
+              <option value="4">四字</option>
+            </select>
+          </div>
+          <div class="ng-field full">
+            <label>偏好五行（可选，留空则按行业五行）</label>
+            <select id="c-element">
+              <option value="-1">按行业五行</option>
+              <option value="0">木</option>
+              <option value="1">火</option>
+              <option value="2">土</option>
+              <option value="3">金</option>
+              <option value="4">水</option>
+            </select>
+          </div>
+          <div class="ng-field full">
+            <label>关键词 / 期望字（可选，可填 1-2 个想用的字）</label>
+            <input id="c-keyword" type="text" placeholder="如：鸿、信、嘉" maxlength="6">
+          </div>
+        </div>
+        <div style="margin-top:8px"><button class="btn btn-primary btn-block" onclick="generateCompany()">生成公司名</button></div>
+        <div id="c-result" class="ng-result"></div>
+      </div>
+
+      <!-- ============ 测名评分 ============ -->
+      <div id="panel-check" class="ng-panel">
+        <div class="ng-grid">
+          <div class="ng-field">
+            <label>姓（公司名留空）</label>
+            <input id="k-surname" type="text" placeholder="如：王 / 腾讯" maxlength="6">
+          </div>
+          <div class="ng-field">
+            <label>名 / 全称</label>
+            <input id="k-given" type="text" placeholder="如：梓涵 / 阿里巴巴" maxlength="8">
+          </div>
+        </div>
+        <div class="ng-field full">
+          <label>类型</label>
+          <select id="k-type">
+            <option value="person">人名</option>
+            <option value="company">公司名</option>
+          </select>
+        </div>
+        <div class="ng-hint">字库未收录的汉字，请在下方的「康熙笔画核对」中手动填写，以确保五格准确。</div>
+        <div style="margin-top:8px"><button class="btn btn-primary btn-block" onclick="evaluateName()">解析并评分</button></div>
+        <div id="k-verify" class="ng-result"></div>
+        <div id="k-result" class="ng-result"></div>
+      </div>
+
+      <!-- ============ 文化说明 ============ -->
+      <div class="ng-section">
+        <h3>中华姓名学要义</h3>
+        <p>姓名学是中国传统易学文化的重要支脉，讲究「音、形、义、数、理」五者合一，以阴阳五行生克为根基，追求天地人三才和谐。本工具依此构建，核心包含四大体系：</p>
+        <ul>
+          <li><strong>八字五行</strong>：以出生年月日时排四柱（年、月、日、时）干支，剖析金木水火土之强弱，推演「日主」与「喜用神」——即命局所喜、所缺之五行，起名据此补益，取法「补益通关、扶抑得宜」。</li>
+          <li><strong>五格数理</strong>：源自东传之《熊崎氏姓名学》，依《康熙字典》笔画，将姓名分为天格、人格、地格、外格、总格，各格对应 1–81 之「数理」，各有吉凶休咎（河洛之数的体现）。</li>
+          <li><strong>三才配置</strong>：以天格、人格、地格之五行，观其相生相克、比和与否，判断基础运、成功运与人际关系，乃姓名吉凶之纲要。</li>
+          <li><strong>字形字义音律</strong>：取字须意蕴雅正、出处有自（多源自《诗经》《楚辞》《论语》等典籍），音律和谐、朗朗上口，避免生僻与拗口。</li>
+        </ul>
+        <div class="info-box">
+          <strong>易学渊源：</strong>阴阳五行、干支历法、河图洛书皆本于《周易》「天人合一」「一阴一阳之谓道」之思想。姓名之学，正是将宇宙节律与个人禀赋相参，期以名正而言顺、气顺而运通。然命由天定、运在人为，名字为助缘，非决断之具。
+        </div>
+        <div class="hint-box">
+          <strong>免责声明：</strong>本工具之八字、五行、喜用神推算以节气近似日期为界（立春约 2 月 4 日、各节气前后或有 1 日误差），康熙笔画以《康熙字典》为准、个别字或略有出入，五格三才与喜用神皆为<strong>通俗参考</strong>，不可替代专业命理师之论断。人名关系一生，公司名关乎商运，重要决策请审慎并咨询专业人士；亦当知「名者，实之宾也」，修身立德方为根本。
+        </div>
+      </div>
+
+      <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+      <div class="related-tools">
+        <h2>其他工具</h2>
+        <div class="related-grid" id="related-tools"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+      <a href="../index.html#about">关于</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>renderRelatedTools("related-tools", "name-generator");</script>
+
+  <script>
+  /* ============================================================
+     起名工具核心引擎
+     ============================================================ */
+  var GAN = ['甲','乙','丙','丁','戊','己','庚','辛','壬','癸'];
+  var ZHI = ['子','丑','寅','卯','辰','巳','午','未','申','酉','戌','亥'];
+  // 天干五行：甲乙木 丙丁火 戊己土 庚辛金 壬癸水
+  var GAN_EL = [0,0,1,1,2,2,3,3,4,4];
+  // 地支本气五行：子水 丑土 寅木 卯木 辰土 巳火 午火 未土 申金 酉金 戌土 亥水
+  var ZHI_EL = [4,2,0,0,2,1,1,2,3,3,2,4];
+  var ZODIAC = ['鼠','牛','虎','兔','龙','蛇','马','羊','猴','鸡','狗','猪'];
+  var EL_NAME = ['木','火','土','金','水'];
+  var EL_COLOR = ['#16a34a','#dc2626','#ca8a04','#6b7280','#2563eb'];
+
+  // 五行生克
+  var SHENG = {0:1,1:2,2:3,3:4,4:0}; // 木生火 火生土 土生金 金生水 水生木
+  var KE    = {0:2,1:4,2:4,3:0,4:1}; // 木克土 火克金 金克木 水克火 土克水
+  // 被克：谁克我
+  var KE_BY = {}; for(var k in KE){ KE_BY[KE[k]] = parseInt(k); }
+
+  // 81 数理吉凶表  level: 2=吉 1=半吉 0=凶
+  var SHULI = {
+    1:[2,'宇宙起源，万物开泰，大吉之数'],2:[0,'混沌未开，动摇不安，基础薄弱'],
+    3:[2,'进取如意，名利双收，大业成就'],4:[0,'破败凶变，灾难频来，困难重重'],
+    5:[2,'福寿圆满，阴阳和合，富贵荣华'],6:[2,'安稳吉庆，天德地祥，家运隆昌'],
+    7:[2,'刚毅果断，独立权威，精诚团结'],8:[2,'意志坚刚，勤勉努力，成功可期'],
+    9:[0,'破舟入海，穷困潦倒，大成大败'],10:[0,'万事终局，雪暗飘零，徒劳无功'],
+    11:[2,'旱苗逢雨，草木逢春，挽回家运'],12:[0,'掘井无泉，意志薄弱，家庭缘薄'],
+    13:[2,'智略超群，才艺双全，富学成就'],14:[0,'忍得苦难，刑伤破家，孤寡之数'],
+    15:[2,'福寿圆满，涵养雅量，德高望重'],16:[2,'厚重载德，安富尊荣，财官双美'],
+    17:[2,'突破万难，刚柔并济，权威刚强'],18:[2,'铁镜重磨，权威显达，博得名利'],
+    19:[0,'多难挫折，风云蔽日，辛苦重来'],20:[0,'非业破运，灾祸频至，短命孤独'],
+    21:[2,'明月中天，独立权威，官运亨通'],22:[0,'秋草逢霜，怀才不遇，薄弱无力'],
+    23:[2,'旭日东升，壮丽荣达，功名显赫'],24:[2,'掘藏得金，家门余庆，金钱丰盈'],
+    25:[2,'资性英敏，刚毅果断，天赋之才'],26:[0,'波澜起伏，变怪奇异，英雄豪杰'],
+    27:[0,'欲望无止，多受毁谤，辛苦遭难'],28:[0,'遭难逆境，豪杰气概，但多凶变'],
+    29:[2,'智谋兼备，财力归集，成就大业'],30:[0,'沉浮不定，凶吉难分，晚景凄凉'],
+    31:[2,'春日花开，智勇得志，心想事成'],32:[2,'侥幸多望，贵人得助，财帛丰盈'],
+    33:[2,'旭日升天，鸾凤相会，隆昌至极'],34:[0,'破家亡身，灾难不绝，短命凶死'],
+    35:[2,'温和平静，智达通畅，优雅发展'],36:[0,'波澜重叠，风浪不息，侠义波折'],
+    37:[2,'权威显达，吉人天相，事业成功'],38:[1,'艺能奏功，勤勉立业，稍欠果断'],
+    39:[2,'富贵荣华，德泽四方，财源广进'],40:[0,'智勇退守，消极无为，晚景寂寞'],
+    41:[2,'德望兼备，家门隆昌，有德有才'],42:[0,'寒蝉在柳，十艺九不成，缺乏果断'],
+    43:[0,'散财破产，外祥内苦，邪途灾祸'],44:[0,'破家亡身，难成大事，灾难频来'],
+    45:[2,'顺风扬帆，新生泰运，富贵繁荣'],46:[0,'浪里淘金，载宝沉舟，辛苦失利'],
+    47:[2,'点石成金，开花结果，权威进取'],48:[2,'古松立鹤，德智兼备，吉祥安泰'],
+    49:[0,'凶变转化，吉凶难定，先苦后甜'],50:[0,'小舟入海，吉凶参半，一成一败'],
+    51:[1,'盛衰交加，需防倾覆，可成中业'],52:[2,'卓识远见，先见之明，望重天下'],
+    53:[0,'忧愁困苦，内心忧患，盛衰难测'],54:[0,'石上栽花，难得持久，外祥内苦'],
+    55:[0,'善恶难分，外祥内苦，晚景凄凉'],56:[0,'浪里行舟，历尽艰辛，四面楚歌'],
+    57:[0,'寒雪青松，英豪气概，但多灾厄'],58:[1,'先苦后甘，晚景兴隆，沉浮自安'],
+    59:[0,'寒蝉悲风，时运不济，进退维谷'],60:[0,'暗淡无光，心迷意乱，孤寂无依'],
+    61:[2,'牡丹芙蓉，名利双收，安稳余庆'],62:[0,'衰败之象，基础虚弱，内忧外患'],
+    63:[2,'富贵荣华，天长地久，家运昌隆'],64:[0,'骨肉分离，徒劳无功，沉沦逆境'],
+    65:[2,'天长地久，家运隆昌，富贵长寿'],66:[0,'进退维谷，内外不和，灾祸并至'],
+    67:[2,'财通四海，顺风扬帆，天长地久'],68:[2,'顺风吹帆，兴家立业，通达顺畅'],
+    69:[0,'坐立不安，智谋不足，晚景凄凉'],70:[0,'残菊逢霜，虚弱无力，孤军奋战'],
+    71:[1,'石上金花，劳而无功，晚景稍安'],72:[0,'枯木无枝，劳而无成，一生平凡'],
+    73:[0,'无谋之人，力量不足，灾祸频来'],74:[0,'残菊经霜，逆境烦闷，破家亡身'],
+    75:[0,'退守保安，晚景凄凉，一生难安'],76:[0,'离散败亡，倾覆之象，短命多难'],
+    77:[0,'半吉半凶，家庭缘浅，晚景不安'],78:[0,'晚景凄凉，智谋不足，辛苦一生'],
+    79:[0,'云遮半月，内外不合，前途暗淡'],80:[0,'凶星入度，一生困难，晚景孤寂'],
+    81:[2,'万物回春，还本归元，大吉大利']
+  };
+  function shuliLevel(n){ var r = SHULI[n]; return r ? r[0] : 1; }
+  function shuliText(n){ var r = SHULI[n]; return r ? r[1] : '（超出81，取尾数参看）'; }
+
+  // 数理五行：1,2木 3,4火 5,6土 7,8金 9,0水
+  function shuliEl(n){ var m = ((n-1)%10)+1; if(m<=2)return 0; if(m<=4)return 1; if(m<=6)return 2; if(m<=8)return 3; return 4; }
+
+  /* ---------- 历法：儒略日 ---------- */
+  function jdn(y,m,d){
+    var a = Math.floor((14-m)/12);
+    var yy = y + 4800 - a;
+    var mm = m + 12*a - 3;
+    return d + Math.floor((153*mm+2)/5) + 365*yy + Math.floor(yy/4) - Math.floor(yy/100) + Math.floor(yy/400) - 32045;
+  }
+  // 日柱
+  function dayPillar(y,m,d){
+    var idx = ((jdn(y,m,d)+49)%60+60)%60;
+    return {gan:idx%10, zhi:idx%12};
+  }
+  // 节气近似锚点（月支起始）：月支 0=寅 ... 11=丑
+  var JIEQI = [
+    {m:1,d:6,b:11},{m:2,d:4,b:0},{m:3,d:6,b:1},{m:4,d:5,b:2},{m:5,d:6,b:3},
+    {m:6,d:6,b:4},{m:7,d:7,b:5},{m:8,d:8,b:6},{m:9,d:8,b:7},{m:10,d:8,b:8},
+    {m:11,d:7,b:9},{m:12,d:7,b:10}
+  ];
+  function monthBranch(y,m,d){
+    var best = 10; // 早于小寒则为上一年的子月
+    for(var i=0;i<JIEQI.length;i++){
+      var j=JIEQI[i];
+      if((m>j.m)||(m===j.m&&d>=j.d)) best=j.b;
+    }
+    return best;
+  }
+  // 五虎遁：年干 -> 寅月(正月)天干
+  // 甲己->丙(2) 乙庚->戊(4) 丙辛->庚(6) 丁壬->壬(8) 戊癸->甲(0)
+  function monthGanBase(yearGan){
+    var g = ((yearGan%10)+10)%10;
+    if(g===0||g===5) return 2;
+    if(g===1||g===6) return 4;
+    if(g===2||g===7) return 6;
+    if(g===3||g===8) return 8;
+    return 0; // g===4||g===9 戊癸 -> 甲
+  }
+  // 年柱（以立春为界，约2/4）
+  function yearPillar(y,m,d){
+    var ey = (m<2||(m===2&&d<4)) ? y-1 : y;
+    var idx = ((ey-4)%60+60)%60;
+    return {gan:idx%10, zhi:idx%12, effYear:ey};
+  }
+  function hourBranch(h){ return Math.floor((h+1)/2)%12; }
+  // 五鼠遁：日干 -> 子时天干
+  // 甲己->甲(0) 乙庚->丙(2) 丙辛->戊(4) 丁壬->庚(6) 戊癸->壬(8)
+  function hourGanBase(dayGan){
+    var g = ((dayGan%10)+10)%10;
+    if(g===0||g===5) return 0;
+    if(g===1||g===6) return 2;
+    if(g===2||g===7) return 4;
+    if(g===3||g===8) return 6;
+    return 8; // g===4||g===9 戊癸 -> 壬
+  }
+
+  function computeBazi(y,m,d,hour){
+    var yp = yearPillar(y,m,d);
+    var mb = monthBranch(y,m,d);
+    var mg = (monthGanBase(yp.gan)+mb)%10;
+    var dp = dayPillar(y,m,d);
+    var hb = hourBranch(hour);
+    var hg = (hourGanBase(dp.gan)+hb)%10;
+    // mb 为"月序"空间（寅=0…子=10，丑=11），需转为地支序号（子=0）以匹配 ZHI/ZHI_EL
+    var mbZhi = (mb+2)%12;
+    return {
+      year:{gan:yp.gan,zhi:yp.zhi},
+      month:{gan:mg,zhi:mbZhi},
+      day:{gan:dp.gan,zhi:dp.zhi},
+      hour:{gan:hg,zhi:hb},
+      zodiac: ZHI_EL,
+      zodiacName: ZODIAC[yp.zhi]
+    };
+  }
+
+  // 五行统计 + 喜用神
+  function analyzeWuxing(bz){
+    var cnt=[0,0,0,0,0];
+    var pillars=[bz.year,bz.month,bz.day,bz.hour];
+    for(var i=0;i<pillars.length;i++){
+      cnt[GAN_EL[pillars[i].gan]]++;
+      // 地支本气计1；月令（月支）加倍权重
+      var w = ZHI_EL[pillars[i].zhi];
+      cnt[w] += (i===1)?2:1;
+    }
+    var dayMaster = GAN_EL[bz.day.gan];
+    // 日主强弱：日主元素得分（含天干地支本气，月令×2）相对均衡值
+    var dmScore = cnt[dayMaster];
+    var avg = (cnt[0]+cnt[1]+cnt[2]+cnt[3]+cnt[4])/5;
+    var strong = dmScore >= avg + 0.6;
+    // 喜用神
+    var xi=[];
+    if(!strong){
+      xi.push(dayMaster);            // 比劫
+      xi.push(SHENG[KE_BY[dayMaster]]); // 印（生我者）
+    } else {
+      xi.push(KE[dayMaster]);        // 官杀（克我）
+      xi.push(SHENG[dayMaster]);     // 食伤（我生）
+      xi.push(KE_BY[dayMaster]);     // 财（我克）
+    }
+    // 去重
+    var uniq=[]; for(var j=0;j<xi.length;j++){ if(uniq.indexOf(xi[j])<0) uniq.push(xi[j]); }
+    return {cnt:cnt, dayMaster:dayMaster, strong:strong, xi:uniq, avg:avg};
+  }
+
+  // 五格
+  function calcGrids(surnameStrokes, nameStrokes){
+    var s = surnameStrokes, n = nameStrokes;
+    var tian, ren, di, zong, wai;
+    if(n.length===1){
+      tian = s+1; ren = s+n[0]; di = n[0]+1; zong = s+n[0]; wai = 2;
+    } else if(n.length===2){
+      tian = s+1; ren = s+n[0]; di = n[0]+n[1]+1; zong = s+n[0]+n[1]; wai = n[1]+1;
+    } else if(n.length===3){
+      tian = s+1; ren = s+n[0]; di = n[1]+n[2]+1; zong = s+n[0]+n[1]+n[2]; wai = n[2]+1;
+    } else {
+      tian = s+1; ren = s+n[0]; di = n[n.length-2]+n[n.length-1]+1;
+      var sum=s; for(var i=0;i<n.length;i++)sum+=n[i]; zong=sum;
+      wai = n[n.length-1]+1;
+    }
+    return {tian:tian,ren:ren,di:di,zong:zong,wai:wai};
+  }
+
+  // 三才（天/人/地 五行）相生相克判定
+  function sanCaiLevel(tianEl, renEl, diEl){
+    function pair(a,b){ // a 对 b 的关系是否"和"
+      if(a===b) return 1;            // 比和
+      if(SHENG[a]===b) return 1;     // a 生 b（顺生）
+      if(SHENG[b]===a) return 1;     // b 生 a（被生亦和）
+      return 0;                      // 相克
+    }
+    var s1 = pair(tianEl,renEl), s2 = pair(renEl,diEl);
+    var sum = s1+s2;
+    if(sum===2) return {lv:2, txt:'三才相生比和，基础运与成功运俱佳，大吉'};
+    if(sum===1) return {lv:1, txt:'三才一和一克，中平之配置，宜辅以修养'};
+    return {lv:0, txt:'三才相克，基础或人际易有波折，慎选'};
+  }
+
+  /* ---------- 字库（康熙笔画 · 五行 · 性别） ----------
+     gender: 0=男 1=女 2=通 ; el: 0木1火2土3金4水
+     康熙笔画以《康熙字典》为准，个别字或略有出入。 */
+  var LEX = [
+    // 木
+    ['梓',11,0,2,'梓木，故乡之木，寓坚韧成才'],['林',8,0,2,'双木成林，繁茂昌盛'],['森',12,0,2,'三木为森，生机盎然'],
+    ['桐',10,0,2,'梧桐，凤栖之木，高贵'],['柏',9,0,2,'松柏长青，坚贞不屈'],['松',8,0,0,'松之长寿坚毅'],
+    ['楠',13,0,0,'楠木珍贵，材堪大用'],['楷',13,0,0,'楷模，典范'],['栋',12,0,0,'栋梁之材'],
+    ['荣',14,0,2,'草木繁盛，荣耀'],['茂',11,0,2,'茂盛，丰沛'],['萌',14,0,2,'萌发生机'],
+    ['嘉',14,0,2,'美好，赞许'],['欣',8,0,1,'欣喜，欣荣'],['雅',12,0,1,'雅致高洁'],
+    ['兰',23,0,1,'兰花，君子之香'],['竹',6,0,2,'竹，虚心有节'],['柳',9,0,1,'柳，柔美多姿'],
+    ['梅',11,0,1,'梅花，凌寒独放'],['萱',15,0,1,'萱草，忘忧'],['薇',19,0,1,'紫薇，花开灿烂'],
+    ['芷',10,0,1,'白芷，香草美人'],['蕊',18,0,1,'花蕊，含苞待放'],['若',11,0,1,'如若，香草'],
+    ['茵',12,0,1,'绿茵，生机'],['茹',12,0,1,'包含，包容'],['梵',11,0,2,'清净，梵音'],
+    ['栩',10,0,2,'栩栩如生，生动'],['棋',12,0,2,'棋，智慧对弈'],['蕴',22,0,2,'蕴藏，涵养'],
+    ['苏',22,0,2,'复苏，苏醒'],['蔓',17,0,1,'蔓蔓，绵长'],['芊',9,0,1,'芊芊，草木盛'],
+    // 火
+    ['炎',8,1,0,'火盛，光明炽烈'],['煜',13,1,2,'照耀，光辉'],['煊',13,1,2,'温暖，声名煊赫'],
+    ['焕',13,1,2,'焕发，光彩'],['灿',7,1,2,'灿烂，明亮'],['灵',24,1,2,'灵秀，灵慧'],
+    ['烨',14,1,2,'光辉灿烂'],['昕',8,1,1,'黎明，初升之光'],['晴',12,1,1,'晴朗，开朗'],
+    ['丹',4,1,1,'丹心，赤诚'],['丽',19,1,1,'美丽，绚丽'],['彤',7,1,1,'红色，彤管'],
+    ['昭',9,1,2,'昭著，显明'],['显',23,1,0,'显赫，彰显'],['畅',14,1,2,'畅达，顺畅'],
+    ['曜',18,1,0,'日光，曜明'],['熠',15,1,2,'熠熠，光耀'],['熹',16,1,2,'光明，晨光'],
+    ['暖',13,1,2,'温暖，和煦'],['炜',13,1,2,'光辉'],['烁',19,1,2,'闪烁，明亮'],
+    ['智',12,1,0,'智慧，明智'],['昊',8,1,0,'昊天，广大'],['昱',9,1,0,'日光，昱耀'],
+    ['晟',11,1,0,'光明盛大'],['朗',11,1,0,'开朗，明朗'],['烜',10,1,0,'盛大，显赫'],
+    // 土
+    ['坤',8,2,2,'大地，柔顺承载'],['垚',9,2,0,'山高，坚实'],['城',10,2,0,'城池，稳固'],
+    ['坦',8,2,2,'坦荡，平实'],['培',11,2,2,'培养，培育'],['基',11,2,0,'基础，根本'],
+    ['堂',11,2,2,'堂正，光明'],['墨',15,2,2,'笔墨，文采'],['宇',6,2,0,'气宇，天地'],
+    ['辰',7,2,0,'星辰，时日'],['安',6,2,2,'平安，安定'],['婉',11,2,1,'婉约，温婉'],
+    ['怡',9,2,1,'怡然，和悦'],['恩',10,2,2,'恩惠，感恩'],['维',14,2,2,'维系，思维'],
+    ['圣',13,2,0,'圣明，通达'],['坚',11,2,0,'坚毅，坚定'],['峰',10,2,0,'山峰，卓然'],
+    ['岩',8,2,0,'岩石，坚毅'],['磊',15,2,0,'磊落，光明'],['硕',14,2,0,'硕大，丰硕'],
+    ['懿',22,2,1,'懿德，美好'],['容',10,2,2,'包容，从容'],['岚',12,2,1,'山间雾气，清雅'],
+    ['宛',8,2,1,'宛转，婉约'],['益',10,2,2,'增益，受益'],['惟',12,2,2,'惟，思惟'],
+    // 金
+    ['铭',14,3,2,'铭刻，铭记'],['锐',15,3,0,'锐利，进取'],['锋',15,3,0,'先锋，锋芒'],
+    ['钰',13,3,1,'宝物，珍宝'],['锦',16,3,2,'锦绣，华美'],['铃',13,3,1,'清脆，铃音'],
+    ['银',14,3,2,'银辉，贵重'],['钧',12,3,0,'尊贵，雷钧'],['铮',16,3,0,'铮铮，刚正'],
+    ['镇',18,3,0,'镇守，安稳'],['锡',16,3,2,'赐予，锡福'],['鑫',24,3,0,'多金，兴旺'],
+    ['钦',12,3,0,'钦佩，敬重'],['铸',22,3,0,'铸就，成就'],['铠',18,3,0,'铠甲，坚护'],
+    ['铄',23,3,2,'辉煌，铄金'],['镜',19,3,2,'明镜，明鉴'],['钟',17,3,0,'专注，钟灵'],
+    ['珊',10,3,1,'珊瑚，美丽'],['琦',13,3,1,'美玉，珍奇'],['瑶',15,3,1,'美玉，瑶台'],
+    ['瑾',16,3,1,'美玉，瑾瑜'],['璇',19,3,1,'美玉，璇玑'],['璐',17,3,1,'美玉，宝璐'],
+    ['瑞',14,3,2,'瑞祥，吉祥'],['琛',13,3,2,'珍宝，琛赆'],['舒',12,3,2,'舒朗，从容'],
+    ['诗',13,3,1,'诗书，文雅'],['诚',14,3,0,'诚信，真诚'],['竣',12,3,0,'竣事，完备'],
+    // 水
+    ['浩',11,4,0,'浩大，浩然'],['瀚',20,4,0,'浩瀚，广阔'],['泽',17,4,2,'恩泽，润泽'],
+    ['涵',12,4,2,'涵养，包容'],['润',16,4,2,'润泽，温润'],['清',12,4,2,'清雅，清正'],
+    ['洁',16,4,1,'纯洁，高洁'],['淑',12,4,1,'贤淑，美好'],['淼',12,4,2,'水大，浩淼'],
+    ['沁',8,4,1,'沁润，清新'],['沛',8,4,2,'充沛，盛大'],['汐',7,4,1,'潮汐，夜汐'],
+    ['澜',21,4,2,'波澜，宏大'],['源',14,4,0,'源泉，本源'],['泓',9,4,2,'深广，清澈'],
+    ['淳',12,4,2,'淳朴，淳厚'],['溪',14,4,1,'溪流，清溪'],['雨',8,4,2,'雨润，恩泽'],
+    ['雪',11,4,1,'雪，纯洁'],['露',21,4,1,'露，清露'],['霜',17,4,1,'霜，高洁'],
+    ['雯',12,4,1,'成纹之云，文采'],['霏',16,4,1,'雨雪盛，霏霏'],['沐',8,4,2,'沐浴，润泽'],
+    ['汀',6,4,1,'水边平地，汀洲'],['洛',10,4,2,'洛水，灵秀'],['渊',12,4,0,'深渊，渊博'],
+    ['潇',21,4,2,'潇洒，自在'],['漫',15,4,1,'烂漫，自在'],['淳',12,4,2,'淳厚'],
+    ['沛',8,4,2,'充沛'],['淳',12,4,2,'淳朴'],['淳',12,4,2,'']
+  ];
+  // 去重（防止重复键）
+  var LEX_MAP = {};
+  for(var li=0; li<LEX.length; li++){
+    var e = LEX[li];
+    if(!LEX_MAP[e[0]]) LEX_MAP[e[0]] = {py:e[1], el:e[2], gender:e[3], mean:e[4]||''};
+  }
+  function lookup(ch){ return LEX_MAP[ch]; }
+
+  // 常见复姓笔画（康熙）
+  var COMPOUND = {'欧阳':17,'司马':15,'上官':11,'诸葛':25,'东方':12,'慕容':25,'南宫':19,'司徒':15,'宇文':10,'拓跋':21,'欧阳':17,'夏侯':19,'诸葛':25,'东方':12,'独孤':16,'慕容':25,'司马':15,'上官':11,'令狐':20,'诸葛':25};
+
+  function surnameStrokes(surname){
+    if(!surname) return 0;
+    if(surname.length>=2 && COMPOUND[surname]!==undefined) return COMPOUND[surname];
+    var total=0, ok=true;
+    for(var i=0;i<surname.length;i++){
+      var c = lookup(surname[i]);
+      if(c) total += c.py; else ok=false;
+    }
+    return ok ? total : 0;
+  }
+
+  /* ---------- 评分 ---------- */
+  function scoreName(grids, sanCai, xiList, nameEls){
+    var sc = 58;
+    [grids.tian,grids.ren,grids.di,grids.wai,grids.zong].forEach(function(n){
+      var lv = shuliLevel(n);
+      if(lv===2) sc+=8; else if(lv===1) sc+=3; else sc-=7;
+    });
+    if(sanCai.lv===2) sc+=10; else if(sanCai.lv===1) sc+=4; else sc-=8;
+    // 喜用匹配
+    if(xiList && nameEls){
+      var hit=0;
+      for(var i=0;i<nameEls.length;i++){ if(xiList.indexOf(nameEls[i])>=0) hit++; }
+      sc += Math.min(hit, nameEls.length)*5;
+    }
+    return Math.max(0, Math.min(100, sc));
+  }
+
+  /* ---------- 生成人名 ---------- */
+  function generatePerson(){
+    var surname = (document.getElementById('p-surname').value||'').trim();
+    var gender = parseInt(document.getElementById('p-gender').value);
+    var len = parseInt(document.getElementById('p-len').value);
+    var useBazi = document.getElementById('p-use-bazi').checked;
+    var box = document.getElementById('p-result');
+    if(!surname){ box.innerHTML='<div class="hint-box">请先填写姓氏。</div>'; return; }
+
+    // 姓氏笔画
+    var ssInput = document.getElementById('p-surname-stroke');
+    var sStroke = parseInt(ssInput.value);
+    if(isNaN(sStroke) || sStroke<=0){
+      sStroke = surnameStrokes(surname);
+      ssInput.value = sStroke>0 ? sStroke : '';
+    }
+    if(sStroke<=0){
+      box.innerHTML='<div class="hint-box">未能自动识别姓氏「'+surname+'」的康熙笔画，请在上方输入框手动填写后重试。</div>';
+      return;
+    }
+
+    // 八字 / 喜用神
+    var bz=null, xi=[], wu=null;
+    if(useBazi){
+      var y=+document.getElementById('p-year').value, m=+document.getElementById('p-month').value,
+          d=+document.getElementById('p-day').value, h=+document.getElementById('p-hour').value;
+      if(y&&m&&d){
+        bz = computeBazi(y,m,d,h);
+        wu = analyzeWuxing(bz);
+        xi = wu.xi;
+      }
+    }
+
+    var targets = (xi && xi.length) ? xi : [0,1,2,3,4]; // 无八字则用全部五行
+    // 候选字
+    var pool = [];
+    for(var ch in LEX_MAP){
+      var c = LEX_MAP[ch];
+      if(c.gender!==2 && c.gender!==gender) continue;
+      if(targets.indexOf(c.el)<0) continue;
+      pool.push(ch);
+    }
+    if(pool.length<2){ // 放宽：不限性别
+      pool=[];
+      for(var ch2 in LEX_MAP){ if(targets.indexOf(LEX_MAP[ch2].el)>=0) pool.push(ch2); }
+    }
+
+    var results=[];
+    var seen={};
+    for(var i=0;i<pool.length;i++){
+      for(var j=0;j<pool.length;j++){
+        if(i===j && len===1) continue;
+        var c1=pool[i], c2=pool[j];
+        var nm = len===1 ? c1 : (c1+c2);
+        if(seen[nm]) continue; seen[nm]=1;
+        var nEls = len===1 ? [LEX_MAP[c1].el] : [LEX_MAP[c1].el, LEX_MAP[c2].el];
+        var nStrokes = len===1 ? [LEX_MAP[c1].py] : [LEX_MAP[c1].py, LEX_MAP[c2].py];
+        var g = calcGrids(sStroke, nStrokes);
+        // 过滤：人格/总格/天格 不可为凶
+        if(shuliLevel(g.ren)===0 || shuliLevel(g.zong)===0 || shuliLevel(g.tian)===0) continue;
+        var scEl = [shuliEl(g.tian), shuliEl(g.ren), shuliEl(g.di)];
+        var sc3 = sanCaiLevel(scEl[0],scEl[1],scEl[2]);
+        if(sc3.lv===0) continue;
+        var sc = scoreName(g, sc3, xi, nEls);
+        results.push({name:surname+nm, nm:nm, pinyin:han2py(c1)+(len===1?'':' '+han2py(c2)),
+          els:nEls, grids:g, sanCai:sc3, score:sc,
+          mean:(LEX_MAP[c1].mean||'')+(len===1?'':('；'+(LEX_MAP[c2].mean||'')))});
+      }
+    }
+    results.sort(function(a,b){return b.score-a.score;});
+    results = results.slice(0, 16);
+
+    var html = '';
+    if(bz){
+      html += renderBazi(bz, wu);
+    }
+    if(results.length===0){
+      html += '<div class="hint-box">该条件下未生成合适名字，可放宽性别或改用「不限五行」。</div>';
+    } else {
+      html += '<div class="ng-xi">共生成 '+results.length+' 个候选，已按综合评分（五格数理 + 三才 + 喜用神匹配）排序。点击名字可复制。</div>';
+      results.forEach(function(r){ html += nameCard(r, surname); });
+    }
+    box.innerHTML = html;
+  }
+
+  function renderBazi(bz, wu){
+    function cell(label, p){
+      return '<div class="ng-pillar"><div class="pl">'+label+'</div>'+
+        '<div class="gz">'+GAN[p.gan]+ZHI[p.zhi]+'</div>'+
+        '<div class="el el-'+['wood','fire','earth','metal','water'][GAN_EL[p.gan]]+'">'+EL_NAME[GAN_EL[p.gan]]+EL_NAME[ZHI_EL[p.zhi]]+'</div></div>';
+    }
+    var bars='';
+    var maxc=Math.max.apply(null,wu.cnt);
+    for(var i=0;i<5;i++){
+      var w = Math.round(wu.cnt[i]/maxc*100);
+      bars += '<span style="background:'+EL_COLOR[i]+';width:'+Math.max(w,8)+'%">'+EL_NAME[i]+wu.cnt[i]+'</span>';
+    }
+    var xiTxt = wu.xi.map(function(e){return EL_NAME[e];}).join('、');
+    return '<div class="ng-bazi">'+cell('年柱',bz.year)+cell('月柱',bz.month)+cell('日柱',bz.day)+cell('时柱',bz.hour)+'</div>'+
+      '<div class="ng-wuxing">'+bars+'</div>'+
+      '<div class="ng-xi">生肖：'+bz.zodiacName+' ｜ 日主（命主）：<b>'+EL_NAME[wu.dayMaster]+'</b>（'+(wu.strong?'偏强':'偏弱')+'）｜ 喜用神（宜补五行）：<b>'+xiTxt+'</b></div>'+
+      '<div class="ng-hint">说明：依节气近似日期定月柱与年柱（立春约 2/4，前后或有一日误差）；五行按天干与地支本气统计，月令权重加倍，喜用神为通俗推算，仅供参考。</div>';
+  }
+
+  function nameCard(r, surname){
+    function lvTag(n){ var lv=shuliLevel(n); return '<span class="'+(lv===2?'lv-ji':lv===1?'lv-ban':'lv-xiong')+'">'+n+(lv===2?'吉':lv===1?'半吉':'凶')+'</span>'; }
+    var elTags = r.els.map(function(e){ return '<span class="ng-badge'+(r.score&&false?' match':'')+'">'+EL_NAME[e]+'</span>'; }).join('');
+    var g=r.grids;
+    var gridTable = '<table class="ng-grid-table"><tr><th>天格</th><th>人格</th><th>地格</th><th>外格</th><th>总格</th></tr>'+
+      '<tr><td>'+lvTag(g.tian)+'</td><td>'+lvTag(g.ren)+'</td><td>'+lvTag(g.di)+'</td><td>'+lvTag(g.wai)+'</td><td>'+lvTag(g.zong)+'</td></tr></table>';
+    var sanEl = ['木','火','土','金','水'][shuliEl(g.tian)]+'-'+['木','火','土','金','水'][shuliEl(g.ren)]+'-'+['木','火','土','金','水'][shuliEl(g.di)];
+    var lvName = r.sanCai.lv===2?'吉':r.sanCai.lv===1?'中':'凶';
+    return '<div class="ng-name-card" onclick="copyName(\''+r.name+'\')">'+
+      '<span class="score">'+r.score+'</span>'+
+      '<div class="nm">'+r.name+'<span class="py">'+r.pinyin+'</span></div>'+
+      '<div class="meta">五行：'+elTags+' ｜ 三才：'+sanEl+'（'+lvName+'）<br>'+
+      gridTable+
+      '<div style="margin-top:6px">'+r.sanCai.txt+'</div>'+
+      '<div style="margin-top:6px;color:#334155">寓意：'+r.mean+'</div></div>';
+  }
+
+  function copyName(n){
+    if(navigator.clipboard){ navigator.clipboard.writeText(n); }
+    showToast('已复制：'+n);
+  }
+
+  // 常用字拼音表（用于结果展示，与笔画、五行无涉）
+  var SIMPY = {
+    '梓':'zǐ','林':'lín','森':'sēn','桐':'tóng','柏':'bǎi','松':'sōng','楠':'nán','楷':'kǎi','栋':'dòng','荣':'róng','茂':'mào','萌':'méng','嘉':'jiā','欣':'xīn','雅':'yǎ','兰':'lán','竹':'zhú','柳':'liǔ','梅':'méi','萱':'xuān','薇':'wēi','芷':'zhǐ','蕊':'ruǐ','若':'ruò','茵':'yīn','茹':'rú','梵':'fàn','栩':'xǔ','棋':'qí','蕴':'yùn','苏':'sū','蔓':'màn','芊':'qiān',
+    '炎':'yán','煜':'yù','煊':'xuān','焕':'huàn','灿':'càn','灵':'líng','烨':'yè','昕':'xīn','晴':'qíng','丹':'dān','丽':'lì','彤':'tóng','昭':'zhāo','显':'xiǎn','畅':'chàng','曜':'yào','熠':'yì','熹':'xī','暖':'nuǎn','炜':'wěi','烁':'shuò','智':'zhì','昊':'hào','昱':'yù','晟':'shèng','朗':'lǎng','烜':'xuǎn',
+    '坤':'kūn','垚':'yáo','城':'chéng','坦':'tǎn','培':'péi','基':'jī','堂':'táng','墨':'mò','宇':'yǔ','辰':'chén','安':'ān','婉':'wǎn','怡':'yí','恩':'ēn','维':'wéi','圣':'shèng','坚':'jiān','峰':'fēng','岩':'yán','磊':'lěi','硕':'shuò','懿':'yì','容':'róng','岚':'lán','宛':'wǎn','益':'yì','惟':'wéi',
+    '铭':'míng','锐':'ruì','锋':'fēng','钰':'yù','锦':'jǐn','铃':'líng','银':'yín','钧':'jūn','铮':'zhēng','镇':'zhèn','锡':'xī','鑫':'xīn','钦':'qīn','铸':'zhù','铠':'kǎi','铄':'shuò','镜':'jìng','钟':'zhōng','珊':'shān','琦':'qí','瑶':'yáo','瑾':'jǐn','璇':'xuán','璐':'lù','瑞':'ruì','琛':'chēn','舒':'shū','诗':'shī','诚':'chéng','竣':'jùn',
+    '浩':'hào','瀚':'hàn','泽':'zé','涵':'hán','润':'rùn','清':'qīng','洁':'jié','淑':'shū','淼':'miǎo','沁':'qìn','沛':'pèi','汐':'xī','澜':'lán','源':'yuán','泓':'hóng','淳':'chún','溪':'xī','雨':'yǔ','雪':'xuě','露':'lù','霜':'shuāng','雯':'wén','霏':'fēi','沐':'mù','汀':'tīng','洛':'luò','渊':'yuān','潇':'xiāo','漫':'màn'
+  };
+  function han2py(ch){ return SIMPY[ch] || ch; }
+
+  /* ---------- 生成公司名 ---------- */
+  var INDUSTRY_EL = {tech:1, culture:0, trade:4, build:2, food:1, medical:4, finance:3, cloth:0, any:-1};
+  function generateCompany(){
+    var ind = document.getElementById('c-industry').value;
+    var len = parseInt(document.getElementById('c-len').value);
+    var preferEl = parseInt(document.getElementById('c-element').value);
+    var keyword = (document.getElementById('c-keyword').value||'').trim();
+    var box = document.getElementById('c-result');
+
+    var targetEl = (preferEl>=0) ? preferEl : INDUSTRY_EL[ind];
+    var pool=[];
+    for(var ch in LEX_MAP){
+      var c=LEX_MAP[ch];
+      if(c.gender===1) continue; // 公司名偏中性/男
+      if(targetEl>=0 && c.el!==targetEl) continue;
+      pool.push(ch);
+    }
+    if(pool.length<3 && targetEl>=0){ // 放宽
+      pool=[]; for(var ch2 in LEX_MAP){ if(LEX_MAP[ch2].gender!==1) pool.push(ch2); }
+    }
+
+    var results=[], seen={};
+    // 关键词优先放入
+    var kwChars = keyword.split('');
+    function buildCombo(){
+      var arr=[];
+      if(kwChars.length>0){ arr = kwChars.slice(0, len); }
+      while(arr.length<len){
+        arr.push(pool[Math.floor(Math.random()*pool.length)]);
+      }
+      return arr;
+    }
+    var tries = 0;
+    while(results.length<14 && tries<4000){
+      tries++;
+      var combo = buildCombo();
+      var nm = combo.join('');
+      if(seen[nm]) continue; seen[nm]=1;
+      var nStrokes = combo.map(function(c){return LEX_MAP[c].py;});
+      var nEls = combo.map(function(c){return LEX_MAP[c].el;});
+      var g = calcGrids(1, nStrokes); // 公司名以首字为天格基准，姓笔画取1（虚）
+      if(shuliLevel(g.ren)===0 || shuliLevel(g.zong)===0) continue;
+      var scEl=[shuliEl(g.tian),shuliEl(g.ren),shuliEl(g.di)];
+      var sc3=sanCaiLevel(scEl[0],scEl[1],scEl[2]);
+      if(sc3.lv===0) continue;
+      var sc=scoreName(g,sc3, targetEl>=0?[targetEl]:null, nEls);
+      results.push({name:nm, pinyin:combo.map(han2py).join(' '), els:nEls, grids:g, sanCai:sc3, score:sc,
+        mean:combo.map(function(c){return (LEX_MAP[c].mean||'');}).join('；')});
+    }
+    results.sort(function(a,b){return b.score-a.score;});
+    var html='';
+    if(targetEl>=0) html+='<div class="ng-xi">按「'+(document.getElementById('c-industry').selectedOptions[0].text)+'」所属五行 <b>'+EL_NAME[targetEl]+'</b> 优选用字。</div>';
+    if(results.length===0){ html+='<div class="hint-box">未生成合适名称，可放宽行业或关键词。</div>'; }
+    else { results.forEach(function(r){ html+=companyCard(r); }); }
+    box.innerHTML=html;
+  }
+
+  function companyCard(r){
+    function lvTag(n){ var lv=shuliLevel(n); return '<span class="'+(lv===2?'lv-ji':lv===1?'lv-ban':'lv-xiong')+'">'+n+(lv===2?'吉':lv===1?'半吉':'凶')+'</span>'; }
+    var elTags=r.els.map(function(e){return '<span class="ng-badge">'+EL_NAME[e]+'</span>';}).join('');
+    var g=r.grids;
+    var gridTable='<table class="ng-grid-table"><tr><th>天格</th><th>人格</th><th>地格</th><th>外格</th><th>总格</th></tr>'+
+      '<tr><td>'+lvTag(g.tian)+'</td><td>'+lvTag(g.ren)+'</td><td>'+lvTag(g.di)+'</td><td>'+lvTag(g.wai)+'</td><td>'+lvTag(g.zong)+'</td></tr></table>';
+    var sanEl=['木','火','土','金','水'][shuliEl(g.tian)]+'-'+['木','火','土','金','水'][shuliEl(g.ren)]+'-'+['木','火','土','金','水'][shuliEl(g.di)];
+    var lvName=r.sanCai.lv===2?'吉':r.sanCai.lv===1?'中':'凶';
+    return '<div class="ng-name-card" onclick="copyName(\''+r.name+'\')">'+
+      '<span class="score">'+r.score+'</span>'+
+      '<div class="nm">'+r.name+'<span class="py">'+r.pinyin+'</span></div>'+
+      '<div class="meta">五行：'+elTags+' ｜ 三才：'+sanEl+'（'+lvName+'）<br>'+gridTable+
+      '<div style="margin-top:6px">'+r.sanCai.txt+'</div>'+
+      '<div style="margin-top:6px;color:#334155">寓意：'+r.mean+'</div></div>';
+  }
+
+  /* ---------- 测名评分 ---------- */
+  function evaluateName(){
+    var surname=(document.getElementById('k-surname').value||'').trim();
+    var given=(document.getElementById('k-given').value||'').trim();
+    var type=document.getElementById('k-type').value;
+    var verifyBox=document.getElementById('k-verify');
+    var resultBox=document.getElementById('k-result');
+    if(!given){ resultBox.innerHTML='<div class="hint-box">请填写名字或全称。</div>'; return; }
+
+    // 解析字与笔画
+    var full = surname+given;
+    var chars = full.split('');
+    var rows='';
+    chars.forEach(function(c){
+      var c0=lookup(c);
+      var stroke = c0?c0.py:'';
+      var el = c0?EL_NAME[c0.el]:'未收录';
+      var mean = c0?(c0.mean||''):'字库未收录，请在右侧填写康熙笔画';
+      rows+='<div class="ng-char-row"><span class="ch">'+c+'</span>'+
+        '<span>笔画：</span><input class="vstroke" data-ch="'+c+'" type="number" min="0" value="'+(stroke||'')+'" placeholder="笔画">'+
+        '<span>五行：'+el+'</span><span style="color:#64748b">'+mean+'</span></div>';
+    });
+    verifyBox.innerHTML='<h3 style="font-size:15px;margin:16px 0 8px">康熙笔画核对（可修改）</h3>'+rows+
+      '<button class="btn btn-primary" style="margin-top:10px" onclick="doScore()">按当前笔画计算评分</button>';
+    window.__eval = {surname:surname, given:given, type:type, chars:chars};
+  }
+
+  function doScore(){
+    var e=window.__eval; if(!e) return;
+    var strokes={};
+    var ok=true;
+    document.querySelectorAll('.vstroke').forEach(function(inp){
+      var ch=inp.getAttribute('data-ch');
+      var v=parseInt(inp.value);
+      if(isNaN(v)||v<=0){ ok=false; }
+      strokes[ch]=v||0;
+    });
+    if(!ok){ document.getElementById('k-result').innerHTML='<div class="hint-box">请补全所有汉字的康熙笔画。</div>'; return; }
+
+    var resultBox=document.getElementById('k-result');
+    var all = e.chars;
+    var nStrokes = all.map(function(c){return strokes[c];});
+    // 姓笔画 = 前 surname.length 字之和；名 = 其余
+    var sLen = e.surname.length;
+    var sStroke = 0; for(var i=0;i<sLen;i++) sStroke+=nStrokes[i];
+    var nameStrokes = nStrokes.slice(sLen);
+    if(e.type==='company' || sLen===0){
+      // 公司名：以首字为天格基准，姓笔画取1（虚）
+      sStroke = 1;
+      nameStrokes = nStrokes.slice(0);
+    }
+    var g=calcGrids(sStroke, nameStrokes);
+    var scEl=[shuliEl(g.tian),shuliEl(g.ren),shuliEl(g.di)];
+    var sc3=sanCaiLevel(scEl[0],scEl[1],scEl[2]);
+    var sc=scoreName(g,sc3,null,null);
+
+    function lvTag(n){ var lv=shuliLevel(n); return '<span class="'+(lv===2?'lv-ji':lv===1?'lv-ban':'lv-xiong')+'">'+n+(lv===2?'吉':lv===1?'半吉':'凶')+'</span>'; }
+    var gridTable='<table class="ng-grid-table"><tr><th>天格</th><th>人格</th><th>地格</th><th>外格</th><th>总格</th></tr>'+
+      '<tr><td>'+lvTag(g.tian)+'</td><td>'+lvTag(g.ren)+'</td><td>'+lvTag(g.di)+'</td><td>'+lvTag(g.wai)+'</td><td>'+lvTag(g.zong)+'</td></tr></table>';
+    var sanEl=['木','火','土','金','水'][scEl[0]]+'-'+['木','火','土','金','水'][scEl[1]]+'-'+['木','火','土','金','水'][scEl[2]];
+    var lvName=sc3.lv===2?'吉':sc3.lv===1?'中':'凶';
+
+    // 文化点评
+    var comment='';
+    var jicount=[g.tian,g.ren,g.di,g.wai,g.zong].filter(function(n){return shuliLevel(n)===2;}).length;
+    if(jicount>=4) comment='五格多吉，数理优良，基础稳固、前途可期，是为上选。';
+    else if(jicount>=2) comment='五格有吉有平，整体稳健，可用；若求极致可微调用字。';
+    else comment='五格凶数偏多，建议调整用字（尤其人格、总格）以求数理和顺。';
+
+    var html='<div class="ng-name-card"><span class="score">'+sc+'</span>'+
+      '<div class="nm">'+(e.surname+e.given)+'<span class="py">'+(e.type==='company'?'公司名':'人名')+'</span></div>'+
+      '<div class="meta">三才：'+sanEl+'（'+lvName+'）<br>'+gridTable+
+      '<div style="margin-top:6px">'+sc3.txt+'</div>'+
+      '<div style="margin-top:6px;color:#334155">综合点评：'+comment+'</div>'+
+      '<div style="margin-top:6px;color:#64748b;font-size:12px">五格数理源自《康熙字典》笔画与 1–81 数理吉凶；评分结合五格、三才，仅为传统文化参考，非绝对论断。</div></div>';
+    resultBox.innerHTML=html;
+  }
+
+  /* ---------- 标签页 / 初始化 ---------- */
+  function switchTab(t){
+    ['person','company','check'].forEach(function(k){
+      document.getElementById('panel-'+k).classList.toggle('active', k===t);
+      document.getElementById('tab-'+k).classList.toggle('active', k===t);
+    });
+  }
+
+  function fillSelect(id, start, end, pad){
+    var sel=document.getElementById(id);
+    for(var v=start; v<=end; v++){
+      var o=document.createElement('option'); o.value=v; o.textContent=(pad&&v<10?'0':'')+v; sel.appendChild(o);
+    }
+  }
+  function initPersonDate(){
+    var y=document.getElementById('p-year'), m=document.getElementById('p-month'), d=document.getElementById('p-day');
+    for(var yy=1940; yy<=2026; yy++){ var o=document.createElement('option'); o.value=yy; o.textContent=yy+'年'; y.appendChild(o); }
+    y.value=2024;
+    for(var mm=1; mm<=12; mm++){ var o2=document.createElement('option'); o2.value=mm; o2.textContent=mm+'月'; m.appendChild(o2); }
+    for(var dd=1; dd<=31; dd++){ var o3=document.createElement('option'); o3.value=dd; o3.textContent=dd+'日'; d.appendChild(o3); }
+  }
+  window.addEventListener('DOMContentLoaded', initPersonDate);
+  </script>
+
+  <script>window.EFFBOX_STATS_API="https://effbox-stats.2726401886.workers.dev";</script>
+  <script src="/stats.js"></script>
+</body>
+</html>
