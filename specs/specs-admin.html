@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>专栏管理后台 - 效率盒子</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .admin-wrap{max-width:1000px;margin:0 auto;padding:28px 18px}
+    .admin-h{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+    .admin-h h1{font-size:22px;font-weight:800}
+    .admin-h .spacer{flex:1}
+    .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:26px}
+    .stat-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center;box-shadow:var(--shadow)}
+    .stat-card .n{font-size:28px;font-weight:800;color:var(--primary)}
+    .stat-card .l{font-size:13px;color:var(--text-light);margin-top:4px}
+    .panel{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);margin-bottom:22px}
+    .panel h2{font-size:17px;font-weight:700;margin-bottom:14px}
+    table{width:100%;border-collapse:collapse;font-size:13px}
+    th,td{padding:9px 10px;border-bottom:1px solid var(--border-light);text-align:left}
+    th{color:var(--text-light);font-weight:600;background:var(--bg-main)}
+    .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px}
+    .badge.active{background:#dcfce7;color:#15803d}
+    .badge.disabled{background:#fee2e2;color:#b91c1c}
+    .badge.admin{background:#dbeafe;color:#1d4ed8}
+    .btn{padding:6px 12px;border:1px solid var(--border);background:var(--bg-main);border-radius:var(--radius-sm);font-size:12px;cursor:pointer;transition:var(--transition)}
+    .btn:hover{border-color:var(--primary);color:var(--primary)}
+    .btn.danger:hover{border-color:#b91c1c;color:#b91c1c}
+    .invite-box{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+    .invite-box input{width:80px;padding:8px;border:1px solid var(--border);border-radius:var(--radius-sm)}
+    .invite-codes{display:flex;flex-wrap:wrap;gap:8px}
+    .invite-codes code{background:var(--bg-main);border:1px solid var(--border);padding:4px 10px;border-radius:6px;font-size:13px}
+    .noauth{text-align:center;padding:80px 20px;color:var(--text-light)}
+    .pager{margin-top:14px;display:flex;gap:10px;align-items:center}
+    textarea{width:100%;min-height:80px;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-family:monospace;font-size:13px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="index.html">规范专栏</a></li>
+        <li><a href="specs-admin.html" class="active">管理后台</a></li>
+      </ul></nav>
+      <div id="authBar" style="margin-left:auto"></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="admin-wrap">
+      <div id="noauth" class="noauth" style="display:none">
+        <h2>需要管理员权限</h2>
+        <p>请使用管理员账号 <a href="login.html?redirect=specs-admin.html">登录</a> 后访问。</p>
+      </div>
+
+      <div id="adminMain" style="display:none">
+        <div class="admin-h">
+          <h1>专栏管理后台</h1>
+          <span class="spacer"></span>
+          <a href="index.html" class="btn">← 返回专栏</a>
+        </div>
+
+        <div class="stat-row" id="statRow"></div>
+
+        <div class="panel">
+          <h2>生成邀请码</h2>
+          <div class="invite-box">
+            <span>数量</span>
+            <input type="number" id="inviteCount" value="5" min="1" max="50">
+            <button class="btn" onclick="genInvite()">生成</button>
+          </div>
+          <div class="invite-codes" id="inviteCodes"></div>
+        </div>
+
+        <div class="panel">
+          <h2>注册用户</h2>
+          <table>
+            <thead><tr><th>ID</th><th>邮箱</th><th>角色</th><th>状态</th><th>注册时间</th><th>操作</th></tr></thead>
+            <tbody id="userRows"></tbody>
+          </table>
+          <div class="pager">
+            <button class="btn" id="prevPage" onclick="changePage(-1)">上一页</button>
+            <span id="pageInfo"></span>
+            <button class="btn" id="nextPage" onclick="changePage(1)">下一页</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>window.EFFBOX_STATS_API="https://effbox-stats.2726401886.workers.dev";</script>
+  <script src="specs.js"></script>
+  <script>
+    const S = window.Specs;
+    let curPage = 1;
+    S.renderAuthBar("authBar");
+
+    (async function init() {
+      const u = await S.currentUser();
+      if (!u || u.role !== "admin") {
+        document.getElementById("noauth").style.display = "block";
+        return;
+      }
+      document.getElementById("adminMain").style.display = "block";
+      loadStats();
+      loadUsers(curPage);
+    })();
+
+    async function loadStats() {
+      try {
+        const r = await S.authFetch("/admin/stats");
+        const j = await r.json();
+        if (!j.ok) return;
+        const cards = [
+          ["注册用户", j.users], ["活跃用户", j.activeUsers],
+          ["规范数量", j.specs], ["未用邀请码", j.unusedInvites],
+        ];
+        document.getElementById("statRow").innerHTML = cards.map(
+          ([l, n]) => `<div class="stat-card"><div class="n">${n}</div><div class="l">${l}</div></div>`
+        ).join("");
+      } catch {}
+    }
+
+    async function loadUsers(page) {
+      try {
+        const r = await S.authFetch("/admin/users?page=" + page);
+        const j = await r.json();
+        if (!j.ok) return;
+        const rows = j.users.map((u) => {
+          const d = new Date(u.created_at).toLocaleString("zh-CN");
+          const badge = u.role === "admin"
+            ? '<span class="badge admin">管理员</span>'
+            : `<span class="badge ${u.status}">${u.status === "active" ? "正常" : "已禁用"}</span>`;
+          const act = u.role === "admin" ? "—" :
+            (u.status === "active"
+              ? `<button class="btn danger" onclick="toggleStatus(${u.id},'disabled')">禁用</button>`
+              : `<button class="btn" onclick="toggleStatus(${u.id},'active')">启用</button>`);
+          return `<tr><td>${u.id}</td><td>${u.email}</td><td>${badge}</td><td>${u.status}</td><td>${d}</td><td>${act}</td></tr>`;
+        }).join("");
+        document.getElementById("userRows").innerHTML = rows || '<tr><td colspan="6" style="text-align:center;color:#999">暂无用户</td></tr>';
+        document.getElementById("pageInfo").textContent = `第 ${j.page} 页 / 共 ${Math.ceil(j.total / j.size)} 页（${j.total} 人）`;
+        document.getElementById("prevPage").disabled = page <= 1;
+        document.getElementById("nextPage").disabled = page >= Math.ceil(j.total / j.size);
+      } catch {}
+    }
+
+    function changePage(d) {
+      curPage = Math.max(1, curPage + d);
+      loadUsers(curPage);
+    }
+
+    async function toggleStatus(id, status) {
+      if (!confirm(status === "disabled" ? "确认禁用该用户？" : "确认启用该用户？")) return;
+      const r = await S.authFetch("/admin/user/status", {
+        method: "POST", body: JSON.stringify({ id, status }),
+      });
+      const j = await r.json();
+      if (j.ok) loadUsers(curPage); else alert(j.msg || "操作失败");
+    }
+
+    async function genInvite() {
+      const count = Math.min(50, Math.max(1, parseInt(document.getElementById("inviteCount").value, 10) || 1));
+      const r = await S.authFetch("/admin/invite", { method: "POST", body: JSON.stringify({ count }) });
+      const j = await r.json();
+      if (j.ok) {
+        document.getElementById("inviteCodes").innerHTML =
+          j.codes.map((c) => `<code>${c}</code>`).join("");
+        loadStats();
+      } else alert(j.msg || "生成失败");
+    }
+  </script>
+</body>
+</html>
