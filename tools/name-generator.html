@@ -226,7 +226,7 @@
             <option value="company">公司名</option>
           </select>
         </div>
-        <div class="ng-hint">汉字已用全量笔画库自动识别康熙笔画（字库校准过的异体部首字优先）；个别字若仍有出入，可在下方「康熙笔画核对」中手动修正，以确保五格准确。</div>
+        <div class="ng-hint">汉字已用《康熙字典》繁体笔画库自动识别（简体字自动映射到繁体取康熙笔画，如「华」取「華」=14 画）；个别字若仍有出入，可在下方「康熙笔画核对」中手动修正，以确保五格准确。</div>
         <div style="margin-top:8px"><button class="btn btn-primary btn-block" onclick="evaluateName()">解析并评分</button></div>
         <div id="k-verify" class="ng-result"></div>
         <div id="k-result" class="ng-result"></div>
@@ -270,6 +270,7 @@
   </footer>
 
   <script src="../js/main.js"></script>
+  <script src="../js/kangxi-data.js"></script>
   <script src="../js/cnchar.min.js"></script>
   <script>renderRelatedTools("related-tools", "name-generator");</script>
 
@@ -547,16 +548,21 @@
   }
   function lookup(ch){ return LEX_MAP[ch]; }
 
-  // 取单字康熙笔画：优先用字库手填的康熙校准值（含氵/艹/忄等异体部首差异字），
-  // 其余用 cnchar 全量笔画库兜底（现代规范笔画，绝大多数与康熙一致）。
+  // 取单字康熙笔画：
+  // 1) 优先用字库手填的康熙校准值（LEX_MAP.py）；
+  // 2) 用 Kangxi 数据集（TonyFoster/kangxi-strokecount），简体字自动映射到繁体取康熙笔画；
+  // 3) cnchar 兜底（现代规范笔画）。
   function getStroke(ch){
     var c = LEX_MAP[ch];
     if(c && c.py) return c.py;
+    var kx = (typeof KANGXI_STROKES!=='undefined') ? KANGXI_STROKES : {};
+    var st = (typeof SIMP_TO_TRAD!=='undefined') ? SIMP_TO_TRAD : {};
+    var trad = st[ch] || ch;
+    if(kx[trad]) return kx[trad];
     try{
       if(typeof cnchar!=='undefined' && cnchar.stroke){
         var r = cnchar.stroke(ch);
         if(typeof r === 'number' && r>0) return r;
-        if(Array.isArray(r)){ if(r.length===1) return r[0]; var sum=0; for(var i=0;i<r.length;i++) sum+=r[i]; if(sum>0) return sum; }
       }
     }catch(e){}
     return 0; // 未识别，需手动
@@ -803,6 +809,16 @@
   }
 
   /* ---------- 测名评分 ---------- */
+  // 按常见偏旁粗略推五行（仅作参考）
+  function guessElement(ch){
+    if(/[木林森松柏桂梅柳杨桃李杏栋梁禾米谷豆竹艹]/u.test(ch)) return '木';
+    if(/[火炎焱灯灼烤然照日阳明昭晖灬]/u.test(ch)) return '火';
+    if(/[土地城山岩田石坡坤岳壤玉王瓦]/u.test(ch)) return '土';
+    if(/[金钅银铜铁钢锡钰铭锐锋钱鑫]/u.test(ch)) return '金';
+    if(/[水氵冰泉河海洋江湖泊波涛雨雪霜露]/u.test(ch)) return '水';
+    return '';
+  }
+
   function evaluateName(){
     var surname=(document.getElementById('k-surname').value||'').trim();
     var given=(document.getElementById('k-given').value||'').trim();
@@ -818,15 +834,17 @@
     chars.forEach(function(c){
       var c0=lookup(c);
       var stroke = getStroke(c);
-      var el = c0?EL_NAME[c0.el]:'自动';
-      var mean = c0?(c0.mean||''):'已用笔画库自动识别，如有出入可手动修正';
+      var el = c0 ? EL_NAME[c0.el] : (guessElement(c) || '未收录');
+      var mean = c0?(c0.mean||''):'已用康熙笔画库自动识别；如有出入可手动修正';
       rows+='<div class="ng-char-row"><span class="ch">'+c+'</span>'+
         '<span>笔画：</span><input class="vstroke" data-ch="'+c+'" type="number" min="0" value="'+(stroke||'')+'" placeholder="笔画">'+
         '<span>五行：'+el+'</span><span style="color:#64748b">'+mean+'</span></div>';
     });
     verifyBox.innerHTML='<h3 style="font-size:15px;margin:16px 0 8px">康熙笔画核对（可修改）</h3>'+rows+
-      '<button class="btn btn-primary" style="margin-top:10px" onclick="doScore()">按当前笔画计算评分</button>';
+      '<button class="btn btn-primary" style="margin-top:10px" onclick="doScore()">按当前笔画重新计算评分</button>';
     window.__eval = {surname:surname, given:given, type:type, chars:chars};
+    // 自动计算一次评分
+    doScore();
   }
 
   function doScore(){
