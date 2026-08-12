@@ -57,4 +57,27 @@
       send("tool_use", toolName);
     });
   }
+
+  // 在页面底部注入「后台管理」入口
+  document.addEventListener("DOMContentLoaded", function () {
+    if (document.getElementById("effbox-admin-entry")) return;
+    var a = document.createElement("a");
+    a.id = "effbox-admin-entry";
+    a.href = "/stats-dashboard.html";
+    a.textContent = "后台管理";
+    a.title = "统计后台（需密码）";
+    a.style.cssText = "color:inherit;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .2s;";
+    a.onmouseover = function () { a.style.borderBottomColor = "currentColor"; };
+    a.onmouseout = function () { a.style.borderBottomColor = "transparent"; };
+    var p = document.createElement("p");
+    p.style.cssText = "margin-top:6px;font-size:12px;opacity:0.7;text-align:center;";
+    p.appendChild(a);
+    var footer = document.querySelector("footer.site-footer") || document.querySelector("footer");
+    if (footer) {
+      footer.appendChild(p);
+    } else {
+      p.style.padding = "8px 0 16px";
+      document.body.appendChild(p);
+    }
+  });
 })();
