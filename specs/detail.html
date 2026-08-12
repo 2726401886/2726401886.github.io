@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>规范详情 - 价格鉴证评估技术专栏</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .detail-bar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--bg-darker,#0f0e0d);color:#fff}
+    .detail-bar a.home{color:#fff;text-decoration:none;font-weight:600;font-size:14px}
+    .detail-bar .spacer{flex:1}
+    .detail-bar .auth-link{color:#fcd34d;text-decoration:none;font-size:13px;margin-left:10px}
+    .detail-bar .auth-user{font-size:13px;color:#e7e5e4}
+    #specFrame{width:100%;border:none;display:block;min-height:600px;background:#fff}
+    .detail-loading{padding:60px 20px;text-align:center;color:var(--text-light)}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="index.html" class="active">规范专栏</a></li>
+      </ul></nav>
+      <div id="authBar" style="margin-left:auto"></div>
+    </div>
+  </header>
+
+  <main class="main-content" style="padding:0">
+    <div class="detail-loading" id="detailLoading">正在加载规范内容…</div>
+    <iframe id="specFrame" style="display:none"></iframe>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="index.html">规范专栏</a></div>
+    <p>&copy; 2026 效率盒子. 价格鉴证评估技术专栏</p>
+  </footer>
+
+  <script>window.EFFBOX_STATS_API="https://effbox-stats.2726401886.workers.dev";</script>
+  <script src="specs.js"></script>
+  <script>
+    const S = window.Specs;
+    const id = new URLSearchParams(location.search).get("id");
+    const frame = document.getElementById("specFrame");
+    const loading = document.getElementById("detailLoading");
+
+    // 登录态
+    S.renderAuthBar("authBar");
+
+    // 自适应 iframe 高度
+    window.addEventListener("message", (e) => {
+      if (e.data && e.data.__specsH) {
+        frame.style.height = Math.max(600, e.data.__specsH + 20) + "px";
+      }
+    });
+
+    (async function () {
+      const tk = S.getToken();
+      if (!tk) {
+        location.href = "login.html?redirect=" + encodeURIComponent(location.pathname + location.search);
+        return;
+      }
+      if (!id) { loading.textContent = "缺少规范 id"; return; }
+      try {
+        const r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
+        const j = await r.json();
+        if (!j.ok) {
+          loading.innerHTML = (j.msg || "加载失败") + ' <a href="login.html?redirect=' +
+            encodeURIComponent(location.pathname + location.search) + '">去登录</a>';
+          return;
+        }
+        document.title = j.spec.title + " - 效率盒子";
+        const autoHeight = `<scr`+`ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr`+`ipt>`;
+        frame.srcdoc = (j.spec.content_html || "") + autoHeight;
+        frame.style.display = "block";
+        loading.style.display = "none";
+      } catch (e) {
+        loading.textContent = "加载失败，请稍后重试";
+      }
+    })();
+  </script>
+</body>
+</html>
