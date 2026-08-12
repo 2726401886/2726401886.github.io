@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录 / 注册 - 价格鉴证评估技术专栏</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .auth-wrap{min-height:calc(100vh - 140px);display:flex;align-items:center;justify-content:center;padding:40px 16px}
+    .auth-card{width:100%;max-width:400px;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 30px}
+    .auth-card h1{font-size:22px;font-weight:800;text-align:center;margin-bottom:6px}
+    .auth-card .sub{text-align:center;color:var(--text-light);font-size:13px;margin-bottom:24px}
+    .auth-tabs{display:flex;gap:8px;margin-bottom:22px}
+    .auth-tabs button{flex:1;padding:10px;border:1px solid var(--border);background:var(--bg-main);border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;color:var(--text-light);transition:var(--transition)}
+    .auth-tabs button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+    .auth-field{margin-bottom:14px}
+    .auth-field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text)}
+    .auth-field input{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit;outline:none;transition:border-color .2s}
+    .auth-field input:focus{border-color:var(--primary)}
+    .auth-submit{width:100%;padding:12px;border:none;background:var(--primary);color:#fff;border-radius:var(--radius-sm);font-size:15px;font-weight:700;cursor:pointer;margin-top:6px;transition:var(--transition)}
+    .auth-submit:hover{background:var(--primary-dark)}
+    .auth-msg{margin-top:14px;padding:10px 12px;border-radius:var(--radius-sm);font-size:13px;text-align:center;display:none}
+    .auth-msg.err{display:block;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+    .auth-msg.ok{display:block;background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+    .auth-back{text-align:center;margin-top:18px}
+    .auth-back a{color:var(--primary);text-decoration:none;font-size:13px}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="index.html">规范专栏</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="auth-wrap">
+      <div class="auth-card">
+        <h1>价格鉴证评估技术专栏</h1>
+        <p class="sub">登录后可查看全部技术规范原文</p>
+
+        <div class="auth-tabs">
+          <button id="tabLogin" class="active" onclick="switchTab('login')">登录</button>
+          <button id="tabReg" onclick="switchTab('reg')">注册</button>
+        </div>
+
+        <!-- 登录 -->
+        <form id="formLogin" onsubmit="return doLogin(event)">
+          <div class="auth-field">
+            <label>邮箱</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com" required>
+          </div>
+          <div class="auth-field">
+            <label>密码</label>
+            <input type="password" id="loginPwd" placeholder="至少 6 位" required>
+          </div>
+          <button type="submit" class="auth-submit">登录</button>
+        </form>
+
+        <!-- 注册 -->
+        <form id="formReg" onsubmit="return doRegister(event)" style="display:none">
+          <div class="auth-field">
+            <label>邮箱</label>
+            <input type="email" id="regEmail" placeholder="your@email.com" required>
+          </div>
+          <div class="auth-field">
+            <label>密码</label>
+            <input type="password" id="regPwd" placeholder="至少 6 位" required>
+          </div>
+          <div class="auth-field">
+            <label>邀请码（可选）</label>
+            <input type="text" id="regInvite" placeholder="如有邀请码可填，留空也可注册" style="text-transform:uppercase">
+          </div>
+          <button type="submit" class="auth-submit">注册并登录</button>
+        </form>
+
+        <div id="authMsg" class="auth-msg"></div>
+        <div class="auth-back"><a href="index.html">← 返回专栏首页</a></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="index.html">规范专栏</a></div>
+    <p>&copy; 2026 效率盒子. 价格鉴证评估技术专栏</p>
+  </footer>
+
+  <script>window.EFFBOX_STATS_API="https://effbox-stats.2726401886.workers.dev";</script>
+  <script src="specs.js"></script>
+  <script>
+    const S = window.Specs;
+    const params = new URLSearchParams(location.search);
+    const redirect = params.get("redirect") || "index.html";
+
+    function switchTab(t) {
+      document.getElementById("tabLogin").classList.toggle("active", t === "login");
+      document.getElementById("tabReg").classList.toggle("active", t === "reg");
+      document.getElementById("formLogin").style.display = t === "login" ? "" : "none";
+      document.getElementById("formReg").style.display = t === "reg" ? "" : "none";
+      clearMsg();
+    }
+    function showMsg(text, ok) {
+      const m = document.getElementById("authMsg");
+      m.textContent = text;
+      m.className = "auth-msg " + (ok ? "ok" : "err");
+    }
+    function clearMsg() { showMsg("", true); document.getElementById("authMsg").style.display = "none"; }
+
+    async function doLogin(e) {
+      e.preventDefault();
+      clearMsg();
+      const email = document.getElementById("loginEmail").value.trim();
+      const password = document.getElementById("loginPwd").value;
+      if (!email || !password) return showMsg("请填写邮箱和密码", false);
+      try {
+        const r = await S.authFetch("/auth/login", {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+        });
+        const j = await r.json();
+        if (!j.ok) return showMsg(j.msg || "登录失败", false);
+        S.setToken(j.token);
+        location.href = redirect;
+      } catch { showMsg("网络错误，请重试", false); }
+      return false;
+    }
+
+    async function doRegister(e) {
+      e.preventDefault();
+      clearMsg();
+      const email = document.getElementById("regEmail").value.trim();
+      const password = document.getElementById("regPwd").value;
+      const invite_code = document.getElementById("regInvite").value.trim().toUpperCase() || null;
+      if (!email || !password) return showMsg("请填写邮箱和密码", false);
+      try {
+        const r = await S.authFetch("/auth/register", {
+          method: "POST",
+          body: JSON.stringify({ email, password, invite_code }),
+        });
+        const j = await r.json();
+        if (!j.ok) return showMsg(j.msg || "注册失败", false);
+        S.setToken(j.token);
+        showMsg("注册成功，正在进入…", true);
+        setTimeout(() => { location.href = redirect; }, 600);
+      } catch { showMsg("网络错误，请重试", false); }
+      return false;
+    }
+  </script>
+</body>
+</html>
