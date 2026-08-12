@@ -24,6 +24,9 @@
     .back-home{margin:36px 0 8px;text-align:center}
     .back-home a{color:var(--primary);text-decoration:none;font-size:14px;font-weight:600}
     .back-home a:hover{text-decoration:underline}
+    .auth-link{color:var(--primary);text-decoration:none;font-size:14px;font-weight:600}
+    .auth-user{font-size:13px;color:var(--text-light);margin-right:8px}
+    .spec-loading{text-align:center;color:var(--text-light);padding:40px 0}
   </style>
 </head>
 <body>
@@ -40,6 +43,7 @@
           <li><a href="index.html" class="active">规范专栏</a></li>
         </ul>
       </nav>
+      <div id="authBar" style="margin-left:auto"></div>
     </div>
   </header>
 
@@ -50,107 +54,8 @@
         <p>汇集价格鉴证评估领域的国家、行业与地方技术规范原文，提供可检索、可对照的查询系统。适用于价格鉴证师、评估人员、司法鉴定与理赔实务参考。</p>
       </section>
 
-      <section class="spec-group">
-        <h2>📘 综合执业规范</h2>
-        <div class="ghint">价格鉴证评估行业现行总规范</div>
-        <div class="spec-grid">
-          <div class="spec-card">
-            <h3>价格鉴证评估执业规范</h3>
-            <span class="code">中价协〔2024〕13号</span>
-            <p class="desc">价格鉴证评估行业现行总规范，2024-07-01 施行，涵盖执业准则、程序与方法的总纲性文件。</p>
-            <a class="go" href="practice-standard-2024-13.html">查看规范 →</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="spec-group">
-        <h2>🔥 火灾损失类</h2>
-        <div class="ghint">火灾损失与火灾事故财产损失价格鉴证评估相关规范</div>
-        <div class="spec-grid">
-          <div class="spec-card">
-            <h3>火灾损失价格鉴证评估技术规范</h3>
-            <span class="code">中价协 2024-15号</span>
-            <p class="desc">通用火灾损失价格鉴证评估技术规范，含损失界定、测算方法与参数。</p>
-            <a class="go" href="fire-loss.html">查看规范 →</a>
-          </div>
-          <div class="spec-card">
-            <h3>火灾事故财产损失价格鉴证评估技术规范</h3>
-            <span class="code">T/EJX 009-2024</span>
-            <p class="desc">火灾事故财产损失价格鉴证评估团体标准，细化事故场景下的财产损失评估。</p>
-            <a class="go" href="fire-property-tejx009.html">查看规范 →</a>
-          </div>
-          <div class="spec-card">
-            <h3>火灾直接经济损失统计方法</h3>
-            <span class="code">XF/T 185—2025</span>
-            <p class="desc">消防救援行业标准，规定火灾直接经济损失统计口径与计算方法。</p>
-            <a class="go" href="fire-stat-xft185.html">查看规范 →</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="spec-group">
-        <h2>🚗 交通事故与机动车</h2>
-        <div class="ghint">交通事故损失、机动车贬值与二手车鉴定评估规范</div>
-        <div class="spec-grid">
-          <div class="spec-card">
-            <h3>交通事故车辆及财物损失价格鉴证评估技术规范</h3>
-            <span class="code">中价协〔2020〕40号</span>
-            <p class="desc">交通事故车辆及财物损失价格鉴证评估行业标准，覆盖车损与财物损失评估。</p>
-            <a class="go" href="traffic-accident-2020-40.html">查看规范 →</a>
-          </div>
-          <div class="spec-card">
-            <h3>事故机动车鉴定及贬值损失评估规范</h3>
-            <span class="code">事故机动车</span>
-            <p class="desc">事故机动车技术鉴定及贬值损失评估规范，适用于事故车贬值损失测算。</p>
-            <a class="go" href="vehicle-depreciation.html">查看规范 →</a>
-          </div>
-          <div class="spec-card">
-            <h3>二手车鉴定评估技术规范</h3>
-            <span class="code">GB/T 30323—2013</span>
-            <p class="desc">二手车鉴定评估国家标准，技术状况鉴定与价值评估的权威依据。</p>
-            <a class="go" href="used-car-gbt30323.html">查看规范 →</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="spec-group">
-        <h2>🌲 森林资源</h2>
-        <div class="ghint">森林资源资产价格鉴证评估规范</div>
-        <div class="spec-grid">
-          <div class="spec-card">
-            <h3>森林资源资产价格鉴证评估技术规范</h3>
-            <span class="code">森林资源资产</span>
-            <p class="desc">森林资源资产价格鉴证评估技术规范，含林木、林地资产测算方法。</p>
-            <a class="go" href="forest-resource.html">查看规范 →</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="spec-group">
-        <h2>🏠 房地产</h2>
-        <div class="ghint">房地产估价国家标准</div>
-        <div class="spec-grid">
-          <div class="spec-card">
-            <h3>房地产估价规范</h3>
-            <span class="code">GB/T 50291-2015</span>
-            <p class="desc">房地产估价国家标准，规定估价原则、方法与报告要求。</p>
-            <a class="go" href="real-estate-gbt50291.html">查看规范 →</a>
-          </div>
-        </div>
-      </section>
-
-      <section class="spec-group">
-        <h2>📍 地方参数</h2>
-        <div class="ghint">区域性价格认定技术参数参照标准</div>
-        <div class="spec-grid">
-          <div class="spec-card">
-            <h3>广东省价格认定相关技术参数参照标准</h3>
-            <span class="code">广东省 2018</span>
-            <p class="desc">广东省价格认定相关技术参数参照标准（2018），地方实务常用参数来源。</p>
-            <a class="go" href="gd-price-params-2018.html">查看规范 →</a>
-          </div>
-        </div>
-      </section>
+      <!-- 规范列表由 specs.js 动态渲染（公开），详情需登录 -->
+      <div id="specList"></div>
 
       <div class="back-home">
         <a href="../index.html">← 返回效率盒子首页</a>
@@ -166,7 +71,11 @@
     </div>
     <p>&copy; 2026 效率盒子. 价格鉴证评估技术专栏</p>
   </footer>
-<script>window.EFFBOX_STATS_API="https://effbox-stats.2726401886.workers.dev";</script>
-  <script src="/stats.js"></script>
+  <script>window.EFFBOX_STATS_API="https://effbox-stats.2726401886.workers.dev";</script>
+  <script src="specs.js"></script>
+  <script>
+    window.Specs.renderAuthBar("authBar");
+    window.Specs.renderSpecList("specList");
+  </script>
 </body>
 </html>
