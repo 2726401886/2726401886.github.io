@@ -191,24 +191,24 @@
       document.title = (spec.title || "规范详情") + " - 效率盒子";
       loading.style.display = "none";
 
-      // 依次尝试 document.write → blob URL → srcdoc
+      // 依次尝试 blob URL → document.write → srcdoc（blob 对脚本执行最稳定）
       let lastErr = null;
       try {
-        console.log("[detail] try document.write, len=", html.length);
-        renderByWrite(html);
-        return;
-      } catch (e) {
-        lastErr = e;
-        console.error("[detail] document.write failed", e);
-      }
-
-      try {
-        console.log("[detail] try blob URL");
+        console.log("[detail] try blob URL, len=", html.length);
         renderByBlob(html);
         return;
       } catch (e) {
         lastErr = e;
         console.error("[detail] blob failed", e);
+      }
+
+      try {
+        console.log("[detail] try document.write");
+        renderByWrite(html);
+        return;
+      } catch (e) {
+        lastErr = e;
+        console.error("[detail] document.write failed", e);
       }
 
       try {
