@@ -13,6 +13,9 @@
     .detail-bar .auth-user{font-size:13px;color:#e7e5e4}
     #specFrame{width:100%;border:none;display:block;min-height:600px;background:#fff}
     .detail-loading{padding:60px 20px;text-align:center;color:var(--text-light)}
+    .detail-error{padding:40px 20px;text-align:center;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);max-width:680px;margin:40px auto}
+    .detail-error a{color:var(--primary);text-decoration:underline}
+    .debug-info{max-width:680px;margin:20px auto;padding:12px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:var(--radius);font-size:12px;color:#64748b;font-family:monospace;white-space:pre-wrap;word-break:break-all}
   </style>
 </head>
 <body>
@@ -29,6 +32,8 @@
 
   <main class="main-content" style="padding:0">
     <div class="detail-loading" id="detailLoading">正在加载规范内容…</div>
+    <div class="detail-error" id="detailError" style="display:none"></div>
+    <div class="debug-info" id="debugInfo" style="display:none"></div>
     <iframe id="specFrame" style="display:none"></iframe>
   </main>
 
@@ -38,17 +43,32 @@
   </footer>
 
   <script>window.EFFBOX_STATS_API="https://api.toolshe.cn";</script>
-  <script src="specs.js?v=2"></script>
+  <script src="specs.js?v=3"></script>
   <script>
     const S = window.Specs;
     const id = new URLSearchParams(location.search).get("id");
     const frame = document.getElementById("specFrame");
     const loading = document.getElementById("detailLoading");
+    const errorBox = document.getElementById("detailError");
+    const debugBox = document.getElementById("debugInfo");
+
+    function showError(msg, withLogin) {
+      loading.style.display = "none";
+      errorBox.style.display = "block";
+      errorBox.innerHTML = msg + (withLogin
+        ? ' <a href="login.html?redirect=' + encodeURIComponent(location.pathname + location.search) + '">去登录</a>'
+        : "");
+    }
+
+    function showDebug(info) {
+      debugBox.style.display = "block";
+      debugBox.textContent = typeof info === "string" ? info : JSON.stringify(info, null, 2);
+    }
 
     // 登录态
     S.renderAuthBar("authBar");
 
-    // 自适应 iframe 高度
+    // 自适应 iframe 高度（postMessage 备用）
     window.addEventListener("message", (e) => {
       if (e.data && e.data.__specsH) {
         frame.style.height = Math.max(600, e.data.__specsH + 20) + "px";
@@ -62,21 +82,62 @@
         return;
       }
       if (!id) { loading.textContent = "缺少规范 id"; return; }
+
+      let r, j, status;
       try {
-        const r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
-        const j = await r.json();
-        if (!j.ok) {
-          loading.innerHTML = (j.msg || "加载失败") + ' <a href="login.html?redirect=' +
-            encodeURIComponent(location.pathname + location.search) + '">去登录</a>';
-          return;
-        }
-        document.title = j.spec.title + " - 效率盒子";
-        const autoHeight = `<scr`+`ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr`+`ipt>`;
-        frame.srcdoc = (j.spec.content_html || "") + autoHeight;
-        frame.style.display = "block";
-        loading.style.display = "none";
+        r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
+        status = r.status;
+        j = await r.json();
       } catch (e) {
-        loading.textContent = "加载失败，请稍后重试";
+        console.error("[detail] fetch/parse error", e);
+        showError("请求失败：" + (e && e.message ? e.message : "网络错误"));
+        return;
+      }
+
+      if (!r.ok || !j.ok) {
+        console.error("[detail] api error", status, j);
+        showError(j.msg || ("接口异常 (HTTP " + status + ")"), status === 401);
+        return;
+      }
+
+      const spec = j.spec || {};
+      const html = spec.content_html || "";
+      if (!html.trim()) {
+        showError("该规范暂无正文内容，请联系管理员。");
+        showDebug({ id: spec.id, title: spec.title, content_len: html.length });
+        return;
+      }
+
+      document.title = (spec.title || "规范详情") + " - 效率盒子";
+      loading.style.display = "none";
+
+      // 方案 A：Blob URL（比 srcdoc 更稳定，避免超长属性/特殊字符解析问题）
+      try {
+        const blobUrl = URL.createObjectURL(
+          new Blob([html], { type: "text/html; charset=utf-8" })
+        );
+        frame.onload = function () {
+          try {
+            const doc = frame.contentDocument || frame.contentWindow.document;
+            const h = Math.max(600, doc.body.scrollHeight + 20);
+            frame.style.height = h + "px";
+          } catch (e) {
+            console.error("[detail] resize error", e);
+          }
+        };
+        frame.src = blobUrl;
+        frame.style.display = "block";
+      } catch (e) {
+        console.error("[detail] blob render error", e);
+        // 方案 B：兜底直接用 srcdoc
+        try {
+          const autoHeight = "<scr" + "ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr" + "ipt>";
+          frame.srcdoc = html + autoHeight;
+          frame.style.display = "block";
+        } catch (e2) {
+          showError("内容渲染失败，请尝试刷新页面。");
+          showDebug({ error: e2 && e2.message, content_len: html.length });
+        }
       }
     })();
   </script>
