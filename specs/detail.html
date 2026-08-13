@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-13d</div>
+  <div class="version-mark" id="versionMark">v2026-08-13e</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -69,7 +69,8 @@
     const debugBox = document.getElementById("debugInfo");
     const fallbackPanel = document.getElementById("fallbackPanel");
     const openNewTabBtn = document.getElementById("openNewTabBtn");
-    const VERSION = "2026-08-13d";
+    const VERSION = "2026-08-13e";
+    const API_BASE = window.EFFBOX_STATS_API || "https://api.toolshe.cn";
 
     function showError(msg, withLogin) {
       loading.style.display = "none";
@@ -78,31 +79,13 @@
         ? ' <a href="login.html?redirect=' + encodeURIComponent(location.pathname + location.search) + '">去登录</a>'
         : "");
     }
-
     function showDebug(info) {
       debugBox.style.display = "block";
       debugBox.textContent = typeof info === "string" ? info : JSON.stringify(info, null, 2);
     }
 
-    function showFallback(html) {
-      loading.style.display = "none";
-      fallbackPanel.style.display = "block";
-      if (html) {
-        try {
-          const b64 = utf8ToBase64(prepareHtml(html));
-          openNewTabBtn.href = "data:text/html;base64," + b64;
-        } catch (e) {
-          console.error("[detail] fallback href error", e);
-        }
-      }
-    }
-
     // 登录态
-    try {
-      S.renderAuthBar("authBar");
-    } catch (e) {
-      console.error("[detail] renderAuthBar error", e);
-    }
+    try { S.renderAuthBar("authBar"); } catch (e) { console.error("[detail] renderAuthBar error", e); }
 
     // 自适应 iframe 高度 + 调试错误
     window.addEventListener("message", (e) => {
@@ -115,75 +98,33 @@
       }
     });
 
+    // ── 本地嵌入降级方案（仅在直连端点失败时使用）──
     function injectIframeCompat(html) {
       const shim = "<scr" + "ipt>(function(){try{localStorage.getItem('__specs_test__');}catch(e){var mem={};try{Object.defineProperty(window,'localStorage',{value:{getItem:function(k){return mem.hasOwnProperty(k)?mem[k]:null;},setItem:function(k,v){mem[k]=String(v);},removeItem:function(k){delete mem[k];},clear:function(){mem={};}},configurable:true});}catch(x){}}if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();</scr" + "ipt>";
       const headEnd = html.search(/<\/head>/i);
-      if (headEnd !== -1) {
-        return html.slice(0, headEnd) + shim + html.slice(headEnd);
-      }
-      const bodyStart = html.search(/<body[^>]*>/i);
-      if (bodyStart !== -1) {
-        const m = html.match(/<body[^>]*>/i);
-        const end = bodyStart + m[0].length;
-        return html.slice(0, end) + shim + html.slice(end);
-      }
+      if (headEnd !== -1) return html.slice(0, headEnd) + shim + html.slice(headEnd);
+      const m = html.match(/<body[^>]*>/i);
+      if (m) { const i = html.indexOf(m[0]) + m[0].length; return html.slice(0, i) + shim + html.slice(i); }
       return shim + html;
     }
-
     function injectAutoHeight(html) {
       const autoHeight = "<scr" + "ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr" + "ipt>";
       const bodyEnd = html.search(/<\/body>/i);
-      if (bodyEnd !== -1) {
-        return html.slice(0, bodyEnd) + autoHeight + html.slice(bodyEnd);
-      }
+      if (bodyEnd !== -1) return html.slice(0, bodyEnd) + autoHeight + html.slice(bodyEnd);
       return html + autoHeight;
     }
-
-    function prepareHtml(html) {
-      return injectAutoHeight(injectIframeCompat(html));
-    }
-
-    function utf8ToBase64(str) {
-      const bytes = new TextEncoder().encode(str);
-      let binary = "";
-      for (let i = 0; i < bytes.length; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return btoa(binary);
-    }
-
-    function renderByDataUrl(html) {
-      const dataUrl = "data:text/html;base64," + utf8ToBase64(prepareHtml(html));
-      frame.onload = function () {
-        try {
-          const doc = frame.contentDocument || frame.contentWindow.document;
-          const h = Math.max(600, doc.body.scrollHeight + 20);
-          frame.style.height = h + "px";
-        } catch (e) {
-          console.error("[detail] resize error", e);
-        }
-      };
-      frame.src = dataUrl;
-      frame.style.display = "block";
-    }
+    function prepareHtml(html) { return injectAutoHeight(injectIframeCompat(html)); }
 
     function renderByBlob(html) {
       const blobUrl = URL.createObjectURL(
         new Blob([prepareHtml(html)], { type: "text/html; charset=utf-8" })
       );
       frame.onload = function () {
-        try {
-          const doc = frame.contentDocument || frame.contentWindow.document;
-          const h = Math.max(600, doc.body.scrollHeight + 20);
-          frame.style.height = h + "px";
-        } catch (e) {
-          console.error("[detail] resize error", e);
-        }
+        try { frame.style.height = Math.max(600, (frame.contentDocument || frame.contentWindow.document).body.scrollHeight + 20) + "px"; } catch (e) {}
       };
       frame.src = blobUrl;
       frame.style.display = "block";
     }
-
     function renderByWrite(html) {
       const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
       if (!doc || !doc.open) throw new Error("无法获取 iframe document");
@@ -192,17 +133,49 @@
       doc.write(prepareHtml(html));
       doc.close();
     }
-
     function renderBySrcdoc(html) {
       frame.onload = function () {
-        try {
-          const doc = frame.contentDocument || frame.contentWindow.document;
-          const h = Math.max(600, doc.body.scrollHeight + 20);
-          frame.style.height = h + "px";
-        } catch (e) {}
+        try { frame.style.height = Math.max(600, (frame.contentDocument || frame.contentWindow.document).body.scrollHeight + 20) + "px"; } catch (e) {}
       };
       frame.srcdoc = prepareHtml(html);
       frame.style.display = "block";
+    }
+
+    async function fallbackEmbed(token) {
+      let j, r;
+      try {
+        r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
+        j = await r.json();
+      } catch (e) {
+        showError("内容加载失败：" + (e && e.message ? e.message : "网络错误"));
+        showDebug({ version: VERSION, step: "fallback fetch", error: e && e.message });
+        showFallback();
+        return;
+      }
+      if (!r.ok || !j.ok) {
+        showError(j.msg || ("接口异常 (HTTP " + r.status + ")"), r.status === 401);
+        showDebug({ version: VERSION, step: "fallback api", status: r.status, response: j });
+        return;
+      }
+      const html = (j.spec && j.spec.content_html) || "";
+      if (!html.trim()) { showError("该规范暂无正文内容，请联系管理员。"); return; }
+      const methods = [
+        { name: "blob", fn: renderByBlob },
+        { name: "document.write", fn: renderByWrite },
+        { name: "srcdoc", fn: renderBySrcdoc }
+      ];
+      let lastErr = null;
+      for (const m of methods) {
+        try { m.fn(html); loading.style.display = "none"; return; } catch (e) { lastErr = e; console.error("[detail] fallback " + m.name + " failed", e); }
+      }
+      showError("内容渲染失败，请尝试刷新页面。");
+      showDebug({ version: VERSION, content_len: html.length, last_error: lastErr && lastErr.message });
+      showFallback();
+    }
+
+    function showFallback() {
+      loading.style.display = "none";
+      fallbackPanel.style.display = "block";
     }
 
     (async function () {
@@ -214,58 +187,21 @@
         }
         if (!id) { loading.textContent = "缺少规范 id"; return; }
 
-        let r, j, status;
-        try {
-          r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
-          status = r.status;
-          j = await r.json();
-        } catch (e) {
-          console.error("[detail] fetch/parse error", e);
-          showError("请求失败：" + (e && e.message ? e.message : "网络错误"));
-          showDebug({ version: VERSION, step: "fetch/parse", error: e && e.message });
-          return;
-        }
-
-        if (!r.ok || !j.ok) {
-          console.error("[detail] api error", status, j);
-          showError(j.msg || ("接口异常 (HTTP " + status + ")"), status === 401);
-          showDebug({ version: VERSION, step: "api", status: status, response: j });
-          return;
-        }
-
-        const spec = j.spec || {};
-        const html = spec.content_html || "";
-        if (!html.trim()) {
-          showError("该规范暂无正文内容，请联系管理员。");
-          showDebug({ version: VERSION, id: spec.id, title: spec.title, content_len: html.length });
-          return;
-        }
-
-        document.title = (spec.title || "规范详情") + " - 效率盒子";
-
-        // 依次尝试 data URL → blob URL → document.write → srcdoc
-        const methods = [
-          { name: "data URL", fn: renderByDataUrl },
-          { name: "blob URL", fn: renderByBlob },
-          { name: "document.write", fn: renderByWrite },
-          { name: "srcdoc", fn: renderBySrcdoc }
-        ];
-        let lastErr = null;
-        for (const m of methods) {
-          try {
-            console.log("[detail] try " + m.name + ", len=", html.length);
-            m.fn(html);
-            loading.style.display = "none";
-            return;
-          } catch (e) {
-            lastErr = e;
-            console.error("[detail] " + m.name + " failed", e);
-          }
-        }
-
-        showError("内容渲染失败，请尝试刷新页面。");
-        showDebug({ version: VERSION, content_len: html.length, last_error: lastErr && lastErr.message });
-        showFallback(html);
+        // 主方案：iframe 直连后端 /specs/view 端点（后端已注入 shim 和高度脚本）
+        const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + "&token=" + encodeURIComponent(tk);
+        let fallbackTimer = setTimeout(function () { fallbackEmbed(tk); }, 12000);
+        frame.onload = function () {
+          clearTimeout(fallbackTimer);
+          loading.style.display = "none";
+          frame.style.display = "block";
+        };
+        frame.onerror = function () {
+          clearTimeout(fallbackTimer);
+          console.warn("[detail] iframe 加载失败，回退本地嵌入");
+          fallbackEmbed(tk);
+        };
+        frame.src = viewUrl;
+        frame.style.display = "block";
       } catch (e) {
         console.error("[detail] unexpected error", e);
         showError("页面初始化失败：" + (e && e.message ? e.message : "未知错误"));
