@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>规范详情 - 价格鉴证评估技术专栏</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
@@ -16,9 +19,11 @@
     .detail-error{padding:40px 20px;text-align:center;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);max-width:680px;margin:40px auto}
     .detail-error a{color:var(--primary);text-decoration:underline}
     .debug-info{max-width:680px;margin:20px auto;padding:12px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:var(--radius);font-size:12px;color:#64748b;font-family:monospace;white-space:pre-wrap;word-break:break-all}
+    .version-mark{position:fixed;bottom:4px;right:4px;font-size:10px;color:#94a3b8;opacity:.6;pointer-events:none;z-index:9999}
   </style>
 </head>
 <body>
+  <div class="version-mark" id="versionMark">v2026-08-13b</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -51,6 +56,7 @@
     const loading = document.getElementById("detailLoading");
     const errorBox = document.getElementById("detailError");
     const debugBox = document.getElementById("debugInfo");
+    const VERSION = "2026-08-13b";
 
     function showError(msg, withLogin) {
       loading.style.display = "none";
@@ -75,6 +81,55 @@
       }
     });
 
+    function injectAutoHeight(html) {
+      const autoHeight = "<scr" + "ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr" + "ipt>";
+      // 优先注入到 </body> 前，确保在文档内执行
+      const bodyEnd = html.search(/<\/body>/i);
+      if (bodyEnd !== -1) {
+        return html.slice(0, bodyEnd) + autoHeight + html.slice(bodyEnd);
+      }
+      // 无 body 结束标签则追加
+      return html + autoHeight;
+    }
+
+    function renderByWrite(html) {
+      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if (!doc || !doc.open) throw new Error("无法获取 iframe document");
+      frame.style.display = "block";
+      doc.open();
+      doc.write(injectAutoHeight(html));
+      doc.close();
+    }
+
+    function renderByBlob(html) {
+      const blobUrl = URL.createObjectURL(
+        new Blob([injectAutoHeight(html)], { type: "text/html; charset=utf-8" })
+      );
+      frame.onload = function () {
+        try {
+          const doc = frame.contentDocument || frame.contentWindow.document;
+          const h = Math.max(600, doc.body.scrollHeight + 20);
+          frame.style.height = h + "px";
+        } catch (e) {
+          console.error("[detail] resize error", e);
+        }
+      };
+      frame.src = blobUrl;
+      frame.style.display = "block";
+    }
+
+    function renderBySrcdoc(html) {
+      frame.onload = function () {
+        try {
+          const doc = frame.contentDocument || frame.contentWindow.document;
+          const h = Math.max(600, doc.body.scrollHeight + 20);
+          frame.style.height = h + "px";
+        } catch (e) {}
+      };
+      frame.srcdoc = injectAutoHeight(html);
+      frame.style.display = "block";
+    }
+
     (async function () {
       const tk = S.getToken();
       if (!tk) {
@@ -91,12 +146,14 @@
       } catch (e) {
         console.error("[detail] fetch/parse error", e);
         showError("请求失败：" + (e && e.message ? e.message : "网络错误"));
+        showDebug({ version: VERSION, step: "fetch/parse", error: e && e.message });
         return;
       }
 
       if (!r.ok || !j.ok) {
         console.error("[detail] api error", status, j);
         showError(j.msg || ("接口异常 (HTTP " + status + ")"), status === 401);
+        showDebug({ version: VERSION, step: "api", status: status, response: j });
         return;
       }
 
@@ -104,41 +161,44 @@
       const html = spec.content_html || "";
       if (!html.trim()) {
         showError("该规范暂无正文内容，请联系管理员。");
-        showDebug({ id: spec.id, title: spec.title, content_len: html.length });
+        showDebug({ version: VERSION, id: spec.id, title: spec.title, content_len: html.length });
         return;
       }
 
       document.title = (spec.title || "规范详情") + " - 效率盒子";
       loading.style.display = "none";
 
-      // 方案 A：Blob URL（比 srcdoc 更稳定，避免超长属性/特殊字符解析问题）
+      // 依次尝试 document.write → blob URL → srcdoc
+      let lastErr = null;
       try {
-        const blobUrl = URL.createObjectURL(
-          new Blob([html], { type: "text/html; charset=utf-8" })
-        );
-        frame.onload = function () {
-          try {
-            const doc = frame.contentDocument || frame.contentWindow.document;
-            const h = Math.max(600, doc.body.scrollHeight + 20);
-            frame.style.height = h + "px";
-          } catch (e) {
-            console.error("[detail] resize error", e);
-          }
-        };
-        frame.src = blobUrl;
-        frame.style.display = "block";
+        console.log("[detail] try document.write, len=", html.length);
+        renderByWrite(html);
+        return;
       } catch (e) {
-        console.error("[detail] blob render error", e);
-        // 方案 B：兜底直接用 srcdoc
-        try {
-          const autoHeight = "<scr" + "ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr" + "ipt>";
-          frame.srcdoc = html + autoHeight;
-          frame.style.display = "block";
-        } catch (e2) {
-          showError("内容渲染失败，请尝试刷新页面。");
-          showDebug({ error: e2 && e2.message, content_len: html.length });
-        }
+        lastErr = e;
+        console.error("[detail] document.write failed", e);
       }
+
+      try {
+        console.log("[detail] try blob URL");
+        renderByBlob(html);
+        return;
+      } catch (e) {
+        lastErr = e;
+        console.error("[detail] blob failed", e);
+      }
+
+      try {
+        console.log("[detail] try srcdoc");
+        renderBySrcdoc(html);
+        return;
+      } catch (e) {
+        lastErr = e;
+        console.error("[detail] srcdoc failed", e);
+      }
+
+      showError("内容渲染失败，请尝试刷新页面。");
+      showDebug({ version: VERSION, content_len: html.length, last_error: lastErr && lastErr.message });
     })();
   </script>
 </body>
