@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>高中数学学习专栏 - 效率盒子</title>
+  <meta name="description" content="高中数学学习专栏：以游戏化、可视化方式呈现高中数学核心知识点与闯关练习，让学习更有趣、更高效。">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .spec-hero{padding:40px 0 24px;text-align:center}
+    .spec-hero h1{font-size:30px;font-weight:800;margin-bottom:10px;letter-spacing:1px}
+    .spec-hero p{color:var(--text-light);font-size:15px;max-width:680px;margin:0 auto;line-height:1.7}
+    .spec-group{margin-top:36px}
+    .spec-group h2{font-size:19px;font-weight:700;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+    .spec-group .ghint{color:var(--text-lighter);font-size:13px;margin-bottom:16px}
+    .spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+    .spec-card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px 18px 16px;box-shadow:var(--shadow);transition:var(--transition);display:flex;flex-direction:column}
+    .spec-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--primary-light)}
+    .spec-card h3{font-size:16px;font-weight:700;line-height:1.4;margin-bottom:8px}
+    .spec-card .code{display:inline-block;font-size:11px;font-family:monospace;background:var(--primary-bg);color:var(--primary-dark);padding:2px 8px;border-radius:20px;margin-bottom:10px;align-self:flex-start}
+    .spec-card .desc{font-size:13px;color:var(--text-light);line-height:1.6;flex:1;margin-bottom:14px}
+    .spec-card a.go{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:8px 16px;background:var(--primary);color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:600;text-decoration:none;transition:var(--transition);align-self:flex-start}
+    .spec-card a.go:hover{background:var(--primary-dark)}
+    .back-home{margin:36px 0 8px;text-align:center}
+    .back-home a{color:var(--primary);text-decoration:none;font-size:14px;font-weight:600}
+    .back-home a:hover{text-decoration:underline}
+    .auth-link{color:var(--primary);text-decoration:none;font-size:14px;font-weight:600}
+    .auth-user{font-size:13px;color:var(--text-light);margin-right:8px}
+    .spec-loading{text-align:center;color:var(--text-light);padding:40px 0}
+    .admin-entry{margin:28px 0 6px;text-align:center}
+    .admin-entry-link{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;background:var(--bg-main);border:1px solid var(--primary);color:var(--primary);border-radius:var(--radius-sm);font-size:14px;font-weight:600;text-decoration:none;transition:var(--transition)}
+    .admin-entry-link:hover{background:var(--primary);color:#fff}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../specs/index.html">规范专栏</a></li>
+          <li><a href="index.html" class="active">数学专栏</a></li>
+        </ul>
+      </nav>
+      <div id="authBar" style="margin-left:auto"></div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+      <section class="spec-hero">
+        <h1>高中数学学习专栏</h1>
+        <p>用游戏化、可视化的方式，把高中数学的核心知识点变成可以互动闯关的练习。边玩边学，吃透概念。</p>
+      </section>
+
+      <!-- 列表由 specs.js 动态渲染（公开），详情需登录 -->
+      <div id="specList"></div>
+
+      <div class="back-home">
+        <a href="../index.html">← 返回效率盒子首页</a>
+      </div>
+
+      <div id="adminEntry"></div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../specs/index.html">规范专栏</a>
+      <a href="index.html">数学专栏</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 高中数学学习专栏</p>
+  </footer>
+  <script>window.EFFBOX_STATS_API="https://api.toolshe.cn";</script>
+  <script src="../specs/specs.js?v=3"></script>
+  <script>
+    window.Specs.renderAuthBar("authBar");
+    window.Specs.renderSpecList("specList", "math");
+    window.Specs.renderAdminEntry("adminEntry", "../specs/specs-admin.html");
+  </script>
+</body>
+</html>
