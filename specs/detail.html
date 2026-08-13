@@ -32,10 +32,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
-      <nav><ul class="nav-links">
-        <li><a href="../index.html">首页</a></li>
-        <li><a href="index.html" class="active">规范专栏</a></li>
-      </ul></nav>
+      <nav><ul class="nav-links" id="detailNav"></ul></nav>
       <div id="authBar" style="margin-left:auto"></div>
     </div>
   </header>
@@ -48,21 +45,24 @@
       <h3>规范正文加载失败</h3>
       <p>当前浏览器无法在当前页面内渲染该规范。你可以选择在新标签页中打开，或者联系管理员。</p>
       <a id="openNewTabBtn" class="btn" href="#" target="_blank">新标签页打开正文</a>
-      <a class="btn secondary" href="index.html">返回规范列表</a>
+      <a class="btn secondary" id="backListLink" href="index.html">返回规范列表</a>
     </div>
     <iframe id="specFrame" style="display:none"></iframe>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-links"><a href="../index.html">首页</a><a href="index.html">规范专栏</a></div>
-    <p>&copy; 2026 效率盒子. 价格鉴证评估技术专栏</p>
-  </footer>
+    <footer class="site-footer">
+      <div class="footer-links" id="detailFooter"></div>
+      <p>&copy; 2026 效率盒子. 价格鉴证评估技术专栏</p>
+    </footer>
 
   <script>window.EFFBOX_STATS_API="https://api.toolshe.cn";</script>
   <script src="specs.js?v=3"></script>
   <script>
     const S = window.Specs;
     const id = new URLSearchParams(location.search).get("id");
+    const from = new URLSearchParams(location.search).get("from") || "valuation";
+    const backHref = from === "math" ? "../math/index.html" : "index.html";
+    const colLabel = from === "math" ? "数学专栏" : "规范专栏";
     const frame = document.getElementById("specFrame");
     const loading = document.getElementById("detailLoading");
     const errorBox = document.getElementById("detailError");
@@ -86,6 +86,20 @@
 
     // 登录态
     try { S.renderAuthBar("authBar"); } catch (e) { console.error("[detail] renderAuthBar error", e); }
+
+    // 根据 from 参数设置导航/返回链接/标题
+    try {
+      const navUl = document.getElementById("detailNav");
+      if (navUl) navUl.innerHTML =
+        '<li><a href="../index.html">首页</a></li>' +
+        '<li><a href="' + backHref + '" class="active">' + colLabel + '</a></li>';
+      const foot = document.getElementById("detailFooter");
+      if (foot) foot.innerHTML =
+        '<a href="../index.html">首页</a><a href="' + backHref + '">' + colLabel + '</a>';
+      const backLink = document.getElementById("backListLink");
+      if (backLink) backLink.setAttribute("href", backHref);
+      if (from === "math") document.title = "详情 - 高中数学学习专栏";
+    } catch (e) { console.error("[detail] nav setup error", e); }
 
     // 自适应 iframe 高度 + 调试错误
     window.addEventListener("message", (e) => {
