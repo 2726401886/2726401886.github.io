@@ -1,6 +1,6 @@
 // specs 专栏共享前端逻辑：鉴权 / 列表渲染 / 登录态
 (function () {
-  const API = window.EFFBOX_STATS_API || "https://effbox-stats.2726401886.workers.dev";
+  const API = window.EFFBOX_STATS_API || "https://api.toolshe.cn";
   const TOKEN_KEY = "effbox_specs_token";
 
   function getToken() { return localStorage.getItem(TOKEN_KEY); }
