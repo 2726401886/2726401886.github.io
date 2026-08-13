@@ -14,6 +14,28 @@
     return fetch(API + path, opts);
   }
 
+  // 从本地 JWT 解析 payload（不依赖网络，避免 /auth/me 抖动导致入口不显示）
+  function parseJWT(tk) {
+    try {
+      const p = tk.split(".")[1];
+      if (!p) return null;
+      const pad = p + "=".repeat((4 - (p.length % 4)) % 4);
+      const json = decodeURIComponent(
+        atob(pad).split("").map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join("")
+      );
+      return JSON.parse(json);
+    } catch { return null; }
+  }
+
+  function isAdmin(tk) {
+    if (!tk) return false;
+    const p = parseJWT(tk);
+    if (p && p.role === "admin") return true;
+    return false;
+  }
+
   async function currentUser() {
     const tk = getToken();
     if (!tk) return null;
@@ -77,10 +99,19 @@
     }
   }
 
-  // 管理后台入口（仅管理员可见，放在页面底部）
+  // 管理后台入口（仅管理员可见，放在页面底部）。优先本地 JWT 解析，避免 /auth/me 抖动。
   async function renderAdminEntry(containerId) {
     const el = document.getElementById(containerId);
     if (!el) return;
+    // 1) 本地已确认 admin，立即显示（无需等待网络）
+    if (isAdmin(getToken())) {
+      el.innerHTML =
+        '<div class="admin-entry">' +
+        '<a href="specs-admin.html" class="admin-entry-link">⚙ 专栏管理后台</a>' +
+        '</div>';
+      return;
+    }
+    // 2) 兜底：再问一次后端
     try {
       const u = await currentUser();
       if (u && u.role === "admin") {
