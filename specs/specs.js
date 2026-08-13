@@ -66,13 +66,15 @@
   const CATEGORY_ICONS = {
     "综合执业规范": "📘", "火灾损失类": "🔥", "交通事故与机动车": "🚗",
     "森林资源": "🌲", "房地产": "🏠", "地方参数": "📍",
+    "高中数学": "📐",
   };
-  async function renderSpecList(targetId) {
+  async function renderSpecList(targetId, col) {
     const el = document.getElementById(targetId);
     if (!el) return;
     el.innerHTML = '<p class="spec-loading">加载中…</p>';
     try {
-      const r = await fetch(API + "/specs/list");
+      const listUrl = API + "/specs/list" + (col ? ("?col=" + encodeURIComponent(col)) : "");
+      const r = await fetch(listUrl);
       const j = await r.json();
       if (!j.ok || !j.specs || !j.specs.length) {
         el.innerHTML = '<p class="spec-loading">暂无规范内容</p>';
@@ -89,7 +91,8 @@
           html += `<div class="spec-card"><h3>${s.title}</h3>`;
           if (s.code) html += `<span class="code">${s.code}</span>`;
           if (s.summary) html += `<p class="desc">${s.summary}</p>`;
-          html += `<a class="go" href="detail.html?id=${encodeURIComponent(s.id)}">查看规范 →</a></div>`;
+          const fromParam = col ? ("&from=" + encodeURIComponent(col)) : "";
+          html += `<a class="go" href="detail.html?id=${encodeURIComponent(s.id)}${fromParam}">查看规范 →</a></div>`;
         }
         html += `</div></section>`;
       }
@@ -100,14 +103,15 @@
   }
 
   // 管理后台入口（仅管理员可见，放在页面底部）。优先本地 JWT 解析，避免 /auth/me 抖动。
-  async function renderAdminEntry(containerId) {
+  async function renderAdminEntry(containerId, adminHref) {
     const el = document.getElementById(containerId);
     if (!el) return;
+    const href = adminHref || "specs-admin.html";
     // 1) 本地已确认 admin，立即显示（无需等待网络）
     if (isAdmin(getToken())) {
       el.innerHTML =
         '<div class="admin-entry">' +
-        '<a href="specs-admin.html" class="admin-entry-link">⚙ 专栏管理后台</a>' +
+        '<a href="' + href + '" class="admin-entry-link">⚙ 专栏管理后台</a>' +
         '</div>';
       return;
     }
@@ -117,7 +121,7 @@
       if (u && u.role === "admin") {
         el.innerHTML =
           '<div class="admin-entry">' +
-          '<a href="specs-admin.html" class="admin-entry-link">⚙ 专栏管理后台</a>' +
+          '<a href="' + href + '" class="admin-entry-link">⚙ 专栏管理后台</a>' +
           '</div>';
       } else {
         el.innerHTML = "";
