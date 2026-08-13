@@ -14,16 +14,21 @@
     .detail-bar .spacer{flex:1}
     .detail-bar .auth-link{color:#fcd34d;text-decoration:none;font-size:13px;margin-left:10px}
     .detail-bar .auth-user{font-size:13px;color:#e7e5e4}
-    #specFrame{width:100%;border:none;display:block;min-height:600px;background:#fff}
+    #specFrame{width:100%;border:none;display:block;min-height:600px;background:#f8fafc}
     .detail-loading{padding:60px 20px;text-align:center;color:var(--text-light)}
     .detail-error{padding:40px 20px;text-align:center;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);max-width:680px;margin:40px auto}
     .detail-error a{color:var(--primary);text-decoration:underline}
     .debug-info{max-width:680px;margin:20px auto;padding:12px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:var(--radius);font-size:12px;color:#64748b;font-family:monospace;white-space:pre-wrap;word-break:break-all}
     .version-mark{position:fixed;bottom:4px;right:4px;font-size:10px;color:#94a3b8;opacity:.6;pointer-events:none;z-index:9999}
+    .fallback-panel{max-width:680px;margin:40px auto;padding:24px;background:#fff;border:1px solid #e2e8f0;border-radius:var(--radius);text-align:center}
+    .fallback-panel h3{margin:0 0 12px;font-size:18px;color:#1e293b}
+    .fallback-panel p{margin:0 0 16px;color:#64748b;font-size:14px;line-height:1.6}
+    .fallback-panel .btn{display:inline-block;padding:10px 20px;background:var(--primary);color:#fff;border-radius:var(--radius);text-decoration:none;font-size:14px;margin:4px}
+    .fallback-panel .btn.secondary{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1}
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-13c</div>
+  <div class="version-mark" id="versionMark">v2026-08-13d</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -39,6 +44,12 @@
     <div class="detail-loading" id="detailLoading">正在加载规范内容…</div>
     <div class="detail-error" id="detailError" style="display:none"></div>
     <div class="debug-info" id="debugInfo" style="display:none"></div>
+    <div class="fallback-panel" id="fallbackPanel" style="display:none">
+      <h3>规范正文加载失败</h3>
+      <p>当前浏览器无法在当前页面内渲染该规范。你可以选择在新标签页中打开，或者联系管理员。</p>
+      <a id="openNewTabBtn" class="btn" href="#" target="_blank">新标签页打开正文</a>
+      <a class="btn secondary" href="index.html">返回规范列表</a>
+    </div>
     <iframe id="specFrame" style="display:none"></iframe>
   </main>
 
@@ -56,7 +67,9 @@
     const loading = document.getElementById("detailLoading");
     const errorBox = document.getElementById("detailError");
     const debugBox = document.getElementById("debugInfo");
-    const VERSION = "2026-08-13c";
+    const fallbackPanel = document.getElementById("fallbackPanel");
+    const openNewTabBtn = document.getElementById("openNewTabBtn");
+    const VERSION = "2026-08-13d";
 
     function showError(msg, withLogin) {
       loading.style.display = "none";
@@ -71,10 +84,27 @@
       debugBox.textContent = typeof info === "string" ? info : JSON.stringify(info, null, 2);
     }
 
-    // 登录态
-    S.renderAuthBar("authBar");
+    function showFallback(html) {
+      loading.style.display = "none";
+      fallbackPanel.style.display = "block";
+      if (html) {
+        try {
+          const b64 = utf8ToBase64(prepareHtml(html));
+          openNewTabBtn.href = "data:text/html;base64," + b64;
+        } catch (e) {
+          console.error("[detail] fallback href error", e);
+        }
+      }
+    }
 
-    // 自适应 iframe 高度（postMessage 备用）
+    // 登录态
+    try {
+      S.renderAuthBar("authBar");
+    } catch (e) {
+      console.error("[detail] renderAuthBar error", e);
+    }
+
+    // 自适应 iframe 高度 + 调试错误
     window.addEventListener("message", (e) => {
       if (e.data && e.data.__specsH) {
         frame.style.height = Math.max(600, e.data.__specsH + 20) + "px";
@@ -102,12 +132,10 @@
 
     function injectAutoHeight(html) {
       const autoHeight = "<scr" + "ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr" + "ipt>";
-      // 优先注入到 </body> 前，确保在文档内执行
       const bodyEnd = html.search(/<\/body>/i);
       if (bodyEnd !== -1) {
         return html.slice(0, bodyEnd) + autoHeight + html.slice(bodyEnd);
       }
-      // 无 body 结束标签则追加
       return html + autoHeight;
     }
 
@@ -115,13 +143,28 @@
       return injectAutoHeight(injectIframeCompat(html));
     }
 
-    function renderByWrite(html) {
-      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
-      if (!doc || !doc.open) throw new Error("无法获取 iframe document");
+    function utf8ToBase64(str) {
+      const bytes = new TextEncoder().encode(str);
+      let binary = "";
+      for (let i = 0; i < bytes.length; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return btoa(binary);
+    }
+
+    function renderByDataUrl(html) {
+      const dataUrl = "data:text/html;base64," + utf8ToBase64(prepareHtml(html));
+      frame.onload = function () {
+        try {
+          const doc = frame.contentDocument || frame.contentWindow.document;
+          const h = Math.max(600, doc.body.scrollHeight + 20);
+          frame.style.height = h + "px";
+        } catch (e) {
+          console.error("[detail] resize error", e);
+        }
+      };
+      frame.src = dataUrl;
       frame.style.display = "block";
-      doc.open();
-      doc.write(prepareHtml(html));
-      doc.close();
     }
 
     function renderByBlob(html) {
@@ -141,6 +184,15 @@
       frame.style.display = "block";
     }
 
+    function renderByWrite(html) {
+      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if (!doc || !doc.open) throw new Error("无法获取 iframe document");
+      frame.style.display = "block";
+      doc.open();
+      doc.write(prepareHtml(html));
+      doc.close();
+    }
+
     function renderBySrcdoc(html) {
       frame.onload = function () {
         try {
@@ -154,74 +206,71 @@
     }
 
     (async function () {
-      const tk = S.getToken();
-      if (!tk) {
-        location.href = "login.html?redirect=" + encodeURIComponent(location.pathname + location.search);
-        return;
-      }
-      if (!id) { loading.textContent = "缺少规范 id"; return; }
-
-      let r, j, status;
       try {
-        r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
-        status = r.status;
-        j = await r.json();
+        const tk = S.getToken();
+        if (!tk) {
+          location.href = "login.html?redirect=" + encodeURIComponent(location.pathname + location.search);
+          return;
+        }
+        if (!id) { loading.textContent = "缺少规范 id"; return; }
+
+        let r, j, status;
+        try {
+          r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
+          status = r.status;
+          j = await r.json();
+        } catch (e) {
+          console.error("[detail] fetch/parse error", e);
+          showError("请求失败：" + (e && e.message ? e.message : "网络错误"));
+          showDebug({ version: VERSION, step: "fetch/parse", error: e && e.message });
+          return;
+        }
+
+        if (!r.ok || !j.ok) {
+          console.error("[detail] api error", status, j);
+          showError(j.msg || ("接口异常 (HTTP " + status + ")"), status === 401);
+          showDebug({ version: VERSION, step: "api", status: status, response: j });
+          return;
+        }
+
+        const spec = j.spec || {};
+        const html = spec.content_html || "";
+        if (!html.trim()) {
+          showError("该规范暂无正文内容，请联系管理员。");
+          showDebug({ version: VERSION, id: spec.id, title: spec.title, content_len: html.length });
+          return;
+        }
+
+        document.title = (spec.title || "规范详情") + " - 效率盒子";
+
+        // 依次尝试 data URL → blob URL → document.write → srcdoc
+        const methods = [
+          { name: "data URL", fn: renderByDataUrl },
+          { name: "blob URL", fn: renderByBlob },
+          { name: "document.write", fn: renderByWrite },
+          { name: "srcdoc", fn: renderBySrcdoc }
+        ];
+        let lastErr = null;
+        for (const m of methods) {
+          try {
+            console.log("[detail] try " + m.name + ", len=", html.length);
+            m.fn(html);
+            loading.style.display = "none";
+            return;
+          } catch (e) {
+            lastErr = e;
+            console.error("[detail] " + m.name + " failed", e);
+          }
+        }
+
+        showError("内容渲染失败，请尝试刷新页面。");
+        showDebug({ version: VERSION, content_len: html.length, last_error: lastErr && lastErr.message });
+        showFallback(html);
       } catch (e) {
-        console.error("[detail] fetch/parse error", e);
-        showError("请求失败：" + (e && e.message ? e.message : "网络错误"));
-        showDebug({ version: VERSION, step: "fetch/parse", error: e && e.message });
-        return;
+        console.error("[detail] unexpected error", e);
+        showError("页面初始化失败：" + (e && e.message ? e.message : "未知错误"));
+        showDebug({ version: VERSION, step: "top", error: e && e.message });
       }
-
-      if (!r.ok || !j.ok) {
-        console.error("[detail] api error", status, j);
-        showError(j.msg || ("接口异常 (HTTP " + status + ")"), status === 401);
-        showDebug({ version: VERSION, step: "api", status: status, response: j });
-        return;
-      }
-
-      const spec = j.spec || {};
-      const html = spec.content_html || "";
-      if (!html.trim()) {
-        showError("该规范暂无正文内容，请联系管理员。");
-        showDebug({ version: VERSION, id: spec.id, title: spec.title, content_len: html.length });
-        return;
-      }
-
-      document.title = (spec.title || "规范详情") + " - 效率盒子";
-      loading.style.display = "none";
-
-      // 依次尝试 blob URL → document.write → srcdoc（blob 对脚本执行最稳定）
-      let lastErr = null;
-      try {
-        console.log("[detail] try blob URL, len=", html.length);
-        renderByBlob(html);
-        return;
-      } catch (e) {
-        lastErr = e;
-        console.error("[detail] blob failed", e);
-      }
-
-      try {
-        console.log("[detail] try document.write");
-        renderByWrite(html);
-        return;
-      } catch (e) {
-        lastErr = e;
-        console.error("[detail] document.write failed", e);
-      }
-
-      try {
-        console.log("[detail] try srcdoc");
-        renderBySrcdoc(html);
-        return;
-      } catch (e) {
-        lastErr = e;
-        console.error("[detail] srcdoc failed", e);
-      }
-
-      showError("内容渲染失败，请尝试刷新页面。");
-      showDebug({ version: VERSION, content_len: html.length, last_error: lastErr && lastErr.message });
     })();
   </script>
 </body>
