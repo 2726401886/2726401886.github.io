@@ -77,8 +77,27 @@
     }
   }
 
+  // 管理后台入口（仅管理员可见，放在页面底部）
+  async function renderAdminEntry(containerId) {
+    const el = document.getElementById(containerId);
+    if (!el) return;
+    try {
+      const u = await currentUser();
+      if (u && u.role === "admin") {
+        el.innerHTML =
+          '<div class="admin-entry">' +
+          '<a href="specs-admin.html" class="admin-entry-link">⚙ 专栏管理后台</a>' +
+          '</div>';
+      } else {
+        el.innerHTML = "";
+      }
+    } catch {
+      el.innerHTML = "";
+    }
+  }
+
   window.Specs = {
     API, TOKEN_KEY, getToken, setToken, clearToken,
-    authFetch, currentUser, renderAuthBar, renderSpecList,
+    authFetch, currentUser, renderAuthBar, renderSpecList, renderAdminEntry,
   };
 })();
