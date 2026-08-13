@@ -23,7 +23,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-13b</div>
+  <div class="version-mark" id="versionMark">v2026-08-13c</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -56,7 +56,7 @@
     const loading = document.getElementById("detailLoading");
     const errorBox = document.getElementById("detailError");
     const debugBox = document.getElementById("debugInfo");
-    const VERSION = "2026-08-13b";
+    const VERSION = "2026-08-13c";
 
     function showError(msg, withLogin) {
       loading.style.display = "none";
@@ -79,7 +79,26 @@
       if (e.data && e.data.__specsH) {
         frame.style.height = Math.max(600, e.data.__specsH + 20) + "px";
       }
+      if (e.data && e.data.__specsErr) {
+        console.error("[detail] iframe error:", e.data.__specsErr);
+        showDebug({ version: VERSION, iframe_error: e.data.__specsErr });
+      }
     });
+
+    function injectIframeCompat(html) {
+      const shim = "<scr" + "ipt>(function(){try{localStorage.getItem('__specs_test__');}catch(e){var mem={};try{Object.defineProperty(window,'localStorage',{value:{getItem:function(k){return mem.hasOwnProperty(k)?mem[k]:null;},setItem:function(k,v){mem[k]=String(v);},removeItem:function(k){delete mem[k];},clear:function(){mem={};}},configurable:true});}catch(x){}}if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();</scr" + "ipt>";
+      const headEnd = html.search(/<\/head>/i);
+      if (headEnd !== -1) {
+        return html.slice(0, headEnd) + shim + html.slice(headEnd);
+      }
+      const bodyStart = html.search(/<body[^>]*>/i);
+      if (bodyStart !== -1) {
+        const m = html.match(/<body[^>]*>/i);
+        const end = bodyStart + m[0].length;
+        return html.slice(0, end) + shim + html.slice(end);
+      }
+      return shim + html;
+    }
 
     function injectAutoHeight(html) {
       const autoHeight = "<scr" + "ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr" + "ipt>";
@@ -92,18 +111,22 @@
       return html + autoHeight;
     }
 
+    function prepareHtml(html) {
+      return injectAutoHeight(injectIframeCompat(html));
+    }
+
     function renderByWrite(html) {
       const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
       if (!doc || !doc.open) throw new Error("无法获取 iframe document");
       frame.style.display = "block";
       doc.open();
-      doc.write(injectAutoHeight(html));
+      doc.write(prepareHtml(html));
       doc.close();
     }
 
     function renderByBlob(html) {
       const blobUrl = URL.createObjectURL(
-        new Blob([injectAutoHeight(html)], { type: "text/html; charset=utf-8" })
+        new Blob([prepareHtml(html)], { type: "text/html; charset=utf-8" })
       );
       frame.onload = function () {
         try {
@@ -126,7 +149,7 @@
           frame.style.height = h + "px";
         } catch (e) {}
       };
-      frame.srcdoc = injectAutoHeight(html);
+      frame.srcdoc = prepareHtml(html);
       frame.style.display = "block";
     }
 
