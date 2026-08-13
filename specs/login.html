@@ -107,8 +107,14 @@
       const m = document.getElementById("authMsg");
       m.textContent = text;
       m.className = "auth-msg " + (ok ? "ok" : "err");
+      m.style.display = "block";
     }
-    function clearMsg() { showMsg("", true); document.getElementById("authMsg").style.display = "none"; }
+    function clearMsg() {
+      const m = document.getElementById("authMsg");
+      m.textContent = "";
+      m.className = "auth-msg";
+      m.style.display = "none";
+    }
 
     async function doLogin(e) {
       e.preventDefault();
