@@ -27,6 +27,9 @@
     .auth-link{color:var(--primary);text-decoration:none;font-size:14px;font-weight:600}
     .auth-user{font-size:13px;color:var(--text-light);margin-right:8px}
     .spec-loading{text-align:center;color:var(--text-light);padding:40px 0}
+    .admin-entry{margin:28px 0 6px;text-align:center}
+    .admin-entry-link{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;background:var(--bg-main);border:1px solid var(--primary);color:var(--primary);border-radius:var(--radius-sm);font-size:14px;font-weight:600;text-decoration:none;transition:var(--transition)}
+    .admin-entry-link:hover{background:var(--primary);color:#fff}
   </style>
 </head>
 <body>
@@ -60,6 +63,8 @@
       <div class="back-home">
         <a href="../index.html">← 返回效率盒子首页</a>
       </div>
+
+      <div id="adminEntry"></div>
     </div>
   </main>
 
@@ -76,6 +81,7 @@
   <script>
     window.Specs.renderAuthBar("authBar");
     window.Specs.renderSpecList("specList");
+    window.Specs.renderAdminEntry("adminEntry");
   </script>
 </body>
 </html>
