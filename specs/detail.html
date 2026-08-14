@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-14d</div>
+  <div class="version-mark" id="versionMark">v2026-08-14e</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -178,6 +178,32 @@
       loading.style.display = "none";
     }
 
+    // 同源 document.write 渲染：iframe 无 src => contentDocument 继承 toolshe.cn 源，
+    // 游戏原生 localStorage 真正可用且持久（srcdoc 是 opaque origin，localStorage 不可用 => 进度丢失）。
+    // 同源 => 父页可直接读 frame.contentDocument 高度，自适应比 postMessage 更可靠。
+    function renderByWriteNative(html) {
+      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if (!doc || !doc.open) throw new Error("无法获取同源 iframe document");
+      frame.style.display = "block";
+      doc.open();
+      doc.write(prepareHtmlNative(html));
+      doc.close();
+      loading.style.display = "none";
+      // 父页直接读同源 iframe 高度，持续自适应（无需依赖 iframe 内 postMessage）
+      let stop = false;
+      const tune = function () {
+        if (stop) return;
+        try {
+          const d = frame.contentDocument;
+          const h = (d && (d.documentElement.scrollHeight || d.body.scrollHeight)) || 0;
+          if (h) frame.style.height = Math.max(600, h + 20) + "px";
+        } catch (e) {}
+      };
+      tune();
+      const iv = setInterval(tune, 400);
+      window.addEventListener("pagehide", function () { stop = true; clearInterval(iv); });
+    }
+
     async function fallbackEmbed(token) {
       let j, r;
       try {
@@ -232,7 +258,12 @@
           if (r.ok) {
             const j = await r.json();
             if (j.ok && j.spec && j.spec.content_html && j.spec.content_html.trim()) {
-              renderBySrcdocNative(j.spec.content_html);
+              try {
+                renderByWriteNative(j.spec.content_html); // 同源 => localStorage 持久 + 高度自适应可靠
+              } catch (e) {
+                console.warn("[detail] document.write 同源渲染失败，回退 srcdoc", e);
+                renderBySrcdocNative(j.spec.content_html); // srcdoc 兜底（不持久）
+              }
               return;
             }
           }
