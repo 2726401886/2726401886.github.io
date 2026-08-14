@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-14b</div>
+  <div class="version-mark" id="versionMark">v2026-08-14c</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -155,6 +155,28 @@
       frame.style.display = "block";
     }
 
+    // 同源渲染所需：仅注入语音/错误 shim（不再覆盖 localStorage，保留原生持久化）
+    function prepareHtmlNative(html) {
+      const shim = "<scr" + "ipt>(function(){if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();</scr" + "ipt>";
+      const headEnd = html.search(/<\/head>/i);
+      let out = html;
+      if (headEnd !== -1) out = html.slice(0, headEnd) + shim + html.slice(headEnd);
+      else out = shim + html;
+      out = injectAutoHeight(out);
+      out = out.replace(/\.\.\//g, "https://toolshe.cn/");
+      return out;
+    }
+    // 同源 srcdoc 渲染：iframe 与宿主页同属 toolshe.cn 源，游戏原生 localStorage 可持久化，
+    // 刷新 / 重开页面都能记住用户做题进度、段位、解锁关卡。
+    function renderBySrcdocNative(html) {
+      frame.onload = function () {
+        try { frame.style.height = Math.max(600, (frame.contentDocument || frame.contentWindow.document).body.scrollHeight + 20) + "px"; } catch (e) {}
+      };
+      frame.srcdoc = prepareHtmlNative(html);
+      frame.style.display = "block";
+      loading.style.display = "none";
+    }
+
     async function fallbackEmbed(token) {
       let j, r;
       try {
@@ -202,8 +224,22 @@
         }
         if (!id) { loading.textContent = "缺少规范 id"; return; }
 
-        // 主方案：iframe 直连后端 /specs/view 端点（后端已注入 shim 和高度脚本）
-        // 数学专栏免登录：有 token 则带上，无则不带（后端对 col=math 公开直出）
+        // 主方案：先取正文，再用「同源 srcdoc」注入 iframe。
+        // 同源 => 游戏原生 localStorage 持久化 => 刷新/重开都记住进度（做题、段位、解锁关卡）。
+        try {
+          const r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
+          if (r.ok) {
+            const j = await r.json();
+            if (j.ok && j.spec && j.spec.content_html && j.spec.content_html.trim()) {
+              renderBySrcdocNative(j.spec.content_html);
+              return;
+            }
+          }
+        } catch (e) {
+          console.warn("[detail] 取正文失败，回退跨域 iframe", e);
+        }
+
+        // 兜底：跨域 /specs/view 直连 iframe（该场景 localStorage 可能不持久，仅作降级）
         const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + (tk ? ("&token=" + encodeURIComponent(tk)) : "");
         let fallbackTimer = setTimeout(function () { fallbackEmbed(tk); }, 12000);
         frame.onload = function () {
