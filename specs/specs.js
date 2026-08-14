@@ -93,7 +93,8 @@
           if (s.code) html += `<span class="code">${s.code}</span>`;
           if (s.summary) html += `<p class="desc">${s.summary}</p>`;
           const fromParam = col ? ("&from=" + encodeURIComponent(col)) : "";
-          html += `<a class="go" href="${detailHref}${encodeURIComponent(s.id)}${fromParam}">查看规范 →</a></div>`;
+          const btnText = col === "math" ? "开始闯关学习 →" : "查看规范 →";
+          html += `<a class="go" href="${detailHref}${encodeURIComponent(s.id)}${fromParam}">${btnText}</a></div>`;
         }
         html += `</div></section>`;
       }
