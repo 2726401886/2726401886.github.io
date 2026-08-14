@@ -74,7 +74,7 @@
     el.innerHTML = '<p class="spec-loading">加载中…</p>';
     try {
       const listUrl = API + "/specs/list" + (col ? ("?col=" + encodeURIComponent(col)) : "");
-      const r = await fetch(listUrl);
+      const r = await fetch(listUrl, { cache: "no-store" });
       const j = await r.json();
       if (!j.ok || !j.specs || !j.specs.length) {
         el.innerHTML = '<p class="spec-loading">暂无规范内容</p>';
