@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-14e</div>
+  <div class="version-mark" id="versionMark">v2026-08-14f</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -101,10 +101,31 @@
       if (from === "math") document.title = "详情 - 高中数学学习专栏";
     } catch (e) { console.error("[detail] nav setup error", e); }
 
-    // 自适应 iframe 高度 + 调试错误
+    // 弹窗打开期间暂停按文档高度收缩，避免 fixed 定位的 modal 被裁掉
+    let modalOpen = false;
+    function updateFrameHeightFromDoc() {
+      if (modalOpen) return;
+      try {
+        const d = frame.contentDocument;
+        const h = (d && (d.documentElement.scrollHeight || d.body.scrollHeight)) || 0;
+        if (h) frame.style.height = Math.max(600, h + 20) + "px";
+      } catch (e) {}
+    }
+
+    // 自适应 iframe 高度 + modal 弹窗全屏展开 + 调试错误
     window.addEventListener("message", (e) => {
-      if (e.data && e.data.__specsH) {
+      if (e.data && e.data.__specsH && !modalOpen) {
         frame.style.height = Math.max(600, e.data.__specsH + 20) + "px";
+      }
+      if (e.data && e.data.__specsModal) {
+        modalOpen = !!e.data.__specsModal;
+        if (modalOpen) {
+          // modal 是 fixed 全屏，需要把 iframe 扩展到接近视口高度
+          const h = Math.max(600, window.innerHeight - 120);
+          frame.style.height = h + "px";
+        } else {
+          updateFrameHeightFromDoc(); // 关闭 modal 后立即恢复自适应
+        }
       }
       if (e.data && e.data.__specsErr) {
         console.error("[detail] iframe error:", e.data.__specsErr);
@@ -122,8 +143,8 @@
       return shim + html;
     }
     function injectAutoHeight(html) {
-      // 持续跟踪 iframe 内容高度，避免答题/翻页后内容被裁剪导致按钮点不到（线上“卡住”根因）
-      const autoHeight = "<scr" + "ipt>(function(){function __h(){try{var h=document.documentElement.scrollHeight||document.body.scrollHeight||0;parent.postMessage({__specsH:h},'*');}catch(e){}}try{window.addEventListener('load',__h);window.addEventListener('resize',__h);var mo=new MutationObserver(__h);mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,characterData:true});}catch(e){}try{var ro=new ResizeObserver(__h);ro.observe(document.documentElement);}catch(e){}var __t=setInterval(__h,400);setTimeout(function(){clearInterval(__t);},30000);__h();})();</scr" + "ipt>";
+      // 持续跟踪 iframe 内容高度 + 检测游戏 modal 弹窗（fixed 定位不增加 scrollHeight，需要父页主动扩展高度）
+      const autoHeight = "<scr" + "ipt>(function(){function __h(){try{var h=document.documentElement.scrollHeight||document.body.scrollHeight||0;parent.postMessage({__specsH:h},'*');}catch(e){}}function __modalCheck(){try{var m=document.getElementById('modalResult');var shown=m && !!(m.style.display && m.style.display!=='none' && m.style.display!=='');parent.postMessage({__specsModal:shown},'*');}catch(e){}}try{window.addEventListener('load',function(){__h();__modalCheck();});window.addEventListener('resize',function(){__h();__modalCheck();});var mo=new MutationObserver(function(){__h();__modalCheck();});mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,characterData:true});}catch(e){}try{var ro=new ResizeObserver(function(){__h();__modalCheck();});ro.observe(document.documentElement);}catch(e){}setInterval(function(){__h();__modalCheck();},400);__h();__modalCheck();})();</scr" + "ipt>";
       const bodyEnd = html.search(/<\/body>/i);
       if (bodyEnd !== -1) return html.slice(0, bodyEnd) + autoHeight + html.slice(bodyEnd);
       return html + autoHeight;
@@ -189,19 +210,10 @@
       doc.write(prepareHtmlNative(html));
       doc.close();
       loading.style.display = "none";
-      // 父页直接读同源 iframe 高度，持续自适应（无需依赖 iframe 内 postMessage）
-      let stop = false;
-      const tune = function () {
-        if (stop) return;
-        try {
-          const d = frame.contentDocument;
-          const h = (d && (d.documentElement.scrollHeight || d.body.scrollHeight)) || 0;
-          if (h) frame.style.height = Math.max(600, h + 20) + "px";
-        } catch (e) {}
-      };
-      tune();
-      const iv = setInterval(tune, 400);
-      window.addEventListener("pagehide", function () { stop = true; clearInterval(iv); });
+      // 父页直接读同源 iframe 高度，持续自适应（modal 打开期间由 message 接管）
+      updateFrameHeightFromDoc();
+      const iv = setInterval(updateFrameHeightFromDoc, 400);
+      window.addEventListener("pagehide", function () { clearInterval(iv); });
     }
 
     async function fallbackEmbed(token) {
