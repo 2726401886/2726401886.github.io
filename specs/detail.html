@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-14c</div>
+  <div class="version-mark" id="versionMark">v2026-08-14d</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -122,7 +122,8 @@
       return shim + html;
     }
     function injectAutoHeight(html) {
-      const autoHeight = "<scr" + "ipt>window.addEventListener('load',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});window.addEventListener('resize',function(){parent.postMessage({__specsH:document.body.scrollHeight},'*');});</scr" + "ipt>";
+      // 持续跟踪 iframe 内容高度，避免答题/翻页后内容被裁剪导致按钮点不到（线上“卡住”根因）
+      const autoHeight = "<scr" + "ipt>(function(){function __h(){try{var h=document.documentElement.scrollHeight||document.body.scrollHeight||0;parent.postMessage({__specsH:h},'*');}catch(e){}}try{window.addEventListener('load',__h);window.addEventListener('resize',__h);var mo=new MutationObserver(__h);mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,characterData:true});}catch(e){}try{var ro=new ResizeObserver(__h);ro.observe(document.documentElement);}catch(e){}var __t=setInterval(__h,400);setTimeout(function(){clearInterval(__t);},30000);__h();})();</scr" + "ipt>";
       const bodyEnd = html.search(/<\/body>/i);
       if (bodyEnd !== -1) return html.slice(0, bodyEnd) + autoHeight + html.slice(bodyEnd);
       return html + autoHeight;
