@@ -68,7 +68,7 @@
     "森林资源": "🌲", "房地产": "🏠", "地方参数": "📍",
     "高中数学": "📐",
   };
-  async function renderSpecList(targetId, col) {
+  async function renderSpecList(targetId, col, detailBase) {
     const el = document.getElementById(targetId);
     if (!el) return;
     el.innerHTML = '<p class="spec-loading">加载中…</p>';
@@ -83,6 +83,7 @@
       const groups = {};
       for (const s of j.specs) (groups[s.category] = groups[s.category] || []).push(s);
       const catOrder = Object.keys(groups);
+      const detailHref = (detailBase || "detail.html") + "?id=";
       let html = "";
       for (const cat of catOrder) {
         const icon = CATEGORY_ICONS[cat] || "📄";
@@ -92,7 +93,7 @@
           if (s.code) html += `<span class="code">${s.code}</span>`;
           if (s.summary) html += `<p class="desc">${s.summary}</p>`;
           const fromParam = col ? ("&from=" + encodeURIComponent(col)) : "";
-          html += `<a class="go" href="detail.html?id=${encodeURIComponent(s.id)}${fromParam}">查看规范 →</a></div>`;
+          html += `<a class="go" href="${detailHref}${encodeURIComponent(s.id)}${fromParam}">查看规范 →</a></div>`;
         }
         html += `</div></section>`;
       }
