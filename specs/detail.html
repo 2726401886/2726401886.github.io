@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-14a</div>
+  <div class="version-mark" id="versionMark">v2026-08-14b</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -195,14 +195,16 @@
     (async function () {
       try {
         const tk = S.getToken();
-        if (!tk) {
+        // 数学专栏公开访问，无需登录；其余栏目未登录则跳转登录
+        if (!tk && from !== "math") {
           location.href = "login.html?redirect=" + encodeURIComponent(location.pathname + location.search);
           return;
         }
         if (!id) { loading.textContent = "缺少规范 id"; return; }
 
         // 主方案：iframe 直连后端 /specs/view 端点（后端已注入 shim 和高度脚本）
-        const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + "&token=" + encodeURIComponent(tk);
+        // 数学专栏免登录：有 token 则带上，无则不带（后端对 col=math 公开直出）
+        const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + (tk ? ("&token=" + encodeURIComponent(tk)) : "");
         let fallbackTimer = setTimeout(function () { fallbackEmbed(tk); }, 12000);
         frame.onload = function () {
           clearTimeout(fallbackTimer);
