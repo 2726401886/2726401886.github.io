@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-14f</div>
+  <div class="version-mark" id="versionMark">v2026-08-15a</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -216,6 +216,13 @@
       window.addEventListener("pagehide", function () { clearInterval(iv); });
     }
 
+    // 区分 TeachAny 课件（slide 交互式教案）与王者版闯关游戏：
+    // TeachAny 课件依赖正常页面加载事件与 <body> 末尾脚本初始化，document.write 会破坏其时序导致黑屏；
+    // 而它不需要 localStorage，因此使用 srcdoc 正常加载即可。
+    function isTeachAnyContent(html) {
+      return /teachany|class=["']slide|new\s+Slide|__teachany/i.test(html);
+    }
+
     async function fallbackEmbed(token) {
       let j, r;
       try {
@@ -263,18 +270,25 @@
         }
         if (!id) { loading.textContent = "缺少规范 id"; return; }
 
-        // 主方案：先取正文，再用「同源 srcdoc」注入 iframe。
-        // 同源 => 游戏原生 localStorage 持久化 => 刷新/重开都记住进度（做题、段位、解锁关卡）。
+        // 主方案：先取正文，再选择正确的 iframe 渲染方式。
+        // 王者版闯关游戏 => 同源 document.write，localStorage 持久化保存做题进度。
+        // TeachAny 互动课件 => srcdoc 正常加载，避免 document.write 破坏 <body> 末尾脚本初始化导致黑屏。
         try {
           const r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
           if (r.ok) {
             const j = await r.json();
             if (j.ok && j.spec && j.spec.content_html && j.spec.content_html.trim()) {
-              try {
-                renderByWriteNative(j.spec.content_html); // 同源 => localStorage 持久 + 高度自适应可靠
-              } catch (e) {
-                console.warn("[detail] document.write 同源渲染失败，回退 srcdoc", e);
-                renderBySrcdocNative(j.spec.content_html); // srcdoc 兜底（不持久）
+              const html = j.spec.content_html;
+              if (isTeachAnyContent(html)) {
+                // TeachAny 课件：srcdoc 正常加载（不依赖 localStorage）
+                renderBySrcdocNative(html);
+              } else {
+                try {
+                  renderByWriteNative(html); // 同源 => localStorage 持久 + 高度自适应可靠
+                } catch (e) {
+                  console.warn("[detail] document.write 同源渲染失败，回退 srcdoc", e);
+                  renderBySrcdocNative(html); // srcdoc 兜底（不持久）
+                }
               }
               return;
             }
