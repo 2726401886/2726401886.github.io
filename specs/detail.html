@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-15a</div>
+  <div class="version-mark" id="versionMark">v2026-08-15b</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -103,6 +103,9 @@
 
     // 弹窗打开期间暂停按文档高度收缩，避免 fixed 定位的 modal 被裁掉
     let modalOpen = false;
+    // TeachAny 课件：iframe 锁定为“一屏高度”，由课件内部容器滚动切页；
+    // 忽略跨域页 __specsH（否则会被整页总高撑成十几屏、播放按钮沉底）
+    let teachAnyMode = false;
     function updateFrameHeightFromDoc() {
       if (modalOpen) return;
       try {
@@ -114,7 +117,7 @@
 
     // 自适应 iframe 高度 + modal 弹窗全屏展开 + 调试错误
     window.addEventListener("message", (e) => {
-      if (e.data && e.data.__specsH && !modalOpen) {
+      if (e.data && e.data.__specsH && !modalOpen && !teachAnyMode) {
         frame.style.height = Math.max(600, e.data.__specsH + 20) + "px";
       }
       if (e.data && e.data.__specsModal) {
@@ -281,17 +284,23 @@
             if (j.ok && j.spec && j.spec.content_html && j.spec.content_html.trim()) {
               const html = j.spec.content_html;
               if (isTeachAnyContent(html)) {
-                // TeachAny 课件：跨域 iframe 加载完整 /specs/view 页面（正常页面加载，后端注入高度自适应）。
-                // 课件不依赖 localStorage，跨域 origin 隔离不影响；document.write/srcdoc 会破坏其初始化时序。
+                // TeachAny 课件：竖向滚动幻灯片（.slide-container=100vh, overflow-y:auto 内部切页）。
+                // 必须锁定 iframe 为“一屏高度”，由课件内部容器滚动；若按整页总高撑开，
+                // 课件内 100vh 会同步变大、每页被拉长、播放按钮沉底（用户报“滚动条在顶、播放键在最底”）。
+                teachAnyMode = true;
+                const sizeTeachAny = function () {
+                  frame.style.height = Math.max(480, window.innerHeight - 110) + "px";
+                };
                 const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + (tk ? ("&token=" + encodeURIComponent(tk)) : "");
                 frame.onload = function () {
                   loading.style.display = "none";
                   frame.style.display = "block";
-                  frame.style.height = Math.max(600, window.innerHeight - 120) + "px";
+                  sizeTeachAny();
                 };
                 frame.src = viewUrl;
                 frame.style.display = "block";
                 loading.style.display = "none";
+                window.addEventListener("resize", sizeTeachAny);
                 return;
               } else {
                 try {
