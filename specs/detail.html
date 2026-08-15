@@ -272,7 +272,8 @@
 
         // 主方案：先取正文，再选择正确的 iframe 渲染方式。
         // 王者版闯关游戏 => 同源 document.write，localStorage 持久化保存做题进度。
-        // TeachAny 互动课件 => srcdoc 正常加载，避免 document.write 破坏 <body> 末尾脚本初始化导致黑屏。
+        // TeachAny 互动课件 => 跨域 iframe 直接加载完整 /specs/view 页面（正常页面流程，后端已注入
+        //   __specsH 高度脚本经 postMessage 回报），彻底绕开 document.write/srcdoc 的时序问题。
         try {
           const r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
           if (r.ok) {
@@ -280,8 +281,18 @@
             if (j.ok && j.spec && j.spec.content_html && j.spec.content_html.trim()) {
               const html = j.spec.content_html;
               if (isTeachAnyContent(html)) {
-                // TeachAny 课件：srcdoc 正常加载（不依赖 localStorage）
-                renderBySrcdocNative(html);
+                // TeachAny 课件：跨域 iframe 加载完整 /specs/view 页面（正常页面加载，后端注入高度自适应）。
+                // 课件不依赖 localStorage，跨域 origin 隔离不影响；document.write/srcdoc 会破坏其初始化时序。
+                const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + (tk ? ("&token=" + encodeURIComponent(tk)) : "");
+                frame.onload = function () {
+                  loading.style.display = "none";
+                  frame.style.display = "block";
+                  frame.style.height = Math.max(600, window.innerHeight - 120) + "px";
+                };
+                frame.src = viewUrl;
+                frame.style.display = "block";
+                loading.style.display = "none";
+                return;
               } else {
                 try {
                   renderByWriteNative(html); // 同源 => localStorage 持久 + 高度自适应可靠
