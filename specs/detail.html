@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-17a</div>
+  <div class="version-mark" id="versionMark">v2026-08-18a</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -69,7 +69,7 @@
     const debugBox = document.getElementById("debugInfo");
     const fallbackPanel = document.getElementById("fallbackPanel");
     const openNewTabBtn = document.getElementById("openNewTabBtn");
-    const VERSION = "2026-08-17a";
+    const VERSION = "2026-08-18a";
     const API_BASE = window.EFFBOX_STATS_API || "https://api.toolshe.cn";
 
     function showError(msg, withLogin) {
@@ -224,7 +224,7 @@
     }
 
     // 同源 blob URL 渲染：Blob 创建的 URL 继承 toolshe.cn 源，localStorage 可用；
-    // 完整 HTML 文档经正常解析流程加载，绕开 document.write 对未闭合/嵌套 </script> 的敏感问题。
+    // 完整 HTML 文档经正常解析流程加载，绕开 document.write 对未闭合/嵌套 <\/script> 的敏感问题。
     function renderByBlobNative(html) {
       const blob = new Blob([prepareHtmlNative(html)], { type: "text/html; charset=utf-8" });
       const blobUrl = URL.createObjectURL(blob);
@@ -329,7 +329,7 @@
                 return;
               } else {
                 // 主渲染优先使用 blob URL：同源 + 正常文档解析，规避 document.write 对
-                // 未闭合/嵌套 </script> 的 "Unexpected end of input" 报错。
+                // 未闭合/嵌套 <\/script> 的 "Unexpected end of input" 报错。
                 try {
                   renderByBlobNative(html);
                 } catch (e1) {
