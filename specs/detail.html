@@ -28,7 +28,7 @@
   </style>
 </head>
 <body>
-  <div class="version-mark" id="versionMark">v2026-08-18d</div>
+  <div class="version-mark" id="versionMark">v2026-08-18e</div>
   <header class="site-header">
     <div class="header-inner">
       <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
@@ -69,7 +69,7 @@
     const debugBox = document.getElementById("debugInfo");
     const fallbackPanel = document.getElementById("fallbackPanel");
     const openNewTabBtn = document.getElementById("openNewTabBtn");
-    const VERSION = "2026-08-18d";
+    const VERSION = "2026-08-18e";
     const API_BASE = window.EFFBOX_STATS_API || "https://api.toolshe.cn";
 
     function showError(msg, withLogin) {
@@ -140,23 +140,51 @@
       }
     });
 
-    // ── 本地嵌入降级方案（仅在直连端点失败时使用）──
-    function injectIframeCompat(html) {
-      const shim = "<scr" + "ipt>(function(){try{localStorage.getItem('__specs_test__');}catch(e){var mem={};try{Object.defineProperty(window,'localStorage',{value:{getItem:function(k){return mem.hasOwnProperty(k)?mem[k]:null;},setItem:function(k,v){mem[k]=String(v);},removeItem:function(k){delete mem[k];},clear:function(){mem={};}},configurable:true});}catch(x){}}if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();</scr" + "ipt>";
+    // ── 预转义脚本块内字面 <\/script 结束标签（下方注释均以反斜杠转义，避免本文件自身脚本被提前关闭）：
+    //    防止作者 HTML 的 JS 字符串里写了字面 <\/script>，被浏览器当作外层 <script> 的结束标签，
+    //    导致整段脚本提前关闭（表现：页面顶部泄露源码、菜单/函数未定义）。
+    //    转义为 <\/script> 后浏览器不再提前关闭，JS 运行时又会自动还原成 <\/script>，不影响 document.write 等正常使用。──
+    function escapeLastScriptClosers(html) {
+      // 只对“最后一个脚本块”（通常是作者主脚本）做转义：把块内 JS 字符串里的字面结束标签
+      // 转义，避免浏览器把它当成外层脚本的结束标签。更早的脚本块（通常已是平衡的）保持不变，避免误伤。
+      // 对没有内联结束标签的干净内容本函数是“无操作”。（注：本函数体内不写字面结束标签，均用拼接，避免本文件自身脚本被提前关闭）
+      const lastOpen = html.lastIndexOf("<" + "script");
+      if (lastOpen === -1) return html;
+      const go = html.indexOf(">", lastOpen) + 1;
+      if (go <= 0) return html;
+      const region = html.slice(go);
+      const parts = region.split("<" + "/script>");
+      if (parts.length <= 2) return html; // 仅含真实结束标签，无内联字面量，无需处理
+      // 前 parts.length-1 段之间的结束标签都是内联字面量，转义为 <\/script>；最后一段保留真实结束标签
+      const escaped = parts.slice(0, -1).join("<\\/script>") + ("<" + "/script>") + parts[parts.length - 1];
+      return html.slice(0, go) + escaped;
+    }
+
+    const SHIM_SRC = `(function(){if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();`;
+    const SHIM_COMPAT_SRC = `(function(){try{localStorage.getItem('__specs_test__');}catch(e){var mem={};try{Object.defineProperty(window,'localStorage',{value:{getItem:function(k){return mem.hasOwnProperty(k)?mem[k]:null;},setItem:function(k,v){mem[k]=String(v);},removeItem:function(k){delete mem[k];},clear:function(){mem={};}},configurable:true});}catch(x){}}if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();`;
+    const AUTOHEIGHT_SRC = `(function(){function __h(){try{var h=document.documentElement.scrollHeight||document.body.scrollHeight||0;parent.postMessage({__specsH:h},'*');}catch(e){}}function __modalCheck(){try{var m=document.getElementById('modalResult');var shown=m && !!(m.style.display && m.style.display!=='none' && m.style.display!=='');parent.postMessage({__specsModal:shown},'*');}catch(e){}}try{window.addEventListener('load',function(){__h();__modalCheck();});window.addEventListener('resize',function(){__h();__modalCheck();});var mo=new MutationObserver(function(){__h();__modalCheck();});mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,characterData:true});}catch(e){}try{var ro=new ResizeObserver(function(){__h();__modalCheck();});ro.observe(document.documentElement);}catch(e){}setInterval(function(){__h();__modalCheck();},400);__h();__modalCheck();})();`;
+
+    function injectShim(html, shimSrc) {
+      const tag = "<" + "script>" + shimSrc + ("<" + "/script>");
       const headEnd = html.search(/<\/head>/i);
-      if (headEnd !== -1) return html.slice(0, headEnd) + shim + html.slice(headEnd);
+      if (headEnd !== -1) return html.slice(0, headEnd) + tag + html.slice(headEnd);
       const m = html.match(/<body[^>]*>/i);
-      if (m) { const i = html.indexOf(m[0]) + m[0].length; return html.slice(0, i) + shim + html.slice(i); }
-      return shim + html;
+      if (m) { const i = html.indexOf(m[0]) + m[0].length; return html.slice(0, i) + tag + html.slice(i); }
+      return tag + html;
     }
-    function injectAutoHeight(html) {
-      // 持续跟踪 iframe 内容高度 + 检测游戏 modal 弹窗（fixed 定位不增加 scrollHeight，需要父页主动扩展高度）
-      const autoHeight = "<scr" + "ipt>(function(){function __h(){try{var h=document.documentElement.scrollHeight||document.body.scrollHeight||0;parent.postMessage({__specsH:h},'*');}catch(e){}}function __modalCheck(){try{var m=document.getElementById('modalResult');var shown=m && !!(m.style.display && m.style.display!=='none' && m.style.display!=='');parent.postMessage({__specsModal:shown},'*');}catch(e){}}try{window.addEventListener('load',function(){__h();__modalCheck();});window.addEventListener('resize',function(){__h();__modalCheck();});var mo=new MutationObserver(function(){__h();__modalCheck();});mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,characterData:true});}catch(e){}try{var ro=new ResizeObserver(function(){__h();__modalCheck();});ro.observe(document.documentElement);}catch(e){}setInterval(function(){__h();__modalCheck();},400);__h();__modalCheck();})();</scr" + "ipt>";
-      const bodyEnd = html.search(/<\/body>/i);
-      if (bodyEnd !== -1) return html.slice(0, bodyEnd) + autoHeight + html.slice(bodyEnd);
-      return html + autoHeight;
+    function injectAutoHeightSafe(html) {
+      // 关键：注入到“最后一个” </body>（真正的文档结尾），避免落到脚本字符串里的 </body> 内部
+      const bodyRe = /<\/body>/gi;
+      let last = -1, mm;
+      while ((mm = bodyRe.exec(html)) !== null) last = mm.index;
+      const tag = "<" + "script>" + AUTOHEIGHT_SRC + ("<" + "/script>");
+      if (last !== -1) return html.slice(0, last) + tag + html.slice(last);
+      return html + tag;
     }
-    function prepareHtml(html) { return injectAutoHeight(injectIframeCompat(html)); }
+    function prepareHtml(html) {
+      html = escapeLastScriptClosers(html);
+      return injectAutoHeightSafe(injectShim(html, SHIM_COMPAT_SRC));
+    }
 
     function renderByBlob(html) {
       const blobUrl = URL.createObjectURL(
@@ -186,14 +214,13 @@
 
     // 同源渲染所需：仅注入语音/错误 shim（不再覆盖 localStorage，保留原生持久化）
     function prepareHtmlNative(html) {
-      const shim = "<scr" + "ipt>(function(){if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();</scr" + "ipt>";
-      const headEnd = html.search(/<\/head>/i);
-      let out = html;
-      if (headEnd !== -1) out = html.slice(0, headEnd) + shim + html.slice(headEnd);
-      else out = shim + html;
-      out = injectAutoHeight(out);
-      out = out.replace(/\.\.\//g, "https://toolshe.cn/");
-      return out;
+      // 1) 预转义脚本块内字面 <\/script>，避免外层脚本被提前关闭
+      html = escapeLastScriptClosers(html);
+      // 2) 相对路径改写（blob URL 无基准路径，必须改写绝对地址）
+      html = html.replace(/\.\.\//g, "https://toolshe.cn/");
+      // 3) shim 注入到 </head> 前；autoHeight 注入到“最后一个 </body>”（真正的文档结尾）。
+      //    均不再使用“第一个 </body>”字符串注入，从根上避免把脚本注入到作者脚本字符串内部。
+      return injectAutoHeightSafe(injectShim(html, SHIM_SRC));
     }
     // 同源 srcdoc 渲染：iframe 与宿主页同属 toolshe.cn 源，游戏原生 localStorage 可持久化，
     // 刷新 / 重开页面都能记住用户做题进度、段位、解锁关卡。
