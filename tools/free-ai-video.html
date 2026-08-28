@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>免费 AI 视频工具导航 - 输入大白话即可生成视频与微剧 | 效率盒子</title>
+  <meta name="description" content="精选 8+ 款真正免费的 AI 视频工具：剪映图文成片、腾讯智影、即梦、可灵、海螺、必剪、D-ID、HeyGen。无需剪辑基础，输入一段大白话就能出片、做口播、生成徽剧微剧。">
+  <meta name="keywords" content="免费AI视频工具,AI视频生成,文生视频,图文成片,数字人播报,剪映,即梦,可灵,海螺,徽剧微剧,大白话生成视频">
+  <meta property="og:title" content="免费 AI 视频工具导航 - 输入大白话即可生成视频与微剧">
+  <meta property="og:description" content="精选 8+ 款真正免费的 AI 视频工具，无需剪辑基础，输入一段文字就能出片。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --vt-bg:#FBFAF7; --vt-ink:#1A1A23; --vt-lime:#84CC16; --vt-lime-d:#4D7C0F;
+      --vt-lime-bg:#ECFCCB; --vt-gray:#6B6B76; --vt-line:#E6E6EA; --vt-soft:#F4F4F1;
+    }
+    .vt-wrap{ background:var(--vt-bg); color:var(--vt-ink); }
+    .vt-inner{ max-width:1200px; margin:0 auto; padding:0 24px; }
+    .vt-num{ font-family:"Outfit",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; }
+
+    /* Hero */
+    .vt-hero{ padding:72px 0 56px; }
+    .vt-hero-grid{ display:flex; align-items:center; gap:48px; justify-content:space-between; }
+    .vt-hero-left{ flex:1; min-width:0; }
+    .vt-badge{ display:inline-flex; align-items:center; padding:8px 16px; border-radius:999px;
+      background:var(--vt-lime-bg); color:var(--vt-lime-d); font-size:14px; font-weight:600; margin-bottom:20px; }
+    .vt-title{ font-family:"Outfit",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-size:48px; font-weight:800; line-height:1.15; letter-spacing:-0.5px; margin-bottom:18px; }
+    .vt-sub{ font-size:18px; line-height:1.6; color:var(--vt-gray); margin-bottom:28px; max-width:560px; }
+    .vt-search{ display:flex; align-items:center; gap:8px; background:#fff; border:1.5px solid var(--vt-ink);
+      border-radius:14px; padding:6px 6px 6px 20px; height:56px; max-width:560px; }
+    .vt-search input{ flex:1; border:none; outline:none; font-size:15px; background:transparent; color:var(--vt-ink); }
+    .vt-search input::placeholder{ color:#9CA3AF; }
+    .vt-search button{ border:none; background:var(--vt-lime); color:var(--vt-ink); font-weight:600;
+      font-size:15px; padding:0 22px; height:44px; border-radius:10px; cursor:pointer; transition:.2s; }
+    .vt-search button:hover{ filter:brightness(.95); }
+    .vt-tags{ display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
+    .vt-tag{ padding:8px 16px; border-radius:999px; background:#fff; border:1px solid var(--vt-line);
+      font-size:14px; font-weight:500; color:var(--vt-ink); }
+    .vt-hero-right{ width:340px; height:300px; background:var(--vt-lime-bg); border-radius:24px;
+      position:relative; flex-shrink:0; }
+    .vt-play{ position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+      width:96px; height:96px; border-radius:50%; background:var(--vt-ink); display:flex; align-items:center; justify-content:center; }
+    .vt-play svg{ width:34px; height:38px; }
+
+    /* Sections */
+    .vt-section{ padding:56px 0; }
+    .vt-section.alt{ background:#fff; }
+    .vt-sec-head{ margin-bottom:32px; }
+    .vt-sec-title{ font-family:"Outfit",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-size:30px; font-weight:800; margin-bottom:8px; }
+    .vt-sec-desc{ font-size:15px; color:#9CA3AF; }
+
+    /* Category */
+    .vt-cat{ margin-bottom:44px; }
+    .vt-cat-title{ font-family:"Outfit",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-size:22px; font-weight:700; margin-bottom:6px; }
+    .vt-cat-desc{ font-size:14px; color:#9CA3AF; margin-bottom:18px; }
+    .vt-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+
+    /* Card */
+    .vt-card{ background:#fff; border:1px solid var(--vt-line); border-radius:16px; padding:20px;
+      display:flex; flex-direction:column; gap:10px; transition:.2s; }
+    .vt-card:hover{ border-color:var(--vt-lime); box-shadow:0 8px 22px rgba(0,0,0,.06); transform:translateY(-2px); }
+    .vt-card-name{ font-size:18px; font-weight:700; }
+    .vt-card-free{ font-size:12px; font-weight:600; color:var(--vt-lime-d); background:var(--vt-lime-bg);
+      align-self:flex-start; padding:3px 10px; border-radius:999px; }
+    .vt-card-desc{ font-size:14px; line-height:1.55; color:var(--vt-gray); flex:1; }
+    .vt-card-go{ align-self:flex-start; margin-top:4px; background:var(--vt-ink); color:#fff; font-weight:600;
+      font-size:14px; padding:10px 18px; border-radius:10px; text-decoration:none; transition:.2s; }
+    .vt-card-go:hover{ background:#000; }
+
+    /* Hui (徽剧) dark card */
+    .vt-hui{ background:var(--vt-ink); border-radius:16px; padding:28px; color:#fff; }
+    .vt-hui h3{ font-family:"Outfit",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-size:20px; font-weight:700; margin-bottom:8px; }
+    .vt-hui p{ font-size:14px; color:#C9C9D1; margin-bottom:14px; }
+    .vt-hui .flow{ font-size:14px; font-weight:600; color:#B9FF66; line-height:1.7; background:rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:14px 16px; }
+    .vt-hui a{ display:inline-block; margin-top:16px; background:var(--vt-lime); color:var(--vt-ink);
+      font-weight:600; font-size:14px; padding:10px 18px; border-radius:10px; text-decoration:none; }
+
+    /* Guide steps */
+    .vt-steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .vt-step{ background:#fff; border:1px solid var(--vt-line); border-radius:16px; padding:24px; }
+    .vt-step .n{ font-family:"Outfit",sans-serif; font-size:40px; font-weight:800; color:var(--vt-lime); line-height:1; }
+    .vt-step h4{ font-size:18px; font-weight:700; margin:12px 0 8px; }
+    .vt-step p{ font-size:14px; line-height:1.55; color:var(--vt-gray); }
+
+    /* FAQ */
+    .vt-faq{ max-width:820px; }
+    .vt-qa{ margin-bottom:22px; }
+    .vt-qa q{ font-family:"Outfit",-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-size:17px; font-weight:700; display:block; margin-bottom:6px; }
+    .vt-qa .a{ font-size:14px; line-height:1.6; color:var(--vt-gray); }
+
+    /* Hero CTA in nav handled by header */
+
+    @media (max-width:880px){
+      .vt-hero-grid{ flex-direction:column; align-items:flex-start; }
+      .vt-hero-right{ width:100%; height:200px; }
+      .vt-title{ font-size:34px; }
+      .vt-steps{ grid-template-columns:1fr; }
+    }
+    @media (max-width:480px){
+      .vt-title{ font-size:28px; }
+      .vt-section, .vt-hero{ padding:40px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="vt-wrap">
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+          <li><a href="../math/index.html">数学专栏</a></li>
+          <li><a href="../novel/index.html">小说专栏</a></li>
+          <li><a href="../index.html#about">关于</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content" style="max-width:100%;padding:0;">
+    <!-- Hero -->
+    <section class="vt-hero">
+      <div class="vt-inner vt-hero-grid">
+        <div class="vt-hero-left">
+          <span class="vt-badge">完全免费 · 输入大白话即生成</span>
+          <h1 class="vt-title">输入大白话，<br>免费生成视频与微剧</h1>
+          <p class="vt-sub">精选 8+ 款真正免费的 AI 视频工具，无需剪辑基础，粘贴一段文字就能出片、做口播、甚至生成你的徽剧微剧。</p>
+          <form class="vt-search" onsubmit="document.getElementById('tools').scrollIntoView({behavior:'smooth'});return false;">
+            <input type="text" placeholder="搜一搜：即梦 / 剪映 / 数字人 / 徽剧" aria-label="搜索工具">
+            <button type="submit">搜索</button>
+          </form>
+          <div class="vt-tags">
+            <span class="vt-tag">文生视频</span>
+            <span class="vt-tag">图文成片</span>
+            <span class="vt-tag">数字人播报</span>
+            <span class="vt-tag">徽剧方案</span>
+          </div>
+        </div>
+        <div class="vt-hero-right">
+          <div class="vt-play">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8 5v14l11-7z" fill="#84CC16"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tools -->
+    <section class="vt-section alt" id="tools">
+      <div class="vt-inner">
+        <!-- 分类1 文生视频 -->
+        <div class="vt-cat">
+          <h2 class="vt-cat-title">文生视频 · 输入描述出片段</h2>
+          <p class="vt-cat-desc">写下画面描述，AI 自动生成视频片段，适合创意画面与运镜。</p>
+          <div class="vt-grid">
+            <div class="vt-card">
+              <div class="vt-card-name">即梦 AI</div>
+              <span class="vt-card-free">完全免费 · 每日额度</span>
+              <div class="vt-card-desc">写下描述自动生成视频片段，国风、创意画面表现出色。</div>
+              <a class="vt-card-go" href="https://jimeng.jianying.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+            <div class="vt-card">
+              <div class="vt-card-name">可灵 AI</div>
+              <span class="vt-card-free">完全免费 · 每日积分</span>
+              <div class="vt-card-desc">写实人物与运镜表现强，适合人物口播与故事片段。</div>
+              <a class="vt-card-go" href="https://klingai.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+            <div class="vt-card">
+              <div class="vt-card-name">海螺 AI</div>
+              <span class="vt-card-free">完全免费 · 免费额度</span>
+              <div class="vt-card-desc">人物口播、写实场景生成稳定，新手也能快速上手。</div>
+              <a class="vt-card-go" href="https://hailuoai.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分类2 图文成片 -->
+        <div class="vt-cat">
+          <h2 class="vt-cat-title">图文成片 · 输入文字直接出片</h2>
+          <p class="vt-cat-desc">最贴近大白话：粘贴一段文字，自动配画面、字幕、配音成视频。</p>
+          <div class="vt-grid">
+            <div class="vt-card">
+              <div class="vt-card-name">剪映 · 图文成片</div>
+              <span class="vt-card-free">长期免费</span>
+              <div class="vt-card-desc">粘贴文字就自动出片，自动配画面、字幕、配音，最适合零基础。</div>
+              <a class="vt-card-go" href="https://www.capcut.cn" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+            <div class="vt-card">
+              <div class="vt-card-name">腾讯智影 · 智能成片</div>
+              <span class="vt-card-free">长期免费</span>
+              <div class="vt-card-desc">输入文案或链接，自动生成视频，自带配音与模板，省心。</div>
+              <a class="vt-card-go" href="https://zenvideo.qq.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+            <div class="vt-card">
+              <div class="vt-card-name">必剪（B站）</div>
+              <span class="vt-card-free">免费</span>
+              <div class="vt-card-desc">文字转视频，B站 UP 主向，自带素材库与字幕。</div>
+              <a class="vt-card-go" href="https://bcut.bilibili.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+            <div class="vt-card">
+              <div class="vt-card-name">一帧秒创</div>
+              <span class="vt-card-free">免费版</span>
+              <div class="vt-card-desc">文章或文案一键转视频，适合营销、解说类内容。</div>
+              <a class="vt-card-go" href="https://aigc.yizhentv.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 分类3 数字人 -->
+        <div class="vt-cat">
+          <h2 class="vt-cat-title">数字人播报 · 输入稿子让虚拟人说话</h2>
+          <p class="vt-cat-desc">上传文案，数字人自动配音播报，适合口播、讲解、课程。</p>
+          <div class="vt-grid">
+            <div class="vt-card">
+              <div class="vt-card-name">D-ID</div>
+              <span class="vt-card-free">免费额度</span>
+              <div class="vt-card-desc">输入稿子让数字人播报，多语种口型自然，适合讲解视频。</div>
+              <a class="vt-card-go" href="https://www.d-id.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+            <div class="vt-card">
+              <div class="vt-card-name">HeyGen</div>
+              <span class="vt-card-free">免费额度</span>
+              <div class="vt-card-desc">数字人说话、换脸、多场景模板，营销与课程常用。</div>
+              <a class="vt-card-go" href="https://www.heygen.com" target="_blank" rel="noopener">去使用 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 大白话使用指南 -->
+    <section class="vt-section">
+      <div class="vt-inner">
+        <div class="vt-sec-head">
+          <h2 class="vt-sec-title">三步，用大白话生成你的第一条视频</h2>
+          <p class="vt-sec-desc">不用学剪辑，不用写脚本，照着做就行。</p>
+        </div>
+        <div class="vt-steps">
+          <div class="vt-step">
+            <div class="n vt-num">01</div>
+            <h4>写一句大白话</h4>
+            <p>比如：帮我做一个三角函数讲解视频，配动画。不讲究格式，越口语越好。</p>
+          </div>
+          <div class="vt-step">
+            <div class="n vt-num">02</div>
+            <h4>选工具粘贴</h4>
+            <p>打开剪映图文成片或即梦，把文字粘进去，挑个风格就开始生成。</p>
+          </div>
+          <div class="vt-step">
+            <div class="n vt-num">03</div>
+            <h4>生成并导出</h4>
+            <p>等几十秒出片，预览满意后一键导出，直接发到各平台。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 徽剧 / 微剧专区 -->
+    <section class="vt-section alt">
+      <div class="vt-inner">
+        <div class="vt-sec-head">
+          <h2 class="vt-sec-title">徽剧 / 微剧专区 · 分步流水线</h2>
+          <p class="vt-sec-desc">没有完全免费的一步到位工具，但用下面这条流水线就能做出你的徽剧微剧。</p>
+        </div>
+        <div class="vt-hui">
+          <h3>徽剧微剧生成流水线</h3>
+          <p>从文字到成片，四步跑通：</p>
+          <div class="flow">① 即梦出角色场景图 → ② 可灵/海螺做运镜 → ③ 剪映合成 → ④ 配西皮二黄唱段</div>
+          <a href="https://jimeng.jianying.com" target="_blank" rel="noopener">查看完整方案 →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="vt-section">
+      <div class="vt-inner">
+        <div class="vt-sec-head">
+          <h2 class="vt-sec-title">常见问题</h2>
+          <p class="vt-sec-desc">关于免费额度、水印、徽剧微剧的高频疑问。</p>
+        </div>
+        <div class="vt-faq">
+          <div class="vt-qa"><q>这些工具真的完全免费吗？</q><div class="a">剪映图文成片、腾讯智影智能成片长期免费不收钱；即梦、可灵、海螺是每日免费额度，偶尔用完全够；海外工具免费版可能有导出限制或水印。</div></div>
+          <div class="vt-qa"><q>完全不会剪辑也能做吗？</q><div class="a">能。剪映图文成片、智影智能成片只要粘贴一段文字就自动出片，不需要任何剪辑基础。</div></div>
+          <div class="vt-qa"><q>输入大白话真的能生成吗？</q><div class="a">可以。直接写“帮我做一个三角函数讲解视频配动画”这类口语描述，工具会理解并生成画面与配音。</div></div>
+          <div class="vt-qa"><q>做徽剧微剧需要付费吗？</q><div class="a">基础版不花钱：用即梦出图、可灵/海螺做运镜、剪映合成，全部有免费额度，按流水线即可跑通。</div></div>
+          <div class="vt-qa"><q>导出的视频会有水印吗？</q><div class="a">国内工具（剪映、即梦等）免费版通常无水印或水印很轻；海外免费版可能带水印，商用前请留意各自条款。</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+      <a href="../index.html#about">关于</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+  </div>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script>window.EFFBOX_STATS_API="https://api.toolshe.cn";</script>
+  <script src="/stats.js"></script>
+</body>
+</html>
