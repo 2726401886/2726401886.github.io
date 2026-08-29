@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI 工具集导航 · 精选 100+ 人工智能工具 | 效率盒子</title>
+  <meta name="description" content="收录 100+ 款热门 AI 工具，按写作、图像、视频、办公、聊天、智能体、编程、开发平台、设计、音频、搜索、学习分类导航。一键直达官网，免费在线使用。">
+  <meta name="keywords" content="AI工具集,AI导航,AI写作,AI绘画,AI视频,AI办公,AI聊天,AI智能体,AI编程,AI开发平台,AI设计,AI音频,AI搜索,AI学习,人工智能工具">
+  <meta property="og:title" content="AI 工具集导航 · 精选 100+ 人工智能工具">
+  <meta property="og:description" content="按场景分类的 AI 工具导航页，一键直达官网，持续更新。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root{
+      --at-bg:#FAFAFA;
+      --at-ink:#111827;
+      --at-gray:#4B5563;
+      --at-light:#9CA3AF;
+      --at-line:#E5E7EB;
+      --at-card:#FFFFFF;
+      --at-primary:#4F46E5;
+      --at-primary-d:#4338CA;
+      --at-primary-bg:#EEF2FF;
+      --at-green:#10B981;
+      --at-green-bg:#D1FAE5;
+      --at-orange:#F59E0B;
+      --at-radius:14px;
+      --at-shadow:0 2px 8px rgba(0,0,0,.06);
+      --at-shadow-md:0 8px 24px rgba(0,0,0,.08);
+    }
+    .at-wrap{ background:var(--at-bg); color:var(--at-ink); }
+    .at-inner{ max-width:1280px; margin:0 auto; padding:0 24px; }
+    .at-hero{ padding:56px 0 28px; text-align:center; }
+    .at-badge{ display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:999px; background:var(--at-primary-bg); color:var(--at-primary-d); font-size:13px; font-weight:600; margin-bottom:18px; }
+    .at-title{ font-size:42px; font-weight:800; line-height:1.15; letter-spacing:-0.5px; margin-bottom:14px; }
+    .at-sub{ font-size:16px; line-height:1.7; color:var(--at-gray); max-width:640px; margin:0 auto 22px; }
+    .at-search{ position:relative; max-width:600px; margin:0 auto 18px; }
+    .at-search input{ width:100%; height:52px; padding:0 52px 0 20px; border:1px solid var(--at-line); border-radius:999px; background:var(--at-card); font-size:15px; outline:none; transition:.2s; }
+    .at-search input:focus{ border-color:var(--at-primary); box-shadow:0 0 0 4px var(--at-primary-bg); }
+    .at-search svg{ position:absolute; right:18px; top:50%; transform:translateY(-50%); width:20px; height:20px; color:var(--at-light); }
+    .at-stats{ display:flex; gap:24px; justify-content:center; flex-wrap:wrap; font-size:14px; color:var(--at-gray); }
+    .at-stats b{ color:var(--at-ink); font-size:20px; font-weight:800; display:block; }
+
+    .at-main{ padding:8px 0 64px; }
+    .at-layout{ display:grid; grid-template-columns:220px 1fr; gap:28px; align-items:start; }
+    @media (max-width:980px){ .at-layout{ grid-template-columns:1fr; } }
+
+    /* 左侧导航 */
+    .at-sidebar{ position:sticky; top:80px; background:var(--at-card); border:1px solid var(--at-line); border-radius:var(--at-radius); padding:16px 0; box-shadow:var(--at-shadow); max-height:calc(100vh - 100px); overflow:auto; }
+    .at-cat-title{ font-size:13px; font-weight:700; color:var(--at-light); text-transform:uppercase; letter-spacing:1px; padding:0 18px 10px; }
+    .at-nav a{ display:flex; align-items:center; gap:10px; padding:10px 18px; font-size:14px; color:var(--at-gray); cursor:pointer; transition:.15s; border-left:3px solid transparent; }
+    .at-nav a:hover{ color:var(--at-ink); background:#F9FAFB; }
+    .at-nav a.active{ color:var(--at-primary-d); background:var(--at-primary-bg); border-left-color:var(--at-primary); font-weight:600; }
+    .at-nav .emoji{ font-size:16px; width:20px; text-align:center; }
+    .at-nav .cnt{ margin-left:auto; font-size:12px; color:var(--at-light); background:#F3F4F6; padding:2px 8px; border-radius:999px; }
+    .at-nav a.active .cnt{ color:var(--at-primary-d); background:#E0E7FF; }
+    .at-mobile-nav{ display:none; }
+
+    /* 右侧内容 */
+    .at-section{ margin-bottom:40px; scroll-margin-top:80px; }
+    .at-section-h{ display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+    .at-section-h .emoji{ font-size:24px; }
+    .at-section-h h2{ font-size:22px; font-weight:700; }
+    .at-section-h .cnt{ font-size:13px; color:var(--at-light); background:#F3F4F6; padding:4px 10px; border-radius:999px; }
+    .at-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+    .at-card{ background:var(--at-card); border:1px solid var(--at-line); border-radius:var(--at-radius); padding:18px; transition:.18s; cursor:pointer; position:relative; overflow:hidden; }
+    .at-card:hover{ transform:translateY(-2px); box-shadow:var(--at-shadow-md); border-color:#D1D5DB; }
+    .at-card::after{ content:"→"; position:absolute; right:16px; top:16px; color:var(--at-light); font-size:14px; opacity:0; transition:.18s; }
+    .at-card:hover::after{ opacity:1; right:14px; }
+    .at-icon{ width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:22px; background:#F3F4F6; margin-bottom:12px; }
+    .at-name{ font-size:15px; font-weight:700; margin-bottom:5px; color:var(--at-ink); }
+    .at-desc{ font-size:13px; line-height:1.6; color:var(--at-gray); margin-bottom:10px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .at-tag{ display:inline-block; font-size:11px; color:var(--at-primary-d); background:var(--at-primary-bg); padding:3px 8px; border-radius:999px; font-weight:600; }
+    .at-empty{ display:none; text-align:center; padding:40px; color:var(--at-gray); }
+
+    /* 返回顶部 */
+    .at-top{ position:fixed; right:24px; bottom:24px; width:44px; height:44px; border-radius:50%; background:var(--at-primary); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:var(--at-shadow-md); opacity:0; pointer-events:none; transition:.2s; z-index:90; }
+    .at-top.show{ opacity:1; pointer-events:auto; }
+
+    @media (max-width:980px){
+      .at-sidebar{ display:none; }
+      .at-mobile-nav{ display:flex; gap:10px; overflow-x:auto; padding:10px 0 18px; margin-bottom:6px; scrollbar-width:none; }
+      .at-mobile-nav::-webkit-scrollbar{ display:none; }
+      .at-mobile-nav a{ flex-shrink:0; display:flex; align-items:center; gap:6px; padding:8px 14px; background:var(--at-card); border:1px solid var(--at-line); border-radius:999px; font-size:13px; color:var(--at-gray); cursor:pointer; }
+      .at-mobile-nav a.active{ background:var(--at-primary-bg); color:var(--at-primary-d); border-color:var(--at-primary); font-weight:600; }
+      .at-title{ font-size:30px; }
+      .at-grid{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="at-wrap">
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+          <li><a href="../math/index.html">数学专栏</a></li>
+          <li><a href="../novel/index.html">小说专栏</a></li>
+          <li><a href="../index.html#about">关于</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content" style="max-width:100%;padding:0;">
+    <section class="at-hero">
+      <div class="at-inner">
+        <span class="at-badge">🚀 持续更新 · 国内可用</span>
+        <h1 class="at-title">AI 工具集导航</h1>
+        <p class="at-sub">精选 100+ 款热门人工智能工具，按写作、图像、视频、办公、聊天、智能体、编程等 12 大场景分类。输入关键词即可搜索，点击卡片直达官网。</p>
+        <div class="at-search">
+          <input type="text" id="searchInput" placeholder="搜索工具名称或用途，例如：AI 绘画、PPT、代码助手…" autocomplete="off">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+        <div class="at-stats">
+          <div><b id="statTotal">0</b>款工具</div>
+          <div><b>12</b>大分类</div>
+          <div><b>0</b>元免费直达</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="at-main">
+      <div class="at-inner">
+        <div class="at-layout">
+          <!-- 左侧分类导航 -->
+          <aside class="at-sidebar" id="sidebar">
+            <div class="at-cat-title">工具分类</div>
+            <nav class="at-nav" id="catNav"></nav>
+          </aside>
+
+          <!-- 右侧内容 -->
+          <div class="at-content">
+            <div class="at-mobile-nav" id="mobileNav"></div>
+            <div id="sections"></div>
+            <div class="at-empty" id="emptyState">😕 没有找到匹配的工具，换个关键词试试？</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+      <a href="../index.html#about">关于</a>
+    </div>
+    <p>2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+  </footer>
+
+  <div class="at-top" id="backTop" title="返回顶部">↑</div>
+</div>
+
+<script>
+// AI 工具数据（精选）
+const cats = [
+  { slug:'writing', name:'AI写作工具', emoji:'✍️', tag:'写作', items:[
+    {name:'笔灵AI写作', desc:'600+模板、一键生成论文/小说/文案，支持降重降AI。', url:'https://ibiling.cn/'},
+    {name:'Kimi', desc:'月之暗面推出的长文本 AI 助手，适合长文写作与资料整理。', url:'https://kimi.moonshot.cn/'},
+    {name:'讯飞绘文', desc:'讯飞推出的 AI 批量原创内容生成与多平台矩阵管理工具。', url:'https://turbodesk.xfyun.cn/'},
+    {name:'新华妙笔', desc:'新华社推出的 AI 公文写作平台，适合体制内公文。', url:'https://miaobi.xinhua-news.cn/'},
+    {name:'光速写作', desc:'AI 写作与 PPT 生成，单篇最长支持 15000 字。', url:'https://www.guangsuxie.com/'},
+    {name:'万能小in', desc:'输入标题即可快速生成毕业论文、报告等长文。', url:'https://wannengxiaoin.com/'},
+    {name:'豆包', desc:'字节跳动推出的 AI 助手，写作、聊天、学习都能用。', url:'https://www.doubao.com/'},
+    {name:'文心一言', desc:'百度基于文心大模型的 AI 对话与写作助手。', url:'https://yiyan.baidu.com/'},
+    {name:'智谱清言', desc:'智谱 AI 推出的全能助手，支持长文生成与多轮对话。', url:'https://chatglm.cn/'},
+    {name:'通义千问', desc:'阿里推出的通义系列大模型对话与内容生成入口。', url:'https://tongyi.aliyun.com/'},
+  ]},
+  { slug:'image', name:'AI图像工具', emoji:'🖼️', tag:'图像', items:[
+    {name:'即梦', desc:'抖音旗下免费 AI 图片与视频创作工具，国风表现出色。', url:'https://jimeng.jianying.com/'},
+    {name:'可灵AI', desc:'快手推出的 AI 图像与视频生成平台，写实人物表现强。', url:'https://klingai.com/'},
+    {name:'LiblibAI', desc:'国内领先的 AI 图像创作平台与模型分享社区。', url:'https://www.liblib.art/'},
+    {name:'通义万相', desc:'阿里推出的 AI 创意内容生成平台，支持文生图与风格迁移。', url:'https://tongyi.aliyun.com/wanxiang/'},
+    {name:'堆友AI', desc:'阿里推出的 AI 绘画与设计服务平台，面向设计师。', url:'https://d.design/'},
+    {name:'美图设计室', desc:'美图推出的 AI 图像创作与设计平台，电商素材友好。', url:'https://www.x-design.com/'},
+    {name:'稿定AI', desc:'一站式 AI 设计工具集：绘图、抠图、消除、转绘画。', url:'https://www.gaoding.com/ai/'},
+    {name:'吐司AI', desc:'AI 绘画模型社区和在线生图平台，模型丰富。', url:'https://tusiart.com/'},
+    {name:'秒画', desc:'商汤科技推出的免费 AI 作画与图片生成平台。', url:'https://miaohua.sensetime.com/'},
+    {name:'WHEE', desc:'美图推出的 AI 图片和绘画创作生成工具。', url:'https://www.whee.com/'},
+  ]},
+  { slug:'video', name:'AI视频工具', emoji:'🎬', tag:'视频', items:[
+    {name:'剪映', desc:'抖音官方剪辑工具，支持图文成片、AI 配音与数字人。', url:'https://www.capcut.cn/'},
+    {name:'即梦AI', desc:'一站式 AI 视频、图片、数字人创作工具。', url:'https://jimeng.jianying.com/'},
+    {name:'可灵AI', desc:'快手推出的 AI 视频生成工具，人物与运镜表现强。', url:'https://klingai.com/'},
+    {name:'腾讯智影', desc:'腾讯推出的在线智能剪辑与数字人播报平台。', url:'https://zenvideo.qq.com/'},
+    {name:'有言', desc:'一站式 AI 视频创作与 3D 数字人生成平台。', url:'https://www.youyan3d.com/'},
+    {name:'白日梦', desc:'AI 创作平台，可生成最长 50 分钟的剧情视频。', url:'https://aibrm.com/'},
+    {name:'蝉镜', desc:'AI 数字人视频生成平台，适合口播与营销。', url:'https://chanjing.xiaoice.com/'},
+    {name:'海螺AI', desc:'MiniMax 推出的 AI 视频生成，人物口播与写实场景稳定。', url:'https://hailuoai.video/'},
+    {name:'PixVerse', desc:'AI 视频生成平台，支持文生视频与图生视频。', url:'https://pixverse.ai/'},
+    {name:'Vidu', desc:'生数科技推出的 AI 视频生成大模型。', url:'https://www.vidu.com/'},
+  ]},
+  { slug:'office', name:'AI办公工具', emoji:'💼', tag:'办公', items:[
+    {name:'AiPPT', desc:'AI 快速生成高质量 PPT，一句话出稿。', url:'https://www.aippt.cn/'},
+    {name:'Gamma', desc:'AI 幻灯片演示生成工具，支持在线演示与协作。', url:'https://gamma.app/'},
+    {name:'讯飞智文', desc:'一键生成 PPT 和 Word，办公文档快速生成。', url:'https://zhiwen.xfyun.cn/'},
+    {name:'Kimi PPT助手', desc:'Kimi 自研的 PPT 生成助手，一键排版配图。', url:'https://kimi.moonshot.cn/'},
+    {name:'夸克PPT', desc:'夸克团队推出的 AI PPT 一键生成工具。', url:'https://www.quark.cn/'},
+    {name:'百度文库AI助手', desc:'基于文心一言的智能文档创作与资料助手。', url:'https://wenku.baidu.com/'},
+    {name:'通义听悟', desc:'阿里推出的 AI 会议记录与音视频转写工具。', url:'https://tingwu.aliyun.com/'},
+    {name:'讯飞听见', desc:'讯飞语音转文字与会议记录工具。', url:'https://www.iflyrec.com/'},
+    {name:'办公小浣熊', desc:'商汤推出的 AI 办公智能体，可处理表格与文档。', url:'https://raccoon.sensetime.com/'},
+    {name:'ProcessOn', desc:'在线流程图与思维导图工具，支持 AI 自动生成。', url:'https://www.processon.com/'},
+  ]},
+  { slug:'chat', name:'AI聊天助手', emoji:'💬', tag:'聊天', items:[
+    {name:'ChatGPT', desc:'OpenAI 推出的对话式 AI 聊天机器人。', url:'https://chat.openai.com/'},
+    {name:'Claude', desc:'Anthropic 推出的 AI 助手，长文本与代码能力强。', url:'https://claude.ai/'},
+    {name:'Gemini', desc:'Google 推出的多模态 AI 聊天对话机器人。', url:'https://gemini.google.com/'},
+    {name:'Kimi', desc:'月之暗面推出的长文本 AI 智能助手。', url:'https://kimi.moonshot.cn/'},
+    {name:'DeepSeek', desc:'幻方量化推出的开源大模型与 AI 助手。', url:'https://chat.deepseek.com/'},
+    {name:'豆包', desc:'字节跳动推出的免费 AI 智能助手。', url:'https://www.doubao.com/'},
+    {name:'腾讯元宝', desc:'腾讯推出的免费 AI 助手，接入混元与 DeepSeek。', url:'https://yuanbao.tencent.com/'},
+    {name:'智谱清言', desc:'智谱推出的全能 AI 助手，支持多轮对话与工具调用。', url:'https://chatglm.cn/'},
+    {name:'文心一言', desc:'百度推出的基于文心大模型的 AI 助手。', url:'https://yiyan.baidu.com/'},
+    {name:'Grok', desc:'马斯克 xAI 推出的 AI 助手，擅长实时信息查询。', url:'https://grok.com/'},
+  ]},
+  { slug:'agent', name:'AI智能体', emoji:'🤖', tag:'智能体', items:[
+    {name:'扣子Coze', desc:'字节跳动推出的 AI 智能体开发平台，零代码搭建 Bot。', url:'https://www.coze.cn/'},
+    {name:'腾讯元宝', desc:'腾讯推出的 AI 智能助手与智能体入口。', url:'https://yuanbao.tencent.com/'},
+    {name:'Dify', desc:'开源的生成式 AI 应用开发平台，快速搭建 Agent。', url:'https://dify.ai/'},
+    {name:'FastGPT', desc:'开源 AI 工作流与智能体搭建工具。', url:'https://fastgpt.run/'},
+    {name:'讯飞星辰Agent', desc:'科大讯飞推出的 AI 智能体开发平台。', url:'https://xingchen.xfyun.cn/'},
+    {name:'AutoGLM', desc:'智谱推出的 AI 智能体，可模拟手机与电脑操作。', url:'https://www.zhipuai.cn/'},
+    {name:'文心智能体', desc:'百度文心推出的智能体创建与分发平台。', url:'https://agents.baidu.com/'},
+    {name:'阿里云百炼', desc:'一站式大模型开发与应用构建平台，支持 Agent。', url:'https://bailian.aliyun.com/'},
+    {name:'n8n', desc:'开源低代码 AI 工作流自动化工具。', url:'https://n8n.io/'},
+    {name:'Flowith', desc:'画布式 AI 智能体工具，支持多 Agent 协作。', url:'https://flowith.io/'},
+  ]},
+  { slug:'code', name:'AI编程工具', emoji:'💻', tag:'编程', items:[
+    {name:'Cursor', desc:'AI 代码编辑器，支持全项目代码生成与重构。', url:'https://www.cursor.com/'},
+    {name:'GitHub Copilot', desc:'GitHub 推出的 AI 编程助手，支持多种 IDE。', url:'https://github.com/features/copilot/'},
+    {name:'通义灵码', desc:'阿里推出的免费 AI 编程工具，基于通义大模型。', url:'https://tongyi.aliyun.com/lingma/'},
+    {name:'Trae', desc:'字节跳动推出的 AI 编程 IDE，支持多模型。', url:'https://www.trae.ai/'},
+    {name:'CodeBuddy', desc:'腾讯推出的全栈开发 AI IDE。', url:'https://copilot.tencent.com/'},
+    {name:'Windsurf', desc:'Codeium 推出的 AI 编程工具，支持 Agentic 编辑。', url:'https://codeium.com/windsurf/'},
+    {name:'Cline', desc:'开源免费的 AI 编程智能体，可在 VS Code 中使用。', url:'https://cline.bot/'},
+    {name:'Bolt.new', desc:'StackBlitz 推出的全栈 AI 代码生成工具。', url:'https://bolt.new/'},
+    {name:'Lovable', desc:'全栈 AI 编程工具，一句话构建网站应用。', url:'https://lovable.dev/'},
+    {name:'v0', desc:'Vercel 推出的 AI 生成 UI 组件与代码工具。', url:'https://v0.dev/'},
+  ]},
+  { slug:'dev', name:'AI开发平台', emoji:'🛠️', tag:'开发平台', items:[
+    {name:'阿里云百炼', desc:'一站式大模型开发与应用构建平台。', url:'https://bailian.aliyun.com/'},
+    {name:'百度千帆', desc:'百度推出的企业级大模型开发平台。', url:'https://qianfan.cloud.baidu.com/'},
+    {name:'智谱 BigModel', desc:'智谱企业级大模型开放平台 MaaS。', url:'https://open.bigmodel.cn/'},
+    {name:'火山引擎方舟', desc:'字节跳动推出的大模型 API 与开发平台。', url:'https://www.volcengine.com/product/ark/'},
+    {name:'SiliconFlow', desc:'生成式 AI 计算基础设施与模型 API 平台。', url:'https://siliconflow.cn/'},
+    {name:'OpenRouter', desc:'AI 模型 API 聚合平台，一个接口调用多模型。', url:'https://openrouter.ai/'},
+    {name:'Google AI Studio', desc:'免费体验和测试 Google 最新 AI 模型。', url:'https://aistudio.google.com/'},
+    {name:'Hugging Face', desc:'全球最大的 AI 模型与数据集开源社区。', url:'https://huggingface.co/'},
+    {name:'魔搭社区', desc:'阿里推出的中文 AI 模型开源社区。', url:'https://modelscope.cn/'},
+    {name:'天工AI开放平台', desc:'昆仑万维推出的 AI 模型 API 开放平台。', url:'https://tiangong.kunlun.com/'},
+  ]},
+  { slug:'design', name:'AI设计工具', emoji:'🎨', tag:'设计', items:[
+    {name:'Figma AI', desc:'Figma 推出的原生 AI 设计工具。', url:'https://www.figma.com/ai/'},
+    {name:'稿定AI', desc:'一站式 AI 创作和设计平台，适合电商与新媒体。', url:'https://www.gaoding.com/ai/'},
+    {name:'创客贴AI', desc:'AI 辅助的在线设计工具，海报/PPT/社交媒体图。', url:'https://www.chuangkit.com/'},
+    {name:'Canva 可画', desc:'Canva 推出的 AI 设计功能，模板丰富。', url:'https://www.canva.cn/'},
+    {name:'MasterGo', desc:'国产在线 UI 设计工具，支持 AI 生成设计稿。', url:'https://mastergo.com/'},
+    {name:'即时设计', desc:'国产云端 UI 设计工具，支持 AI 助手。', url:'https://js.design/'},
+    {name:'Pixso AI', desc:'Pixso 推出的 AI 设计工具，适合团队协作。', url:'https://pixso.cn/'},
+    {name:'Recraft', desc:'免费无限 AI 画板，生成矢量艺术、图标与插画。', url:'https://www.recraft.ai/'},
+    {name:'墨刀AI', desc:'AI 秒生原型稿，产品经理快速出原型。', url:'https://modao.cc/'},
+    {name:'Ardot', desc:'腾讯推出的 AI 智能设计工具。', url:'https://ardot.tencent.com/'},
+  ]},
+  { slug:'audio', name:'AI音频工具', emoji:'🎵', tag:'音频', items:[
+    {name:'Suno', desc:'AI 音乐生成工具，输入文字即可生成完整歌曲。', url:'https://suno.com/'},
+    {name:'Udio', desc:'AI 音乐创作平台，支持多种风格与人声。', url:'https://www.udio.com/'},
+    {name:'魔音工坊', desc:'AI 配音工具，音色自然，适合短视频与有声书。', url:'https://www.moyin.com/'},
+    {name:'讯飞智作', desc:'AI 文本配音与音视频创作工具。', url:'https://www.xfzhizuo.cn/'},
+    {name:'逗哥配音', desc:'一站式 AI 配音工具，支持多情感与方言。', url:'https://www.douge.cn/'},
+    {name:'剪映', desc:'抖音官方剪辑工具，内置 AI 配音与音色克隆。', url:'https://www.capcut.cn/'},
+    {name:'TME Studio', desc:'腾讯音乐推出的 AI 音乐创作助手。', url:'https://y.qq.com/tmestudio/'},
+    {name:'网易天音', desc:'网易推出的 AI 音乐创作平台。', url:'https://tianyin.music.163.com/'},
+    {name:'ACE Studio', desc:'AI 歌声合成工具，适合虚拟歌手制作。', url:'https://ace-studio.timedomain.cn/'},
+    {name:'ElevenLabs', desc:'高质量 AI 语音合成与配音平台。', url:'https://elevenlabs.io/'},
+  ]},
+  { slug:'search', name:'AI搜索引擎', emoji:'🔍', tag:'搜索', items:[
+    {name:'秘塔AI搜索', desc:'国产 AI 搜索引擎，无广告、结构化回答。', url:'https://metaso.cn/'},
+    {name:'Perplexity', desc:'海外 AI 搜索引擎，引用来源清晰。', url:'https://www.perplexity.ai/'},
+    {name:'360AI搜索', desc:'360 推出的 AI 问答式搜索引擎。', url:'https://ai.so.com/'},
+    {name:'天工AI', desc:'昆仑万维推出的 AI 搜索与助手。', url:'https://www.tiangong.cn/'},
+    {name:'博查AI搜索', desc:'多模型聚合 AI 搜索，适合深度研究。', url:'https://bocha.ai/'},
+    {name:'Felo', desc:'AI 搜索引擎，支持多语言与实时信息。', url:'https://felo.ai/'},
+    {name:'知乎直答', desc:'知乎推出的 AI 搜索与问答工具。', url:'https://zhida.zhihu.com/'},
+    {name:'You.com', desc:'AI 搜索引擎，支持聊天式搜索。', url:'https://you.com/'},
+    {name:'Hika', desc:'AI 搜索引擎，支持多步骤推理搜索。', url:'https://hika.fyi/'},
+    {name:'Genspark', desc:'AI 搜索 Agent，自动生成结构化页面。', url:'https://www.genspark.ai/'},
+  ]},
+  { slug:'learn', name:'AI学习网站', emoji:'📚', tag:'学习', items:[
+    {name:'飞桨AI Studio', desc:'百度推出的 AI 学习与实训社区。', url:'https://aistudio.baidu.com/'},
+    {name:'Datawhale', desc:'国内知名开源 AI 学习社区，有丰富教程与实战。', url:'https://www.datawhale.club/'},
+    {name:'吴恩达机器学习', desc:'Andrew Ng 经典机器学习课程（Coursera）。', url:'https://www.coursera.org/learn/machine-learning/'},
+    {name:'Fast.ai', desc:'免费实用的深度学习课程，适合快速上手。', url:'https://www.fast.ai/'},
+    {name:'Kaggle', desc:'数据科学与机器学习竞赛平台，提供数据集与课程。', url:'https://www.kaggle.com/'},
+    {name:'huggingface.co', desc:'全球最大的 AI 模型社区，含教程与文档。', url:'https://huggingface.co/'},
+    {name:'通往AGI之路', desc:'国内开源 AI 知识库与学习路径。', url:'https://waytoagi.com/'},
+    {name:'机器学习实战', desc:'GitHub 上经典机器学习代码与教程合集。', url:'https://github.com/ageron/handson-ml3/'},
+    {name:'李宏毅机器学习', desc:'台湾大学李宏毅教授的机器学习课程。', url:'https://speech.ee.ntu.edu.tw/~hylee/ml/'},
+    {name:'DeepLearning.AI', desc:'吴恩达团队的深度学习专项课程。', url:'https://www.deeplearning.ai/'},
+  ]}
+];
+
+const navEl = document.getElementById('catNav');
+const mobileNavEl = document.getElementById('mobileNav');
+const sectionsEl = document.getElementById('sections');
+const searchInput = document.getElementById('searchInput');
+const emptyState = document.getElementById('emptyState');
+const statTotal = document.getElementById('statTotal');
+const backTop = document.getElementById('backTop');
+
+let totalTools = 0;
+
+function init(){
+  // 渲染左侧导航与移动端导航
+  let navHtml = '';
+  let mobileHtml = '';
+  let sectionsHtml = '';
+  cats.forEach(cat=>{
+    totalTools += cat.items.length;
+    navHtml += `<a href="#${cat.slug}" data-target="${cat.slug}"><span class="emoji">${cat.emoji}</span><span>${cat.name.replace('AI','')}</span><span class="cnt">${cat.items.length}</span></a>`;
+    mobileHtml += `<a href="#${cat.slug}" data-target="${cat.slug}"><span>${cat.emoji}</span><span>${cat.name}</span></a>`;
+    sectionsHtml += `
+      <section class="at-section" id="${cat.slug}" data-name="${cat.name}">
+        <div class="at-section-h"><span class="emoji">${cat.emoji}</span><h2>${cat.name}</h2><span class="cnt">${cat.items.length} 款</span></div>
+        <div class="at-grid">${cat.items.map(item=>cardHtml(item, cat.tag)).join('')}</div>
+      </section>`;
+  });
+  navEl.innerHTML = navHtml;
+  mobileNavEl.innerHTML = mobileHtml;
+  sectionsEl.innerHTML = sectionsHtml;
+  statTotal.textContent = totalTools;
+
+  bindSearch();
+  bindScrollSpy();
+  bindBackTop();
+  bindCardClick();
+}
+
+function cardHtml(item, tag){
+  const icon = item.name.charAt(0);
+  return `<article class="at-card" data-url="${item.url}" data-key="${(item.name+' '+item.desc).toLowerCase()}" title="访问 ${item.name}">
+    <div class="at-icon">${icon}</div>
+    <h3 class="at-name">${escapeHtml(item.name)}</h3>
+    <p class="at-desc">${escapeHtml(item.desc)}</p>
+    <span class="at-tag">${tag}</span>
+  </article>`;
+}
+
+function escapeHtml(text){
+  const div = document.createElement('div'); div.textContent = text; return div.innerHTML;
+}
+
+function bindSearch(){
+  searchInput.addEventListener('input', ()=>{
+    const q = searchInput.value.trim().toLowerCase();
+    let visibleCount = 0;
+    document.querySelectorAll('.at-section').forEach(sec=>{
+      let secVisible = 0;
+      sec.querySelectorAll('.at-card').forEach(card=>{
+        const match = !q || card.dataset.key.includes(q);
+        card.style.display = match ? '' : 'none';
+        if(match){ secVisible++; visibleCount++; }
+      });
+      sec.style.display = secVisible ? '' : 'none';
+      const cnt = sec.querySelector('.cnt');
+      if(cnt){ cnt.textContent = secVisible + ' 款'; }
+    });
+    emptyState.style.display = visibleCount ? 'none' : 'block';
+  });
+}
+
+function bindScrollSpy(){
+  const links = document.querySelectorAll('#catNav a, #mobileNav a');
+  const observer = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        links.forEach(a=>a.classList.toggle('active', a.dataset.target===entry.target.id));
+      }
+    });
+  }, {rootMargin:'-40% 0px -55% 0px', threshold:0});
+  document.querySelectorAll('.at-section').forEach(sec=>observer.observe(sec));
+
+  document.querySelectorAll('#catNav a, #mobileNav a').forEach(a=>{
+    a.addEventListener('click', e=>{
+      e.preventDefault();
+      const target = document.getElementById(a.dataset.target);
+      if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+    });
+  });
+}
+
+function bindBackTop(){
+  window.addEventListener('scroll', ()=>{
+    backTop.classList.toggle('show', window.scrollY > 500);
+  });
+  backTop.addEventListener('click', ()=>window.scrollTo({top:0, behavior:'smooth'}));
+}
+
+function bindCardClick(){
+  sectionsEl.addEventListener('click', e=>{
+    const card = e.target.closest('.at-card');
+    if(card && card.dataset.url) window.open(card.dataset.url, '_blank', 'noopener,noreferrer');
+  });
+}
+
+init();
+</script>
+<script defer src="/stats.js"></script>
+</body>
+</html>
