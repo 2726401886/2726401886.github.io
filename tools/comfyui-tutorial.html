@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ComfyUI 培训视频 · 从入门到进阶播放列表 | 效率盒子</title>
-  <meta name="description" content="精选 13 个 ComfyUI 培训视频，按入门、进阶、实战分组排列，点击即可内嵌播放。从安装部署、基础工作流到 IPAdapter、ControlNet、电商海报实战，零基础也能系统学完。">
-  <meta name="keywords" content="ComfyUI教程,ComfyUI培训,ComfyUI入门,ComfyUI工作流,节点式AI绘画,Stable Diffusion,AI绘画教程,B站教程">
+  <meta name="description" content="精选 18 个 ComfyUI 培训视频，按安装基础、节点工作流、模型实战分层排列，点击即可内嵌播放。从安装部署、ControlNet、IPAdapter、InstantID 到 Flux、电商海报实战，零基础也能系统学完。">
+  <meta name="keywords" content="ComfyUI教程,ComfyUI培训,ComfyUI入门,ComfyUI工作流,节点式AI绘画,Stable Diffusion,AI绘画教程,ControlNet,IPAdapter,Flux,B站教程">
   <meta property="og:title" content="ComfyUI 培训视频 · 从入门到进阶播放列表">
-  <meta property="og:description" content="精选 13 个 ComfyUI 培训视频，按入门、进阶、实战分组，点击即播。">
+  <meta property="og:description" content="精选 18 个 ComfyUI 培训视频，按入门、进阶、实战分组，点击即播。">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="../css/style.css">
   <style>
@@ -15,6 +15,7 @@
       --ct-bg:#FBFAF7; --ct-ink:#1A1A23; --ct-lime:#84CC16; --ct-lime-d:#4D7C0F;
       --ct-lime-bg:#ECFCCB; --ct-gray:#6B6B76; --ct-line:#E6E6EA; --ct-soft:#F4F4F1;
       --ct-sky:#0EA5E9; --ct-sky-d:#0369A1; --ct-sky-bg:#E0F2FE;
+      --ct-amber:#F59E0B; --ct-amber-bg:#FEF3C7;
     }
     .ct-wrap{ background:var(--ct-bg); color:var(--ct-ink); }
     .ct-inner{ max-width:1200px; margin:0 auto; padding:0 24px; }
@@ -26,13 +27,15 @@
       background:var(--ct-lime-bg); color:var(--ct-lime-d); font-size:14px; font-weight:600; margin-bottom:18px; }
     .ct-title{ font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
       font-size:44px; font-weight:800; line-height:1.18; letter-spacing:-0.5px; margin-bottom:14px; }
-    .ct-sub{ font-size:17px; line-height:1.6; color:var(--ct-gray); max-width:620px; margin:0 auto 18px; }
+    .ct-sub{ font-size:17px; line-height:1.6; color:var(--ct-gray); max-width:640px; margin:0 auto 18px; }
     .ct-stats{ display:flex; gap:28px; justify-content:center; flex-wrap:wrap; font-size:14px; color:var(--ct-gray); }
     .ct-stats b{ color:var(--ct-ink); font-size:20px; font-weight:800; display:block; }
+    .ct-note{ display:inline-flex; align-items:center; gap:8px; margin-top:14px; padding:8px 16px; border-radius:999px;
+      background:var(--ct-sky-bg); color:var(--ct-sky-d); font-size:13px; font-weight:600; }
 
     /* Player + List layout */
     .ct-main{ padding:12px 0 64px; }
-    .ct-grid{ display:grid; grid-template-columns:1fr 380px; gap:28px; align-items:start; }
+    .ct-grid{ display:grid; grid-template-columns:1fr 400px; gap:28px; align-items:start; }
     @media (max-width:980px){ .ct-grid{ grid-template-columns:1fr; } }
 
     .ct-player-col{ min-width:0; }
@@ -44,6 +47,9 @@
       display:inline-block; padding:3px 10px; border-radius:999px; }
     .ct-now h2{ font-size:22px; font-weight:700; margin:10px 0 6px; line-height:1.3; }
     .ct-now p{ font-size:14px; line-height:1.6; color:var(--ct-gray); }
+    .ct-src-line{ margin-top:12px; padding:9px 14px; border-radius:10px; background:var(--ct-soft);
+      font-size:13px; color:var(--ct-gray); border:1px solid var(--ct-line); }
+    .ct-src-line b{ color:var(--ct-ink); }
 
     /* List */
     .ct-list-col{ min-width:0; }
@@ -63,7 +69,8 @@
     .ct-item.active .ct-idx{ background:var(--ct-lime); color:#fff; }
     .ct-body{ flex:1; min-width:0; }
     .ct-name{ font-size:15px; font-weight:600; line-height:1.4; margin-bottom:4px; }
-    .ct-meta{ font-size:12.5px; color:var(--ct-gray); }
+    .ct-meta{ font-size:12.5px; color:var(--ct-gray); margin-bottom:4px; }
+    .ct-source{ font-size:11.5px; color:var(--ct-sky-d); font-weight:600; }
 
     /* Tip */
     .ct-tip{ background:#fff; border:1px solid var(--ct-line); border-radius:14px; padding:18px 20px; margin-top:8px; }
@@ -104,12 +111,13 @@
       <div class="ct-inner">
         <span class="ct-badge">节点式 AI 绘画 · 免费教程合集</span>
         <h1 class="ct-title">ComfyUI 培训视频<br>从入门到进阶</h1>
-        <p class="ct-sub">精选 B站 上 13 个高质量 ComfyUI 教程，按「入门 → 进阶 → 实战」分组排列。点击任意视频即可内嵌播放，跟着学完就能自己搭工作流。</p>
+        <p class="ct-sub">精选 B站 上 18 个高质量 ComfyUI 教程，按「安装基础 → 节点工作流 → 模型实战」分层排列。点击任意视频即可内嵌播放，跟着学完就能自己搭工作流。</p>
         <div class="ct-stats">
-          <div><b>13</b>节精选视频</div>
+          <div><b>18</b>节精选视频</div>
           <div><b>3</b>个阶段分层</div>
           <div><b>0</b>基础也能学</div>
         </div>
+        <div class="ct-note">📺 视频均来自哔哩哔哩（B站），站内播放，不跳离本站</div>
       </div>
     </section>
 
@@ -119,12 +127,13 @@
         <!-- Left: player -->
         <div class="ct-player-col">
           <div class="ct-player">
-            <iframe id="ctPlayer" src="https://player.bilibili.com/player.html?bvid=BV1D7421N7xN&page=1&high_quality=1&danmaku=0" allowfullscreen scrolling="no" frameborder="0"></iframe>
+            <iframe id="ctPlayer" src="https://player.bilibili.com/player.html?bvid=BV1D7421N7xN&page=1&high_quality=1&danmaku=0" allowfullscreen scrolling="no" frameborder="0" title="ComfyUI 培训视频播放器"></iframe>
           </div>
           <div class="ct-now">
             <span class="lab" id="ctNowTag">入门 · 01</span>
             <h2 id="ctNowTitle">Nenly同学：最易懂的 ComfyUI 入门教程</h2>
             <p id="ctNowDesc">零基础友好，语速高效、干货满满，细致介绍新手常见问题与 BUG 解决方式。</p>
+            <div class="ct-src-line">视频来源：<b>哔哩哔哩（B站）</b> · 点击左侧列表切换播放，全程不离开本页</div>
           </div>
         </div>
 
@@ -132,91 +141,116 @@
         <div class="ct-list-col">
           <!-- 入门 -->
           <div class="ct-group">
-            <div class="ct-group-h"><span class="dot" style="background:var(--ct-lime)"></span><h3>入门 · 安装与基础</h3><span class="cnt">5 节</span></div>
+            <div class="ct-group-h"><span class="dot" style="background:var(--ct-lime)"></span><h3>入门 · 安装与基础</h3><span class="cnt">6 节</span></div>
 
             <div class="ct-item active" data-bvid="BV1D7421N7xN" data-tag="入门 · 01" data-title="Nenly同学：最易懂的 ComfyUI 入门教程" data-desc="零基础友好，语速高效、干货满满，细致介绍新手常见问题与 BUG 解决方式。">
               <div class="ct-idx ct-num">1</div>
-              <div class="ct-body"><div class="ct-name">ComfyUI 入门教程（最易懂）</div><div class="ct-meta">Nenly同学 · 约24分钟 · 强烈推荐</div></div>
+              <div class="ct-body"><div class="ct-name">ComfyUI 入门教程（最易懂）</div><div class="ct-meta">Nenly同学 · 约24分钟 · 强烈推荐</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
             <div class="ct-item" data-bvid="BV1tz421B7k1" data-tag="入门 · 02" data-title="2024 最全面 ComfyUI 保姆级教程" data-desc="系统讲解 ComfyUI 操作流程与细节，适合入门后进一步熟悉界面与功能。">
               <div class="ct-idx ct-num">2</div>
-              <div class="ct-body"><div class="ct-name">2024 最全面 ComfyUI 保姆级教程</div><div class="ct-meta">B站强推 · 侧重细节操作</div></div>
+              <div class="ct-body"><div class="ct-name">2024 最全面 ComfyUI 保姆级教程</div><div class="ct-meta">系统讲解 · 侧重细节操作</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
             <div class="ct-item" data-bvid="BV1Ew411776J" data-tag="入门 · 03" data-title="秋葉aaaki：ComfyUI 整合包发布" data-desc="一键整合包安装方案，适合不想折腾环境、想快速跑起来的新手。">
               <div class="ct-idx ct-num">3</div>
-              <div class="ct-body"><div class="ct-name">ComfyUI 整合包发布（秋葉aaaki）</div><div class="ct-meta">约5分钟 · 快速安装</div></div>
+              <div class="ct-body"><div class="ct-name">ComfyUI 整合包发布（秋葉aaaki）</div><div class="ct-meta">约5分钟 · 快速安装</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
             <div class="ct-item" data-bvid="BV1pZ421b7t7" data-tag="入门 · 04" data-title="ComfyUI 零基础入门教程系列" data-desc="从安装、基础操作到自定义节点安装，循序渐进建立完整认知。">
               <div class="ct-idx ct-num">4</div>
-              <div class="ct-body"><div class="ct-name">零基础入门教程系列</div><div class="ct-meta">安装 · 基础操作 · 自定义节点</div></div>
+              <div class="ct-body"><div class="ct-name">零基础入门教程系列</div><div class="ct-meta">安装 · 基础操作 · 自定义节点</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
             <div class="ct-item" data-bvid="BV1rJ4m1M7jk" data-tag="入门 · 05" data-title="海辛Hyacinth：ComfyUI 基础课" data-desc="从安装部署、界面介绍，到文生图、图生图，细节丰富且实战感强。">
               <div class="ct-idx ct-num">5</div>
-              <div class="ct-body"><div class="ct-name">ComfyUI 基础课（海辛Hyacinth）</div><div class="ct-meta">安装 · 文生图 · 图生图</div></div>
+              <div class="ct-body"><div class="ct-name">ComfyUI 基础课（海辛Hyacinth）</div><div class="ct-meta">安装 · 文生图 · 图生图</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1o7CRYwEeC" data-tag="入门 · 06" data-title="ComfyUI 基础工作流完全解析" data-desc="讲透基础工作流、自定义节点与提示词技巧，是打通任督二脉的一课。">
+              <div class="ct-idx ct-num">6</div>
+              <div class="ct-body"><div class="ct-name">基础工作流完全解析</div><div class="ct-meta">工作流 · 自定义节点 · 提示词</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
           </div>
 
           <!-- 进阶 -->
           <div class="ct-group">
-            <div class="ct-group-h"><span class="dot" style="background:var(--ct-sky)"></span><h3>进阶 · 工作流与节点</h3><span class="cnt">5 节</span></div>
-
-            <div class="ct-item" data-bvid="BV1o7CRYwEeC" data-tag="进阶 · 06" data-title="ComfyUI 基础工作流完全解析" data-desc="讲透基础工作流、自定义节点与提示词技巧，是打通任督二脉的一课。">
-              <div class="ct-idx ct-num">6</div>
-              <div class="ct-body"><div class="ct-name">基础工作流完全解析</div><div class="ct-meta">工作流 · 自定义节点 · 提示词</div></div>
-            </div>
+            <div class="ct-group-h"><span class="dot" style="background:var(--ct-sky)"></span><h3>进阶 · 节点与工作流</h3><span class="cnt">7 节</span></div>
 
             <div class="ct-item" data-bvid="BV19f421q7EU" data-tag="进阶 · 07" data-title="小白也能听懂的 ComfyUI 工作流搭建" data-desc="节点连线技巧与复杂工作流解构，看完就能自己拼出第一个工作流。">
               <div class="ct-idx ct-num">7</div>
-              <div class="ct-body"><div class="ct-name">工作流搭建教程（小白也能听懂）</div><div class="ct-meta">节点连线 · 复杂工作流解构</div></div>
+              <div class="ct-body"><div class="ct-name">工作流搭建教程（小白也能听懂）</div><div class="ct-meta">节点连线 · 复杂工作流解构</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
             <div class="ct-item" data-bvid="BV1ab42187er" data-tag="进阶 · 08" data-title="拆解 ComfyUI 工作流（ZHO 出品）" data-desc="逐节点拆解工作流背后的原理，理解比收藏更重要。">
               <div class="ct-idx ct-num">8</div>
-              <div class="ct-body"><div class="ct-name">拆解 ComfyUI 工作流</div><div class="ct-meta">ZHO 出品 · 原理讲解</div></div>
+              <div class="ct-body"><div class="ct-name">拆解 ComfyUI 工作流</div><div class="ct-meta">ZHO 出品 · 原理讲解</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
-            <div class="ct-item" data-bvid="BV1rK421e74x" data-tag="进阶 · 09" data-title="惫懒の欧阳川：IPAdapter 风格迁移" data-desc="风格转绘不再愁，深入理解 IPAdapter 的高级用法与风格迁移。">
+            <div class="ct-item" data-bvid="BV1s7MjzsEKc" data-tag="进阶 · 09" data-title="ComfyUI 官方示例 · ControlNet 姿态控制" data-desc="跟随官方示例掌握 ControlNet 姿态（OpenPose）控制，权威规范。">
               <div class="ct-idx ct-num">9</div>
-              <div class="ct-body"><div class="ct-name">IPAdapter 风格迁移高级理解</div><div class="ct-meta">惫懒の欧阳川 · 约27分钟</div></div>
+              <div class="ct-body"><div class="ct-name">官方示例 · ControlNet 姿态控制</div><div class="ct-meta">官方配套视频 · OpenPose</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
-            <div class="ct-item" data-bvid="BV1aF4m1F7hx" data-tag="进阶 · 10" data-title="惫懒の欧阳川：IPAdapter + InsightFace" data-desc="脸部模型全面理解，人物重塑轻而易举，进阶必看。">
+            <div class="ct-item" data-bvid="BV1hz42187Ah" data-tag="进阶 · 10" data-title="海辛Hyacinth：ComfyUI IPAdapter 使用（旧版）" data-desc="使用 IPAdapter 进行风格迁移的完整操作，输入一张图学习其风格特征。">
               <div class="ct-idx ct-num">10</div>
-              <div class="ct-body"><div class="ct-name">IPAdapter · InsightFace 脸部模型</div><div class="ct-meta">惫懒の欧阳川 · 约28分钟</div></div>
+              <div class="ct-body"><div class="ct-name">IPAdapter 使用（海辛·旧版）</div><div class="ct-meta">风格迁移入门</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1By411q7ve" data-tag="进阶 · 11" data-title="海辛Hyacinth：ComfyUI IPAdapter 使用（新版）" data-desc="新版 IPAdapter 工作流，迁移学习与风格控制更稳定。">
+              <div class="ct-idx ct-num">11</div>
+              <div class="ct-body"><div class="ct-name">IPAdapter 使用（海辛·新版）</div><div class="ct-meta">风格迁移进阶</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1rK421e74x" data-tag="进阶 · 12" data-title="惫懒の欧阳川：IPAdapter 风格迁移" data-desc="风格转绘不再愁，深入理解 IPAdapter 的高级用法与风格迁移。">
+              <div class="ct-idx ct-num">12</div>
+              <div class="ct-body"><div class="ct-name">IPAdapter 风格迁移高级理解</div><div class="ct-meta">惫懒の欧阳川 · 约27分钟</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1aF4m1F7hx" data-tag="进阶 · 13" data-title="惫懒の欧阳川：IPAdapter + InsightFace" data-desc="脸部模型全面理解，人物重塑轻而易举，进阶必看。">
+              <div class="ct-idx ct-num">13</div>
+              <div class="ct-body"><div class="ct-name">IPAdapter · InsightFace 脸部模型</div><div class="ct-meta">惫懒の欧阳川 · 约28分钟</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
           </div>
 
           <!-- 实战 -->
           <div class="ct-group">
-            <div class="ct-group-h"><span class="dot" style="background:#F59E0B"></span><h3>实战 · 落地应用</h3><span class="cnt">3 节</span></div>
+            <div class="ct-group-h"><span class="dot" style="background:var(--ct-amber)"></span><h3>实战 · 模型与落地</h3><span class="cnt">5 节</span></div>
 
-            <div class="ct-item" data-bvid="BV1vZ421J7i8" data-tag="实战 · 11" data-title="寒彬AI：自动蒙版一键换背景" data-desc="用 ComfyUI 实现自动蒙版、一键更换背景，落地到真实修图场景。">
-              <div class="ct-idx ct-num">11</div>
-              <div class="ct-body"><div class="ct-name">自动蒙版 · 一键更换背景</div><div class="ct-meta">寒彬AI · 约12分钟</div></div>
+            <div class="ct-item" data-bvid="BV1gD421u7PQ" data-tag="实战 · 14" data-title="海辛Hyacinth：ComfyUI InstantID 换脸" data-desc="仅输入一张参考图，InstantID 就能生成基于该角色的其他风格图像。">
+              <div class="ct-idx ct-num">14</div>
+              <div class="ct-body"><div class="ct-name">InstantID 换脸（海辛Hyacinth）</div><div class="ct-meta">角色一致性换脸</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
-            <div class="ct-item" data-bvid="BV1pC411V7hp" data-tag="实战 · 12" data-title="都叫我排长：电商产品海报工作流" data-desc="用 ComfyUI 搭建电商产品海报工作流，从需求到成图全流程。">
-              <div class="ct-idx ct-num">12</div>
-              <div class="ct-body"><div class="ct-name">电商产品海报工作流</div><div class="ct-meta">都叫我排长 · 约16分钟</div></div>
+            <div class="ct-item" data-bvid="BV1XsHjejEwX" data-tag="实战 · 15" data-title="Flux ControlNet + IP-Adapter 工作流详解" data-desc="演示 FLUX 的 ControlNet 与 IP-Adapter 两种工作流搭建，可控性拉满。">
+              <div class="ct-idx ct-num">15</div>
+              <div class="ct-body"><div class="ct-name">Flux ControlNet + IP-Adapter 工作流</div><div class="ct-meta">技术流 · 含开源插件</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
 
-            <div class="ct-item" data-bvid="BV13m421472y" data-tag="实战 · 13" data-title="都叫我排长：电商海报工作流 2.0" data-desc="电商海报工作流升级版，更完整、更省心，直接复用。">
-              <div class="ct-idx ct-num">13</div>
-              <div class="ct-body"><div class="ct-name">电商海报工作流 2.0</div><div class="ct-meta">都叫我排长 · 约14分钟</div></div>
+            <div class="ct-item" data-bvid="BV1vZ421J7i8" data-tag="实战 · 16" data-title="寒彬AI：自动蒙版一键换背景" data-desc="用 ComfyUI 实现自动蒙版、一键更换背景，落地到真实修图场景。">
+              <div class="ct-idx ct-num">16</div>
+              <div class="ct-body"><div class="ct-name">自动蒙版 · 一键更换背景</div><div class="ct-meta">寒彬AI · 约12分钟</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1pC411V7hp" data-tag="实战 · 17" data-title="都叫我排长：电商产品海报工作流" data-desc="用 ComfyUI 搭建电商产品海报工作流，从需求到成图全流程。">
+              <div class="ct-idx ct-num">17</div>
+              <div class="ct-body"><div class="ct-name">电商产品海报工作流</div><div class="ct-meta">都叫我排长 · 约16分钟</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
+            </div>
+
+            <div class="ct-item" data-bvid="BV13m421472y" data-tag="实战 · 18" data-title="都叫我排长：电商海报工作流 2.0" data-desc="电商海报工作流升级版，更完整、更省心，直接复用。">
+              <div class="ct-idx ct-num">18</div>
+              <div class="ct-body"><div class="ct-name">电商海报工作流 2.0</div><div class="ct-meta">都叫我排长 · 约14分钟</div><div class="ct-source">来源：哔哩哔哩（B站）</div></div>
             </div>
           </div>
 
           <div class="ct-tip">
             <h4>学习建议</h4>
             <ul>
-              <li>先看完「入门」5 节，能独立搭出普通工作流再进进阶。</li>
+              <li>先看完「入门」6 节，能独立搭出普通工作流再进进阶。</li>
               <li>进阶视频建议 1 倍速精读，重点理解节点原理而非死记。</li>
               <li>实战部分跟着做，关掉教程仍不会就回头补原理。</li>
-              <li>视频加载慢时，稍等片刻或刷新即可。</li>
+              <li>视频加载慢时，稍等片刻或刷新即可，本站不会跳转离开。</li>
             </ul>
           </div>
         </div>
