@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComfyUI 培训视频 · 从入门到进阶播放列表 | 效率盒子</title>
+  <meta name="description" content="精选 13 个 ComfyUI 培训视频，按入门、进阶、实战分组排列，点击即可内嵌播放。从安装部署、基础工作流到 IPAdapter、ControlNet、电商海报实战，零基础也能系统学完。">
+  <meta name="keywords" content="ComfyUI教程,ComfyUI培训,ComfyUI入门,ComfyUI工作流,节点式AI绘画,Stable Diffusion,AI绘画教程,B站教程">
+  <meta property="og:title" content="ComfyUI 培训视频 · 从入门到进阶播放列表">
+  <meta property="og:description" content="精选 13 个 ComfyUI 培训视频，按入门、进阶、实战分组，点击即播。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    :root{
+      --ct-bg:#FBFAF7; --ct-ink:#1A1A23; --ct-lime:#84CC16; --ct-lime-d:#4D7C0F;
+      --ct-lime-bg:#ECFCCB; --ct-gray:#6B6B76; --ct-line:#E6E6EA; --ct-soft:#F4F4F1;
+      --ct-sky:#0EA5E9; --ct-sky-d:#0369A1; --ct-sky-bg:#E0F2FE;
+    }
+    .ct-wrap{ background:var(--ct-bg); color:var(--ct-ink); }
+    .ct-inner{ max-width:1200px; margin:0 auto; padding:0 24px; }
+    .ct-num{ font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; }
+
+    /* Hero */
+    .ct-hero{ padding:64px 0 40px; text-align:center; }
+    .ct-badge{ display:inline-flex; align-items:center; padding:8px 16px; border-radius:999px;
+      background:var(--ct-lime-bg); color:var(--ct-lime-d); font-size:14px; font-weight:600; margin-bottom:18px; }
+    .ct-title{ font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+      font-size:44px; font-weight:800; line-height:1.18; letter-spacing:-0.5px; margin-bottom:14px; }
+    .ct-sub{ font-size:17px; line-height:1.6; color:var(--ct-gray); max-width:620px; margin:0 auto 18px; }
+    .ct-stats{ display:flex; gap:28px; justify-content:center; flex-wrap:wrap; font-size:14px; color:var(--ct-gray); }
+    .ct-stats b{ color:var(--ct-ink); font-size:20px; font-weight:800; display:block; }
+
+    /* Player + List layout */
+    .ct-main{ padding:12px 0 64px; }
+    .ct-grid{ display:grid; grid-template-columns:1fr 380px; gap:28px; align-items:start; }
+    @media (max-width:980px){ .ct-grid{ grid-template-columns:1fr; } }
+
+    .ct-player-col{ min-width:0; }
+    .ct-player{ position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:16px;
+      overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.12); }
+    .ct-player iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+    .ct-now{ margin-top:18px; }
+    .ct-now .lab{ font-size:12px; font-weight:600; color:var(--ct-lime-d); background:var(--ct-lime-bg);
+      display:inline-block; padding:3px 10px; border-radius:999px; }
+    .ct-now h2{ font-size:22px; font-weight:700; margin:10px 0 6px; line-height:1.3; }
+    .ct-now p{ font-size:14px; line-height:1.6; color:var(--ct-gray); }
+
+    /* List */
+    .ct-list-col{ min-width:0; }
+    .ct-group{ margin-bottom:22px; }
+    .ct-group-h{ display:flex; align-items:center; gap:10px; margin-bottom:12px; }
+    .ct-group-h .dot{ width:10px; height:10px; border-radius:3px; }
+    .ct-group-h h3{ font-size:16px; font-weight:700; }
+    .ct-group-h .cnt{ font-size:12px; color:var(--ct-gray); margin-left:auto; }
+
+    .ct-item{ display:flex; gap:14px; align-items:flex-start; background:#fff; border:1px solid var(--ct-line);
+      border-radius:14px; padding:14px; cursor:pointer; transition:.18s; margin-bottom:10px; }
+    .ct-item:hover{ border-color:var(--ct-lime); box-shadow:0 6px 18px rgba(0,0,0,.06); transform:translateY(-1px); }
+    .ct-item.active{ border-color:var(--ct-lime); background:var(--ct-lime-bg); }
+    .ct-idx{ flex-shrink:0; width:30px; height:30px; border-radius:8px; background:var(--ct-soft);
+      color:var(--ct-ink); font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center;
+      font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif; }
+    .ct-item.active .ct-idx{ background:var(--ct-lime); color:#fff; }
+    .ct-body{ flex:1; min-width:0; }
+    .ct-name{ font-size:15px; font-weight:600; line-height:1.4; margin-bottom:4px; }
+    .ct-meta{ font-size:12.5px; color:var(--ct-gray); }
+    .ct-open{ flex-shrink:0; align-self:center; font-size:12px; font-weight:600; color:var(--ct-sky-d);
+      text-decoration:none; padding:6px 10px; border-radius:8px; background:var(--ct-sky-bg); white-space:nowrap; }
+    .ct-open:hover{ filter:brightness(.96); }
+
+    /* Tip */
+    .ct-tip{ background:#fff; border:1px solid var(--ct-line); border-radius:14px; padding:18px 20px; margin-top:8px; }
+    .ct-tip h4{ font-size:15px; font-weight:700; margin-bottom:8px; }
+    .ct-tip ul{ margin:0; padding-left:18px; font-size:13.5px; line-height:1.7; color:var(--ct-gray); }
+
+    @media (max-width:560px){
+      .ct-title{ font-size:30px; }
+      .ct-hero{ padding:44px 0 24px; }
+      .ct-grid{ gap:20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ct-wrap">
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../index.html#tools">工具</a></li>
+          <li><a href="../math/index.html">数学专栏</a></li>
+          <li><a href="../novel/index.html">小说专栏</a></li>
+          <li><a href="../index.html#about">关于</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content" style="max-width:100%;padding:0;">
+    <!-- Hero -->
+    <section class="ct-hero">
+      <div class="ct-inner">
+        <span class="ct-badge">节点式 AI 绘画 · 免费教程合集</span>
+        <h1 class="ct-title">ComfyUI 培训视频<br>从入门到进阶</h1>
+        <p class="ct-sub">精选 B站 上 13 个高质量 ComfyUI 教程，按「入门 → 进阶 → 实战」分组排列。点击任意视频即可内嵌播放，跟着学完就能自己搭工作流。</p>
+        <div class="ct-stats">
+          <div><b>13</b>节精选视频</div>
+          <div><b>3</b>个阶段分层</div>
+          <div><b>0</b>基础也能学</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Player + List -->
+    <section class="ct-main">
+      <div class="ct-inner ct-grid">
+        <!-- Left: player -->
+        <div class="ct-player-col">
+          <div class="ct-player">
+            <iframe id="ctPlayer" src="https://player.bilibili.com/player.html?bvid=BV1D7421N7xN&page=1&high_quality=1&danmaku=0" allowfullscreen scrolling="no" frameborder="0"></iframe>
+          </div>
+          <div class="ct-now">
+            <span class="lab" id="ctNowTag">入门 · 01</span>
+            <h2 id="ctNowTitle">Nenly同学：最易懂的 ComfyUI 入门教程</h2>
+            <p id="ctNowDesc">零基础友好，语速高效、干货满满，细致介绍新手常见问题与 BUG 解决方式。</p>
+          </div>
+        </div>
+
+        <!-- Right: list -->
+        <div class="ct-list-col">
+          <!-- 入门 -->
+          <div class="ct-group">
+            <div class="ct-group-h"><span class="dot" style="background:var(--ct-lime)"></span><h3>入门 · 安装与基础</h3><span class="cnt">5 节</span></div>
+
+            <div class="ct-item active" data-bvid="BV1D7421N7xN" data-tag="入门 · 01" data-title="Nenly同学：最易懂的 ComfyUI 入门教程" data-desc="零基础友好，语速高效、干货满满，细致介绍新手常见问题与 BUG 解决方式。">
+              <div class="ct-idx ct-num">1</div>
+              <div class="ct-body"><div class="ct-name">ComfyUI 入门教程（最易懂）</div><div class="ct-meta">Nenly同学 · 约24分钟 · 强烈推荐</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1D7421N7xN" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1tz421B7k1" data-tag="入门 · 02" data-title="2024 最全面 ComfyUI 保姆级教程" data-desc="系统讲解 ComfyUI 操作流程与细节，适合入门后进一步熟悉界面与功能。">
+              <div class="ct-idx ct-num">2</div>
+              <div class="ct-body"><div class="ct-name">2024 最全面 ComfyUI 保姆级教程</div><div class="ct-meta">B站强推 · 侧重细节操作</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1tz421B7k1" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1Ew411776J" data-tag="入门 · 03" data-title="秋葉aaaki：ComfyUI 整合包发布" data-desc="一键整合包安装方案，适合不想折腾环境、想快速跑起来的新手。">
+              <div class="ct-idx ct-num">3</div>
+              <div class="ct-body"><div class="ct-name">ComfyUI 整合包发布（秋葉aaaki）</div><div class="ct-meta">约5分钟 · 快速安装</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1Ew411776J" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1pZ421b7t7" data-tag="入门 · 04" data-title="ComfyUI 零基础入门教程系列" data-desc="从安装、基础操作到自定义节点安装，循序渐进建立完整认知。">
+              <div class="ct-idx ct-num">4</div>
+              <div class="ct-body"><div class="ct-name">零基础入门教程系列</div><div class="ct-meta">安装 · 基础操作 · 自定义节点</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1pZ421b7t7" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1rJ4m1M7jk" data-tag="入门 · 05" data-title="海辛Hyacinth：ComfyUI 基础课" data-desc="从安装部署、界面介绍，到文生图、图生图，细节丰富且实战感强。">
+              <div class="ct-idx ct-num">5</div>
+              <div class="ct-body"><div class="ct-name">ComfyUI 基础课（海辛Hyacinth）</div><div class="ct-meta">安装 · 文生图 · 图生图</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1rJ4m1M7jk" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+          </div>
+
+          <!-- 进阶 -->
+          <div class="ct-group">
+            <div class="ct-group-h"><span class="dot" style="background:var(--ct-sky)"></span><h3>进阶 · 工作流与节点</h3><span class="cnt">5 节</span></div>
+
+            <div class="ct-item" data-bvid="BV1o7CRYwEeC" data-tag="进阶 · 06" data-title="ComfyUI 基础工作流完全解析" data-desc="讲透基础工作流、自定义节点与提示词技巧，是打通任督二脉的一课。">
+              <div class="ct-idx ct-num">6</div>
+              <div class="ct-body"><div class="ct-name">基础工作流完全解析</div><div class="ct-meta">工作流 · 自定义节点 · 提示词</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1o7CRYwEeC" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV19f421q7EU" data-tag="进阶 · 07" data-title="小白也能听懂的 ComfyUI 工作流搭建" data-desc="节点连线技巧与复杂工作流解构，看完就能自己拼出第一个工作流。">
+              <div class="ct-idx ct-num">7</div>
+              <div class="ct-body"><div class="ct-name">工作流搭建教程（小白也能听懂）</div><div class="ct-meta">节点连线 · 复杂工作流解构</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV19f421q7EU" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1ab42187er" data-tag="进阶 · 08" data-title="拆解 ComfyUI 工作流（ZHO 出品）" data-desc="逐节点拆解工作流背后的原理，理解比收藏更重要。">
+              <div class="ct-idx ct-num">8</div>
+              <div class="ct-body"><div class="ct-name">拆解 ComfyUI 工作流</div><div class="ct-meta">ZHO 出品 · 原理讲解</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1ab42187er" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1rK421e74x" data-tag="进阶 · 09" data-title="惫懒の欧阳川：IPAdapter 风格迁移" data-desc="风格转绘不再愁，深入理解 IPAdapter 的高级用法与风格迁移。">
+              <div class="ct-idx ct-num">9</div>
+              <div class="ct-body"><div class="ct-name">IPAdapter 风格迁移高级理解</div><div class="ct-meta">惫懒の欧阳川 · 约27分钟</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1rK421e74x" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1aF4m1F7hx" data-tag="进阶 · 10" data-title="惫懒の欧阳川：IPAdapter + InsightFace" data-desc="脸部模型全面理解，人物重塑轻而易举，进阶必看。">
+              <div class="ct-idx ct-num">10</div>
+              <div class="ct-body"><div class="ct-name">IPAdapter · InsightFace 脸部模型</div><div class="ct-meta">惫懒の欧阳川 · 约28分钟</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1aF4m1F7hx" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+          </div>
+
+          <!-- 实战 -->
+          <div class="ct-group">
+            <div class="ct-group-h"><span class="dot" style="background:#F59E0B"></span><h3>实战 · 落地应用</h3><span class="cnt">3 节</span></div>
+
+            <div class="ct-item" data-bvid="BV1vZ421J7i8" data-tag="实战 · 11" data-title="寒彬AI：自动蒙版一键换背景" data-desc="用 ComfyUI 实现自动蒙版、一键更换背景，落地到真实修图场景。">
+              <div class="ct-idx ct-num">11</div>
+              <div class="ct-body"><div class="ct-name">自动蒙版 · 一键更换背景</div><div class="ct-meta">寒彬AI · 约12分钟</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1vZ421J7i8" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV1pC411V7hp" data-tag="实战 · 12" data-title="都叫我排长：电商产品海报工作流" data-desc="用 ComfyUI 搭建电商产品海报工作流，从需求到成图全流程。">
+              <div class="ct-idx ct-num">12</div>
+              <div class="ct-body"><div class="ct-name">电商产品海报工作流</div><div class="ct-meta">都叫我排长 · 约16分钟</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV1pC411V7hp" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+
+            <div class="ct-item" data-bvid="BV13m421472y" data-tag="实战 · 13" data-title="都叫我排长：电商海报工作流 2.0" data-desc="电商海报工作流升级版，更完整、更省心，直接复用。">
+              <div class="ct-idx ct-num">13</div>
+              <div class="ct-body"><div class="ct-name">电商海报工作流 2.0</div><div class="ct-meta">都叫我排长 · 约14分钟</div></div>
+              <a class="ct-open" href="https://www.bilibili.com/video/BV13m421472y" target="_blank" rel="noopener" onclick="event.stopPropagation()">↗ B站</a>
+            </div>
+          </div>
+
+          <div class="ct-tip">
+            <h4>学习建议</h4>
+            <ul>
+              <li>先看完「入门」5 节，能独立搭出普通工作流再进进阶。</li>
+              <li>进阶视频建议 1 倍速精读，重点理解节点原理而非死记。</li>
+              <li>实战部分跟着做，关掉教程仍不会就回头补原理。</li>
+              <li>视频加载慢时，点右侧「↗ B站」去原站看更流畅。</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../index.html#tools">全部工具</a>
+      <a href="../index.html#about">关于</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+  </div>
+
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script>window.EFFBOX_STATS_API="https://api.toolshe.cn";</script>
+  <script defer src="/stats.js"></script>
+  <script>
+    (function(){
+      var player = document.getElementById('ctPlayer');
+      var nowTag = document.getElementById('ctNowTag');
+      var nowTitle = document.getElementById('ctNowTitle');
+      var nowDesc = document.getElementById('ctNowDesc');
+      var items = document.querySelectorAll('.ct-item');
+      items.forEach(function(item){
+        item.addEventListener('click', function(){
+          var bvid = item.dataset.bvid;
+          player.src = 'https://player.bilibili.com/player.html?bvid=' + bvid + '&page=1&high_quality=1&danmaku=0';
+          nowTag.textContent = item.dataset.tag || '';
+          nowTitle.textContent = item.dataset.title || '';
+          nowDesc.textContent = item.dataset.desc || '';
+          items.forEach(function(i){ i.classList.remove('active'); });
+          item.classList.add('active');
+          if (window.innerWidth <= 980) {
+            document.querySelector('.ct-player').scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
