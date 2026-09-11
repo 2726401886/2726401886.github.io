@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>水果合成 - 在线休闲合成小游戏 | 效率盒子</title>
+<meta name="description" content="水果合成：把相同的水果合成为更大的水果，清爽物理休闲小游戏。在线免费玩，无需下载，支持手机与电脑。">
+<meta name="keywords" content="水果合成,合成游戏,西瓜游戏,物理小游戏,休闲游戏,在线小游戏,效率盒子">
+<meta property="og:title" content="Fruit Merge - Free Online Puzzle Game">
+<meta property="og:description" content="Merge the same fruits to grow bigger. How big can you go?">
+<meta property="og:type" content="game">
+<meta name="theme-color" content="#ffb56b">
+<style>
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    overflow: hidden; background: #2b1b12;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+  }
+  #stage {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 50% 20%, #5a3520 0%, #2b1b12 70%);
+  }
+  #game {
+    display: block;
+    border-radius: 14px;
+    box-shadow: 0 18px 50px rgba(0,0,0,0.45);
+    touch-action: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div id="stage"><canvas id="game"></canvas></div>
+
+<script>/*
+ * toolshe.cn 国内版广告适配器（无海外 SDK 依赖）
+ * --------------------------------------------------------------
+ * 游戏核心只认 window.__H5_AD__ 这个统一接口（showRewarded / showInterstitial）。
+ * 国内站点不加载 Poki / CrazyGames / GameDistribution 的海外 SDK
+ * （国内访问慢、且 GameDistribution 域名常被墙），直接安装本地实现：
+ *   - showRewarded(cb)：本地直接发奖（无广告），保证复活 / 双倍 / 炸弹奖励点正常触发
+ *   - showInterstitial()：空实现
+ * 以后若要在国内接广告联盟，把下面两个函数换成对应 SDK 调用即可，游戏核心不用动。
+ */
+(function (global) {
+  'use strict';
+  var local = {
+    showRewarded: function (cb) { if (cb) cb(true); },
+    showInterstitial: function () {}
+  };
+  global.__H5_AD__ = local;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>/*
+ * FruitMerge Core —— 平台无关的游戏核心
+ * 纯 Canvas 2D 自研物理，无第三方依赖。
+ * 同一份代码可被 H5 与微信小游戏两个壳加载。
+ *
+ * 用法：
+ *   var game = FruitMerge.create({ canvas: canvasNode, platform: adapter });
+ */
+(function (root) {
+  'use strict';
+
+  var DESIGN_W = 750;          // 设计基准宽度（逻辑像素）
+  var WALL_PAD = 55;           // 容器左右留白
+  var TOP_UI_H = 250;          // 顶部 UI 区域高度
+  var BOTTOM_PAD = 170;        // 底部留白
+  var DEAD_OFFSET = 46;        // 死亡线相对容器顶部的偏移
+  var DROP_OFFSET = 62;        // 待落球体相对容器顶部的偏移
+  var GRAVITY = 2600;
+  var SUB_STEPS = 5;
+  var RESTITUTION = 0.14;
+  var MAX_SPEED = 2200;
+  var DROP_CD = 0.34;          // 投放冷却（秒）
+  var OVER_HOLD = 1.0;         // 超线持续多久判负（秒）
+
+  // 11 级水果：半径、渐变色、描边色、名称
+  var FRUITS = [
+    { name: '葡萄',   r: 26,  c1: '#e0b0f5', c2: '#8e44c9', line: '#6b2f9e' },
+    { name: '樱桃',   r: 34,  c1: '#ff8a95', c2: '#e63b52', line: '#a81f31' },
+    { name: '橘子',   r: 44,  c1: '#ffc178', c2: '#f08a24', line: '#b9600f' },
+    { name: '柠檬',   r: 54,  c1: '#ffe98a', c2: '#e8c52c', line: '#a8890c' },
+    { name: '猕猴桃', r: 64,  c1: '#cbe99f', c2: '#7cb342', line: '#4d7a20' },
+    { name: '桃子',   r: 74,  c1: '#ffd2da', c2: '#f5839c', line: '#c14f68' },
+    { name: '菠萝',   r: 84,  c1: '#f7dd8f', c2: '#d9a02c', line: '#9a6f11' },
+    { name: '椰子',   r: 95,  c1: '#dcb98d', c2: '#9a6a42', line: '#6b4526' },
+    { name: '哈密瓜', r: 106, c1: '#d7f3cb', c2: '#7fbf6a', line: '#4d7f3b' },
+    { name: '半西瓜', r: 118, c1: '#ffb6c0', c2: '#ef4f63', line: '#b32736' },
+    { name: '大西瓜', r: 130, c1: '#a8e6a1', c2: '#3f9e46', line: '#256b2b' }
+  ];
+  var MAX_LEVEL = FRUITS.length - 1;
+
+  // 合成出 level i 的得分（三角数）
+  var SCORES = [0, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66];
+
+  // 可掉落等级权重（只会掉小的几种）
+  var DROP_LEVELS = [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 4];
+
+  // 默认文案（中文）。H5 投海外时由 platform 传入英文包覆盖
+  var DEFAULT_TEXT = {
+    score: '分数', best: '最高', next: '下一颗',
+    title: '妙合大果盘', tip1: '相同水果相撞就会变大', tip2: '别让水果堆过红线',
+    start: '开始游戏', bestLabel: '最高分 ',
+    overTitle: '本局分数', bestShort: '最高分', biggest: '最大果实',
+    revive: '看广告复活', revived: '已复活',
+    double: '看广告分数翻倍', doubled: '已翻倍 x2',
+    restart: '再来一局', bomb: '炸弹 x', privacy: '隐私政策'
+  };
+
+  function clamp(v, a, b) { return v < a ? a : (v > b ? b : v); }
+  function rand(a, b) { return a + Math.random() * (b - a); }
+  function pick(arr) { return arr[(Math.random() * arr.length) | 0]; }
+
+  function roundRect(ctx, x, y, w, h, r) {
+    var rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.lineTo(x + w - rr, y);
+    ctx.arcTo(x + w, y, x + w, y + rr, rr);
+    ctx.lineTo(x + w, y + h - rr);
+    ctx.arcTo(x + w, y + h, x + w - rr, y + h, rr);
+    ctx.lineTo(x + rr, y + h);
+    ctx.arcTo(x, y + h, x, y + h - rr, rr);
+    ctx.lineTo(x, y + rr);
+    ctx.arcTo(x, y, x + rr, y, rr);
+    ctx.closePath();
+  }
+
+  // ---------- 水果绘制：球体 + 纹样 + 表情 ----------
+  function drawFruit(ctx, level, x, y, r, alpha) {
+    var f = FRUITS[level];
+    ctx.save();
+    if (alpha != null) ctx.globalAlpha = alpha;
+    ctx.translate(x, y);
+
+    // 主体
+    var g = ctx.createRadialGradient(-r * 0.32, -r * 0.36, r * 0.12, 0, 0, r);
+    g.addColorStop(0, f.c1);
+    g.addColorStop(1, f.c2);
+    ctx.beginPath();
+    ctx.arc(0, 0, r, 0, Math.PI * 2);
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.lineWidth = Math.max(2, r * 0.055);
+    ctx.strokeStyle = f.line;
+    ctx.stroke();
+
+    // 纹样
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(0, 0, r - 1, 0, Math.PI * 2);
+    ctx.clip();
+    drawPattern(ctx, level, r);
+    ctx.restore();
+
+    // 高光
+    ctx.beginPath();
+    ctx.ellipse ? ctx.ellipse(-r * 0.34, -r * 0.40, r * 0.24, r * 0.15, -0.6, 0, Math.PI * 2)
+                : ctx.arc(-r * 0.34, -r * 0.40, r * 0.18, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fill();
+
+    // 表情
+    if (r > 22) {
+      var ex = r * 0.30, ey = -r * 0.08, er = r * 0.085;
+      ctx.fillStyle = '#3a2b2b';
+      ctx.beginPath(); ctx.arc(-ex, ey, er, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath();
+      ctx.arc(0, r * 0.10, r * 0.20, 0.25 * Math.PI, 0.75 * Math.PI);
+      ctx.lineWidth = Math.max(1.5, r * 0.05);
+      ctx.strokeStyle = '#3a2b2b';
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawPattern(ctx, level, r) {
+    var i;
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.fillStyle = 'rgba(255,255,255,0.35)';
+    ctx.lineWidth = Math.max(1.2, r * 0.045);
+    switch (level) {
+      case 0: // 葡萄：小点
+        for (i = 0; i < 5; i++) {
+          var a = i / 5 * Math.PI * 2;
+          ctx.beginPath();
+          ctx.arc(Math.cos(a) * r * 0.45, Math.sin(a) * r * 0.45, r * 0.10, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        break;
+      case 1: // 樱桃：梗
+        ctx.beginPath();
+        ctx.moveTo(0, -r);
+        ctx.quadraticCurveTo(r * 0.25, -r * 1.25, r * 0.5, -r * 1.1);
+        ctx.stroke();
+        break;
+      case 2: // 橘子：横纹
+        for (i = -1; i <= 1; i++) {
+          ctx.beginPath();
+          ctx.moveTo(-r, i * r * 0.38);
+          ctx.lineTo(r, i * r * 0.38);
+          ctx.stroke();
+        }
+        break;
+      case 3: // 柠檬：竖纹
+        for (i = -1; i <= 1; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * r * 0.38, -r);
+          ctx.lineTo(i * r * 0.38, r);
+          ctx.stroke();
+        }
+        break;
+      case 4: // 猕猴桃：放射点
+        for (i = 0; i < 8; i++) {
+          var a2 = i / 8 * Math.PI * 2;
+          ctx.beginPath();
+          ctx.arc(Math.cos(a2) * r * 0.5, Math.sin(a2) * r * 0.5, r * 0.07, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        break;
+      case 5: // 桃子：中缝
+        ctx.beginPath();
+        ctx.moveTo(0, -r);
+        ctx.quadraticCurveTo(r * 0.18, 0, 0, r);
+        ctx.stroke();
+        break;
+      case 6: // 菠萝：网格
+        for (i = -2; i <= 2; i++) {
+          ctx.beginPath(); ctx.moveTo(-r, i * r * 0.4 - r * 0.3); ctx.lineTo(r, i * r * 0.4 + r * 0.3); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(-r, i * r * 0.4 + r * 0.3); ctx.lineTo(r, i * r * 0.4 - r * 0.3); ctx.stroke();
+        }
+        break;
+      case 7: // 椰子：三点
+        for (i = 0; i < 3; i++) {
+          ctx.beginPath();
+          ctx.arc(-r * 0.3 + i * r * 0.3, -r * 0.45, r * 0.08, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        break;
+      case 8: // 哈密瓜：网纹
+        for (i = -2; i <= 2; i++) {
+          ctx.beginPath(); ctx.arc(0, 0, r * (0.35 + i * 0.16), 0, Math.PI * 2); ctx.stroke();
+        }
+        break;
+      case 9: // 半西瓜：籽
+        ctx.fillStyle = 'rgba(60,30,30,0.55)';
+        for (i = 0; i < 6; i++) {
+          var a3 = i / 6 * Math.PI * 2 + 0.4;
+          ctx.beginPath();
+          ctx.ellipse ? ctx.ellipse(Math.cos(a3) * r * 0.5, Math.sin(a3) * r * 0.5, r * 0.06, r * 0.11, a3, 0, Math.PI * 2)
+                      : ctx.arc(Math.cos(a3) * r * 0.5, Math.sin(a3) * r * 0.5, r * 0.08, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        break;
+      case 10: // 西瓜：条纹
+        for (i = -2; i <= 2; i++) {
+          ctx.beginPath();
+          ctx.moveTo(i * r * 0.34 - r * 0.22, -r);
+          ctx.quadraticCurveTo(i * r * 0.34 + r * 0.16, 0, i * r * 0.34 - r * 0.22, r);
+          ctx.stroke();
+        }
+        break;
+    }
+  }
+
+  // ---------- 游戏主体 ----------
+  function create(opts) {
+    var canvas = opts.canvas;
+    var pf = opts.platform || {};
+    var T = {};
+    for (var tk in DEFAULT_TEXT) { T[tk] = DEFAULT_TEXT[tk]; }
+    if (opts.texts) { for (var tk2 in opts.texts) { T[tk2] = opts.texts[tk2]; } }
+    var ctx = canvas.getContext('2d');
+
+    var W = canvas.width, H = canvas.height;
+    var scale = 1, logicH = 1334;
+    var left = WALL_PAD, right = DESIGN_W - WALL_PAD;
+    var top = TOP_UI_H, bottom = 1180, deadLine = top + DEAD_OFFSET;
+
+    var balls = [];
+    var particles = [];
+    var rings = [];
+    var state = 'menu';           // menu | playing | over
+    var score = 0, best = 0, combo = 0;
+    var currentLevel = 0, nextLevel = 0;
+    var aimX = DESIGN_W / 2;
+    var dropCd = 0, overTimer = 0, danger = 0;
+    var bombs = 0;
+    var revived = false;
+    var doubleClaimed = false;
+    var lastTime = 0, rafId = 0;
+    var paused = false;            // 广告播放/切后台时暂停主循环（GD 审核硬性要求）
+    var buttons = [];
+    var maxLevelReached = 0;
+
+    function resize() {
+      W = canvas.width; H = canvas.height;
+      scale = W / DESIGN_W;
+      logicH = H / scale;
+      top = TOP_UI_H;
+      bottom = logicH - BOTTOM_PAD;
+      if (bottom - top < 720) bottom = top + 720;
+      deadLine = top + DEAD_OFFSET;
+    }
+
+    function ball(level, x, y) {
+      return {
+        level: level, x: x, y: y, vx: 0, vy: 0,
+        r: FRUITS[level].r, m: FRUITS[level].r * FRUITS[level].r,
+        dead: false, pop: 0, age: 0
+      };
+    }
+
+    function reset() {
+      balls.length = 0; particles.length = 0; rings.length = 0;
+      score = 0; combo = 0; overTimer = 0; danger = 0;
+      bombs = 0; revived = false; doubleClaimed = false;
+      maxLevelReached = 0;
+      currentLevel = pick(DROP_LEVELS);
+      nextLevel = pick(DROP_LEVELS);
+      aimX = DESIGN_W / 2;
+      dropCd = 0;
+    }
+
+    function drop() {
+      if (state !== 'playing' || dropCd > 0) return;
+      var r = FRUITS[currentLevel].r;
+      var x = clamp(aimX, left + r + 2, right - r - 2);
+      var b = ball(currentLevel, x, top - DROP_OFFSET);
+      b.vy = 120;
+      balls.push(b);
+      currentLevel = nextLevel;
+      nextLevel = pick(DROP_LEVELS);
+      dropCd = DROP_CD;
+    }
+
+    function addScore(n, x, y) {
+      score += n;
+      if (score > best) { best = score; if (pf.setBest) pf.setBest(best); }
+      particles.push({ x: x, y: y, text: '+' + n, life: 1 });
+    }
+
+    function merge(a, b) {
+      a.dead = true; b.dead = true;
+      var nl = a.level + 1;
+      var nb = ball(nl, (a.x + b.x) / 2, (a.y + b.y) / 2);
+      nb.vx = (a.vx + b.vx) * 0.3;
+      nb.vy = (a.vy + b.vy) * 0.3 - 60;
+      nb.pop = 1;
+      balls.push(nb);
+      combo++;
+      var gain = SCORES[Math.min(nl, MAX_LEVEL)];
+      if (combo > 1) gain = Math.round(gain * (1 + Math.min(combo, 5) * 0.15));
+      addScore(gain, nb.x, nb.y);
+      rings.push({ x: nb.x, y: nb.y, r: nb.r * 0.6, max: nb.r * 2.0, life: 1 });
+      if (nl > maxLevelReached) maxLevelReached = nl;
+      if (nl === MAX_LEVEL && pf.onAchieve) pf.onAchieve('watermelon');
+      if (pf.vibrate) pf.vibrate(nl >= 6 ? 30 : 12);
+      if (pf.playSound) pf.playSound('merge');
+    }
+
+    function step(dt) {
+      var sub = dt / SUB_STEPS, i, j, k, b;
+      for (k = 0; k < SUB_STEPS; k++) {
+        for (i = 0; i < balls.length; i++) {
+          b = balls[i];
+          b.vy += GRAVITY * sub;
+          b.vx *= 0.995; b.vy *= 0.999;
+          if (b.vy > MAX_SPEED) b.vy = MAX_SPEED;
+          b.x += b.vx * sub; b.y += b.vy * sub;
+          b.age += sub;
+        }
+        for (var it = 0; it < 2; it++) solveCollisions();
+        for (i = 0; i < balls.length; i++) {
+          b = balls[i];
+          if (b.x - b.r < left) { b.x = left + b.r; b.vx = Math.abs(b.vx) * RESTITUTION; }
+          if (b.x + b.r > right) { b.x = right - b.r; b.vx = -Math.abs(b.vx) * RESTITUTION; }
+          if (b.y + b.r > bottom) {
+            b.y = bottom - b.r;
+            if (b.vy > 0) b.vy = -b.vy * RESTITUTION;
+            b.vx *= 0.90;
+          }
+        }
+      }
+      // 清理 & 动画
+      for (i = balls.length - 1; i >= 0; i--) {
+        if (balls[i].dead) balls.splice(i, 1);
+        else if (balls[i].pop > 0) balls[i].pop *= 0.86;
+      }
+      for (i = particles.length - 1; i >= 0; i--) {
+        particles[i].life -= dt * 1.1;
+        particles[i].y -= dt * 60;
+        if (particles[i].life <= 0) particles.splice(i, 1);
+      }
+      for (i = rings.length - 1; i >= 0; i--) {
+        rings[i].life -= dt * 2.2;
+        if (rings[i].life <= 0) rings.splice(i, 1);
+      }
+      if (dropCd > 0) dropCd -= dt;
+      combo = Math.max(0, combo - dt * 1.6);
+    }
+
+    function solveCollisions() {
+      var pending = [];
+      for (var i = 0; i < balls.length; i++) {
+        var a = balls[i];
+        if (a.dead) continue;
+        for (var j = i + 1; j < balls.length; j++) {
+          var b = balls[j];
+          if (b.dead) continue;
+          var dx = b.x - a.x, dy = b.y - a.y;
+          var minD = a.r + b.r;
+          var d2 = dx * dx + dy * dy;
+          if (d2 >= minD * minD || d2 === 0) continue;
+
+          if (a.level === b.level && a.level < MAX_LEVEL) {
+            pending.push([a, b]);
+            a.dead = true; b.dead = true;
+            continue;
+          }
+
+          var d = Math.sqrt(d2);
+          var nx = dx / d, ny = dy / d;
+          var overlap = minD - d;
+          var invA = 1 / a.m, invB = 1 / b.m;
+          var invSum = invA + invB;
+          var corr = (overlap / invSum) * 0.72;
+          a.x -= nx * corr * invA; a.y -= ny * corr * invA;
+          b.x += nx * corr * invB; b.y += ny * corr * invB;
+
+          var rvx = b.vx - a.vx, rvy = b.vy - a.vy;
+          var vn = rvx * nx + rvy * ny;
+          if (vn < 0) {
+            var jn = -(1 + RESTITUTION) * vn / invSum;
+            a.vx -= nx * jn * invA; a.vy -= ny * jn * invA;
+            b.vx += nx * jn * invB; b.vy += ny * jn * invB;
+            // 切向摩擦
+            var tx = -ny, ty = nx;
+            var vt = rvx * tx + rvy * ty;
+            var jt = -vt * 0.22 / invSum;
+            a.vx -= tx * jt * invA; a.vy -= ty * jt * invA;
+            b.vx += tx * jt * invB; b.vy += ty * jt * invB;
+          }
+        }
+      }
+      for (var k = 0; k < pending.length; k++) {
+        var pa = pending[k][0], pb = pending[k][1];
+        pa.dead = false; pb.dead = false;
+        merge(pa, pb);
+      }
+    }
+
+    function checkOver(dt) {
+      var over = false, dangerNow = 0;
+      for (var i = 0; i < balls.length; i++) {
+        var b = balls[i];
+        // 刚投放/刚合成的球给它落下去的时间，不参与判定
+        if (b.age < 1.0) continue;
+        var topEdge = b.y - b.r;
+        if (topEdge < deadLine) {
+          dangerNow = Math.max(dangerNow, (deadLine - topEdge) / 40);
+          over = true;
+          // 球被挤压到容器外很远：加速判负，避免无限堆叠卡死
+          if (b.y + b.r < top - 150) overTimer += dt * 2;
+        }
+      }
+      danger = dangerNow;
+      if (over) overTimer += dt;
+      else overTimer = Math.max(0, overTimer - dt * 1.6);
+      if (overTimer >= OVER_HOLD) gameOver();
+    }
+
+    function gameOver() {
+      if (state !== 'playing') return;
+      state = 'over';
+      if (pf.vibrate) pf.vibrate(60);
+      if (pf.showInterstitial) pf.showInterstitial();
+      if (pf.onGameOver) pf.onGameOver(score);
+    }
+
+    // ---------- 广告相关动作 ----------
+    function revive() {
+      if (state !== 'over' || revived) return;
+      var doRevive = function () {
+        revived = true;
+        // 移除顶部区域最高的若干球
+        var removed = 0;
+        for (var pass = 0; pass < 12 && removed < 10; pass++) {
+          var idx = -1, minY = Infinity;
+          for (var i = 0; i < balls.length; i++) {
+            if (balls[i].y < minY) { minY = balls[i].y; idx = i; }
+          }
+          if (idx < 0 || minY > deadLine + 150) break;
+          balls.splice(idx, 1);
+          removed++;
+        }
+        state = 'playing';
+        overTimer = 0;
+        dropCd = 0.3;
+        if (pf.onRevive) pf.onRevive();
+      };
+      if (pf.showRewarded) pf.showRewarded('revive', function (ok) { if (ok) doRevive(); });
+      else doRevive();
+    }
+
+    function claimDouble() {
+      if (state !== 'over' || doubleClaimed) return;
+      var apply = function () {
+        doubleClaimed = true;
+        score *= 2;
+        if (score > best) { best = score; if (pf.setBest) pf.setBest(best); }
+        if (pf.onDouble) pf.onDouble(score);
+      };
+      if (pf.showRewarded) pf.showRewarded('double', function (ok) { if (ok) apply(); });
+      else apply();
+    }
+
+    function useBomb() {
+      if (state !== 'playing' || bombs <= 0) return;
+      bombs--;
+      for (var i = balls.length - 1; i >= 0; i--) {
+        if (balls[i].level <= 2) {
+          rings.push({ x: balls[i].x, y: balls[i].y, r: balls[i].r * 0.5, max: balls[i].r * 1.8, life: 1 });
+          balls.splice(i, 1);
+        }
+      }
+      if (pf.vibrate) pf.vibrate(40);
+      if (pf.playSound) pf.playSound('bomb');
+    }
+
+    function getBomb() {
+      if (pf.showRewarded) {
+        pf.showRewarded('bomb', function (ok) { if (ok) bombs++; });
+      } else bombs++;
+    }
+
+    // ---------- 渲染 ----------
+    function render() {
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.setTransform(scale, 0, 0, scale, 0, 0);
+
+      // 背景
+      var bg = ctx.createLinearGradient(0, 0, 0, logicH);
+      bg.addColorStop(0, '#fff4d6');
+      bg.addColorStop(1, '#ffe0b8');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, DESIGN_W, logicH);
+
+      drawTopBar();
+      drawJar();
+      drawBalls();
+      drawAim();
+      drawFx();
+
+      if (state === 'menu') drawMenu();
+      else if (state === 'over') drawOver();
+      else drawHud();
+    }
+
+    function drawTopBar() {
+      // 分数
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      roundRect(ctx, 36, 58, 300, 96, 24); ctx.fill();
+      ctx.fillStyle = '#8a5a2b';
+      ctx.font = 'bold 26px sans-serif';
+      ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+      ctx.fillText(T.score, 62, 86);
+      ctx.fillStyle = '#e0722c';
+      ctx.font = 'bold 46px sans-serif';
+      ctx.fillText(String(score), 62, 124);
+
+      // 最高分
+      ctx.fillStyle = 'rgba(255,255,255,0.85)';
+      roundRect(ctx, 414, 58, 300, 96, 24); ctx.fill();
+      ctx.fillStyle = '#8a5a2b';
+      ctx.font = 'bold 26px sans-serif';
+      ctx.fillText(T.best, 440, 86);
+      ctx.fillStyle = '#c2410c';
+      ctx.font = 'bold 46px sans-serif';
+      ctx.fillText(String(best), 440, 124);
+
+      // 下一颗
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      roundRect(ctx, 300, 166, 150, 62, 18); ctx.fill();
+      ctx.fillStyle = '#8a5a2b';
+      ctx.font = 'bold 24px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(T.next, 375, 197);
+      drawFruit(ctx, nextLevel, 500, 197, 30, 1);
+    }
+
+    function drawJar() {
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,0.55)';
+      roundRect(ctx, left, top, right - left, bottom - top, 28);
+      ctx.fill();
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = '#e0a860';
+      ctx.stroke();
+
+      // 死亡线
+      ctx.setLineDash([16, 12]);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = danger > 0
+        ? 'rgba(231,76,60,' + (0.5 + 0.5 * Math.abs(Math.sin(Date.now() / 160))) + ')'
+        : 'rgba(231,76,60,0.45)';
+      ctx.beginPath();
+      ctx.moveTo(left + 8, deadLine);
+      ctx.lineTo(right - 8, deadLine);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+
+    function drawBalls() {
+      for (var i = 0; i < balls.length; i++) {
+        var b = balls[i];
+        var s = 1 + b.pop * 0.45;
+        drawFruit(ctx, b.level, b.x, b.y, b.r * s, 1);
+      }
+    }
+
+    function drawAim() {
+      if (state !== 'playing') return;
+      var r = FRUITS[currentLevel].r;
+      var x = clamp(aimX, left + r + 2, right - r - 2);
+      ctx.save();
+      ctx.setLineDash([10, 10]);
+      ctx.strokeStyle = 'rgba(180,120,60,0.45)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(x, top - DROP_OFFSET);
+      ctx.lineTo(x, bottom - 6);
+      ctx.stroke();
+      ctx.restore();
+      drawFruit(ctx, currentLevel, x, top - DROP_OFFSET, r, dropCd > 0 ? 0.35 : 1);
+    }
+
+    function drawFx() {
+      var i;
+      for (i = 0; i < rings.length; i++) {
+        var rg = rings[i];
+        ctx.beginPath();
+        ctx.arc(rg.x, rg.y, rg.r + (rg.max - rg.r) * (1 - rg.life), 0, Math.PI * 2);
+        ctx.lineWidth = 6 * rg.life;
+        ctx.strokeStyle = 'rgba(255,255,255,' + (0.85 * rg.life) + ')';
+        ctx.stroke();
+      }
+      for (i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        ctx.font = 'bold 34px sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'rgba(224,114,44,' + clamp(p.life, 0, 1) + ')';
+        ctx.fillText(p.text, p.x, p.y);
+      }
+    }
+
+    function drawHud() {
+      // 炸弹按钮
+      buttons = [];
+      var bx = 40, by = logicH - 132, bw = 210, bh = 84;
+      ctx.fillStyle = bombs > 0 ? '#ff8a3d' : 'rgba(200,170,140,0.55)';
+      roundRect(ctx, bx, by, bw, bh, 22); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 30px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(T.bomb + bombs, bx + bw / 2, by + bh / 2);
+      buttons.push({ id: 'bomb', x: bx, y: by, w: bw, h: bh });
+    }
+
+    function panel(x, y, w, h) {
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.fillRect(0, 0, DESIGN_W, logicH);
+      ctx.fillStyle = '#fffaf0';
+      roundRect(ctx, x, y, w, h, 36); ctx.fill();
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = '#e0a860';
+      ctx.stroke();
+    }
+
+    function button(id, x, y, w, h, label, color, textColor) {
+      ctx.fillStyle = color;
+      roundRect(ctx, x, y, w, h, h / 2); ctx.fill();
+      ctx.fillStyle = textColor || '#fff';
+      ctx.font = 'bold 34px sans-serif';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText(label, x + w / 2, y + h / 2);
+      buttons.push({ id: id, x: x, y: y, w: w, h: h });
+    }
+
+    function drawMenu() {
+      buttons = [];
+      var pw = 560, ph = 560, px = (DESIGN_W - pw) / 2, py = (logicH - ph) / 2;
+      panel(px, py, pw, ph);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#e0722c';
+      ctx.font = 'bold 56px sans-serif';
+      ctx.fillText(T.title, DESIGN_W / 2, py + 78);
+      ctx.fillStyle = '#8a5a2b';
+      ctx.font = '26px sans-serif';
+      ctx.fillText(T.tip1, DESIGN_W / 2, py + 130);
+      ctx.fillText(T.tip2, DESIGN_W / 2, py + 172);
+
+      // 预览一排水果
+      for (var i = 0; i < 5; i++) {
+        var lv = i + 3;
+        drawFruit(ctx, lv, px + 90 + i * 95, py + 265, 40, 1);
+      }
+
+      button('start', px + 80, py + 360, 400, 96, T.start, '#4caf50');
+      ctx.fillStyle = '#a08060';
+      ctx.font = '24px sans-serif';
+      ctx.fillText(T.bestLabel + best, DESIGN_W / 2, py + 490);
+      // 隐私政策入口（微信/抖音审核必需）
+      ctx.fillStyle = '#9a8a78';
+      ctx.font = '24px sans-serif';
+      ctx.fillText(T.privacy, DESIGN_W / 2, py + 534);
+      buttons.push({ id: 'privacy', x: DESIGN_W / 2 - 90, y: py + 514, w: 180, h: 40 });
+      if (pf.drawExtraUI) pf.drawExtraUI(ctx, state, { x: px, y: py, w: pw, h: ph, logicH: logicH });
+    }
+
+    function drawOver() {
+      buttons = [];
+      var pw = 580, ph = 620, px = (DESIGN_W - pw) / 2, py = (logicH - ph) / 2;
+      panel(px, py, pw, ph);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillStyle = '#8a5a2b';
+      ctx.font = 'bold 34px sans-serif';
+      ctx.fillText(T.overTitle, DESIGN_W / 2, py + 60);
+      ctx.fillStyle = '#e0722c';
+      ctx.font = 'bold 92px sans-serif';
+      ctx.fillText(String(score), DESIGN_W / 2, py + 140);
+      ctx.fillStyle = '#a08060';
+      ctx.font = '26px sans-serif';
+      var fname = (T.fruitNames && T.fruitNames[maxLevelReached]) || FRUITS[maxLevelReached].name;
+      ctx.fillText(T.bestShort + ' ' + best + '   ' + T.biggest + ' ' + fname,
+        DESIGN_W / 2, py + 200);
+
+      button(revived ? 'revive_done' : 'revive',
+        px + 60, py + 250, 460, 92,
+        revived ? T.revived : T.revive, revived ? '#c7b7a5' : '#ff8a3d');
+
+      button(doubleClaimed ? 'double_done' : 'double',
+        px + 60, py + 360, 460, 92,
+        doubleClaimed ? T.doubled : T.double, doubleClaimed ? '#c7b7a5' : '#9c27b0');
+
+      button('restart', px + 60, py + 470, 460, 92, T.restart, '#4caf50');
+
+      if (pf.drawExtraUI) pf.drawExtraUI(ctx, state, { x: px, y: py, w: pw, h: ph, logicH: logicH });
+    }
+
+    // ---------- 输入 ----------
+    function hit(lx, ly) {
+      for (var i = 0; i < buttons.length; i++) {
+        var b = buttons[i];
+        if (lx >= b.x && lx <= b.x + b.w && ly >= b.y && ly <= b.y + b.h) return b.id;
+      }
+      return null;
+    }
+
+    function onDown(lx, ly) {
+      if (state === 'playing') aimX = lx;
+    }
+    function onMove(lx, ly) {
+      if (state === 'playing') aimX = lx;
+    }
+    function onUp(lx, ly) {
+      if (state === 'playing') {
+        aimX = lx;
+        var id = hit(lx, ly);
+        if (id === 'bomb') {
+          if (bombs > 0) useBomb(); else getBomb();
+          return;
+        }
+        drop();
+        return;
+      }
+      var id2 = hit(lx, ly);
+      if (!id2) return;
+      if (id2 === 'start' || id2 === 'restart') {
+        reset();
+        state = 'playing';
+        // pre-roll 广告点（开始/重玩按钮）——分发平台要求，未接 SDK 时自动静默
+        if (pf.showInterstitial) pf.showInterstitial();
+        if (pf.onStart) pf.onStart();
+      } else if (id2 === 'revive') {
+        revive();
+      } else if (id2 === 'double') {
+        claimDouble();
+      } else if (id2 === 'privacy') {
+        if (pf.onPrivacy) pf.onPrivacy();
+      }
+    }
+
+    // ---------- 主循环 ----------
+    function frame(now) {
+      rafId = requestAnimationFrame(frame);
+      if (paused) { lastTime = now; return; }   // 广告期间冻结物理与计时
+      if (!lastTime) lastTime = now;
+      var dt = (now - lastTime) / 1000;
+      lastTime = now;
+      if (dt > 0.05) dt = 0.05;      // 防止切后台后大跳
+      if (dt <= 0) dt = 1 / 60;
+
+      if (state === 'playing') {
+        step(dt);
+        checkOver(dt);
+      } else {
+        // 结算页仍做轻微动画
+        for (var i = balls.length - 1; i >= 0; i--) {
+          if (balls[i].pop > 0) balls[i].pop *= 0.86;
+        }
+      }
+      render();
+    }
+
+    resize();
+    best = (pf.getBest && pf.getBest()) || 0;
+    reset();
+    rafId = requestAnimationFrame(frame);
+
+    return {
+      resize: resize,
+      // 输入坐标统一换算：事件层给的是 canvas 物理像素（canvas.width 系），
+      // 内部按钮/瞄准线全部按逻辑坐标（DESIGN_W=750 系）运算，必须先除以 scale。
+      // 修复：菜单 PLAY / 结算按钮在真实鼠标/触摸点击下命中 miss（PLAY 无反应）的缺陷。
+      pointerDown: function (lx, ly) { onDown(lx / scale, ly / scale); },
+      pointerMove: function (lx, ly) { onMove(lx / scale, ly / scale); },
+      pointerUp: function (lx, ly) { onUp(lx / scale, ly / scale); },
+      destroy: function () { if (rafId) cancelAnimationFrame(rafId); },
+      // 广告期间暂停/恢复（GameDistribution 审核强制要求）
+      pause: function () { paused = true; },
+      resume: function () { paused = false; lastTime = 0; },
+      getState: function () { return state; },
+      getScore: function () { return score; },
+      _debug: function () {
+        return { balls: balls, state: state, score: score, best: best, maxLevel: maxLevelReached, deadLine: deadLine, top: top, bottom: bottom };
+      },
+      // 供外部（如分享回调）触发
+      restart: function () { reset(); state = 'playing'; }
+    };
+  }
+
+  var api = { create: create, FRUITS: FRUITS, DESIGN_W: DESIGN_W };
+  root.FruitMerge = api;
+  if (typeof module !== 'undefined' && module.exports) { module.exports = api; }
+})(typeof window !== 'undefined' ? window : (typeof GameGlobal !== 'undefined' ? GameGlobal : this));
+</script>
+<script>/*
+ * H5 平台适配层
+ * 投海外分发平台时，只需在页面里实现 window.__H5_AD__ 接口即可接广告，
+ * 游戏核心无需改动。
+ *
+ *   window.__H5_AD__ = {
+ *     showRewarded: function(cb) { ... cb(true/false) ... },
+ *     showInterstitial: function() { ... }
+ *   };
+ */
+(function (global) {
+  'use strict';
+
+  // 英文文案包（H5 投海外用）
+  var EN = {
+    score: 'SCORE', best: 'BEST', next: 'NEXT',
+    title: 'FRUIT MERGE',
+    tip1: 'Merge the same fruits to grow',
+    tip2: 'Keep fruits below the red line',
+    start: 'PLAY', bestLabel: 'Best ',
+    overTitle: 'YOUR SCORE', bestShort: 'Best', biggest: 'Biggest',
+    revive: 'Watch Ad to Revive', revived: 'Revived',
+    double: 'Watch Ad for 2x', doubled: 'Doubled x2',
+    restart: 'PLAY AGAIN', bomb: 'BOMB x', privacy: 'Privacy Policy',
+    fruitNames: ['Grape', 'Cherry', 'Orange', 'Lemon', 'Kiwi', 'Peach',
+      'Pineapple', 'Coconut', 'Melon', 'Half Melon', 'Watermelon']
+  };
+
+  function createH5Platform() {
+    function ad() { return global.__H5_AD__; }
+
+    return {
+      getBest: function () {
+        try { return parseInt(global.localStorage.getItem('fm_best'), 10) || 0; } catch (e) { return 0; }
+      },
+      setBest: function (v) {
+        try { global.localStorage.setItem('fm_best', v); } catch (e) {}
+      },
+      vibrate: function (ms) {
+        try { if (global.navigator && global.navigator.vibrate) global.navigator.vibrate(ms); } catch (e) {}
+      },
+      showRewarded: function (type, cb) {
+        var a = ad();
+        if (a && a.showRewarded) { a.showRewarded(cb); return; }
+        // 未接入广告 SDK：直接放行，保证本地/自部署时体验完整
+        cb(true);
+      },
+      showInterstitial: function () {
+        var a = ad();
+        if (a && a.showInterstitial) a.showInterstitial();
+      },
+      onPrivacy: function () {
+        global.alert('Fruit Merge stores your high score locally only. No personal data is collected.\n\nPrivacy Policy: ' + global.location.href);
+      }
+    };
+  }
+
+  global.H5Texts = EN;
+  global.createH5Platform = createH5Platform;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+
+<script>
+/* ============================================================
+ *  广告接入点：在页面里实现 __H5_AD__ 即可对接任意广告/分发 SDK
+ *  —— GameDistribution 示例（取消注释即可用）：
+ *
+ *  window.__H5_AD__ = {
+ *    showRewarded: function (cb) {
+ *      if (typeof gdsdk !== 'undefined') {
+ *        gdsdk.showAd().then(function(){ cb(true); }).catch(function(){ cb(false); });
+ *      } else { cb(true); }
+ *    },
+ *    showInterstitial: function () {}
+ *  };
+ *
+ *  —— 不接广告时留 null，游戏会自动放行（本地玩 / 自部署不受影响）
+ * ============================================================ */
+window.__H5_AD__ = window.__H5_AD__ || null;
+</script>
+
+<script>
+(function () {
+  'use strict';
+  var stage = document.getElementById('stage');
+  var canvas = document.getElementById('game');
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var TARGET = 750 / 1334;
+  var game = null;
+  var pressing = false;
+
+  function layout() {
+    var W = stage.clientWidth, H = stage.clientHeight;
+    var cw = W, ch = H;
+    if (W / H > TARGET) cw = H * TARGET; else ch = W / TARGET;
+    cw = Math.floor(cw); ch = Math.floor(ch);
+    canvas.style.width = cw + 'px';
+    canvas.style.height = ch + 'px';
+    canvas.width = Math.round(cw * dpr);
+    canvas.height = Math.round(ch * dpr);
+    if (game) game.resize();
+  }
+
+  var pf = window.createH5Platform();
+  game = window.FruitMerge.create({
+    canvas: canvas,
+    platform: pf,
+    texts: window.H5Texts
+  });
+  // 暴露实例，便于自动化截图 / 调试（不影响正常运行）
+  window.__GAME__ = game;
+  layout();
+
+  window.addEventListener('resize', layout);
+  window.addEventListener('orientationchange', function () { setTimeout(layout, 220); });
+
+  function toLocal(clientX, clientY) {
+    var r = canvas.getBoundingClientRect();
+    return {
+      x: (clientX - r.left) * (canvas.width / r.width),
+      y: (clientY - r.top) * (canvas.height / r.height)
+    };
+  }
+
+  canvas.addEventListener('touchstart', function (e) {
+    e.preventDefault();
+    var t = e.changedTouches[0];
+    if (!t) return;
+    var p = toLocal(t.clientX, t.clientY);
+    game.pointerDown(p.x, p.y);
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', function (e) {
+    e.preventDefault();
+    var t = e.changedTouches[0];
+    if (!t) return;
+    var p = toLocal(t.clientX, t.clientY);
+    game.pointerMove(p.x, p.y);
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', function (e) {
+    e.preventDefault();
+    var t = e.changedTouches[0];
+    if (!t) return;
+    var p = toLocal(t.clientX, t.clientY);
+    game.pointerUp(p.x, p.y);
+  }, { passive: false });
+
+  // 桌面浏览器：鼠标操作
+  canvas.addEventListener('mousemove', function (e) {
+    if (!pressing) return;
+    var p = toLocal(e.clientX, e.clientY);
+    game.pointerMove(p.x, p.y);
+  });
+  canvas.addEventListener('mousedown', function (e) {
+    pressing = true;
+    var p = toLocal(e.clientX, e.clientY);
+    game.pointerDown(p.x, p.y);
+  });
+  window.addEventListener('mouseup', function (e) {
+    if (!pressing) return;
+    pressing = false;
+    var p = toLocal(e.clientX, e.clientY);
+    game.pointerUp(p.x, p.y);
+  });
+})();
+</script>
+</body>
+</html>

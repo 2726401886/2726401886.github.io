@@ -36,6 +36,7 @@ const TOOLS = [
   { id: "price-assessment", name: "价格鉴证评估", icon: "鉴", desc: "市场法/成本法/收益法计算、报告清单", path: "tools/price-assessment.html" },
   { id: "used-car-eval", name: "二手车鉴定评估", icon: "车", desc: "GB/T 30323 技术状况鉴定、评分与价值评估", path: "tools/used-car-eval.html" },
   { id: "name-generator", name: "起名工具", icon: "名", desc: "八字五行·五格数理·三才，人名/公司起名与测名", path: "tools/name-generator.html" },
+  { id: "fruit-merge", name: "水果合成", icon: "果", desc: "合成水果休闲小游戏，在线免费玩", path: "tools/fruit-merge.html" },
 ];
 
 // 渲染首页工具网格
