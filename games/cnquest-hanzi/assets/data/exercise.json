@@ -1,0 +1,1277 @@
+{
+  "version": 1,
+  "note": "Exercises are grouped by level. Add more questions freely; the game reads this file at runtime.",
+  "totalLevels": 10,
+  "levels": [
+    {
+      "levelId": 0,
+      "mapId": 0,
+      "name": "Level 1 - Pinyin Path",
+      "questions": [
+        {
+          "question": "Which character means \"person\"?",
+          "options": [
+            "人",
+            "日",
+            "你",
+            "地"
+          ],
+          "correct": "人",
+          "type": "char_choice",
+          "relateChar": "人"
+        },
+        {
+          "question": "Which character means \"mouth\"?",
+          "options": [
+            "一",
+            "家",
+            "你",
+            "口"
+          ],
+          "correct": "口",
+          "type": "char_choice",
+          "relateChar": "口"
+        },
+        {
+          "question": "Which character means \"hand\"?",
+          "options": [
+            "女",
+            "手",
+            "十",
+            "上"
+          ],
+          "correct": "手",
+          "type": "char_choice",
+          "relateChar": "手"
+        },
+        {
+          "question": "Which character means \"big\"?",
+          "options": [
+            "大",
+            "学",
+            "你",
+            "花"
+          ],
+          "correct": "大",
+          "type": "char_choice",
+          "relateChar": "大"
+        },
+        {
+          "question": "Which character means \"small\"?",
+          "options": [
+            "王",
+            "地",
+            "小",
+            "一"
+          ],
+          "correct": "小",
+          "type": "char_choice",
+          "relateChar": "小"
+        },
+        {
+          "question": "How do you read this character: 人 ?",
+          "options": [
+            "shān",
+            "rén",
+            "rì",
+            "tiān"
+          ],
+          "correct": "rén",
+          "type": "pinyin_choice",
+          "relateChar": "人"
+        },
+        {
+          "question": "How do you read this character: 口 ?",
+          "options": [
+            "mǎ",
+            "kǒu",
+            "yǒu",
+            "kàn"
+          ],
+          "correct": "kǒu",
+          "type": "pinyin_choice",
+          "relateChar": "口"
+        },
+        {
+          "question": "How do you read this character: 手 ?",
+          "options": [
+            "shàng",
+            "shuǐ",
+            "shān",
+            "shǒu"
+          ],
+          "correct": "shǒu",
+          "type": "pinyin_choice",
+          "relateChar": "手"
+        },
+        {
+          "question": "How do you read this character: 大 ?",
+          "options": [
+            "xià",
+            "dì",
+            "dà",
+            "chē"
+          ],
+          "correct": "dà",
+          "type": "pinyin_choice",
+          "relateChar": "大"
+        },
+        {
+          "question": "How do you read this character: 小 ?",
+          "options": [
+            "xiǎo",
+            "niǎo",
+            "hǎo",
+            "xià"
+          ],
+          "correct": "xiǎo",
+          "type": "pinyin_choice",
+          "relateChar": "小"
+        }
+      ]
+    },
+    {
+      "levelId": 1,
+      "mapId": 0,
+      "name": "Level 2 - Tone Terrace",
+      "questions": [
+        {
+          "question": "Which character means \"mountain\"?",
+          "options": [
+            "山",
+            "吃",
+            "朋",
+            "门"
+          ],
+          "correct": "山",
+          "type": "char_choice",
+          "relateChar": "山"
+        },
+        {
+          "question": "Which character means \"water\"?",
+          "options": [
+            "三",
+            "车",
+            "水",
+            "口"
+          ],
+          "correct": "水",
+          "type": "char_choice",
+          "relateChar": "水"
+        },
+        {
+          "question": "Which character means \"fire\"?",
+          "options": [
+            "火",
+            "朋",
+            "马",
+            "地"
+          ],
+          "correct": "火",
+          "type": "char_choice",
+          "relateChar": "火"
+        },
+        {
+          "question": "Which character means \"wood\"?",
+          "options": [
+            "木",
+            "上",
+            "女",
+            "王"
+          ],
+          "correct": "木",
+          "type": "char_choice",
+          "relateChar": "木"
+        },
+        {
+          "question": "Which character means \"sun\"?",
+          "options": [
+            "好",
+            "手",
+            "日",
+            "上"
+          ],
+          "correct": "日",
+          "type": "char_choice",
+          "relateChar": "日"
+        },
+        {
+          "question": "How do you read this character: 山 ?",
+          "options": [
+            "tiān",
+            "rén",
+            "shān",
+            "shǒu"
+          ],
+          "correct": "shān",
+          "type": "pinyin_choice",
+          "relateChar": "山"
+        },
+        {
+          "question": "How do you read this character: 水 ?",
+          "options": [
+            "shuǐ",
+            "shǒu",
+            "shàng",
+            "zǐ"
+          ],
+          "correct": "shuǐ",
+          "type": "pinyin_choice",
+          "relateChar": "水"
+        },
+        {
+          "question": "How do you read this character: 火 ?",
+          "options": [
+            "huā",
+            "wǒ",
+            "huǒ",
+            "hǎo"
+          ],
+          "correct": "huǒ",
+          "type": "pinyin_choice",
+          "relateChar": "火"
+        },
+        {
+          "question": "How do you read this character: 木 ?",
+          "options": [
+            "bù",
+            "shù",
+            "mǎ",
+            "mù"
+          ],
+          "correct": "mù",
+          "type": "pinyin_choice",
+          "relateChar": "木"
+        },
+        {
+          "question": "How do you read this character: 日 ?",
+          "options": [
+            "shì",
+            "rén",
+            "dì",
+            "rì"
+          ],
+          "correct": "rì",
+          "type": "pinyin_choice",
+          "relateChar": "日"
+        }
+      ]
+    },
+    {
+      "levelId": 2,
+      "mapId": 0,
+      "name": "Level 3 - Sound Spring",
+      "questions": [
+        {
+          "question": "Which character means \"moon\"?",
+          "options": [
+            "听",
+            "二",
+            "月",
+            "大"
+          ],
+          "correct": "月",
+          "type": "char_choice",
+          "relateChar": "月"
+        },
+        {
+          "question": "Which character means \"sky\"?",
+          "options": [
+            "男",
+            "鱼",
+            "天",
+            "水"
+          ],
+          "correct": "天",
+          "type": "char_choice",
+          "relateChar": "天"
+        },
+        {
+          "question": "Which character means \"earth\"?",
+          "options": [
+            "地",
+            "王",
+            "木",
+            "我"
+          ],
+          "correct": "地",
+          "type": "char_choice",
+          "relateChar": "地"
+        },
+        {
+          "question": "Which character means \"up\"?",
+          "options": [
+            "百",
+            "上",
+            "学",
+            "日"
+          ],
+          "correct": "上",
+          "type": "char_choice",
+          "relateChar": "上"
+        },
+        {
+          "question": "Which character means \"down\"?",
+          "options": [
+            "人",
+            "下",
+            "是",
+            "手"
+          ],
+          "correct": "下",
+          "type": "char_choice",
+          "relateChar": "下"
+        },
+        {
+          "question": "How do you read this character: 月 ?",
+          "options": [
+            "yú",
+            "yī",
+            "yǒu",
+            "yuè"
+          ],
+          "correct": "yuè",
+          "type": "pinyin_choice",
+          "relateChar": "月"
+        },
+        {
+          "question": "How do you read this character: 天 ?",
+          "options": [
+            "rén",
+            "nán",
+            "shān",
+            "tiān"
+          ],
+          "correct": "tiān",
+          "type": "pinyin_choice",
+          "relateChar": "天"
+        },
+        {
+          "question": "How do you read this character: 地 ?",
+          "options": [
+            "shì",
+            "dà",
+            "dì",
+            "rì"
+          ],
+          "correct": "dì",
+          "type": "pinyin_choice",
+          "relateChar": "地"
+        },
+        {
+          "question": "How do you read this character: 上 ?",
+          "options": [
+            "shān",
+            "shàng",
+            "shuǐ",
+            "shǒu"
+          ],
+          "correct": "shàng",
+          "type": "pinyin_choice",
+          "relateChar": "上"
+        },
+        {
+          "question": "How do you read this character: 下 ?",
+          "options": [
+            "xià",
+            "xué",
+            "dà",
+            "xiǎo"
+          ],
+          "correct": "xià",
+          "type": "pinyin_choice",
+          "relateChar": "下"
+        }
+      ]
+    },
+    {
+      "levelId": 3,
+      "mapId": 1,
+      "name": "Level 4 - Village Gate",
+      "questions": [
+        {
+          "question": "Which character means \"middle\"?",
+          "options": [
+            "是",
+            "他",
+            "喝",
+            "中"
+          ],
+          "correct": "中",
+          "type": "char_choice",
+          "relateChar": "中"
+        },
+        {
+          "question": "Which character means \"female\"?",
+          "options": [
+            "火",
+            "是",
+            "说",
+            "女"
+          ],
+          "correct": "女",
+          "type": "char_choice",
+          "relateChar": "女"
+        },
+        {
+          "question": "Which character means \"male\"?",
+          "options": [
+            "木",
+            "男",
+            "车",
+            "人"
+          ],
+          "correct": "男",
+          "type": "char_choice",
+          "relateChar": "男"
+        },
+        {
+          "question": "Which character means \"child\"?",
+          "options": [
+            "子",
+            "山",
+            "木",
+            "百"
+          ],
+          "correct": "子",
+          "type": "char_choice",
+          "relateChar": "子"
+        },
+        {
+          "question": "Which character means \"king\"?",
+          "options": [
+            "火",
+            "一",
+            "王",
+            "说"
+          ],
+          "correct": "王",
+          "type": "char_choice",
+          "relateChar": "王"
+        },
+        {
+          "question": "How do you read this character: 中 ?",
+          "options": [
+            "péng",
+            "zhōng",
+            "shàng",
+            "tīng"
+          ],
+          "correct": "zhōng",
+          "type": "pinyin_choice",
+          "relateChar": "中"
+        },
+        {
+          "question": "How do you read this character: 女 ?",
+          "options": [
+            "nǐ",
+            "nǚ",
+            "niǎo",
+            "huā"
+          ],
+          "correct": "nǚ",
+          "type": "pinyin_choice",
+          "relateChar": "女"
+        },
+        {
+          "question": "How do you read this character: 男 ?",
+          "options": [
+            "nán",
+            "shān",
+            "tiān",
+            "rén"
+          ],
+          "correct": "nán",
+          "type": "pinyin_choice",
+          "relateChar": "男"
+        },
+        {
+          "question": "How do you read this character: 子 ?",
+          "options": [
+            "shuǐ",
+            "zǐ",
+            "shì",
+            "nǐ"
+          ],
+          "correct": "zǐ",
+          "type": "pinyin_choice",
+          "relateChar": "子"
+        },
+        {
+          "question": "How do you read this character: 王 ?",
+          "options": [
+            "wáng",
+            "wǒ",
+            "tīng",
+            "shàng"
+          ],
+          "correct": "wáng",
+          "type": "pinyin_choice",
+          "relateChar": "王"
+        }
+      ]
+    },
+    {
+      "levelId": 4,
+      "mapId": 1,
+      "name": "Level 5 - Farm Field",
+      "questions": [
+        {
+          "question": "Which character means \"I\"?",
+          "options": [
+            "爱",
+            "我",
+            "吃",
+            "说"
+          ],
+          "correct": "我",
+          "type": "char_choice",
+          "relateChar": "我"
+        },
+        {
+          "question": "Which character means \"you\"?",
+          "options": [
+            "学",
+            "你",
+            "门",
+            "朋"
+          ],
+          "correct": "你",
+          "type": "char_choice",
+          "relateChar": "你"
+        },
+        {
+          "question": "Which character means \"he\"?",
+          "options": [
+            "大",
+            "看",
+            "他",
+            "车"
+          ],
+          "correct": "他",
+          "type": "char_choice",
+          "relateChar": "他"
+        },
+        {
+          "question": "Which character means \"good\"?",
+          "options": [
+            "门",
+            "女",
+            "好",
+            "听"
+          ],
+          "correct": "好",
+          "type": "char_choice",
+          "relateChar": "好"
+        },
+        {
+          "question": "Which character means \"to be\"?",
+          "options": [
+            "是",
+            "二",
+            "人",
+            "车"
+          ],
+          "correct": "是",
+          "type": "char_choice",
+          "relateChar": "是"
+        },
+        {
+          "question": "How do you read this character: 我 ?",
+          "options": [
+            "wǒ",
+            "mǎ",
+            "huǒ",
+            "wáng"
+          ],
+          "correct": "wǒ",
+          "type": "pinyin_choice",
+          "relateChar": "我"
+        },
+        {
+          "question": "How do you read this character: 你 ?",
+          "options": [
+            "nǐ",
+            "nán",
+            "shuǐ",
+            "nǚ"
+          ],
+          "correct": "nǐ",
+          "type": "pinyin_choice",
+          "relateChar": "你"
+        },
+        {
+          "question": "How do you read this character: 他 ?",
+          "options": [
+            "tiān",
+            "tā",
+            "huā",
+            "jiā"
+          ],
+          "correct": "tā",
+          "type": "pinyin_choice",
+          "relateChar": "他"
+        },
+        {
+          "question": "How do you read this character: 好 ?",
+          "options": [
+            "xiǎo",
+            "huǒ",
+            "niǎo",
+            "hǎo"
+          ],
+          "correct": "hǎo",
+          "type": "pinyin_choice",
+          "relateChar": "好"
+        },
+        {
+          "question": "How do you read this character: 是 ?",
+          "options": [
+            "shǒu",
+            "shuǐ",
+            "shì",
+            "shān"
+          ],
+          "correct": "shì",
+          "type": "pinyin_choice",
+          "relateChar": "是"
+        }
+      ]
+    },
+    {
+      "levelId": 5,
+      "mapId": 1,
+      "name": "Level 6 - Family House",
+      "questions": [
+        {
+          "question": "Which character means \"to have\"?",
+          "options": [
+            "天",
+            "你",
+            "百",
+            "有"
+          ],
+          "correct": "有",
+          "type": "char_choice",
+          "relateChar": "有"
+        },
+        {
+          "question": "Which character means \"no\"?",
+          "options": [
+            "不",
+            "树",
+            "鱼",
+            "水"
+          ],
+          "correct": "不",
+          "type": "char_choice",
+          "relateChar": "不"
+        },
+        {
+          "question": "Which character means \"one\"?",
+          "options": [
+            "下",
+            "十",
+            "车",
+            "一"
+          ],
+          "correct": "一",
+          "type": "char_choice",
+          "relateChar": "一"
+        },
+        {
+          "question": "Which character means \"two\"?",
+          "options": [
+            "他",
+            "手",
+            "下",
+            "二"
+          ],
+          "correct": "二",
+          "type": "char_choice",
+          "relateChar": "二"
+        },
+        {
+          "question": "Which character means \"three\"?",
+          "options": [
+            "女",
+            "小",
+            "三",
+            "爱"
+          ],
+          "correct": "三",
+          "type": "char_choice",
+          "relateChar": "三"
+        },
+        {
+          "question": "How do you read this character: 有 ?",
+          "options": [
+            "yǒu",
+            "shǒu",
+            "yuè",
+            "kǒu"
+          ],
+          "correct": "yǒu",
+          "type": "pinyin_choice",
+          "relateChar": "有"
+        },
+        {
+          "question": "How do you read this character: 不 ?",
+          "options": [
+            "mù",
+            "bù",
+            "bǎi",
+            "shù"
+          ],
+          "correct": "bù",
+          "type": "pinyin_choice",
+          "relateChar": "不"
+        },
+        {
+          "question": "How do you read this character: 一 ?",
+          "options": [
+            "chī",
+            "yú",
+            "yuè",
+            "yī"
+          ],
+          "correct": "yī",
+          "type": "pinyin_choice",
+          "relateChar": "一"
+        },
+        {
+          "question": "How do you read this character: 二 ?",
+          "options": [
+            "nán",
+            "èr",
+            "yú",
+            "shǒu"
+          ],
+          "correct": "èr",
+          "type": "pinyin_choice",
+          "relateChar": "二"
+        },
+        {
+          "question": "How do you read this character: 三 ?",
+          "options": [
+            "rén",
+            "shǒu",
+            "shān",
+            "sān"
+          ],
+          "correct": "sān",
+          "type": "pinyin_choice",
+          "relateChar": "三"
+        }
+      ]
+    },
+    {
+      "levelId": 6,
+      "mapId": 2,
+      "name": "Level 7 - Number Gorge",
+      "questions": [
+        {
+          "question": "Which character means \"ten\"?",
+          "options": [
+            "学",
+            "鱼",
+            "火",
+            "十"
+          ],
+          "correct": "十",
+          "type": "char_choice",
+          "relateChar": "十"
+        },
+        {
+          "question": "Which character means \"hundred\"?",
+          "options": [
+            "百",
+            "一",
+            "是",
+            "树"
+          ],
+          "correct": "百",
+          "type": "char_choice",
+          "relateChar": "百"
+        },
+        {
+          "question": "Which character means \"car\"?",
+          "options": [
+            "小",
+            "水",
+            "车",
+            "日"
+          ],
+          "correct": "车",
+          "type": "char_choice",
+          "relateChar": "车"
+        },
+        {
+          "question": "Which character means \"horse\"?",
+          "options": [
+            "书",
+            "马",
+            "火",
+            "日"
+          ],
+          "correct": "马",
+          "type": "char_choice",
+          "relateChar": "马"
+        },
+        {
+          "question": "Which character means \"bird\"?",
+          "options": [
+            "鸟",
+            "吃",
+            "小",
+            "鱼"
+          ],
+          "correct": "鸟",
+          "type": "char_choice",
+          "relateChar": "鸟"
+        },
+        {
+          "question": "How do you read this character: 十 ?",
+          "options": [
+            "shǒu",
+            "shuǐ",
+            "shān",
+            "shí"
+          ],
+          "correct": "shí",
+          "type": "pinyin_choice",
+          "relateChar": "十"
+        },
+        {
+          "question": "How do you read this character: 百 ?",
+          "options": [
+            "bǎi",
+            "ài",
+            "bù",
+            "tīng"
+          ],
+          "correct": "bǎi",
+          "type": "pinyin_choice",
+          "relateChar": "百"
+        },
+        {
+          "question": "How do you read this character: 车 ?",
+          "options": [
+            "hē",
+            "chī",
+            "chē",
+            "cǎo"
+          ],
+          "correct": "chē",
+          "type": "pinyin_choice",
+          "relateChar": "车"
+        },
+        {
+          "question": "How do you read this character: 马 ?",
+          "options": [
+            "mǎ",
+            "mù",
+            "huā",
+            "mén"
+          ],
+          "correct": "mǎ",
+          "type": "pinyin_choice",
+          "relateChar": "马"
+        },
+        {
+          "question": "How do you read this character: 鸟 ?",
+          "options": [
+            "nán",
+            "niǎo",
+            "nǚ",
+            "xiǎo"
+          ],
+          "correct": "niǎo",
+          "type": "pinyin_choice",
+          "relateChar": "鸟"
+        }
+      ]
+    },
+    {
+      "levelId": 7,
+      "mapId": 2,
+      "name": "Level 8 - Nature Trail",
+      "questions": [
+        {
+          "question": "Which character means \"fish\"?",
+          "options": [
+            "口",
+            "鱼",
+            "家",
+            "人"
+          ],
+          "correct": "鱼",
+          "type": "char_choice",
+          "relateChar": "鱼"
+        },
+        {
+          "question": "Which character means \"flower\"?",
+          "options": [
+            "花",
+            "山",
+            "水",
+            "大"
+          ],
+          "correct": "花",
+          "type": "char_choice",
+          "relateChar": "花"
+        },
+        {
+          "question": "Which character means \"grass\"?",
+          "options": [
+            "车",
+            "火",
+            "日",
+            "草"
+          ],
+          "correct": "草",
+          "type": "char_choice",
+          "relateChar": "草"
+        },
+        {
+          "question": "Which character means \"tree\"?",
+          "options": [
+            "女",
+            "木",
+            "十",
+            "树"
+          ],
+          "correct": "树",
+          "type": "char_choice",
+          "relateChar": "树"
+        },
+        {
+          "question": "Which character means \"book\"?",
+          "options": [
+            "书",
+            "吃",
+            "一",
+            "你"
+          ],
+          "correct": "书",
+          "type": "char_choice",
+          "relateChar": "书"
+        },
+        {
+          "question": "How do you read this character: 鱼 ?",
+          "options": [
+            "yú",
+            "yī",
+            "yuè",
+            "yǒu"
+          ],
+          "correct": "yú",
+          "type": "pinyin_choice",
+          "relateChar": "鱼"
+        },
+        {
+          "question": "How do you read this character: 花 ?",
+          "options": [
+            "hǎo",
+            "tā",
+            "huā",
+            "huǒ"
+          ],
+          "correct": "huā",
+          "type": "pinyin_choice",
+          "relateChar": "花"
+        },
+        {
+          "question": "How do you read this character: 草 ?",
+          "options": [
+            "xiǎo",
+            "cǎo",
+            "chē",
+            "hǎo"
+          ],
+          "correct": "cǎo",
+          "type": "pinyin_choice",
+          "relateChar": "草"
+        },
+        {
+          "question": "How do you read this character: 树 ?",
+          "options": [
+            "shǒu",
+            "shù",
+            "shān",
+            "shuǐ"
+          ],
+          "correct": "shù",
+          "type": "pinyin_choice",
+          "relateChar": "树"
+        },
+        {
+          "question": "How do you read this character: 书 ?",
+          "options": [
+            "shǒu",
+            "shān",
+            "shū",
+            "shuǐ"
+          ],
+          "correct": "shū",
+          "type": "pinyin_choice",
+          "relateChar": "书"
+        }
+      ]
+    },
+    {
+      "levelId": 8,
+      "mapId": 3,
+      "name": "Level 9 - Temple Steps",
+      "questions": [
+        {
+          "question": "Which character means \"door\"?",
+          "options": [
+            "门",
+            "车",
+            "女",
+            "看"
+          ],
+          "correct": "门",
+          "type": "char_choice",
+          "relateChar": "门"
+        },
+        {
+          "question": "Which character means \"home\"?",
+          "options": [
+            "花",
+            "火",
+            "听",
+            "家"
+          ],
+          "correct": "家",
+          "type": "char_choice",
+          "relateChar": "家"
+        },
+        {
+          "question": "Which character means \"to study\"?",
+          "options": [
+            "小",
+            "鱼",
+            "花",
+            "学"
+          ],
+          "correct": "学",
+          "type": "char_choice",
+          "relateChar": "学"
+        },
+        {
+          "question": "Which character means \"to eat\"?",
+          "options": [
+            "吃",
+            "是",
+            "听",
+            "小"
+          ],
+          "correct": "吃",
+          "type": "char_choice",
+          "relateChar": "吃"
+        },
+        {
+          "question": "Which character means \"to drink\"?",
+          "options": [
+            "马",
+            "喝",
+            "日",
+            "下"
+          ],
+          "correct": "喝",
+          "type": "char_choice",
+          "relateChar": "喝"
+        },
+        {
+          "question": "How do you read this character: 门 ?",
+          "options": [
+            "shān",
+            "mén",
+            "mù",
+            "rén"
+          ],
+          "correct": "mén",
+          "type": "pinyin_choice",
+          "relateChar": "门"
+        },
+        {
+          "question": "How do you read this character: 家 ?",
+          "options": [
+            "jiā",
+            "huā",
+            "tā",
+            "zǐ"
+          ],
+          "correct": "jiā",
+          "type": "pinyin_choice",
+          "relateChar": "家"
+        },
+        {
+          "question": "How do you read this character: 学 ?",
+          "options": [
+            "xué",
+            "xià",
+            "shū",
+            "xiǎo"
+          ],
+          "correct": "xué",
+          "type": "pinyin_choice",
+          "relateChar": "学"
+        },
+        {
+          "question": "How do you read this character: 吃 ?",
+          "options": [
+            "chī",
+            "yī",
+            "chē",
+            "cǎo"
+          ],
+          "correct": "chī",
+          "type": "pinyin_choice",
+          "relateChar": "吃"
+        },
+        {
+          "question": "How do you read this character: 喝 ?",
+          "options": [
+            "hǎo",
+            "huǒ",
+            "chē",
+            "hē"
+          ],
+          "correct": "hē",
+          "type": "pinyin_choice",
+          "relateChar": "喝"
+        }
+      ]
+    },
+    {
+      "levelId": 9,
+      "mapId": 3,
+      "name": "Level 10 - Inner Sanctum",
+      "questions": [
+        {
+          "question": "Which character means \"to look\"?",
+          "options": [
+            "看",
+            "树",
+            "我",
+            "三"
+          ],
+          "correct": "看",
+          "type": "char_choice",
+          "relateChar": "看"
+        },
+        {
+          "question": "Which character means \"to listen\"?",
+          "options": [
+            "一",
+            "二",
+            "马",
+            "听"
+          ],
+          "correct": "听",
+          "type": "char_choice",
+          "relateChar": "听"
+        },
+        {
+          "question": "Which character means \"to speak\"?",
+          "options": [
+            "十",
+            "说",
+            "女",
+            "他"
+          ],
+          "correct": "说",
+          "type": "char_choice",
+          "relateChar": "说"
+        },
+        {
+          "question": "Which character means \"friend\"?",
+          "options": [
+            "朋",
+            "木",
+            "下",
+            "天"
+          ],
+          "correct": "朋",
+          "type": "char_choice",
+          "relateChar": "朋"
+        },
+        {
+          "question": "Which character means \"to love\"?",
+          "options": [
+            "好",
+            "爱",
+            "中",
+            "草"
+          ],
+          "correct": "爱",
+          "type": "char_choice",
+          "relateChar": "爱"
+        },
+        {
+          "question": "How do you read this character: 看 ?",
+          "options": [
+            "rén",
+            "shān",
+            "kǒu",
+            "kàn"
+          ],
+          "correct": "kàn",
+          "type": "pinyin_choice",
+          "relateChar": "看"
+        },
+        {
+          "question": "How do you read this character: 听 ?",
+          "options": [
+            "tiān",
+            "zhōng",
+            "tīng",
+            "shàng"
+          ],
+          "correct": "tīng",
+          "type": "pinyin_choice",
+          "relateChar": "听"
+        },
+        {
+          "question": "How do you read this character: 说 ?",
+          "options": [
+            "shuǐ",
+            "shān",
+            "shuō",
+            "shǒu"
+          ],
+          "correct": "shuō",
+          "type": "pinyin_choice",
+          "relateChar": "说"
+        },
+        {
+          "question": "How do you read this character: 朋 ?",
+          "options": [
+            "péng",
+            "shàng",
+            "zhōng",
+            "wáng"
+          ],
+          "correct": "péng",
+          "type": "pinyin_choice",
+          "relateChar": "朋"
+        },
+        {
+          "question": "How do you read this character: 爱 ?",
+          "options": [
+            "shū",
+            "ài",
+            "bǎi",
+            "rì"
+          ],
+          "correct": "ài",
+          "type": "pinyin_choice",
+          "relateChar": "爱"
+        }
+      ]
+    }
+  ]
+}

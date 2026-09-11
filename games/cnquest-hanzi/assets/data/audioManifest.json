@@ -1,0 +1,7001 @@
+{
+ "syllables": [
+  {
+   "k": "yi1",
+   "read": "一",
+   "p": "yī",
+   "dir": "syl"
+  },
+  {
+   "k": "er4",
+   "read": "二",
+   "p": "èr",
+   "dir": "syl"
+  },
+  {
+   "k": "shi2",
+   "read": "十",
+   "p": "shí",
+   "dir": "syl"
+  },
+  {
+   "k": "chang3",
+   "read": "厂",
+   "p": "chǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "qi1",
+   "read": "七",
+   "p": "qī",
+   "dir": "syl"
+  },
+  {
+   "k": "er2",
+   "read": "儿",
+   "p": "ér",
+   "dir": "syl"
+  },
+  {
+   "k": "ba1",
+   "read": "八",
+   "p": "bā",
+   "dir": "syl"
+  },
+  {
+   "k": "ren2",
+   "read": "人",
+   "p": "rén",
+   "dir": "syl"
+  },
+  {
+   "k": "ru4",
+   "read": "入",
+   "p": "rù",
+   "dir": "syl"
+  },
+  {
+   "k": "ji3",
+   "read": "几",
+   "p": "jǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "jiu3",
+   "read": "九",
+   "p": "jiǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "le0",
+   "read": "了",
+   "p": "le",
+   "dir": "syl"
+  },
+  {
+   "k": "dao1",
+   "read": "刀",
+   "p": "dāo",
+   "dir": "syl"
+  },
+  {
+   "k": "li4",
+   "read": "力",
+   "p": "lì",
+   "dir": "syl"
+  },
+  {
+   "k": "you4",
+   "read": "又",
+   "p": "yòu",
+   "dir": "syl"
+  },
+  {
+   "k": "san1",
+   "read": "三",
+   "p": "sān",
+   "dir": "syl"
+  },
+  {
+   "k": "gan4",
+   "read": "干",
+   "p": "gàn",
+   "dir": "syl"
+  },
+  {
+   "k": "gong1",
+   "read": "工",
+   "p": "gōng",
+   "dir": "syl"
+  },
+  {
+   "k": "tu3",
+   "read": "土",
+   "p": "tǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "cai2",
+   "read": "才",
+   "p": "cái",
+   "dir": "syl"
+  },
+  {
+   "k": "xia4",
+   "read": "下",
+   "p": "xià",
+   "dir": "syl"
+  },
+  {
+   "k": "da4",
+   "read": "大",
+   "p": "dà",
+   "dir": "syl"
+  },
+  {
+   "k": "shang4",
+   "read": "上",
+   "p": "shàng",
+   "dir": "syl"
+  },
+  {
+   "k": "xiao3",
+   "read": "小",
+   "p": "xiǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "kou3",
+   "read": "口",
+   "p": "kǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "shan1",
+   "read": "山",
+   "p": "shān",
+   "dir": "syl"
+  },
+  {
+   "k": "jin1",
+   "read": "巾",
+   "p": "jīn",
+   "dir": "syl"
+  },
+  {
+   "k": "qian1",
+   "read": "千",
+   "p": "qiān",
+   "dir": "syl"
+  },
+  {
+   "k": "ge4",
+   "read": "个",
+   "p": "gè",
+   "dir": "syl"
+  },
+  {
+   "k": "guang3",
+   "read": "广",
+   "p": "guǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "men2",
+   "read": "门",
+   "p": "mén",
+   "dir": "syl"
+  },
+  {
+   "k": "zi0",
+   "read": "子",
+   "p": "zi",
+   "dir": "syl"
+  },
+  {
+   "k": "ye3",
+   "read": "也",
+   "p": "yě",
+   "dir": "syl"
+  },
+  {
+   "k": "nv3",
+   "read": "女",
+   "p": "nǚ",
+   "dir": "syl"
+  },
+  {
+   "k": "fei1",
+   "read": "飞",
+   "p": "fēi",
+   "dir": "syl"
+  },
+  {
+   "k": "xi2",
+   "read": "习",
+   "p": "xí",
+   "dir": "syl"
+  },
+  {
+   "k": "ma3",
+   "read": "马",
+   "p": "mǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "wang2",
+   "read": "王",
+   "p": "wáng",
+   "dir": "syl"
+  },
+  {
+   "k": "kai1",
+   "read": "开",
+   "p": "kāi",
+   "dir": "syl"
+  },
+  {
+   "k": "tian1",
+   "read": "天",
+   "p": "tiān",
+   "dir": "syl"
+  },
+  {
+   "k": "yuan2",
+   "read": "元",
+   "p": "yuán",
+   "dir": "syl"
+  },
+  {
+   "k": "yun2",
+   "read": "云",
+   "p": "yún",
+   "dir": "syl"
+  },
+  {
+   "k": "mu4",
+   "read": "木",
+   "p": "mù",
+   "dir": "syl"
+  },
+  {
+   "k": "wu3",
+   "read": "五",
+   "p": "wǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "bu4",
+   "read": "不",
+   "p": "bù",
+   "dir": "syl"
+  },
+  {
+   "k": "tai4",
+   "read": "太",
+   "p": "tài",
+   "dir": "syl"
+  },
+  {
+   "k": "you3",
+   "read": "友",
+   "p": "yǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "che1",
+   "read": "车",
+   "p": "chē",
+   "dir": "syl"
+  },
+  {
+   "k": "ya2",
+   "read": "牙",
+   "p": "yá",
+   "dir": "syl"
+  },
+  {
+   "k": "bi3",
+   "read": "比",
+   "p": "bǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "qie4",
+   "read": "切",
+   "p": "qiè",
+   "dir": "syl"
+  },
+  {
+   "k": "zhi3",
+   "read": "止",
+   "p": "zhǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "shao3",
+   "read": "少",
+   "p": "shǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "ri4",
+   "read": "日",
+   "p": "rì",
+   "dir": "syl"
+  },
+  {
+   "k": "zhong1",
+   "read": "中",
+   "p": "zhōng",
+   "dir": "syl"
+  },
+  {
+   "k": "bei4",
+   "read": "贝",
+   "p": "bèi",
+   "dir": "syl"
+  },
+  {
+   "k": "nei4",
+   "read": "内",
+   "p": "nèi",
+   "dir": "syl"
+  },
+  {
+   "k": "shui3",
+   "read": "水",
+   "p": "shuǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "jian4",
+   "read": "见",
+   "p": "jiàn",
+   "dir": "syl"
+  },
+  {
+   "k": "niu2",
+   "read": "牛",
+   "p": "niú",
+   "dir": "syl"
+  },
+  {
+   "k": "shou3",
+   "read": "手",
+   "p": "shǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "qi4",
+   "read": "气",
+   "p": "qì",
+   "dir": "syl"
+  },
+  {
+   "k": "mao2",
+   "read": "毛",
+   "p": "máo",
+   "dir": "syl"
+  },
+  {
+   "k": "zhang3",
+   "read": "长",
+   "p": "zhǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "pian4",
+   "read": "片",
+   "p": "piàn",
+   "dir": "syl"
+  },
+  {
+   "k": "zhao3",
+   "read": "爪",
+   "p": "zhǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "fan3",
+   "read": "反",
+   "p": "fǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "fu4",
+   "read": "父",
+   "p": "fù",
+   "dir": "syl"
+  },
+  {
+   "k": "cong2",
+   "read": "从",
+   "p": "cóng",
+   "dir": "syl"
+  },
+  {
+   "k": "fen1",
+   "read": "分",
+   "p": "fēn",
+   "dir": "syl"
+  },
+  {
+   "k": "yue4",
+   "read": "月",
+   "p": "yuè",
+   "dir": "syl"
+  },
+  {
+   "k": "feng1",
+   "read": "风",
+   "p": "fēng",
+   "dir": "syl"
+  },
+  {
+   "k": "liu4",
+   "read": "六",
+   "p": "liù",
+   "dir": "syl"
+  },
+  {
+   "k": "wen2",
+   "read": "文",
+   "p": "wén",
+   "dir": "syl"
+  },
+  {
+   "k": "fang1",
+   "read": "方",
+   "p": "fāng",
+   "dir": "syl"
+  },
+  {
+   "k": "huo3",
+   "read": "火",
+   "p": "huǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "hu4",
+   "read": "户",
+   "p": "hù",
+   "dir": "syl"
+  },
+  {
+   "k": "xin1",
+   "read": "心",
+   "p": "xīn",
+   "dir": "syl"
+  },
+  {
+   "k": "shuang1",
+   "read": "双",
+   "p": "shuāng",
+   "dir": "syl"
+  },
+  {
+   "k": "shu1",
+   "read": "书",
+   "p": "shū",
+   "dir": "syl"
+  },
+  {
+   "k": "yu4",
+   "read": "玉",
+   "p": "yù",
+   "dir": "syl"
+  },
+  {
+   "k": "da3",
+   "read": "打",
+   "p": "dǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "zheng4",
+   "read": "正",
+   "p": "zhèng",
+   "dir": "syl"
+  },
+  {
+   "k": "qu4",
+   "read": "去",
+   "p": "qù",
+   "dir": "syl"
+  },
+  {
+   "k": "gu3",
+   "read": "古",
+   "p": "gǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "ben3",
+   "read": "本",
+   "p": "běn",
+   "dir": "syl"
+  },
+  {
+   "k": "ke3",
+   "read": "可",
+   "p": "kě",
+   "dir": "syl"
+  },
+  {
+   "k": "zuo3",
+   "read": "左",
+   "p": "zuǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "ping2",
+   "read": "平",
+   "p": "píng",
+   "dir": "syl"
+  },
+  {
+   "k": "bei3",
+   "read": "北",
+   "p": "běi",
+   "dir": "syl"
+  },
+  {
+   "k": "dan4",
+   "read": "旦",
+   "p": "dàn",
+   "dir": "syl"
+  },
+  {
+   "k": "dian4",
+   "read": "电",
+   "p": "diàn",
+   "dir": "syl"
+  },
+  {
+   "k": "tian2",
+   "read": "田",
+   "p": "tián",
+   "dir": "syl"
+  },
+  {
+   "k": "jiao4",
+   "read": "叫",
+   "p": "jiào",
+   "dir": "syl"
+  },
+  {
+   "k": "si4",
+   "read": "四",
+   "p": "sì",
+   "dir": "syl"
+  },
+  {
+   "k": "sheng1",
+   "read": "生",
+   "p": "shēng",
+   "dir": "syl"
+  },
+  {
+   "k": "he2",
+   "read": "禾",
+   "p": "hé",
+   "dir": "syl"
+  },
+  {
+   "k": "men0",
+   "read": "们",
+   "p": "men",
+   "dir": "syl"
+  },
+  {
+   "k": "bai2",
+   "read": "白",
+   "p": "bái",
+   "dir": "syl"
+  },
+  {
+   "k": "ta1",
+   "read": "他",
+   "p": "tā",
+   "dir": "syl"
+  },
+  {
+   "k": "gua1",
+   "read": "瓜",
+   "p": "guā",
+   "dir": "syl"
+  },
+  {
+   "k": "yong4",
+   "read": "用",
+   "p": "yòng",
+   "dir": "syl"
+  },
+  {
+   "k": "ce4",
+   "read": "册",
+   "p": "cè",
+   "dir": "syl"
+  },
+  {
+   "k": "wai4",
+   "read": "外",
+   "p": "wài",
+   "dir": "syl"
+  },
+  {
+   "k": "dong1",
+   "read": "冬",
+   "p": "dōng",
+   "dir": "syl"
+  },
+  {
+   "k": "niao3",
+   "read": "鸟",
+   "p": "niǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "bao1",
+   "read": "包",
+   "p": "bāo",
+   "dir": "syl"
+  },
+  {
+   "k": "zhu3",
+   "read": "主",
+   "p": "zhǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "shi4",
+   "read": "市",
+   "p": "shì",
+   "dir": "syl"
+  },
+  {
+   "k": "ban4",
+   "read": "半",
+   "p": "bàn",
+   "dir": "syl"
+  },
+  {
+   "k": "rang4",
+   "read": "让",
+   "p": "ràng",
+   "dir": "syl"
+  },
+  {
+   "k": "chu1",
+   "read": "出",
+   "p": "chū",
+   "dir": "syl"
+  },
+  {
+   "k": "nai3",
+   "read": "奶",
+   "p": "nǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "jia1",
+   "read": "加",
+   "p": "jiā",
+   "dir": "syl"
+  },
+  {
+   "k": "pi2",
+   "read": "皮",
+   "p": "pí",
+   "dir": "syl"
+  },
+  {
+   "k": "mu3",
+   "read": "母",
+   "p": "mǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "dong4",
+   "read": "动",
+   "p": "dòng",
+   "dir": "syl"
+  },
+  {
+   "k": "lao3",
+   "read": "老",
+   "p": "lǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "di4",
+   "read": "地",
+   "p": "dì",
+   "dir": "syl"
+  },
+  {
+   "k": "er3",
+   "read": "耳",
+   "p": "ěr",
+   "dir": "syl"
+  },
+  {
+   "k": "gong4",
+   "read": "共",
+   "p": "gòng",
+   "dir": "syl"
+  },
+  {
+   "k": "ji1",
+   "read": "机",
+   "p": "jī",
+   "dir": "syl"
+  },
+  {
+   "k": "guo4",
+   "read": "过",
+   "p": "guò",
+   "dir": "syl"
+  },
+  {
+   "k": "zai4",
+   "read": "在",
+   "p": "zài",
+   "dir": "syl"
+  },
+  {
+   "k": "bai3",
+   "read": "百",
+   "p": "bǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "ye4",
+   "read": "页",
+   "p": "yè",
+   "dir": "syl"
+  },
+  {
+   "k": "guang1",
+   "read": "光",
+   "p": "guāng",
+   "dir": "syl"
+  },
+  {
+   "k": "dang1",
+   "read": "当",
+   "p": "dāng",
+   "dir": "syl"
+  },
+  {
+   "k": "zao3",
+   "read": "早",
+   "p": "zǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "chong2",
+   "read": "虫",
+   "p": "chóng",
+   "dir": "syl"
+  },
+  {
+   "k": "tong2",
+   "read": "同",
+   "p": "tóng",
+   "dir": "syl"
+  },
+  {
+   "k": "chi1",
+   "read": "吃",
+   "p": "chī",
+   "dir": "syl"
+  },
+  {
+   "k": "hui2",
+   "read": "回",
+   "p": "huí",
+   "dir": "syl"
+  },
+  {
+   "k": "wang3",
+   "read": "网",
+   "p": "wǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "rou4",
+   "read": "肉",
+   "p": "ròu",
+   "dir": "syl"
+  },
+  {
+   "k": "nian2",
+   "read": "年",
+   "p": "nián",
+   "dir": "syl"
+  },
+  {
+   "k": "xian1",
+   "read": "先",
+   "p": "xiān",
+   "dir": "syl"
+  },
+  {
+   "k": "zhu2",
+   "read": "竹",
+   "p": "zhú",
+   "dir": "syl"
+  },
+  {
+   "k": "zi4",
+   "read": "自",
+   "p": "zì",
+   "dir": "syl"
+  },
+  {
+   "k": "xiang4",
+   "read": "向",
+   "p": "xiàng",
+   "dir": "syl"
+  },
+  {
+   "k": "hou4",
+   "read": "后",
+   "p": "hòu",
+   "dir": "syl"
+  },
+  {
+   "k": "xing2",
+   "read": "行",
+   "p": "xíng",
+   "dir": "syl"
+  },
+  {
+   "k": "quan2",
+   "read": "全",
+   "p": "quán",
+   "dir": "syl"
+  },
+  {
+   "k": "hui4",
+   "read": "会",
+   "p": "huì",
+   "dir": "syl"
+  },
+  {
+   "k": "ye2",
+   "read": "爷",
+   "p": "yé",
+   "dir": "syl"
+  },
+  {
+   "k": "duo1",
+   "read": "多",
+   "p": "duō",
+   "dir": "syl"
+  },
+  {
+   "k": "bing1",
+   "read": "冰",
+   "p": "bīng",
+   "dir": "syl"
+  },
+  {
+   "k": "jiao1",
+   "read": "交",
+   "p": "jiāo",
+   "dir": "syl"
+  },
+  {
+   "k": "wen4",
+   "read": "问",
+   "p": "wèn",
+   "dir": "syl"
+  },
+  {
+   "k": "yang2",
+   "read": "羊",
+   "p": "yáng",
+   "dir": "syl"
+  },
+  {
+   "k": "guan1",
+   "read": "关",
+   "p": "guān",
+   "dir": "syl"
+  },
+  {
+   "k": "mi3",
+   "read": "米",
+   "p": "mǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "deng1",
+   "read": "灯",
+   "p": "dēng",
+   "dir": "syl"
+  },
+  {
+   "k": "jiang1",
+   "read": "江",
+   "p": "jiāng",
+   "dir": "syl"
+  },
+  {
+   "k": "yin1",
+   "read": "阴",
+   "p": "yīn",
+   "dir": "syl"
+  },
+  {
+   "k": "hao3",
+   "read": "好",
+   "p": "hǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "ma1",
+   "read": "妈",
+   "p": "mā",
+   "dir": "syl"
+  },
+  {
+   "k": "yu3",
+   "read": "羽",
+   "p": "yǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "hong2",
+   "read": "红",
+   "p": "hóng",
+   "dir": "syl"
+  },
+  {
+   "k": "jin4",
+   "read": "进",
+   "p": "jìn",
+   "dir": "syl"
+  },
+  {
+   "k": "yuan3",
+   "read": "远",
+   "p": "yuǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "zou3",
+   "read": "走",
+   "p": "zǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "ba3",
+   "read": "把",
+   "p": "bǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "hua1",
+   "read": "花",
+   "p": "huā",
+   "dir": "syl"
+  },
+  {
+   "k": "cun1",
+   "read": "村",
+   "p": "cūn",
+   "dir": "syl"
+  },
+  {
+   "k": "geng4",
+   "read": "更",
+   "p": "gèng",
+   "dir": "syl"
+  },
+  {
+   "k": "dou4",
+   "read": "豆",
+   "p": "dòu",
+   "dir": "syl"
+  },
+  {
+   "k": "lai2",
+   "read": "来",
+   "p": "lái",
+   "dir": "syl"
+  },
+  {
+   "k": "li3",
+   "read": "里",
+   "p": "lǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "zu2",
+   "read": "足",
+   "p": "zú",
+   "dir": "syl"
+  },
+  {
+   "k": "nan2",
+   "read": "男",
+   "p": "nán",
+   "dir": "syl"
+  },
+  {
+   "k": "chao3",
+   "read": "吵",
+   "p": "chǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "ting1",
+   "read": "听",
+   "p": "tīng",
+   "dir": "syl"
+  },
+  {
+   "k": "chui1",
+   "read": "吹",
+   "p": "chuī",
+   "dir": "syl"
+  },
+  {
+   "k": "ding1",
+   "read": "钉",
+   "p": "dīng",
+   "dir": "syl"
+  },
+  {
+   "k": "wo3",
+   "read": "我",
+   "p": "wǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "mei3",
+   "read": "每",
+   "p": "měi",
+   "dir": "syl"
+  },
+  {
+   "k": "ti3",
+   "read": "体",
+   "p": "tǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "ni3",
+   "read": "你",
+   "p": "nǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "zhu4",
+   "read": "住",
+   "p": "zhù",
+   "dir": "syl"
+  },
+  {
+   "k": "shen1",
+   "read": "身",
+   "p": "shēn",
+   "dir": "syl"
+  },
+  {
+   "k": "zuo4",
+   "read": "坐",
+   "p": "zuò",
+   "dir": "syl"
+  },
+  {
+   "k": "dao3",
+   "read": "岛",
+   "p": "dǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "fan4",
+   "read": "饭",
+   "p": "fàn",
+   "dir": "syl"
+  },
+  {
+   "k": "chuang2",
+   "read": "床",
+   "p": "chuáng",
+   "dir": "syl"
+  },
+  {
+   "k": "ku4",
+   "read": "库",
+   "p": "kù",
+   "dir": "syl"
+  },
+  {
+   "k": "jian1",
+   "read": "间",
+   "p": "jiān",
+   "dir": "syl"
+  },
+  {
+   "k": "kuai4",
+   "read": "快",
+   "p": "kuài",
+   "dir": "syl"
+  },
+  {
+   "k": "zai1",
+   "read": "灾",
+   "p": "zāi",
+   "dir": "syl"
+  },
+  {
+   "k": "chi2",
+   "read": "迟",
+   "p": "chí",
+   "dir": "syl"
+  },
+  {
+   "k": "zhang1",
+   "read": "张",
+   "p": "zhāng",
+   "dir": "syl"
+  },
+  {
+   "k": "wan2",
+   "read": "玩",
+   "p": "wán",
+   "dir": "syl"
+  },
+  {
+   "k": "qing1",
+   "read": "青",
+   "p": "qīng",
+   "dir": "syl"
+  },
+  {
+   "k": "xian4",
+   "read": "现",
+   "p": "xiàn",
+   "dir": "syl"
+  },
+  {
+   "k": "ding3",
+   "read": "顶",
+   "p": "dǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "tai2",
+   "read": "抬",
+   "p": "tái",
+   "dir": "syl"
+  },
+  {
+   "k": "zhi2",
+   "read": "直",
+   "p": "zhí",
+   "dir": "syl"
+  },
+  {
+   "k": "lin2",
+   "read": "林",
+   "p": "lín",
+   "dir": "syl"
+  },
+  {
+   "k": "hua4",
+   "read": "画",
+   "p": "huà",
+   "dir": "syl"
+  },
+  {
+   "k": "dao4",
+   "read": "到",
+   "p": "dào",
+   "dir": "syl"
+  },
+  {
+   "k": "guo3",
+   "read": "果",
+   "p": "guǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "guo2",
+   "read": "国",
+   "p": "guó",
+   "dir": "syl"
+  },
+  {
+   "k": "ming2",
+   "read": "明",
+   "p": "míng",
+   "dir": "syl"
+  },
+  {
+   "k": "de0",
+   "read": "的",
+   "p": "de",
+   "dir": "syl"
+  },
+  {
+   "k": "ba4",
+   "read": "爸",
+   "p": "bà",
+   "dir": "syl"
+  },
+  {
+   "k": "cai3",
+   "read": "采",
+   "p": "cǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "peng2",
+   "read": "朋",
+   "p": "péng",
+   "dir": "syl"
+  },
+  {
+   "k": "yu2",
+   "read": "鱼",
+   "p": "yú",
+   "dir": "syl"
+  },
+  {
+   "k": "gou3",
+   "read": "狗",
+   "p": "gǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "bao3",
+   "read": "饱",
+   "p": "bǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "jing1",
+   "read": "京",
+   "p": "jīng",
+   "dir": "syl"
+  },
+  {
+   "k": "fang4",
+   "read": "放",
+   "p": "fàng",
+   "dir": "syl"
+  },
+  {
+   "k": "xue2",
+   "read": "学",
+   "p": "xué",
+   "dir": "syl"
+  },
+  {
+   "k": "kong1",
+   "read": "空",
+   "p": "kōng",
+   "dir": "syl"
+  },
+  {
+   "k": "fang2",
+   "read": "房",
+   "p": "fáng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhi1",
+   "read": "织",
+   "p": "zhī",
+   "dir": "syl"
+  },
+  {
+   "k": "chun1",
+   "read": "春",
+   "p": "chūn",
+   "dir": "syl"
+  },
+  {
+   "k": "cheng2",
+   "read": "城",
+   "p": "chéng",
+   "dir": "syl"
+  },
+  {
+   "k": "cao3",
+   "read": "草",
+   "p": "cǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "mian4",
+   "read": "面",
+   "p": "miàn",
+   "dir": "syl"
+  },
+  {
+   "k": "dian3",
+   "read": "点",
+   "p": "diǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "xing1",
+   "read": "星",
+   "p": "xīng",
+   "dir": "syl"
+  },
+  {
+   "k": "zuo2",
+   "read": "昨",
+   "p": "zuó",
+   "dir": "syl"
+  },
+  {
+   "k": "kan4",
+   "read": "看",
+   "p": "kàn",
+   "dir": "syl"
+  },
+  {
+   "k": "dan3",
+   "read": "胆",
+   "p": "dǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "pang4",
+   "read": "胖",
+   "p": "pàng",
+   "dir": "syl"
+  },
+  {
+   "k": "liang4",
+   "read": "亮",
+   "p": "liàng",
+   "dir": "syl"
+  },
+  {
+   "k": "qian2",
+   "read": "前",
+   "p": "qián",
+   "dir": "syl"
+  },
+  {
+   "k": "xi3",
+   "read": "洗",
+   "p": "xǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "chuan1",
+   "read": "穿",
+   "p": "chuān",
+   "dir": "syl"
+  },
+  {
+   "k": "shuo1",
+   "read": "说",
+   "p": "shuō",
+   "dir": "syl"
+  },
+  {
+   "k": "hai2",
+   "read": "孩",
+   "p": "hái",
+   "dir": "syl"
+  },
+  {
+   "k": "ban1",
+   "read": "班",
+   "p": "bān",
+   "dir": "syl"
+  },
+  {
+   "k": "qi3",
+   "read": "起",
+   "p": "qǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "dou1",
+   "read": "都",
+   "p": "dōu",
+   "dir": "syl"
+  },
+  {
+   "k": "xiao4",
+   "read": "校",
+   "p": "xiào",
+   "dir": "syl"
+  },
+  {
+   "k": "yang4",
+   "read": "样",
+   "p": "yàng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuo1",
+   "read": "桌",
+   "p": "zhuō",
+   "dir": "syl"
+  },
+  {
+   "k": "e4",
+   "read": "饿",
+   "p": "è",
+   "dir": "syl"
+  },
+  {
+   "k": "gao1",
+   "read": "高",
+   "p": "gāo",
+   "dir": "syl"
+  },
+  {
+   "k": "zhan4",
+   "read": "站",
+   "p": "zhàn",
+   "dir": "syl"
+  },
+  {
+   "k": "hai3",
+   "read": "海",
+   "p": "hǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "xiang2",
+   "read": "祥",
+   "p": "xiáng",
+   "dir": "syl"
+  },
+  {
+   "k": "ke4",
+   "read": "课",
+   "p": "kè",
+   "dir": "syl"
+  },
+  {
+   "k": "xue3",
+   "read": "雪",
+   "p": "xuě",
+   "dir": "syl"
+  },
+  {
+   "k": "chang2",
+   "read": "常",
+   "p": "cháng",
+   "dir": "syl"
+  },
+  {
+   "k": "wan3",
+   "read": "晚",
+   "p": "wǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "chuan2",
+   "read": "船",
+   "p": "chuán",
+   "dir": "syl"
+  },
+  {
+   "k": "mao1",
+   "read": "猫",
+   "p": "māo",
+   "dir": "syl"
+  },
+  {
+   "k": "zhe0",
+   "read": "着",
+   "p": "zhe",
+   "dir": "syl"
+  },
+  {
+   "k": "qing2",
+   "read": "情",
+   "p": "qíng",
+   "dir": "syl"
+  },
+  {
+   "k": "pao3",
+   "read": "跑",
+   "p": "pǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "duan3",
+   "read": "短",
+   "p": "duǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "tiao4",
+   "read": "跳",
+   "p": "tiào",
+   "dir": "syl"
+  },
+  {
+   "k": "a1",
+   "read": "阿",
+   "p": "ā",
+   "dir": "syl"
+  },
+  {
+   "k": "a0",
+   "read": "啊",
+   "p": "a",
+   "dir": "syl"
+  },
+  {
+   "k": "ai1",
+   "read": "哎",
+   "p": "āi",
+   "dir": "syl"
+  },
+  {
+   "k": "ai2",
+   "read": "癌",
+   "p": "ái",
+   "dir": "syl"
+  },
+  {
+   "k": "ai3",
+   "read": "矮",
+   "p": "ǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "ai4",
+   "read": "艾",
+   "p": "ài",
+   "dir": "syl"
+  },
+  {
+   "k": "an1",
+   "read": "安",
+   "p": "ān",
+   "dir": "syl"
+  },
+  {
+   "k": "an3",
+   "read": "俺",
+   "p": "ǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "an4",
+   "read": "岸",
+   "p": "àn",
+   "dir": "syl"
+  },
+  {
+   "k": "ang2",
+   "read": "昂",
+   "p": "áng",
+   "dir": "syl"
+  },
+  {
+   "k": "ao1",
+   "read": "凹",
+   "p": "āo",
+   "dir": "syl"
+  },
+  {
+   "k": "ao2",
+   "read": "熬",
+   "p": "áo",
+   "dir": "syl"
+  },
+  {
+   "k": "ao4",
+   "read": "傲",
+   "p": "ào",
+   "dir": "syl"
+  },
+  {
+   "k": "ba0",
+   "read": "吧",
+   "p": "ba",
+   "dir": "syl"
+  },
+  {
+   "k": "ba2",
+   "read": "拔",
+   "p": "bá",
+   "dir": "syl"
+  },
+  {
+   "k": "bai4",
+   "read": "败",
+   "p": "bài",
+   "dir": "syl"
+  },
+  {
+   "k": "ban3",
+   "read": "板",
+   "p": "bǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "bang1",
+   "read": "邦",
+   "p": "bāng",
+   "dir": "syl"
+  },
+  {
+   "k": "bang3",
+   "read": "膀",
+   "p": "bǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "bang4",
+   "read": "傍",
+   "p": "bàng",
+   "dir": "syl"
+  },
+  {
+   "k": "bao4",
+   "read": "报",
+   "p": "bào",
+   "dir": "syl"
+  },
+  {
+   "k": "bei1",
+   "read": "卑",
+   "p": "bēi",
+   "dir": "syl"
+  },
+  {
+   "k": "ben1",
+   "read": "奔",
+   "p": "bēn",
+   "dir": "syl"
+  },
+  {
+   "k": "beng1",
+   "read": "崩",
+   "p": "bēng",
+   "dir": "syl"
+  },
+  {
+   "k": "bi1",
+   "read": "逼",
+   "p": "bī",
+   "dir": "syl"
+  },
+  {
+   "k": "bi2",
+   "read": "鼻",
+   "p": "bí",
+   "dir": "syl"
+  },
+  {
+   "k": "bi4",
+   "read": "币",
+   "p": "bì",
+   "dir": "syl"
+  },
+  {
+   "k": "pi4",
+   "read": "辟",
+   "p": "pì",
+   "dir": "syl"
+  },
+  {
+   "k": "bian1",
+   "read": "边",
+   "p": "biān",
+   "dir": "syl"
+  },
+  {
+   "k": "bian3",
+   "read": "扁",
+   "p": "biǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "bian4",
+   "read": "便",
+   "p": "biàn",
+   "dir": "syl"
+  },
+  {
+   "k": "biao1",
+   "read": "标",
+   "p": "biāo",
+   "dir": "syl"
+  },
+  {
+   "k": "biao3",
+   "read": "表",
+   "p": "biǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "bie2",
+   "read": "别",
+   "p": "bié",
+   "dir": "syl"
+  },
+  {
+   "k": "bin1",
+   "read": "宾",
+   "p": "bīn",
+   "dir": "syl"
+  },
+  {
+   "k": "bing3",
+   "read": "丙",
+   "p": "bǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "bing4",
+   "read": "并",
+   "p": "bìng",
+   "dir": "syl"
+  },
+  {
+   "k": "bo1",
+   "read": "拨",
+   "p": "bō",
+   "dir": "syl"
+  },
+  {
+   "k": "bo2",
+   "read": "脖",
+   "p": "bó",
+   "dir": "syl"
+  },
+  {
+   "k": "po1",
+   "read": "泊",
+   "p": "pō",
+   "dir": "syl"
+  },
+  {
+   "k": "bao2",
+   "read": "薄",
+   "p": "báo",
+   "dir": "syl"
+  },
+  {
+   "k": "bo0",
+   "read": "卜",
+   "p": "bo",
+   "dir": "syl"
+  },
+  {
+   "k": "bu3",
+   "read": "补",
+   "p": "bǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "ca1",
+   "read": "擦",
+   "p": "cā",
+   "dir": "syl"
+  },
+  {
+   "k": "cai1",
+   "read": "猜",
+   "p": "cāi",
+   "dir": "syl"
+  },
+  {
+   "k": "cai4",
+   "read": "菜",
+   "p": "cài",
+   "dir": "syl"
+  },
+  {
+   "k": "can1",
+   "read": "参",
+   "p": "cān",
+   "dir": "syl"
+  },
+  {
+   "k": "can2",
+   "read": "残",
+   "p": "cán",
+   "dir": "syl"
+  },
+  {
+   "k": "can3",
+   "read": "惨",
+   "p": "cǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "can4",
+   "read": "灿",
+   "p": "càn",
+   "dir": "syl"
+  },
+  {
+   "k": "cang1",
+   "read": "仓",
+   "p": "cāng",
+   "dir": "syl"
+  },
+  {
+   "k": "cang2",
+   "read": "藏",
+   "p": "cáng",
+   "dir": "syl"
+  },
+  {
+   "k": "cao1",
+   "read": "操",
+   "p": "cāo",
+   "dir": "syl"
+  },
+  {
+   "k": "cao2",
+   "read": "曹",
+   "p": "cáo",
+   "dir": "syl"
+  },
+  {
+   "k": "ceng2",
+   "read": "层",
+   "p": "céng",
+   "dir": "syl"
+  },
+  {
+   "k": "cha1",
+   "read": "叉",
+   "p": "chā",
+   "dir": "syl"
+  },
+  {
+   "k": "cha2",
+   "read": "查",
+   "p": "chá",
+   "dir": "syl"
+  },
+  {
+   "k": "cha4",
+   "read": "差",
+   "p": "chà",
+   "dir": "syl"
+  },
+  {
+   "k": "chai1",
+   "read": "拆",
+   "p": "chāi",
+   "dir": "syl"
+  },
+  {
+   "k": "chai2",
+   "read": "柴",
+   "p": "chái",
+   "dir": "syl"
+  },
+  {
+   "k": "chan2",
+   "read": "缠",
+   "p": "chán",
+   "dir": "syl"
+  },
+  {
+   "k": "chan3",
+   "read": "产",
+   "p": "chǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "chan4",
+   "read": "颤",
+   "p": "chàn",
+   "dir": "syl"
+  },
+  {
+   "k": "chang1",
+   "read": "昌",
+   "p": "chāng",
+   "dir": "syl"
+  },
+  {
+   "k": "chang4",
+   "read": "畅",
+   "p": "chàng",
+   "dir": "syl"
+  },
+  {
+   "k": "chao1",
+   "read": "抄",
+   "p": "chāo",
+   "dir": "syl"
+  },
+  {
+   "k": "chao2",
+   "read": "巢",
+   "p": "cháo",
+   "dir": "syl"
+  },
+  {
+   "k": "che3",
+   "read": "扯",
+   "p": "chě",
+   "dir": "syl"
+  },
+  {
+   "k": "che4",
+   "read": "彻",
+   "p": "chè",
+   "dir": "syl"
+  },
+  {
+   "k": "chen2",
+   "read": "尘",
+   "p": "chén",
+   "dir": "syl"
+  },
+  {
+   "k": "chuang3",
+   "read": "闯",
+   "p": "chuǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "chen4",
+   "read": "衬",
+   "p": "chèn",
+   "dir": "syl"
+  },
+  {
+   "k": "cheng1",
+   "read": "称",
+   "p": "chēng",
+   "dir": "syl"
+  },
+  {
+   "k": "shi0",
+   "read": "匙",
+   "p": "shi",
+   "dir": "syl"
+  },
+  {
+   "k": "chi3",
+   "read": "尺",
+   "p": "chǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "chi4",
+   "read": "斥",
+   "p": "chì",
+   "dir": "syl"
+  },
+  {
+   "k": "chong1",
+   "read": "充",
+   "p": "chōng",
+   "dir": "syl"
+  },
+  {
+   "k": "chou1",
+   "read": "抽",
+   "p": "chōu",
+   "dir": "syl"
+  },
+  {
+   "k": "chou2",
+   "read": "仇",
+   "p": "chóu",
+   "dir": "syl"
+  },
+  {
+   "k": "chou3",
+   "read": "丑",
+   "p": "chǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "chou4",
+   "read": "臭",
+   "p": "chòu",
+   "dir": "syl"
+  },
+  {
+   "k": "chu2",
+   "read": "除",
+   "p": "chú",
+   "dir": "syl"
+  },
+  {
+   "k": "chu3",
+   "read": "础",
+   "p": "chǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "chu4",
+   "read": "处",
+   "p": "chù",
+   "dir": "syl"
+  },
+  {
+   "k": "chuan3",
+   "read": "喘",
+   "p": "chuǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "chuan4",
+   "read": "串",
+   "p": "chuàn",
+   "dir": "syl"
+  },
+  {
+   "k": "chuang1",
+   "read": "窗",
+   "p": "chuāng",
+   "dir": "syl"
+  },
+  {
+   "k": "chuang4",
+   "read": "创",
+   "p": "chuàng",
+   "dir": "syl"
+  },
+  {
+   "k": "chui2",
+   "read": "垂",
+   "p": "chuí",
+   "dir": "syl"
+  },
+  {
+   "k": "chun2",
+   "read": "纯",
+   "p": "chún",
+   "dir": "syl"
+  },
+  {
+   "k": "ci2",
+   "read": "词",
+   "p": "cí",
+   "dir": "syl"
+  },
+  {
+   "k": "ci3",
+   "read": "此",
+   "p": "cǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "ci4",
+   "read": "次",
+   "p": "cì",
+   "dir": "syl"
+  },
+  {
+   "k": "cong1",
+   "read": "匆",
+   "p": "cōng",
+   "dir": "syl"
+  },
+  {
+   "k": "cou4",
+   "read": "凑",
+   "p": "còu",
+   "dir": "syl"
+  },
+  {
+   "k": "cu1",
+   "read": "粗",
+   "p": "cū",
+   "dir": "syl"
+  },
+  {
+   "k": "cu4",
+   "read": "促",
+   "p": "cù",
+   "dir": "syl"
+  },
+  {
+   "k": "cui1",
+   "read": "催",
+   "p": "cuī",
+   "dir": "syl"
+  },
+  {
+   "k": "cui4",
+   "read": "脆",
+   "p": "cuì",
+   "dir": "syl"
+  },
+  {
+   "k": "cun2",
+   "read": "存",
+   "p": "cún",
+   "dir": "syl"
+  },
+  {
+   "k": "cun4",
+   "read": "寸",
+   "p": "cùn",
+   "dir": "syl"
+  },
+  {
+   "k": "cuo4",
+   "read": "措",
+   "p": "cuò",
+   "dir": "syl"
+  },
+  {
+   "k": "da1",
+   "read": "搭",
+   "p": "dā",
+   "dir": "syl"
+  },
+  {
+   "k": "da2",
+   "read": "达",
+   "p": "dá",
+   "dir": "syl"
+  },
+  {
+   "k": "dai1",
+   "read": "呆",
+   "p": "dāi",
+   "dir": "syl"
+  },
+  {
+   "k": "dai4",
+   "read": "代",
+   "p": "dài",
+   "dir": "syl"
+  },
+  {
+   "k": "dai3",
+   "read": "逮",
+   "p": "dǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "dan1",
+   "read": "丹",
+   "p": "dān",
+   "dir": "syl"
+  },
+  {
+   "k": "dang3",
+   "read": "挡",
+   "p": "dǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "dang4",
+   "read": "荡",
+   "p": "dàng",
+   "dir": "syl"
+  },
+  {
+   "k": "de2",
+   "read": "得",
+   "p": "dé",
+   "dir": "syl"
+  },
+  {
+   "k": "deng3",
+   "read": "等",
+   "p": "děng",
+   "dir": "syl"
+  },
+  {
+   "k": "deng4",
+   "read": "邓",
+   "p": "dèng",
+   "dir": "syl"
+  },
+  {
+   "k": "di1",
+   "read": "低",
+   "p": "dī",
+   "dir": "syl"
+  },
+  {
+   "k": "di2",
+   "read": "迪",
+   "p": "dí",
+   "dir": "syl"
+  },
+  {
+   "k": "di3",
+   "read": "底",
+   "p": "dǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "dian1",
+   "read": "颠",
+   "p": "diān",
+   "dir": "syl"
+  },
+  {
+   "k": "diao1",
+   "read": "雕",
+   "p": "diāo",
+   "dir": "syl"
+  },
+  {
+   "k": "diao4",
+   "read": "吊",
+   "p": "diào",
+   "dir": "syl"
+  },
+  {
+   "k": "die1",
+   "read": "爹",
+   "p": "diē",
+   "dir": "syl"
+  },
+  {
+   "k": "die2",
+   "read": "叠",
+   "p": "dié",
+   "dir": "syl"
+  },
+  {
+   "k": "ding4",
+   "read": "订",
+   "p": "dìng",
+   "dir": "syl"
+  },
+  {
+   "k": "diu1",
+   "read": "丢",
+   "p": "diū",
+   "dir": "syl"
+  },
+  {
+   "k": "dong3",
+   "read": "懂",
+   "p": "dǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "dou3",
+   "read": "抖",
+   "p": "dǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "du1",
+   "read": "督",
+   "p": "dū",
+   "dir": "syl"
+  },
+  {
+   "k": "du2",
+   "read": "毒",
+   "p": "dú",
+   "dir": "syl"
+  },
+  {
+   "k": "du3",
+   "read": "堵",
+   "p": "dǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "du4",
+   "read": "杜",
+   "p": "dù",
+   "dir": "syl"
+  },
+  {
+   "k": "duan1",
+   "read": "端",
+   "p": "duān",
+   "dir": "syl"
+  },
+  {
+   "k": "duan4",
+   "read": "段",
+   "p": "duàn",
+   "dir": "syl"
+  },
+  {
+   "k": "dui1",
+   "read": "堆",
+   "p": "duī",
+   "dir": "syl"
+  },
+  {
+   "k": "dui4",
+   "read": "队",
+   "p": "duì",
+   "dir": "syl"
+  },
+  {
+   "k": "dun1",
+   "read": "吨",
+   "p": "dūn",
+   "dir": "syl"
+  },
+  {
+   "k": "dun4",
+   "read": "盾",
+   "p": "dùn",
+   "dir": "syl"
+  },
+  {
+   "k": "duo2",
+   "read": "夺",
+   "p": "duó",
+   "dir": "syl"
+  },
+  {
+   "k": "duo3",
+   "read": "朵",
+   "p": "duǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "e2",
+   "read": "俄",
+   "p": "é",
+   "dir": "syl"
+  },
+  {
+   "k": "en1",
+   "read": "恩",
+   "p": "ēn",
+   "dir": "syl"
+  },
+  {
+   "k": "fa1",
+   "read": "发",
+   "p": "fā",
+   "dir": "syl"
+  },
+  {
+   "k": "fa2",
+   "read": "乏",
+   "p": "fá",
+   "dir": "syl"
+  },
+  {
+   "k": "fa3",
+   "read": "法",
+   "p": "fǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "fan1",
+   "read": "帆",
+   "p": "fān",
+   "dir": "syl"
+  },
+  {
+   "k": "fan2",
+   "read": "凡",
+   "p": "fán",
+   "dir": "syl"
+  },
+  {
+   "k": "fang3",
+   "read": "仿",
+   "p": "fǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "fei2",
+   "read": "肥",
+   "p": "féi",
+   "dir": "syl"
+  },
+  {
+   "k": "fei4",
+   "read": "废",
+   "p": "fèi",
+   "dir": "syl"
+  },
+  {
+   "k": "fen2",
+   "read": "坟",
+   "p": "fén",
+   "dir": "syl"
+  },
+  {
+   "k": "fen3",
+   "read": "粉",
+   "p": "fěn",
+   "dir": "syl"
+  },
+  {
+   "k": "fen4",
+   "read": "份",
+   "p": "fèn",
+   "dir": "syl"
+  },
+  {
+   "k": "feng2",
+   "read": "冯",
+   "p": "féng",
+   "dir": "syl"
+  },
+  {
+   "k": "feng4",
+   "read": "缝",
+   "p": "fèng",
+   "dir": "syl"
+  },
+  {
+   "k": "fu2",
+   "read": "佛",
+   "p": "fú",
+   "dir": "syl"
+  },
+  {
+   "k": "fou3",
+   "read": "否",
+   "p": "fǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "fu1",
+   "read": "夫",
+   "p": "fū",
+   "dir": "syl"
+  },
+  {
+   "k": "fu3",
+   "read": "抚",
+   "p": "fǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "gai1",
+   "read": "该",
+   "p": "gāi",
+   "dir": "syl"
+  },
+  {
+   "k": "gai3",
+   "read": "改",
+   "p": "gǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "gai4",
+   "read": "钙",
+   "p": "gài",
+   "dir": "syl"
+  },
+  {
+   "k": "gan1",
+   "read": "甘",
+   "p": "gān",
+   "dir": "syl"
+  },
+  {
+   "k": "gan3",
+   "read": "赶",
+   "p": "gǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "gang1",
+   "read": "刚",
+   "p": "gāng",
+   "dir": "syl"
+  },
+  {
+   "k": "gang3",
+   "read": "岗",
+   "p": "gǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "gao3",
+   "read": "搞",
+   "p": "gǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "gao4",
+   "read": "告",
+   "p": "gào",
+   "dir": "syl"
+  },
+  {
+   "k": "ge1",
+   "read": "戈",
+   "p": "gē",
+   "dir": "syl"
+  },
+  {
+   "k": "ge2",
+   "read": "阁",
+   "p": "gé",
+   "dir": "syl"
+  },
+  {
+   "k": "gei3",
+   "read": "给",
+   "p": "gěi",
+   "dir": "syl"
+  },
+  {
+   "k": "gen1",
+   "read": "根",
+   "p": "gēn",
+   "dir": "syl"
+  },
+  {
+   "k": "geng1",
+   "read": "耕",
+   "p": "gēng",
+   "dir": "syl"
+  },
+  {
+   "k": "gong3",
+   "read": "巩",
+   "p": "gǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "gou1",
+   "read": "勾",
+   "p": "gōu",
+   "dir": "syl"
+  },
+  {
+   "k": "gou4",
+   "read": "构",
+   "p": "gòu",
+   "dir": "syl"
+  },
+  {
+   "k": "gu1",
+   "read": "估",
+   "p": "gū",
+   "dir": "syl"
+  },
+  {
+   "k": "gu4",
+   "read": "固",
+   "p": "gù",
+   "dir": "syl"
+  },
+  {
+   "k": "gua4",
+   "read": "挂",
+   "p": "guà",
+   "dir": "syl"
+  },
+  {
+   "k": "guai3",
+   "read": "拐",
+   "p": "guǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "guai4",
+   "read": "怪",
+   "p": "guài",
+   "dir": "syl"
+  },
+  {
+   "k": "guan3",
+   "read": "馆",
+   "p": "guǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "guan4",
+   "read": "贯",
+   "p": "guàn",
+   "dir": "syl"
+  },
+  {
+   "k": "gui1",
+   "read": "归",
+   "p": "guī",
+   "dir": "syl"
+  },
+  {
+   "k": "gui3",
+   "read": "轨",
+   "p": "guǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "gui4",
+   "read": "柜",
+   "p": "guì",
+   "dir": "syl"
+  },
+  {
+   "k": "gun3",
+   "read": "滚",
+   "p": "gǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "gun4",
+   "read": "棍",
+   "p": "gùn",
+   "dir": "syl"
+  },
+  {
+   "k": "guo1",
+   "read": "郭",
+   "p": "guō",
+   "dir": "syl"
+  },
+  {
+   "k": "ha1",
+   "read": "哈",
+   "p": "hā",
+   "dir": "syl"
+  },
+  {
+   "k": "hai4",
+   "read": "害",
+   "p": "hài",
+   "dir": "syl"
+  },
+  {
+   "k": "han2",
+   "read": "含",
+   "p": "hán",
+   "dir": "syl"
+  },
+  {
+   "k": "han3",
+   "read": "罕",
+   "p": "hǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "han4",
+   "read": "汉",
+   "p": "hàn",
+   "dir": "syl"
+  },
+  {
+   "k": "hang2",
+   "read": "杭",
+   "p": "háng",
+   "dir": "syl"
+  },
+  {
+   "k": "hao2",
+   "read": "毫",
+   "p": "háo",
+   "dir": "syl"
+  },
+  {
+   "k": "hao4",
+   "read": "号",
+   "p": "hào",
+   "dir": "syl"
+  },
+  {
+   "k": "he1",
+   "read": "呵",
+   "p": "hē",
+   "dir": "syl"
+  },
+  {
+   "k": "he4",
+   "read": "贺",
+   "p": "hè",
+   "dir": "syl"
+  },
+  {
+   "k": "hei1",
+   "read": "黑",
+   "p": "hēi",
+   "dir": "syl"
+  },
+  {
+   "k": "hen2",
+   "read": "痕",
+   "p": "hén",
+   "dir": "syl"
+  },
+  {
+   "k": "hen3",
+   "read": "很",
+   "p": "hěn",
+   "dir": "syl"
+  },
+  {
+   "k": "hen4",
+   "read": "恨",
+   "p": "hèn",
+   "dir": "syl"
+  },
+  {
+   "k": "heng1",
+   "read": "哼",
+   "p": "hēng",
+   "dir": "syl"
+  },
+  {
+   "k": "heng2",
+   "read": "恒",
+   "p": "héng",
+   "dir": "syl"
+  },
+  {
+   "k": "hong1",
+   "read": "轰",
+   "p": "hōng",
+   "dir": "syl"
+  },
+  {
+   "k": "hong3",
+   "read": "哄",
+   "p": "hǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "hou2",
+   "read": "侯",
+   "p": "hóu",
+   "dir": "syl"
+  },
+  {
+   "k": "hou3",
+   "read": "吼",
+   "p": "hǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "hu1",
+   "read": "乎",
+   "p": "hū",
+   "dir": "syl"
+  },
+  {
+   "k": "hu2",
+   "read": "狐",
+   "p": "hú",
+   "dir": "syl"
+  },
+  {
+   "k": "hu3",
+   "read": "虎",
+   "p": "hǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "hua2",
+   "read": "华",
+   "p": "huá",
+   "dir": "syl"
+  },
+  {
+   "k": "huai2",
+   "read": "怀",
+   "p": "huái",
+   "dir": "syl"
+  },
+  {
+   "k": "huai4",
+   "read": "坏",
+   "p": "huài",
+   "dir": "syl"
+  },
+  {
+   "k": "huan1",
+   "read": "欢",
+   "p": "huān",
+   "dir": "syl"
+  },
+  {
+   "k": "huan2",
+   "read": "环",
+   "p": "huán",
+   "dir": "syl"
+  },
+  {
+   "k": "huan3",
+   "read": "缓",
+   "p": "huǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "huan4",
+   "read": "幻",
+   "p": "huàn",
+   "dir": "syl"
+  },
+  {
+   "k": "huang1",
+   "read": "荒",
+   "p": "huāng",
+   "dir": "syl"
+  },
+  {
+   "k": "huang2",
+   "read": "皇",
+   "p": "huáng",
+   "dir": "syl"
+  },
+  {
+   "k": "huang3",
+   "read": "晃",
+   "p": "huǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "hui1",
+   "read": "灰",
+   "p": "huī",
+   "dir": "syl"
+  },
+  {
+   "k": "hui3",
+   "read": "毁",
+   "p": "huǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "hun1",
+   "read": "昏",
+   "p": "hūn",
+   "dir": "syl"
+  },
+  {
+   "k": "hun2",
+   "read": "浑",
+   "p": "hún",
+   "dir": "syl"
+  },
+  {
+   "k": "hun4",
+   "read": "混",
+   "p": "hùn",
+   "dir": "syl"
+  },
+  {
+   "k": "huo2",
+   "read": "活",
+   "p": "huó",
+   "dir": "syl"
+  },
+  {
+   "k": "huo4",
+   "read": "或",
+   "p": "huò",
+   "dir": "syl"
+  },
+  {
+   "k": "ji4",
+   "read": "迹",
+   "p": "jì",
+   "dir": "syl"
+  },
+  {
+   "k": "ji2",
+   "read": "及",
+   "p": "jí",
+   "dir": "syl"
+  },
+  {
+   "k": "jia3",
+   "read": "甲",
+   "p": "jiǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "jia4",
+   "read": "价",
+   "p": "jià",
+   "dir": "syl"
+  },
+  {
+   "k": "jian3",
+   "read": "减",
+   "p": "jiǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "jiang3",
+   "read": "讲",
+   "p": "jiǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "jiang4",
+   "read": "匠",
+   "p": "jiàng",
+   "dir": "syl"
+  },
+  {
+   "k": "jiao3",
+   "read": "角",
+   "p": "jiǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "jie1",
+   "read": "阶",
+   "p": "jiē",
+   "dir": "syl"
+  },
+  {
+   "k": "jie2",
+   "read": "节",
+   "p": "jié",
+   "dir": "syl"
+  },
+  {
+   "k": "jie3",
+   "read": "姐",
+   "p": "jiě",
+   "dir": "syl"
+  },
+  {
+   "k": "jie4",
+   "read": "介",
+   "p": "jiè",
+   "dir": "syl"
+  },
+  {
+   "k": "jin3",
+   "read": "仅",
+   "p": "jǐn",
+   "dir": "syl"
+  },
+  {
+   "k": "jing3",
+   "read": "井",
+   "p": "jǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "jing4",
+   "read": "净",
+   "p": "jìng",
+   "dir": "syl"
+  },
+  {
+   "k": "jiu1",
+   "read": "纠",
+   "p": "jiū",
+   "dir": "syl"
+  },
+  {
+   "k": "jiu4",
+   "read": "旧",
+   "p": "jiù",
+   "dir": "syl"
+  },
+  {
+   "k": "ju1",
+   "read": "居",
+   "p": "jū",
+   "dir": "syl"
+  },
+  {
+   "k": "ju2",
+   "read": "局",
+   "p": "jú",
+   "dir": "syl"
+  },
+  {
+   "k": "ju3",
+   "read": "举",
+   "p": "jǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "ju4",
+   "read": "句",
+   "p": "jù",
+   "dir": "syl"
+  },
+  {
+   "k": "juan3",
+   "read": "卷",
+   "p": "juǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "juan4",
+   "read": "倦",
+   "p": "juàn",
+   "dir": "syl"
+  },
+  {
+   "k": "jue2",
+   "read": "决",
+   "p": "jué",
+   "dir": "syl"
+  },
+  {
+   "k": "jun1",
+   "read": "军",
+   "p": "jūn",
+   "dir": "syl"
+  },
+  {
+   "k": "jun4",
+   "read": "俊",
+   "p": "jùn",
+   "dir": "syl"
+  },
+  {
+   "k": "ka3",
+   "read": "卡",
+   "p": "kǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "kai3",
+   "read": "凯",
+   "p": "kǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "kan1",
+   "read": "刊",
+   "p": "kān",
+   "dir": "syl"
+  },
+  {
+   "k": "kan3",
+   "read": "砍",
+   "p": "kǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "kang1",
+   "read": "康",
+   "p": "kāng",
+   "dir": "syl"
+  },
+  {
+   "k": "kang4",
+   "read": "抗",
+   "p": "kàng",
+   "dir": "syl"
+  },
+  {
+   "k": "kao3",
+   "read": "考",
+   "p": "kǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "kao4",
+   "read": "靠",
+   "p": "kào",
+   "dir": "syl"
+  },
+  {
+   "k": "ke1",
+   "read": "科",
+   "p": "kē",
+   "dir": "syl"
+  },
+  {
+   "k": "ke2",
+   "read": "壳",
+   "p": "ké",
+   "dir": "syl"
+  },
+  {
+   "k": "ken3",
+   "read": "肯",
+   "p": "kěn",
+   "dir": "syl"
+  },
+  {
+   "k": "keng1",
+   "read": "坑",
+   "p": "kēng",
+   "dir": "syl"
+  },
+  {
+   "k": "kong3",
+   "read": "孔",
+   "p": "kǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "kong4",
+   "read": "控",
+   "p": "kòng",
+   "dir": "syl"
+  },
+  {
+   "k": "kou4",
+   "read": "扣",
+   "p": "kòu",
+   "dir": "syl"
+  },
+  {
+   "k": "ku1",
+   "read": "枯",
+   "p": "kū",
+   "dir": "syl"
+  },
+  {
+   "k": "ku3",
+   "read": "苦",
+   "p": "kǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "kua1",
+   "read": "夸",
+   "p": "kuā",
+   "dir": "syl"
+  },
+  {
+   "k": "kua4",
+   "read": "跨",
+   "p": "kuà",
+   "dir": "syl"
+  },
+  {
+   "k": "kuan1",
+   "read": "宽",
+   "p": "kuān",
+   "dir": "syl"
+  },
+  {
+   "k": "kuan3",
+   "read": "款",
+   "p": "kuǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "kuang2",
+   "read": "狂",
+   "p": "kuáng",
+   "dir": "syl"
+  },
+  {
+   "k": "kuang4",
+   "read": "况",
+   "p": "kuàng",
+   "dir": "syl"
+  },
+  {
+   "k": "kui1",
+   "read": "亏",
+   "p": "kuī",
+   "dir": "syl"
+  },
+  {
+   "k": "kui2",
+   "read": "葵",
+   "p": "kuí",
+   "dir": "syl"
+  },
+  {
+   "k": "kui4",
+   "read": "愧",
+   "p": "kuì",
+   "dir": "syl"
+  },
+  {
+   "k": "kun1",
+   "read": "昆",
+   "p": "kūn",
+   "dir": "syl"
+  },
+  {
+   "k": "kun4",
+   "read": "困",
+   "p": "kùn",
+   "dir": "syl"
+  },
+  {
+   "k": "kuo4",
+   "read": "扩",
+   "p": "kuò",
+   "dir": "syl"
+  },
+  {
+   "k": "la1",
+   "read": "垃",
+   "p": "lā",
+   "dir": "syl"
+  },
+  {
+   "k": "la0",
+   "read": "啦",
+   "p": "la",
+   "dir": "syl"
+  },
+  {
+   "k": "la3",
+   "read": "喇",
+   "p": "lǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "la4",
+   "read": "腊",
+   "p": "là",
+   "dir": "syl"
+  },
+  {
+   "k": "lai4",
+   "read": "赖",
+   "p": "lài",
+   "dir": "syl"
+  },
+  {
+   "k": "lan2",
+   "read": "兰",
+   "p": "lán",
+   "dir": "syl"
+  },
+  {
+   "k": "lan3",
+   "read": "览",
+   "p": "lǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "lan4",
+   "read": "烂",
+   "p": "làn",
+   "dir": "syl"
+  },
+  {
+   "k": "lang2",
+   "read": "郎",
+   "p": "láng",
+   "dir": "syl"
+  },
+  {
+   "k": "lang3",
+   "read": "朗",
+   "p": "lǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "lang4",
+   "read": "浪",
+   "p": "làng",
+   "dir": "syl"
+  },
+  {
+   "k": "lao1",
+   "read": "捞",
+   "p": "lāo",
+   "dir": "syl"
+  },
+  {
+   "k": "lao2",
+   "read": "劳",
+   "p": "láo",
+   "dir": "syl"
+  },
+  {
+   "k": "le4",
+   "read": "乐",
+   "p": "lè",
+   "dir": "syl"
+  },
+  {
+   "k": "lei1",
+   "read": "勒",
+   "p": "lēi",
+   "dir": "syl"
+  },
+  {
+   "k": "lei2",
+   "read": "雷",
+   "p": "léi",
+   "dir": "syl"
+  },
+  {
+   "k": "lei3",
+   "read": "蕾",
+   "p": "lěi",
+   "dir": "syl"
+  },
+  {
+   "k": "lei4",
+   "read": "泪",
+   "p": "lèi",
+   "dir": "syl"
+  },
+  {
+   "k": "leng3",
+   "read": "冷",
+   "p": "lěng",
+   "dir": "syl"
+  },
+  {
+   "k": "leng4",
+   "read": "愣",
+   "p": "lèng",
+   "dir": "syl"
+  },
+  {
+   "k": "li2",
+   "read": "厘",
+   "p": "lí",
+   "dir": "syl"
+  },
+  {
+   "k": "li1",
+   "read": "哩",
+   "p": "lī",
+   "dir": "syl"
+  },
+  {
+   "k": "lia3",
+   "read": "俩",
+   "p": "liǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "lian2",
+   "read": "连",
+   "p": "lián",
+   "dir": "syl"
+  },
+  {
+   "k": "lian3",
+   "read": "脸",
+   "p": "liǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "lian4",
+   "read": "练",
+   "p": "liàn",
+   "dir": "syl"
+  },
+  {
+   "k": "liang2",
+   "read": "良",
+   "p": "liáng",
+   "dir": "syl"
+  },
+  {
+   "k": "liang3",
+   "read": "两",
+   "p": "liǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "liao2",
+   "read": "辽",
+   "p": "liáo",
+   "dir": "syl"
+  },
+  {
+   "k": "liao4",
+   "read": "料",
+   "p": "liào",
+   "dir": "syl"
+  },
+  {
+   "k": "lie4",
+   "read": "列",
+   "p": "liè",
+   "dir": "syl"
+  },
+  {
+   "k": "ling2",
+   "read": "灵",
+   "p": "líng",
+   "dir": "syl"
+  },
+  {
+   "k": "ling3",
+   "read": "领",
+   "p": "lǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "ling4",
+   "read": "令",
+   "p": "lìng",
+   "dir": "syl"
+  },
+  {
+   "k": "liu1",
+   "read": "溜",
+   "p": "liū",
+   "dir": "syl"
+  },
+  {
+   "k": "liu2",
+   "read": "刘",
+   "p": "liú",
+   "dir": "syl"
+  },
+  {
+   "k": "liu3",
+   "read": "柳",
+   "p": "liǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "long2",
+   "read": "龙",
+   "p": "lóng",
+   "dir": "syl"
+  },
+  {
+   "k": "long3",
+   "read": "垄",
+   "p": "lǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "lou2",
+   "read": "楼",
+   "p": "lóu",
+   "dir": "syl"
+  },
+  {
+   "k": "lou4",
+   "read": "漏",
+   "p": "lòu",
+   "dir": "syl"
+  },
+  {
+   "k": "lu4",
+   "read": "露",
+   "p": "lù",
+   "dir": "syl"
+  },
+  {
+   "k": "lu2",
+   "read": "卢",
+   "p": "lú",
+   "dir": "syl"
+  },
+  {
+   "k": "lu3",
+   "read": "鲁",
+   "p": "lǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "lv2",
+   "read": "驴",
+   "p": "lǘ",
+   "dir": "syl"
+  },
+  {
+   "k": "lv3",
+   "read": "旅",
+   "p": "lǚ",
+   "dir": "syl"
+  },
+  {
+   "k": "lv4",
+   "read": "律",
+   "p": "lǜ",
+   "dir": "syl"
+  },
+  {
+   "k": "luan3",
+   "read": "卵",
+   "p": "luǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "luan4",
+   "read": "乱",
+   "p": "luàn",
+   "dir": "syl"
+  },
+  {
+   "k": "lve4",
+   "read": "掠",
+   "p": "lüè",
+   "dir": "syl"
+  },
+  {
+   "k": "lun2",
+   "read": "伦",
+   "p": "lún",
+   "dir": "syl"
+  },
+  {
+   "k": "lun4",
+   "read": "论",
+   "p": "lùn",
+   "dir": "syl"
+  },
+  {
+   "k": "luo2",
+   "read": "罗",
+   "p": "luó",
+   "dir": "syl"
+  },
+  {
+   "k": "luo3",
+   "read": "裸",
+   "p": "luǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "luo4",
+   "read": "洛",
+   "p": "luò",
+   "dir": "syl"
+  },
+  {
+   "k": "ma2",
+   "read": "麻",
+   "p": "má",
+   "dir": "syl"
+  },
+  {
+   "k": "ma4",
+   "read": "骂",
+   "p": "mà",
+   "dir": "syl"
+  },
+  {
+   "k": "ma0",
+   "read": "吗",
+   "p": "ma",
+   "dir": "syl"
+  },
+  {
+   "k": "mai2",
+   "read": "埋",
+   "p": "mái",
+   "dir": "syl"
+  },
+  {
+   "k": "mai3",
+   "read": "买",
+   "p": "mǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "mai4",
+   "read": "迈",
+   "p": "mài",
+   "dir": "syl"
+  },
+  {
+   "k": "man2",
+   "read": "蛮",
+   "p": "mán",
+   "dir": "syl"
+  },
+  {
+   "k": "man3",
+   "read": "满",
+   "p": "mǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "man4",
+   "read": "曼",
+   "p": "màn",
+   "dir": "syl"
+  },
+  {
+   "k": "mang2",
+   "read": "忙",
+   "p": "máng",
+   "dir": "syl"
+  },
+  {
+   "k": "mao4",
+   "read": "茂",
+   "p": "mào",
+   "dir": "syl"
+  },
+  {
+   "k": "me0",
+   "read": "么",
+   "p": "me",
+   "dir": "syl"
+  },
+  {
+   "k": "mei2",
+   "read": "没",
+   "p": "méi",
+   "dir": "syl"
+  },
+  {
+   "k": "mei4",
+   "read": "妹",
+   "p": "mèi",
+   "dir": "syl"
+  },
+  {
+   "k": "men4",
+   "read": "闷",
+   "p": "mèn",
+   "dir": "syl"
+  },
+  {
+   "k": "meng2",
+   "read": "萌",
+   "p": "méng",
+   "dir": "syl"
+  },
+  {
+   "k": "meng3",
+   "read": "猛",
+   "p": "měng",
+   "dir": "syl"
+  },
+  {
+   "k": "meng4",
+   "read": "孟",
+   "p": "mèng",
+   "dir": "syl"
+  },
+  {
+   "k": "mi2",
+   "read": "弥",
+   "p": "mí",
+   "dir": "syl"
+  },
+  {
+   "k": "mi4",
+   "read": "泌",
+   "p": "mì",
+   "dir": "syl"
+  },
+  {
+   "k": "mian2",
+   "read": "眠",
+   "p": "mián",
+   "dir": "syl"
+  },
+  {
+   "k": "mian3",
+   "read": "免",
+   "p": "miǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "miao2",
+   "read": "苗",
+   "p": "miáo",
+   "dir": "syl"
+  },
+  {
+   "k": "miao3",
+   "read": "秒",
+   "p": "miǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "miao4",
+   "read": "妙",
+   "p": "miào",
+   "dir": "syl"
+  },
+  {
+   "k": "mie4",
+   "read": "灭",
+   "p": "miè",
+   "dir": "syl"
+  },
+  {
+   "k": "min2",
+   "read": "民",
+   "p": "mín",
+   "dir": "syl"
+  },
+  {
+   "k": "min3",
+   "read": "敏",
+   "p": "mǐn",
+   "dir": "syl"
+  },
+  {
+   "k": "ming4",
+   "read": "命",
+   "p": "mìng",
+   "dir": "syl"
+  },
+  {
+   "k": "mo1",
+   "read": "摸",
+   "p": "mō",
+   "dir": "syl"
+  },
+  {
+   "k": "mo2",
+   "read": "模",
+   "p": "mó",
+   "dir": "syl"
+  },
+  {
+   "k": "mo3",
+   "read": "抹",
+   "p": "mǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "mo4",
+   "read": "末",
+   "p": "mò",
+   "dir": "syl"
+  },
+  {
+   "k": "mou2",
+   "read": "谋",
+   "p": "móu",
+   "dir": "syl"
+  },
+  {
+   "k": "mou3",
+   "read": "某",
+   "p": "mǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "na2",
+   "read": "拿",
+   "p": "ná",
+   "dir": "syl"
+  },
+  {
+   "k": "na3",
+   "read": "哪",
+   "p": "nǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "na4",
+   "read": "那",
+   "p": "nà",
+   "dir": "syl"
+  },
+  {
+   "k": "nai4",
+   "read": "奈",
+   "p": "nài",
+   "dir": "syl"
+  },
+  {
+   "k": "nang2",
+   "read": "囊",
+   "p": "náng",
+   "dir": "syl"
+  },
+  {
+   "k": "nao3",
+   "read": "恼",
+   "p": "nǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "nao4",
+   "read": "闹",
+   "p": "nào",
+   "dir": "syl"
+  },
+  {
+   "k": "ne0",
+   "read": "呢",
+   "p": "ne",
+   "dir": "syl"
+  },
+  {
+   "k": "nen4",
+   "read": "嫩",
+   "p": "nèn",
+   "dir": "syl"
+  },
+  {
+   "k": "neng2",
+   "read": "能",
+   "p": "néng",
+   "dir": "syl"
+  },
+  {
+   "k": "ni2",
+   "read": "尼",
+   "p": "ní",
+   "dir": "syl"
+  },
+  {
+   "k": "ni4",
+   "read": "逆",
+   "p": "nì",
+   "dir": "syl"
+  },
+  {
+   "k": "nian4",
+   "read": "念",
+   "p": "niàn",
+   "dir": "syl"
+  },
+  {
+   "k": "niang2",
+   "read": "娘",
+   "p": "niáng",
+   "dir": "syl"
+  },
+  {
+   "k": "niang4",
+   "read": "酿",
+   "p": "niàng",
+   "dir": "syl"
+  },
+  {
+   "k": "niao4",
+   "read": "尿",
+   "p": "niào",
+   "dir": "syl"
+  },
+  {
+   "k": "nie1",
+   "read": "捏",
+   "p": "niē",
+   "dir": "syl"
+  },
+  {
+   "k": "nin2",
+   "read": "您",
+   "p": "nín",
+   "dir": "syl"
+  },
+  {
+   "k": "ning2",
+   "read": "宁",
+   "p": "níng",
+   "dir": "syl"
+  },
+  {
+   "k": "niu3",
+   "read": "扭",
+   "p": "niǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "nong2",
+   "read": "农",
+   "p": "nóng",
+   "dir": "syl"
+  },
+  {
+   "k": "nong4",
+   "read": "弄",
+   "p": "nòng",
+   "dir": "syl"
+  },
+  {
+   "k": "nu2",
+   "read": "奴",
+   "p": "nú",
+   "dir": "syl"
+  },
+  {
+   "k": "nu3",
+   "read": "努",
+   "p": "nǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "nu4",
+   "read": "怒",
+   "p": "nù",
+   "dir": "syl"
+  },
+  {
+   "k": "nuan3",
+   "read": "暖",
+   "p": "nuǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "nuo2",
+   "read": "挪",
+   "p": "nuó",
+   "dir": "syl"
+  },
+  {
+   "k": "nuo4",
+   "read": "诺",
+   "p": "nuò",
+   "dir": "syl"
+  },
+  {
+   "k": "o2",
+   "read": "哦",
+   "p": "ó",
+   "dir": "syl"
+  },
+  {
+   "k": "ou1",
+   "read": "欧",
+   "p": "ōu",
+   "dir": "syl"
+  },
+  {
+   "k": "ou3",
+   "read": "偶",
+   "p": "ǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "pa2",
+   "read": "爬",
+   "p": "pá",
+   "dir": "syl"
+  },
+  {
+   "k": "pa4",
+   "read": "帕",
+   "p": "pà",
+   "dir": "syl"
+  },
+  {
+   "k": "pai1",
+   "read": "拍",
+   "p": "pāi",
+   "dir": "syl"
+  },
+  {
+   "k": "pai2",
+   "read": "排",
+   "p": "pái",
+   "dir": "syl"
+  },
+  {
+   "k": "pai4",
+   "read": "派",
+   "p": "pài",
+   "dir": "syl"
+  },
+  {
+   "k": "pan1",
+   "read": "攀",
+   "p": "pān",
+   "dir": "syl"
+  },
+  {
+   "k": "pan2",
+   "read": "盘",
+   "p": "pán",
+   "dir": "syl"
+  },
+  {
+   "k": "pan4",
+   "read": "判",
+   "p": "pàn",
+   "dir": "syl"
+  },
+  {
+   "k": "pang2",
+   "read": "庞",
+   "p": "páng",
+   "dir": "syl"
+  },
+  {
+   "k": "pao1",
+   "read": "抛",
+   "p": "pāo",
+   "dir": "syl"
+  },
+  {
+   "k": "pao4",
+   "read": "炮",
+   "p": "pào",
+   "dir": "syl"
+  },
+  {
+   "k": "pei1",
+   "read": "胚",
+   "p": "pēi",
+   "dir": "syl"
+  },
+  {
+   "k": "pei2",
+   "read": "陪",
+   "p": "péi",
+   "dir": "syl"
+  },
+  {
+   "k": "pei4",
+   "read": "佩",
+   "p": "pèi",
+   "dir": "syl"
+  },
+  {
+   "k": "pen1",
+   "read": "喷",
+   "p": "pēn",
+   "dir": "syl"
+  },
+  {
+   "k": "pen2",
+   "read": "盆",
+   "p": "pén",
+   "dir": "syl"
+  },
+  {
+   "k": "peng3",
+   "read": "捧",
+   "p": "pěng",
+   "dir": "syl"
+  },
+  {
+   "k": "peng4",
+   "read": "碰",
+   "p": "pèng",
+   "dir": "syl"
+  },
+  {
+   "k": "pi1",
+   "read": "批",
+   "p": "pī",
+   "dir": "syl"
+  },
+  {
+   "k": "pi3",
+   "read": "匹",
+   "p": "pǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "pian1",
+   "read": "偏",
+   "p": "piān",
+   "dir": "syl"
+  },
+  {
+   "k": "piao1",
+   "read": "漂",
+   "p": "piāo",
+   "dir": "syl"
+  },
+  {
+   "k": "piao2",
+   "read": "瓢",
+   "p": "piáo",
+   "dir": "syl"
+  },
+  {
+   "k": "piao4",
+   "read": "票",
+   "p": "piào",
+   "dir": "syl"
+  },
+  {
+   "k": "pin1",
+   "read": "拼",
+   "p": "pīn",
+   "dir": "syl"
+  },
+  {
+   "k": "pin2",
+   "read": "贫",
+   "p": "pín",
+   "dir": "syl"
+  },
+  {
+   "k": "pin3",
+   "read": "品",
+   "p": "pǐn",
+   "dir": "syl"
+  },
+  {
+   "k": "po3",
+   "read": "颇",
+   "p": "pǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "po2",
+   "read": "婆",
+   "p": "pó",
+   "dir": "syl"
+  },
+  {
+   "k": "po4",
+   "read": "迫",
+   "p": "pò",
+   "dir": "syl"
+  },
+  {
+   "k": "pou1",
+   "read": "剖",
+   "p": "pōu",
+   "dir": "syl"
+  },
+  {
+   "k": "pu1",
+   "read": "扑",
+   "p": "pū",
+   "dir": "syl"
+  },
+  {
+   "k": "pu4",
+   "read": "铺",
+   "p": "pù",
+   "dir": "syl"
+  },
+  {
+   "k": "pu2",
+   "read": "葡",
+   "p": "pú",
+   "dir": "syl"
+  },
+  {
+   "k": "pu3",
+   "read": "朴",
+   "p": "pǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "qi2",
+   "read": "齐",
+   "p": "qí",
+   "dir": "syl"
+  },
+  {
+   "k": "qia4",
+   "read": "恰",
+   "p": "qià",
+   "dir": "syl"
+  },
+  {
+   "k": "qian3",
+   "read": "浅",
+   "p": "qiǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "qian4",
+   "read": "欠",
+   "p": "qiàn",
+   "dir": "syl"
+  },
+  {
+   "k": "qiang1",
+   "read": "枪",
+   "p": "qiāng",
+   "dir": "syl"
+  },
+  {
+   "k": "qiang2",
+   "read": "强",
+   "p": "qiáng",
+   "dir": "syl"
+  },
+  {
+   "k": "qiang3",
+   "read": "抢",
+   "p": "qiǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "qiao1",
+   "read": "悄",
+   "p": "qiāo",
+   "dir": "syl"
+  },
+  {
+   "k": "qiao2",
+   "read": "乔",
+   "p": "qiáo",
+   "dir": "syl"
+  },
+  {
+   "k": "qiao3",
+   "read": "巧",
+   "p": "qiǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "qie3",
+   "read": "且",
+   "p": "qiě",
+   "dir": "syl"
+  },
+  {
+   "k": "qin1",
+   "read": "亲",
+   "p": "qīn",
+   "dir": "syl"
+  },
+  {
+   "k": "qin2",
+   "read": "秦",
+   "p": "qín",
+   "dir": "syl"
+  },
+  {
+   "k": "qing3",
+   "read": "顷",
+   "p": "qǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "qing4",
+   "read": "庆",
+   "p": "qìng",
+   "dir": "syl"
+  },
+  {
+   "k": "qiong2",
+   "read": "穷",
+   "p": "qióng",
+   "dir": "syl"
+  },
+  {
+   "k": "qiu1",
+   "read": "丘",
+   "p": "qiū",
+   "dir": "syl"
+  },
+  {
+   "k": "qiu2",
+   "read": "求",
+   "p": "qiú",
+   "dir": "syl"
+  },
+  {
+   "k": "qu1",
+   "read": "区",
+   "p": "qū",
+   "dir": "syl"
+  },
+  {
+   "k": "qu3",
+   "read": "取",
+   "p": "qǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "quan1",
+   "read": "圈",
+   "p": "quān",
+   "dir": "syl"
+  },
+  {
+   "k": "quan3",
+   "read": "犬",
+   "p": "quǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "quan4",
+   "read": "劝",
+   "p": "quàn",
+   "dir": "syl"
+  },
+  {
+   "k": "que1",
+   "read": "缺",
+   "p": "quē",
+   "dir": "syl"
+  },
+  {
+   "k": "que4",
+   "read": "却",
+   "p": "què",
+   "dir": "syl"
+  },
+  {
+   "k": "qun2",
+   "read": "裙",
+   "p": "qún",
+   "dir": "syl"
+  },
+  {
+   "k": "ran2",
+   "read": "然",
+   "p": "rán",
+   "dir": "syl"
+  },
+  {
+   "k": "ran3",
+   "read": "染",
+   "p": "rǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "rang3",
+   "read": "嚷",
+   "p": "rǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "rao2",
+   "read": "饶",
+   "p": "ráo",
+   "dir": "syl"
+  },
+  {
+   "k": "rao3",
+   "read": "扰",
+   "p": "rǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "rao4",
+   "read": "绕",
+   "p": "rào",
+   "dir": "syl"
+  },
+  {
+   "k": "re3",
+   "read": "惹",
+   "p": "rě",
+   "dir": "syl"
+  },
+  {
+   "k": "re4",
+   "read": "热",
+   "p": "rè",
+   "dir": "syl"
+  },
+  {
+   "k": "ren3",
+   "read": "忍",
+   "p": "rěn",
+   "dir": "syl"
+  },
+  {
+   "k": "ren4",
+   "read": "认",
+   "p": "rèn",
+   "dir": "syl"
+  },
+  {
+   "k": "reng1",
+   "read": "扔",
+   "p": "rēng",
+   "dir": "syl"
+  },
+  {
+   "k": "reng2",
+   "read": "仍",
+   "p": "réng",
+   "dir": "syl"
+  },
+  {
+   "k": "rong2",
+   "read": "绒",
+   "p": "róng",
+   "dir": "syl"
+  },
+  {
+   "k": "rou2",
+   "read": "柔",
+   "p": "róu",
+   "dir": "syl"
+  },
+  {
+   "k": "ru2",
+   "read": "如",
+   "p": "rú",
+   "dir": "syl"
+  },
+  {
+   "k": "ru3",
+   "read": "乳",
+   "p": "rǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "ruan3",
+   "read": "软",
+   "p": "ruǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "rui4",
+   "read": "锐",
+   "p": "ruì",
+   "dir": "syl"
+  },
+  {
+   "k": "run4",
+   "read": "润",
+   "p": "rùn",
+   "dir": "syl"
+  },
+  {
+   "k": "ruo4",
+   "read": "若",
+   "p": "ruò",
+   "dir": "syl"
+  },
+  {
+   "k": "sa1",
+   "read": "撒",
+   "p": "sā",
+   "dir": "syl"
+  },
+  {
+   "k": "sa3",
+   "read": "洒",
+   "p": "sǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "sa4",
+   "read": "萨",
+   "p": "sà",
+   "dir": "syl"
+  },
+  {
+   "k": "sai1",
+   "read": "塞",
+   "p": "sāi",
+   "dir": "syl"
+  },
+  {
+   "k": "sai4",
+   "read": "赛",
+   "p": "sài",
+   "dir": "syl"
+  },
+  {
+   "k": "san3",
+   "read": "伞",
+   "p": "sǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "san4",
+   "read": "散",
+   "p": "sàn",
+   "dir": "syl"
+  },
+  {
+   "k": "sang1",
+   "read": "桑",
+   "p": "sāng",
+   "dir": "syl"
+  },
+  {
+   "k": "sang3",
+   "read": "嗓",
+   "p": "sǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "sang4",
+   "read": "丧",
+   "p": "sàng",
+   "dir": "syl"
+  },
+  {
+   "k": "sao3",
+   "read": "扫",
+   "p": "sǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "se4",
+   "read": "色",
+   "p": "sè",
+   "dir": "syl"
+  },
+  {
+   "k": "sen1",
+   "read": "森",
+   "p": "sēn",
+   "dir": "syl"
+  },
+  {
+   "k": "seng1",
+   "read": "僧",
+   "p": "sēng",
+   "dir": "syl"
+  },
+  {
+   "k": "sha1",
+   "read": "杀",
+   "p": "shā",
+   "dir": "syl"
+  },
+  {
+   "k": "sha3",
+   "read": "傻",
+   "p": "shǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "sha2",
+   "read": "啥",
+   "p": "shá",
+   "dir": "syl"
+  },
+  {
+   "k": "shai4",
+   "read": "晒",
+   "p": "shài",
+   "dir": "syl"
+  },
+  {
+   "k": "shan3",
+   "read": "闪",
+   "p": "shǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "shan4",
+   "read": "扇",
+   "p": "shàn",
+   "dir": "syl"
+  },
+  {
+   "k": "shang1",
+   "read": "伤",
+   "p": "shāng",
+   "dir": "syl"
+  },
+  {
+   "k": "shang3",
+   "read": "赏",
+   "p": "shǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "shao1",
+   "read": "梢",
+   "p": "shāo",
+   "dir": "syl"
+  },
+  {
+   "k": "shao4",
+   "read": "绍",
+   "p": "shào",
+   "dir": "syl"
+  },
+  {
+   "k": "she2",
+   "read": "舌",
+   "p": "shé",
+   "dir": "syl"
+  },
+  {
+   "k": "she3",
+   "read": "舍",
+   "p": "shě",
+   "dir": "syl"
+  },
+  {
+   "k": "she4",
+   "read": "设",
+   "p": "shè",
+   "dir": "syl"
+  },
+  {
+   "k": "shen2",
+   "read": "神",
+   "p": "shén",
+   "dir": "syl"
+  },
+  {
+   "k": "shen3",
+   "read": "审",
+   "p": "shěn",
+   "dir": "syl"
+  },
+  {
+   "k": "shen4",
+   "read": "肾",
+   "p": "shèn",
+   "dir": "syl"
+  },
+  {
+   "k": "sheng4",
+   "read": "胜",
+   "p": "shèng",
+   "dir": "syl"
+  },
+  {
+   "k": "sheng2",
+   "read": "绳",
+   "p": "shéng",
+   "dir": "syl"
+  },
+  {
+   "k": "sheng3",
+   "read": "省",
+   "p": "shěng",
+   "dir": "syl"
+  },
+  {
+   "k": "shi1",
+   "read": "尸",
+   "p": "shī",
+   "dir": "syl"
+  },
+  {
+   "k": "shi3",
+   "read": "史",
+   "p": "shǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "shou1",
+   "read": "收",
+   "p": "shōu",
+   "dir": "syl"
+  },
+  {
+   "k": "shou4",
+   "read": "寿",
+   "p": "shòu",
+   "dir": "syl"
+  },
+  {
+   "k": "shu2",
+   "read": "熟",
+   "p": "shú",
+   "dir": "syl"
+  },
+  {
+   "k": "shu3",
+   "read": "暑",
+   "p": "shǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "shu4",
+   "read": "术",
+   "p": "shù",
+   "dir": "syl"
+  },
+  {
+   "k": "shua1",
+   "read": "刷",
+   "p": "shuā",
+   "dir": "syl"
+  },
+  {
+   "k": "shua3",
+   "read": "耍",
+   "p": "shuǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "shuai1",
+   "read": "衰",
+   "p": "shuāi",
+   "dir": "syl"
+  },
+  {
+   "k": "shuai3",
+   "read": "甩",
+   "p": "shuǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "shuai4",
+   "read": "帅",
+   "p": "shuài",
+   "dir": "syl"
+  },
+  {
+   "k": "shuang3",
+   "read": "爽",
+   "p": "shuǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "shui2",
+   "read": "谁",
+   "p": "shuí",
+   "dir": "syl"
+  },
+  {
+   "k": "shui4",
+   "read": "税",
+   "p": "shuì",
+   "dir": "syl"
+  },
+  {
+   "k": "shun4",
+   "read": "顺",
+   "p": "shùn",
+   "dir": "syl"
+  },
+  {
+   "k": "si1",
+   "read": "丝",
+   "p": "sī",
+   "dir": "syl"
+  },
+  {
+   "k": "si3",
+   "read": "死",
+   "p": "sǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "song1",
+   "read": "松",
+   "p": "sōng",
+   "dir": "syl"
+  },
+  {
+   "k": "song3",
+   "read": "耸",
+   "p": "sǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "song4",
+   "read": "宋",
+   "p": "sòng",
+   "dir": "syl"
+  },
+  {
+   "k": "sou1",
+   "read": "搜",
+   "p": "sōu",
+   "dir": "syl"
+  },
+  {
+   "k": "su1",
+   "read": "苏",
+   "p": "sū",
+   "dir": "syl"
+  },
+  {
+   "k": "su2",
+   "read": "俗",
+   "p": "sú",
+   "dir": "syl"
+  },
+  {
+   "k": "su4",
+   "read": "诉",
+   "p": "sù",
+   "dir": "syl"
+  },
+  {
+   "k": "suan1",
+   "read": "酸",
+   "p": "suān",
+   "dir": "syl"
+  },
+  {
+   "k": "suan4",
+   "read": "蒜",
+   "p": "suàn",
+   "dir": "syl"
+  },
+  {
+   "k": "sui1",
+   "read": "虽",
+   "p": "suī",
+   "dir": "syl"
+  },
+  {
+   "k": "sui2",
+   "read": "随",
+   "p": "suí",
+   "dir": "syl"
+  },
+  {
+   "k": "sui3",
+   "read": "髓",
+   "p": "suǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "sui4",
+   "read": "岁",
+   "p": "suì",
+   "dir": "syl"
+  },
+  {
+   "k": "sun1",
+   "read": "孙",
+   "p": "sūn",
+   "dir": "syl"
+  },
+  {
+   "k": "sun3",
+   "read": "损",
+   "p": "sǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "suo1",
+   "read": "缩",
+   "p": "suō",
+   "dir": "syl"
+  },
+  {
+   "k": "suo3",
+   "read": "所",
+   "p": "suǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "ta3",
+   "read": "塔",
+   "p": "tǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "ta4",
+   "read": "踏",
+   "p": "tà",
+   "dir": "syl"
+  },
+  {
+   "k": "tai1",
+   "read": "胎",
+   "p": "tāi",
+   "dir": "syl"
+  },
+  {
+   "k": "tan1",
+   "read": "贪",
+   "p": "tān",
+   "dir": "syl"
+  },
+  {
+   "k": "tan2",
+   "read": "坛",
+   "p": "tán",
+   "dir": "syl"
+  },
+  {
+   "k": "tan3",
+   "read": "坦",
+   "p": "tǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "tan4",
+   "read": "叹",
+   "p": "tàn",
+   "dir": "syl"
+  },
+  {
+   "k": "tang1",
+   "read": "汤",
+   "p": "tāng",
+   "dir": "syl"
+  },
+  {
+   "k": "tang2",
+   "read": "唐",
+   "p": "táng",
+   "dir": "syl"
+  },
+  {
+   "k": "tang3",
+   "read": "躺",
+   "p": "tǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "tang4",
+   "read": "趟",
+   "p": "tàng",
+   "dir": "syl"
+  },
+  {
+   "k": "tao1",
+   "read": "涛",
+   "p": "tāo",
+   "dir": "syl"
+  },
+  {
+   "k": "tao2",
+   "read": "逃",
+   "p": "táo",
+   "dir": "syl"
+  },
+  {
+   "k": "tao3",
+   "read": "讨",
+   "p": "tǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "tao4",
+   "read": "套",
+   "p": "tào",
+   "dir": "syl"
+  },
+  {
+   "k": "te4",
+   "read": "特",
+   "p": "tè",
+   "dir": "syl"
+  },
+  {
+   "k": "teng2",
+   "read": "疼",
+   "p": "téng",
+   "dir": "syl"
+  },
+  {
+   "k": "ti1",
+   "read": "梯",
+   "p": "tī",
+   "dir": "syl"
+  },
+  {
+   "k": "ti2",
+   "read": "啼",
+   "p": "tí",
+   "dir": "syl"
+  },
+  {
+   "k": "ti4",
+   "read": "替",
+   "p": "tì",
+   "dir": "syl"
+  },
+  {
+   "k": "tiao1",
+   "read": "挑",
+   "p": "tiāo",
+   "dir": "syl"
+  },
+  {
+   "k": "tiao2",
+   "read": "条",
+   "p": "tiáo",
+   "dir": "syl"
+  },
+  {
+   "k": "tie1",
+   "read": "贴",
+   "p": "tiē",
+   "dir": "syl"
+  },
+  {
+   "k": "tie3",
+   "read": "铁",
+   "p": "tiě",
+   "dir": "syl"
+  },
+  {
+   "k": "ting2",
+   "read": "廷",
+   "p": "tíng",
+   "dir": "syl"
+  },
+  {
+   "k": "ting3",
+   "read": "挺",
+   "p": "tǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "tong1",
+   "read": "通",
+   "p": "tōng",
+   "dir": "syl"
+  },
+  {
+   "k": "tong3",
+   "read": "统",
+   "p": "tǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "tong4",
+   "read": "痛",
+   "p": "tòng",
+   "dir": "syl"
+  },
+  {
+   "k": "tou1",
+   "read": "偷",
+   "p": "tōu",
+   "dir": "syl"
+  },
+  {
+   "k": "tou2",
+   "read": "头",
+   "p": "tóu",
+   "dir": "syl"
+  },
+  {
+   "k": "tou4",
+   "read": "透",
+   "p": "tòu",
+   "dir": "syl"
+  },
+  {
+   "k": "tu1",
+   "read": "突",
+   "p": "tū",
+   "dir": "syl"
+  },
+  {
+   "k": "tu2",
+   "read": "图",
+   "p": "tú",
+   "dir": "syl"
+  },
+  {
+   "k": "tu4",
+   "read": "兔",
+   "p": "tù",
+   "dir": "syl"
+  },
+  {
+   "k": "tuan2",
+   "read": "团",
+   "p": "tuán",
+   "dir": "syl"
+  },
+  {
+   "k": "tui1",
+   "read": "推",
+   "p": "tuī",
+   "dir": "syl"
+  },
+  {
+   "k": "tui3",
+   "read": "腿",
+   "p": "tuǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "tui4",
+   "read": "退",
+   "p": "tuì",
+   "dir": "syl"
+  },
+  {
+   "k": "tun1",
+   "read": "吞",
+   "p": "tūn",
+   "dir": "syl"
+  },
+  {
+   "k": "tuo1",
+   "read": "托",
+   "p": "tuō",
+   "dir": "syl"
+  },
+  {
+   "k": "tuo2",
+   "read": "驼",
+   "p": "tuó",
+   "dir": "syl"
+  },
+  {
+   "k": "tuo3",
+   "read": "妥",
+   "p": "tuǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "tuo4",
+   "read": "拓",
+   "p": "tuò",
+   "dir": "syl"
+  },
+  {
+   "k": "wa1",
+   "read": "挖",
+   "p": "wā",
+   "dir": "syl"
+  },
+  {
+   "k": "wa0",
+   "read": "哇",
+   "p": "wa",
+   "dir": "syl"
+  },
+  {
+   "k": "wa2",
+   "read": "娃",
+   "p": "wá",
+   "dir": "syl"
+  },
+  {
+   "k": "wa3",
+   "read": "瓦",
+   "p": "wǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "wai1",
+   "read": "歪",
+   "p": "wāi",
+   "dir": "syl"
+  },
+  {
+   "k": "wan1",
+   "read": "弯",
+   "p": "wān",
+   "dir": "syl"
+  },
+  {
+   "k": "wan4",
+   "read": "万",
+   "p": "wàn",
+   "dir": "syl"
+  },
+  {
+   "k": "wang1",
+   "read": "汪",
+   "p": "wāng",
+   "dir": "syl"
+  },
+  {
+   "k": "wang4",
+   "read": "忘",
+   "p": "wàng",
+   "dir": "syl"
+  },
+  {
+   "k": "wei1",
+   "read": "危",
+   "p": "wēi",
+   "dir": "syl"
+  },
+  {
+   "k": "wei4",
+   "read": "为",
+   "p": "wèi",
+   "dir": "syl"
+  },
+  {
+   "k": "wei2",
+   "read": "围",
+   "p": "wéi",
+   "dir": "syl"
+  },
+  {
+   "k": "wei3",
+   "read": "伟",
+   "p": "wěi",
+   "dir": "syl"
+  },
+  {
+   "k": "wen1",
+   "read": "温",
+   "p": "wēn",
+   "dir": "syl"
+  },
+  {
+   "k": "wen3",
+   "read": "吻",
+   "p": "wěn",
+   "dir": "syl"
+  },
+  {
+   "k": "weng1",
+   "read": "翁",
+   "p": "wēng",
+   "dir": "syl"
+  },
+  {
+   "k": "wo1",
+   "read": "窝",
+   "p": "wō",
+   "dir": "syl"
+  },
+  {
+   "k": "wo4",
+   "read": "沃",
+   "p": "wò",
+   "dir": "syl"
+  },
+  {
+   "k": "wu1",
+   "read": "乌",
+   "p": "wū",
+   "dir": "syl"
+  },
+  {
+   "k": "wu2",
+   "read": "无",
+   "p": "wú",
+   "dir": "syl"
+  },
+  {
+   "k": "wu4",
+   "read": "务",
+   "p": "wù",
+   "dir": "syl"
+  },
+  {
+   "k": "xi1",
+   "read": "夕",
+   "p": "xī",
+   "dir": "syl"
+  },
+  {
+   "k": "xi4",
+   "read": "戏",
+   "p": "xì",
+   "dir": "syl"
+  },
+  {
+   "k": "xia1",
+   "read": "虾",
+   "p": "xiā",
+   "dir": "syl"
+  },
+  {
+   "k": "xia2",
+   "read": "峡",
+   "p": "xiá",
+   "dir": "syl"
+  },
+  {
+   "k": "sha4",
+   "read": "厦",
+   "p": "shà",
+   "dir": "syl"
+  },
+  {
+   "k": "xian2",
+   "read": "闲",
+   "p": "xián",
+   "dir": "syl"
+  },
+  {
+   "k": "xian3",
+   "read": "显",
+   "p": "xiǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "xiang1",
+   "read": "乡",
+   "p": "xiāng",
+   "dir": "syl"
+  },
+  {
+   "k": "xiang3",
+   "read": "享",
+   "p": "xiǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "xue1",
+   "read": "削",
+   "p": "xuē",
+   "dir": "syl"
+  },
+  {
+   "k": "xiao1",
+   "read": "消",
+   "p": "xiāo",
+   "dir": "syl"
+  },
+  {
+   "k": "xie1",
+   "read": "些",
+   "p": "xiē",
+   "dir": "syl"
+  },
+  {
+   "k": "xie2",
+   "read": "协",
+   "p": "xié",
+   "dir": "syl"
+  },
+  {
+   "k": "xie3",
+   "read": "写",
+   "p": "xiě",
+   "dir": "syl"
+  },
+  {
+   "k": "xie4",
+   "read": "泄",
+   "p": "xiè",
+   "dir": "syl"
+  },
+  {
+   "k": "xin4",
+   "read": "信",
+   "p": "xìn",
+   "dir": "syl"
+  },
+  {
+   "k": "xing3",
+   "read": "醒",
+   "p": "xǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "xing4",
+   "read": "杏",
+   "p": "xìng",
+   "dir": "syl"
+  },
+  {
+   "k": "xiong1",
+   "read": "凶",
+   "p": "xiōng",
+   "dir": "syl"
+  },
+  {
+   "k": "xiong2",
+   "read": "雄",
+   "p": "xióng",
+   "dir": "syl"
+  },
+  {
+   "k": "xiu1",
+   "read": "休",
+   "p": "xiū",
+   "dir": "syl"
+  },
+  {
+   "k": "xiu3",
+   "read": "朽",
+   "p": "xiǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "xiu4",
+   "read": "秀",
+   "p": "xiù",
+   "dir": "syl"
+  },
+  {
+   "k": "xu1",
+   "read": "须",
+   "p": "xū",
+   "dir": "syl"
+  },
+  {
+   "k": "xu2",
+   "read": "徐",
+   "p": "xú",
+   "dir": "syl"
+  },
+  {
+   "k": "xu3",
+   "read": "许",
+   "p": "xǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "xu4",
+   "read": "序",
+   "p": "xù",
+   "dir": "syl"
+  },
+  {
+   "k": "xuan1",
+   "read": "宣",
+   "p": "xuān",
+   "dir": "syl"
+  },
+  {
+   "k": "xuan2",
+   "read": "玄",
+   "p": "xuán",
+   "dir": "syl"
+  },
+  {
+   "k": "xuan3",
+   "read": "选",
+   "p": "xuǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "xue4",
+   "read": "血",
+   "p": "xuè",
+   "dir": "syl"
+  },
+  {
+   "k": "xun2",
+   "read": "寻",
+   "p": "xún",
+   "dir": "syl"
+  },
+  {
+   "k": "xun4",
+   "read": "训",
+   "p": "xùn",
+   "dir": "syl"
+  },
+  {
+   "k": "ya1",
+   "read": "压",
+   "p": "yā",
+   "dir": "syl"
+  },
+  {
+   "k": "ya0",
+   "read": "呀",
+   "p": "ya",
+   "dir": "syl"
+  },
+  {
+   "k": "ya3",
+   "read": "哑",
+   "p": "yǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "ya4",
+   "read": "亚",
+   "p": "yà",
+   "dir": "syl"
+  },
+  {
+   "k": "yan4",
+   "read": "咽",
+   "p": "yàn",
+   "dir": "syl"
+  },
+  {
+   "k": "yan1",
+   "read": "烟",
+   "p": "yān",
+   "dir": "syl"
+  },
+  {
+   "k": "yan2",
+   "read": "延",
+   "p": "yán",
+   "dir": "syl"
+  },
+  {
+   "k": "yan3",
+   "read": "衍",
+   "p": "yǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "yang1",
+   "read": "央",
+   "p": "yāng",
+   "dir": "syl"
+  },
+  {
+   "k": "yang3",
+   "read": "仰",
+   "p": "yǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "yao1",
+   "read": "腰",
+   "p": "yāo",
+   "dir": "syl"
+  },
+  {
+   "k": "yao2",
+   "read": "摇",
+   "p": "yáo",
+   "dir": "syl"
+  },
+  {
+   "k": "yao3",
+   "read": "咬",
+   "p": "yǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "yao4",
+   "read": "药",
+   "p": "yào",
+   "dir": "syl"
+  },
+  {
+   "k": "yi2",
+   "read": "仪",
+   "p": "yí",
+   "dir": "syl"
+  },
+  {
+   "k": "yi3",
+   "read": "乙",
+   "p": "yǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "yi4",
+   "read": "义",
+   "p": "yì",
+   "dir": "syl"
+  },
+  {
+   "k": "yin2",
+   "read": "吟",
+   "p": "yín",
+   "dir": "syl"
+  },
+  {
+   "k": "yin3",
+   "read": "引",
+   "p": "yǐn",
+   "dir": "syl"
+  },
+  {
+   "k": "yin4",
+   "read": "印",
+   "p": "yìn",
+   "dir": "syl"
+  },
+  {
+   "k": "ying1",
+   "read": "应",
+   "p": "yīng",
+   "dir": "syl"
+  },
+  {
+   "k": "ying2",
+   "read": "迎",
+   "p": "yíng",
+   "dir": "syl"
+  },
+  {
+   "k": "ying3",
+   "read": "影",
+   "p": "yǐng",
+   "dir": "syl"
+  },
+  {
+   "k": "ying4",
+   "read": "映",
+   "p": "yìng",
+   "dir": "syl"
+  },
+  {
+   "k": "yo1",
+   "read": "哟",
+   "p": "yō",
+   "dir": "syl"
+  },
+  {
+   "k": "yong1",
+   "read": "拥",
+   "p": "yōng",
+   "dir": "syl"
+  },
+  {
+   "k": "yong3",
+   "read": "永",
+   "p": "yǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "you1",
+   "read": "优",
+   "p": "yōu",
+   "dir": "syl"
+  },
+  {
+   "k": "you2",
+   "read": "尤",
+   "p": "yóu",
+   "dir": "syl"
+  },
+  {
+   "k": "yuan4",
+   "read": "怨",
+   "p": "yuàn",
+   "dir": "syl"
+  },
+  {
+   "k": "yue1",
+   "read": "曰",
+   "p": "yuē",
+   "dir": "syl"
+  },
+  {
+   "k": "yun3",
+   "read": "允",
+   "p": "yǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "yun4",
+   "read": "孕",
+   "p": "yùn",
+   "dir": "syl"
+  },
+  {
+   "k": "yun1",
+   "read": "晕",
+   "p": "yūn",
+   "dir": "syl"
+  },
+  {
+   "k": "za2",
+   "read": "杂",
+   "p": "zá",
+   "dir": "syl"
+  },
+  {
+   "k": "zai3",
+   "read": "宰",
+   "p": "zǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "zan2",
+   "read": "咱",
+   "p": "zán",
+   "dir": "syl"
+  },
+  {
+   "k": "zan4",
+   "read": "暂",
+   "p": "zàn",
+   "dir": "syl"
+  },
+  {
+   "k": "zang4",
+   "read": "脏",
+   "p": "zàng",
+   "dir": "syl"
+  },
+  {
+   "k": "zao1",
+   "read": "遭",
+   "p": "zāo",
+   "dir": "syl"
+  },
+  {
+   "k": "zao4",
+   "read": "灶",
+   "p": "zào",
+   "dir": "syl"
+  },
+  {
+   "k": "ze2",
+   "read": "则",
+   "p": "zé",
+   "dir": "syl"
+  },
+  {
+   "k": "zei2",
+   "read": "贼",
+   "p": "zéi",
+   "dir": "syl"
+  },
+  {
+   "k": "zen3",
+   "read": "怎",
+   "p": "zěn",
+   "dir": "syl"
+  },
+  {
+   "k": "zeng1",
+   "read": "增",
+   "p": "zēng",
+   "dir": "syl"
+  },
+  {
+   "k": "zeng4",
+   "read": "赠",
+   "p": "zèng",
+   "dir": "syl"
+  },
+  {
+   "k": "zha1",
+   "read": "渣",
+   "p": "zhā",
+   "dir": "syl"
+  },
+  {
+   "k": "zha3",
+   "read": "眨",
+   "p": "zhǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "zha4",
+   "read": "炸",
+   "p": "zhà",
+   "dir": "syl"
+  },
+  {
+   "k": "zhai1",
+   "read": "摘",
+   "p": "zhāi",
+   "dir": "syl"
+  },
+  {
+   "k": "zhai2",
+   "read": "宅",
+   "p": "zhái",
+   "dir": "syl"
+  },
+  {
+   "k": "zhai3",
+   "read": "窄",
+   "p": "zhǎi",
+   "dir": "syl"
+  },
+  {
+   "k": "zhai4",
+   "read": "债",
+   "p": "zhài",
+   "dir": "syl"
+  },
+  {
+   "k": "zhan1",
+   "read": "沾",
+   "p": "zhān",
+   "dir": "syl"
+  },
+  {
+   "k": "zhan3",
+   "read": "展",
+   "p": "zhǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "zhang4",
+   "read": "丈",
+   "p": "zhàng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhao1",
+   "read": "招",
+   "p": "zhāo",
+   "dir": "syl"
+  },
+  {
+   "k": "zhao4",
+   "read": "召",
+   "p": "zhào",
+   "dir": "syl"
+  },
+  {
+   "k": "zhe1",
+   "read": "遮",
+   "p": "zhē",
+   "dir": "syl"
+  },
+  {
+   "k": "zhe2",
+   "read": "折",
+   "p": "zhé",
+   "dir": "syl"
+  },
+  {
+   "k": "zhe3",
+   "read": "者",
+   "p": "zhě",
+   "dir": "syl"
+  },
+  {
+   "k": "zhe4",
+   "read": "这",
+   "p": "zhè",
+   "dir": "syl"
+  },
+  {
+   "k": "zhen1",
+   "read": "针",
+   "p": "zhēn",
+   "dir": "syl"
+  },
+  {
+   "k": "zhen3",
+   "read": "诊",
+   "p": "zhěn",
+   "dir": "syl"
+  },
+  {
+   "k": "zhen4",
+   "read": "阵",
+   "p": "zhèn",
+   "dir": "syl"
+  },
+  {
+   "k": "zheng1",
+   "read": "争",
+   "p": "zhēng",
+   "dir": "syl"
+  },
+  {
+   "k": "zheng3",
+   "read": "整",
+   "p": "zhěng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhi4",
+   "read": "至",
+   "p": "zhì",
+   "dir": "syl"
+  },
+  {
+   "k": "zhong3",
+   "read": "肿",
+   "p": "zhǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhong4",
+   "read": "仲",
+   "p": "zhòng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhou1",
+   "read": "州",
+   "p": "zhōu",
+   "dir": "syl"
+  },
+  {
+   "k": "zhou2",
+   "read": "轴",
+   "p": "zhóu",
+   "dir": "syl"
+  },
+  {
+   "k": "zhou4",
+   "read": "宙",
+   "p": "zhòu",
+   "dir": "syl"
+  },
+  {
+   "k": "zhu1",
+   "read": "朱",
+   "p": "zhū",
+   "dir": "syl"
+  },
+  {
+   "k": "zhua1",
+   "read": "抓",
+   "p": "zhuā",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuan1",
+   "read": "专",
+   "p": "zhuān",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuan3",
+   "read": "转",
+   "p": "zhuǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuan4",
+   "read": "赚",
+   "p": "zhuàn",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuang1",
+   "read": "庄",
+   "p": "zhuāng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuang4",
+   "read": "壮",
+   "p": "zhuàng",
+   "dir": "syl"
+  },
+  {
+   "k": "zhui1",
+   "read": "追",
+   "p": "zhuī",
+   "dir": "syl"
+  },
+  {
+   "k": "zhun3",
+   "read": "准",
+   "p": "zhǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "zi1",
+   "read": "兹",
+   "p": "zī",
+   "dir": "syl"
+  },
+  {
+   "k": "zi3",
+   "read": "籽",
+   "p": "zǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "zong1",
+   "read": "宗",
+   "p": "zōng",
+   "dir": "syl"
+  },
+  {
+   "k": "zong3",
+   "read": "总",
+   "p": "zǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "zong4",
+   "read": "纵",
+   "p": "zòng",
+   "dir": "syl"
+  },
+  {
+   "k": "zou4",
+   "read": "奏",
+   "p": "zòu",
+   "dir": "syl"
+  },
+  {
+   "k": "zu1",
+   "read": "租",
+   "p": "zū",
+   "dir": "syl"
+  },
+  {
+   "k": "zu3",
+   "read": "阻",
+   "p": "zǔ",
+   "dir": "syl"
+  },
+  {
+   "k": "zuan1",
+   "read": "钻",
+   "p": "zuān",
+   "dir": "syl"
+  },
+  {
+   "k": "zui3",
+   "read": "嘴",
+   "p": "zuǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "zui4",
+   "read": "最",
+   "p": "zuì",
+   "dir": "syl"
+  },
+  {
+   "k": "zun1",
+   "read": "尊",
+   "p": "zūn",
+   "dir": "syl"
+  },
+  {
+   "k": "ang1",
+   "read": "肮",
+   "p": "āng",
+   "dir": "syl"
+  },
+  {
+   "k": "ao3",
+   "read": "拗",
+   "p": "ǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "bai1",
+   "read": "掰",
+   "p": "bāi",
+   "dir": "syl"
+  },
+  {
+   "k": "ben4",
+   "read": "笨",
+   "p": "bèn",
+   "dir": "syl"
+  },
+  {
+   "k": "beng4",
+   "read": "泵",
+   "p": "bèng",
+   "dir": "syl"
+  },
+  {
+   "k": "bie1",
+   "read": "憋",
+   "p": "biē",
+   "dir": "syl"
+  },
+  {
+   "k": "bie3",
+   "read": "瘪",
+   "p": "biě",
+   "dir": "syl"
+  },
+  {
+   "k": "bin4",
+   "read": "鬓",
+   "p": "bìn",
+   "dir": "syl"
+  },
+  {
+   "k": "bo3",
+   "read": "跛",
+   "p": "bǒ",
+   "dir": "syl"
+  },
+  {
+   "k": "ceng4",
+   "read": "蹭",
+   "p": "cèng",
+   "dir": "syl"
+  },
+  {
+   "k": "chan1",
+   "read": "搀",
+   "p": "chān",
+   "dir": "syl"
+  },
+  {
+   "k": "cheng3",
+   "read": "逞",
+   "p": "chěng",
+   "dir": "syl"
+  },
+  {
+   "k": "cheng4",
+   "read": "秤",
+   "p": "chèng",
+   "dir": "syl"
+  },
+  {
+   "k": "chong3",
+   "read": "宠",
+   "p": "chǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "chuai1",
+   "read": "揣",
+   "p": "chuāi",
+   "dir": "syl"
+  },
+  {
+   "k": "chun3",
+   "read": "蠢",
+   "p": "chǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "chuo1",
+   "read": "戳",
+   "p": "chuō",
+   "dir": "syl"
+  },
+  {
+   "k": "chuo4",
+   "read": "绰",
+   "p": "chuò",
+   "dir": "syl"
+  },
+  {
+   "k": "cuan4",
+   "read": "窜",
+   "p": "cuàn",
+   "dir": "syl"
+  },
+  {
+   "k": "cuo1",
+   "read": "搓",
+   "p": "cuō",
+   "dir": "syl"
+  },
+  {
+   "k": "dun3",
+   "read": "盹",
+   "p": "dǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "duo4",
+   "read": "堕",
+   "p": "duò",
+   "dir": "syl"
+  },
+  {
+   "k": "fei3",
+   "read": "匪",
+   "p": "fěi",
+   "dir": "syl"
+  },
+  {
+   "k": "feng3",
+   "read": "讽",
+   "p": "fěng",
+   "dir": "syl"
+  },
+  {
+   "k": "ga4",
+   "read": "尬",
+   "p": "gà",
+   "dir": "syl"
+  },
+  {
+   "k": "ha2",
+   "read": "蛤",
+   "p": "há",
+   "dir": "syl"
+  },
+  {
+   "k": "geng3",
+   "read": "埂",
+   "p": "gěng",
+   "dir": "syl"
+  },
+  {
+   "k": "gua3",
+   "read": "寡",
+   "p": "guǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "guai1",
+   "read": "乖",
+   "p": "guāi",
+   "dir": "syl"
+  },
+  {
+   "k": "guang4",
+   "read": "逛",
+   "p": "guàng",
+   "dir": "syl"
+  },
+  {
+   "k": "han1",
+   "read": "酣",
+   "p": "hān",
+   "dir": "syl"
+  },
+  {
+   "k": "hang1",
+   "read": "夯",
+   "p": "hāng",
+   "dir": "syl"
+  },
+  {
+   "k": "huo1",
+   "read": "豁",
+   "p": "huō",
+   "dir": "syl"
+  },
+  {
+   "k": "jia2",
+   "read": "颊",
+   "p": "jiá",
+   "dir": "syl"
+  },
+  {
+   "k": "jiong3",
+   "read": "窘",
+   "p": "jiǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "juan1",
+   "read": "娟",
+   "p": "juān",
+   "dir": "syl"
+  },
+  {
+   "k": "ka1",
+   "read": "咖",
+   "p": "kā",
+   "dir": "syl"
+  },
+  {
+   "k": "kang2",
+   "read": "扛",
+   "p": "káng",
+   "dir": "syl"
+  },
+  {
+   "k": "kou1",
+   "read": "抠",
+   "p": "kōu",
+   "dir": "syl"
+  },
+  {
+   "k": "kua3",
+   "read": "垮",
+   "p": "kuǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "kuang1",
+   "read": "筐",
+   "p": "kuāng",
+   "dir": "syl"
+  },
+  {
+   "k": "kun3",
+   "read": "捆",
+   "p": "kǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "lao4",
+   "read": "涝",
+   "p": "lào",
+   "dir": "syl"
+  },
+  {
+   "k": "le1",
+   "read": "肋",
+   "p": "lē",
+   "dir": "syl"
+  },
+  {
+   "k": "leng2",
+   "read": "棱",
+   "p": "léng",
+   "dir": "syl"
+  },
+  {
+   "k": "liao1",
+   "read": "撩",
+   "p": "liāo",
+   "dir": "syl"
+  },
+  {
+   "k": "liao3",
+   "read": "瞭",
+   "p": "liǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "lie3",
+   "read": "咧",
+   "p": "liě",
+   "dir": "syl"
+  },
+  {
+   "k": "lin3",
+   "read": "凛",
+   "p": "lǐn",
+   "dir": "syl"
+  },
+  {
+   "k": "lin4",
+   "read": "吝",
+   "p": "lìn",
+   "dir": "syl"
+  },
+  {
+   "k": "lin1",
+   "read": "拎",
+   "p": "līn",
+   "dir": "syl"
+  },
+  {
+   "k": "lou3",
+   "read": "搂",
+   "p": "lǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "luan2",
+   "read": "峦",
+   "p": "luán",
+   "dir": "syl"
+  },
+  {
+   "k": "lun1",
+   "read": "抡",
+   "p": "lūn",
+   "dir": "syl"
+  },
+  {
+   "k": "luo1",
+   "read": "啰",
+   "p": "luō",
+   "dir": "syl"
+  },
+  {
+   "k": "mang3",
+   "read": "莽",
+   "p": "mǎng",
+   "dir": "syl"
+  },
+  {
+   "k": "mao3",
+   "read": "卯",
+   "p": "mǎo",
+   "dir": "syl"
+  },
+  {
+   "k": "mi1",
+   "read": "咪",
+   "p": "mī",
+   "dir": "syl"
+  },
+  {
+   "k": "miu4",
+   "read": "谬",
+   "p": "miù",
+   "dir": "syl"
+  },
+  {
+   "k": "nao2",
+   "read": "挠",
+   "p": "náo",
+   "dir": "syl"
+  },
+  {
+   "k": "nei3",
+   "read": "馁",
+   "p": "něi",
+   "dir": "syl"
+  },
+  {
+   "k": "ni1",
+   "read": "妮",
+   "p": "nī",
+   "dir": "syl"
+  },
+  {
+   "k": "nian3",
+   "read": "捻",
+   "p": "niǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "nie4",
+   "read": "聂",
+   "p": "niè",
+   "dir": "syl"
+  },
+  {
+   "k": "ning4",
+   "read": "泞",
+   "p": "nìng",
+   "dir": "syl"
+  },
+  {
+   "k": "nve4",
+   "read": "疟",
+   "p": "nüè",
+   "dir": "syl"
+  },
+  {
+   "k": "pa1",
+   "read": "趴",
+   "p": "pā",
+   "dir": "syl"
+  },
+  {
+   "k": "pang1",
+   "read": "乓",
+   "p": "pāng",
+   "dir": "syl"
+  },
+  {
+   "k": "pao2",
+   "read": "刨",
+   "p": "páo",
+   "dir": "syl"
+  },
+  {
+   "k": "peng1",
+   "read": "砰",
+   "p": "pēng",
+   "dir": "syl"
+  },
+  {
+   "k": "pie1",
+   "read": "撇",
+   "p": "piē",
+   "dir": "syl"
+  },
+  {
+   "k": "pin4",
+   "read": "聘",
+   "p": "pìn",
+   "dir": "syl"
+  },
+  {
+   "k": "ping1",
+   "read": "乒",
+   "p": "pīng",
+   "dir": "syl"
+  },
+  {
+   "k": "qia1",
+   "read": "掐",
+   "p": "qiā",
+   "dir": "syl"
+  },
+  {
+   "k": "qiao4",
+   "read": "俏",
+   "p": "qiào",
+   "dir": "syl"
+  },
+  {
+   "k": "qin3",
+   "read": "寝",
+   "p": "qǐn",
+   "dir": "syl"
+  },
+  {
+   "k": "qin4",
+   "read": "沁",
+   "p": "qìn",
+   "dir": "syl"
+  },
+  {
+   "k": "qu2",
+   "read": "渠",
+   "p": "qú",
+   "dir": "syl"
+  },
+  {
+   "k": "que2",
+   "read": "瘸",
+   "p": "qué",
+   "dir": "syl"
+  },
+  {
+   "k": "rang2",
+   "read": "瓤",
+   "p": "ráng",
+   "dir": "syl"
+  },
+  {
+   "k": "rong1",
+   "read": "茸",
+   "p": "rōng",
+   "dir": "syl"
+  },
+  {
+   "k": "rong3",
+   "read": "冗",
+   "p": "rǒng",
+   "dir": "syl"
+  },
+  {
+   "k": "rui3",
+   "read": "蕊",
+   "p": "ruǐ",
+   "dir": "syl"
+  },
+  {
+   "k": "sao1",
+   "read": "搔",
+   "p": "sāo",
+   "dir": "syl"
+  },
+  {
+   "k": "shai1",
+   "read": "筛",
+   "p": "shāi",
+   "dir": "syl"
+  },
+  {
+   "k": "shang0",
+   "read": "裳",
+   "p": "shang",
+   "dir": "syl"
+  },
+  {
+   "k": "shao2",
+   "read": "勺",
+   "p": "sháo",
+   "dir": "syl"
+  },
+  {
+   "k": "she1",
+   "read": "奢",
+   "p": "shē",
+   "dir": "syl"
+  },
+  {
+   "k": "shuan1",
+   "read": "拴",
+   "p": "shuān",
+   "dir": "syl"
+  },
+  {
+   "k": "shuan4",
+   "read": "涮",
+   "p": "shuàn",
+   "dir": "syl"
+  },
+  {
+   "k": "shun3",
+   "read": "吮",
+   "p": "shǔn",
+   "dir": "syl"
+  },
+  {
+   "k": "shuo4",
+   "read": "烁",
+   "p": "shuò",
+   "dir": "syl"
+  },
+  {
+   "k": "sou4",
+   "read": "嗽",
+   "p": "sòu",
+   "dir": "syl"
+  },
+  {
+   "k": "suo0",
+   "read": "嗦",
+   "p": "suo",
+   "dir": "syl"
+  },
+  {
+   "k": "tian3",
+   "read": "舔",
+   "p": "tiǎn",
+   "dir": "syl"
+  },
+  {
+   "k": "tui2",
+   "read": "颓",
+   "p": "tuí",
+   "dir": "syl"
+  },
+  {
+   "k": "tun2",
+   "read": "屯",
+   "p": "tún",
+   "dir": "syl"
+  },
+  {
+   "k": "wa4",
+   "read": "袜",
+   "p": "wà",
+   "dir": "syl"
+  },
+  {
+   "k": "xiao2",
+   "read": "淆",
+   "p": "xiáo",
+   "dir": "syl"
+  },
+  {
+   "k": "xuan4",
+   "read": "炫",
+   "p": "xuàn",
+   "dir": "syl"
+  },
+  {
+   "k": "xun1",
+   "read": "勋",
+   "p": "xūn",
+   "dir": "syl"
+  },
+  {
+   "k": "ye1",
+   "read": "椰",
+   "p": "yē",
+   "dir": "syl"
+  },
+  {
+   "k": "yu1",
+   "read": "迂",
+   "p": "yū",
+   "dir": "syl"
+  },
+  {
+   "k": "yuan1",
+   "read": "冤",
+   "p": "yuān",
+   "dir": "syl"
+  },
+  {
+   "k": "zang1",
+   "read": "赃",
+   "p": "zāng",
+   "dir": "syl"
+  },
+  {
+   "k": "zao2",
+   "read": "凿",
+   "p": "záo",
+   "dir": "syl"
+  },
+  {
+   "k": "za3",
+   "read": "咋",
+   "p": "zǎ",
+   "dir": "syl"
+  },
+  {
+   "k": "zha2",
+   "read": "闸",
+   "p": "zhá",
+   "dir": "syl"
+  },
+  {
+   "k": "zhou3",
+   "read": "肘",
+   "p": "zhǒu",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuai1",
+   "read": "拽",
+   "p": "zhuāi",
+   "dir": "syl"
+  },
+  {
+   "k": "zhui4",
+   "read": "坠",
+   "p": "zhuì",
+   "dir": "syl"
+  },
+  {
+   "k": "zhun1",
+   "read": "谆",
+   "p": "zhūn",
+   "dir": "syl"
+  },
+  {
+   "k": "zhuo2",
+   "read": "卓",
+   "p": "zhuó",
+   "dir": "syl"
+  }
+ ],
+ "pinyin": [
+  {
+   "k": "ini_zh",
+   "read": "知",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_ch",
+   "read": "吃",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_sh",
+   "read": "诗",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_b",
+   "read": "玻",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_p",
+   "read": "坡",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_m",
+   "read": "摸",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_f",
+   "read": "佛",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_d",
+   "read": "得",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_t",
+   "read": "特",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_n",
+   "read": "讷",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_l",
+   "read": "勒",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_g",
+   "read": "哥",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_k",
+   "read": "科",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_h",
+   "read": "喝",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_j",
+   "read": "基",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_q",
+   "read": "欺",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_x",
+   "read": "希",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_r",
+   "read": "日",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_z",
+   "read": "资",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_c",
+   "read": "次",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_s",
+   "read": "思",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_y",
+   "read": "衣",
+   "dir": "pinyin"
+  },
+  {
+   "k": "ini_w",
+   "read": "乌",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_a",
+   "read": "啊",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_o",
+   "read": "哦",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_e",
+   "read": "鹅",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_i",
+   "read": "衣",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_u",
+   "read": "乌",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_v",
+   "read": "迂",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ai",
+   "read": "哀",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ei",
+   "read": "诶",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ui",
+   "read": "威",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ao",
+   "read": "熬",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ou",
+   "read": "欧",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_iu",
+   "read": "优",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ie",
+   "read": "耶",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ve",
+   "read": "约",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_er",
+   "read": "儿",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_an",
+   "read": "安",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_en",
+   "read": "恩",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_in",
+   "read": "因",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_un",
+   "read": "温",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_vn",
+   "read": "晕",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ang",
+   "read": "昂",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_eng",
+   "read": "灯",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ing",
+   "read": "英",
+   "dir": "pinyin"
+  },
+  {
+   "k": "fin_ong",
+   "read": "轰",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_zhi",
+   "read": "知",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_chi",
+   "read": "吃",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_shi",
+   "read": "诗",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_ri",
+   "read": "日",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_zi",
+   "read": "字",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_ci",
+   "read": "次",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_si",
+   "read": "四",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_yi",
+   "read": "衣",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_wu",
+   "read": "乌",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_yu",
+   "read": "鱼",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_ye",
+   "read": "叶",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_yue",
+   "read": "月",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_yin",
+   "read": "音",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_yun",
+   "read": "云",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_yuan",
+   "read": "元",
+   "dir": "pinyin"
+  },
+  {
+   "k": "whole_ying",
+   "read": "英",
+   "dir": "pinyin"
+  },
+  {
+   "k": "tone1",
+   "read": "妈",
+   "dir": "pinyin"
+  },
+  {
+   "k": "tone2",
+   "read": "麻",
+   "dir": "pinyin"
+  },
+  {
+   "k": "tone3",
+   "read": "马",
+   "dir": "pinyin"
+  },
+  {
+   "k": "tone4",
+   "read": "骂",
+   "dir": "pinyin"
+  }
+ ]
+}

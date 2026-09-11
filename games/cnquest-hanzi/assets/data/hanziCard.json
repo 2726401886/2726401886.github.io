@@ -1,0 +1,452 @@
+[
+  {
+    "char": "人",
+    "pinyin": "rén",
+    "enMeaning": "person",
+    "audio": "assets/sounds/hanzi/ren.mp3",
+    "cnSentence": "我是中国人。",
+    "enSentence": "I am Chinese.",
+    "sentenceAudio": "assets/sounds/sentence/ren.mp3"
+  },
+  {
+    "char": "口",
+    "pinyin": "kǒu",
+    "enMeaning": "mouth",
+    "audio": "assets/sounds/hanzi/kou.mp3",
+    "cnSentence": "他有一张小口。",
+    "enSentence": "He has a small mouth.",
+    "sentenceAudio": "assets/sounds/sentence/kou.mp3"
+  },
+  {
+    "char": "手",
+    "pinyin": "shǒu",
+    "enMeaning": "hand",
+    "audio": "assets/sounds/hanzi/shou.mp3",
+    "cnSentence": "我的手很小。",
+    "enSentence": "My hands are small.",
+    "sentenceAudio": "assets/sounds/sentence/shou.mp3"
+  },
+  {
+    "char": "大",
+    "pinyin": "dà",
+    "enMeaning": "big; large",
+    "audio": "assets/sounds/hanzi/da.mp3",
+    "cnSentence": "这个房子很大。",
+    "enSentence": "This house is very big.",
+    "sentenceAudio": "assets/sounds/sentence/da.mp3"
+  },
+  {
+    "char": "小",
+    "pinyin": "xiǎo",
+    "enMeaning": "small; little",
+    "audio": "assets/sounds/hanzi/xiao.mp3",
+    "cnSentence": "我有一只小猫。",
+    "enSentence": "I have a small cat.",
+    "sentenceAudio": "assets/sounds/sentence/xiao.mp3"
+  },
+  {
+    "char": "山",
+    "pinyin": "shān",
+    "enMeaning": "mountain",
+    "audio": "assets/sounds/hanzi/shan.mp3",
+    "cnSentence": "山上有大树。",
+    "enSentence": "There are big trees on the mountain.",
+    "sentenceAudio": "assets/sounds/sentence/shan.mp3"
+  },
+  {
+    "char": "水",
+    "pinyin": "shuǐ",
+    "enMeaning": "water",
+    "audio": "assets/sounds/hanzi/shui.mp3",
+    "cnSentence": "我想喝水。",
+    "enSentence": "I want to drink water.",
+    "sentenceAudio": "assets/sounds/sentence/shui.mp3"
+  },
+  {
+    "char": "火",
+    "pinyin": "huǒ",
+    "enMeaning": "fire",
+    "audio": "assets/sounds/hanzi/huo.mp3",
+    "cnSentence": "火是热的。",
+    "enSentence": "Fire is hot.",
+    "sentenceAudio": "assets/sounds/sentence/huo.mp3"
+  },
+  {
+    "char": "木",
+    "pinyin": "mù",
+    "enMeaning": "wood; tree",
+    "audio": "assets/sounds/hanzi/mu.mp3",
+    "cnSentence": "这是一块木头。",
+    "enSentence": "This is a piece of wood.",
+    "sentenceAudio": "assets/sounds/sentence/mu.mp3"
+  },
+  {
+    "char": "日",
+    "pinyin": "rì",
+    "enMeaning": "sun; day",
+    "audio": "assets/sounds/hanzi/ri.mp3",
+    "cnSentence": "今日天气好。",
+    "enSentence": "The weather is nice today.",
+    "sentenceAudio": "assets/sounds/sentence/ri.mp3"
+  },
+  {
+    "char": "月",
+    "pinyin": "yuè",
+    "enMeaning": "moon; month",
+    "audio": "assets/sounds/hanzi/yue.mp3",
+    "cnSentence": "今晚的月很圆。",
+    "enSentence": "The moon is very round tonight.",
+    "sentenceAudio": "assets/sounds/sentence/yue.mp3"
+  },
+  {
+    "char": "天",
+    "pinyin": "tiān",
+    "enMeaning": "sky; day",
+    "audio": "assets/sounds/hanzi/tian.mp3",
+    "cnSentence": "天是蓝色的。",
+    "enSentence": "The sky is blue.",
+    "sentenceAudio": "assets/sounds/sentence/tian.mp3"
+  },
+  {
+    "char": "地",
+    "pinyin": "dì",
+    "enMeaning": "earth; ground",
+    "audio": "assets/sounds/hanzi/di.mp3",
+    "cnSentence": "地上有一本书。",
+    "enSentence": "There is a book on the ground.",
+    "sentenceAudio": "assets/sounds/sentence/di.mp3"
+  },
+  {
+    "char": "上",
+    "pinyin": "shàng",
+    "enMeaning": "up; on; above",
+    "audio": "assets/sounds/hanzi/shang.mp3",
+    "cnSentence": "书在桌子上。",
+    "enSentence": "The book is on the table.",
+    "sentenceAudio": "assets/sounds/sentence/shang.mp3"
+  },
+  {
+    "char": "下",
+    "pinyin": "xià",
+    "enMeaning": "down; under; below",
+    "audio": "assets/sounds/hanzi/xia.mp3",
+    "cnSentence": "猫在桌子下。",
+    "enSentence": "The cat is under the table.",
+    "sentenceAudio": "assets/sounds/sentence/xia.mp3"
+  },
+  {
+    "char": "中",
+    "pinyin": "zhōng",
+    "enMeaning": "middle; center",
+    "audio": "assets/sounds/hanzi/zhong.mp3",
+    "cnSentence": "我在家中。",
+    "enSentence": "I am at home.",
+    "sentenceAudio": "assets/sounds/sentence/zhong.mp3"
+  },
+  {
+    "char": "女",
+    "pinyin": "nǚ",
+    "enMeaning": "female; woman",
+    "audio": "assets/sounds/hanzi/nv.mp3",
+    "cnSentence": "她是女人。",
+    "enSentence": "She is a woman.",
+    "sentenceAudio": "assets/sounds/sentence/nv.mp3"
+  },
+  {
+    "char": "男",
+    "pinyin": "nán",
+    "enMeaning": "male; man",
+    "audio": "assets/sounds/hanzi/nan.mp3",
+    "cnSentence": "他是男人。",
+    "enSentence": "He is a man.",
+    "sentenceAudio": "assets/sounds/sentence/nan.mp3"
+  },
+  {
+    "char": "子",
+    "pinyin": "zǐ",
+    "enMeaning": "child; son",
+    "audio": "assets/sounds/hanzi/zi.mp3",
+    "cnSentence": "他的儿子三岁。",
+    "enSentence": "His son is three years old.",
+    "sentenceAudio": "assets/sounds/sentence/zi.mp3"
+  },
+  {
+    "char": "王",
+    "pinyin": "wáng",
+    "enMeaning": "king",
+    "audio": "assets/sounds/hanzi/wang.mp3",
+    "cnSentence": "王是国王。",
+    "enSentence": "Wang is the king.",
+    "sentenceAudio": "assets/sounds/sentence/wang.mp3"
+  },
+  {
+    "char": "我",
+    "pinyin": "wǒ",
+    "enMeaning": "I; me",
+    "audio": "assets/sounds/hanzi/wo.mp3",
+    "cnSentence": "我是学生。",
+    "enSentence": "I am a student.",
+    "sentenceAudio": "assets/sounds/sentence/wo.mp3"
+  },
+  {
+    "char": "你",
+    "pinyin": "nǐ",
+    "enMeaning": "you",
+    "audio": "assets/sounds/hanzi/ni.mp3",
+    "cnSentence": "你好吗？",
+    "enSentence": "How are you?",
+    "sentenceAudio": "assets/sounds/sentence/ni.mp3"
+  },
+  {
+    "char": "他",
+    "pinyin": "tā",
+    "enMeaning": "he; him",
+    "audio": "assets/sounds/hanzi/ta.mp3",
+    "cnSentence": "他是我的朋友。",
+    "enSentence": "He is my friend.",
+    "sentenceAudio": "assets/sounds/sentence/ta.mp3"
+  },
+  {
+    "char": "好",
+    "pinyin": "hǎo",
+    "enMeaning": "good; well",
+    "audio": "assets/sounds/hanzi/hao.mp3",
+    "cnSentence": "今天天气很好。",
+    "enSentence": "The weather is very good today.",
+    "sentenceAudio": "assets/sounds/sentence/hao.mp3"
+  },
+  {
+    "char": "是",
+    "pinyin": "shì",
+    "enMeaning": "to be; yes",
+    "audio": "assets/sounds/hanzi/shi.mp3",
+    "cnSentence": "我是老师。",
+    "enSentence": "I am a teacher.",
+    "sentenceAudio": "assets/sounds/sentence/shi.mp3"
+  },
+  {
+    "char": "有",
+    "pinyin": "yǒu",
+    "enMeaning": "to have; there is",
+    "audio": "assets/sounds/hanzi/you.mp3",
+    "cnSentence": "我有一本书。",
+    "enSentence": "I have a book.",
+    "sentenceAudio": "assets/sounds/sentence/you.mp3"
+  },
+  {
+    "char": "不",
+    "pinyin": "bù",
+    "enMeaning": "no; not",
+    "audio": "assets/sounds/hanzi/bu.mp3",
+    "cnSentence": "我不是老师。",
+    "enSentence": "I am not a teacher.",
+    "sentenceAudio": "assets/sounds/sentence/bu.mp3"
+  },
+  {
+    "char": "一",
+    "pinyin": "yī",
+    "enMeaning": "one",
+    "audio": "assets/sounds/hanzi/yi.mp3",
+    "cnSentence": "我有一只猫。",
+    "enSentence": "I have one cat.",
+    "sentenceAudio": "assets/sounds/sentence/yi.mp3"
+  },
+  {
+    "char": "二",
+    "pinyin": "èr",
+    "enMeaning": "two",
+    "audio": "assets/sounds/hanzi/er.mp3",
+    "cnSentence": "我有两个朋友。",
+    "enSentence": "I have two friends.",
+    "sentenceAudio": "assets/sounds/sentence/er.mp3"
+  },
+  {
+    "char": "三",
+    "pinyin": "sān",
+    "enMeaning": "three",
+    "audio": "assets/sounds/hanzi/san.mp3",
+    "cnSentence": "他有三个孩子。",
+    "enSentence": "He has three children.",
+    "sentenceAudio": "assets/sounds/sentence/san.mp3"
+  },
+  {
+    "char": "十",
+    "pinyin": "shí",
+    "enMeaning": "ten",
+    "audio": "assets/sounds/hanzi/shi2.mp3",
+    "cnSentence": "我有十本书。",
+    "enSentence": "I have ten books.",
+    "sentenceAudio": "assets/sounds/sentence/shi2.mp3"
+  },
+  {
+    "char": "百",
+    "pinyin": "bǎi",
+    "enMeaning": "hundred",
+    "audio": "assets/sounds/hanzi/bai.mp3",
+    "cnSentence": "这本书有一百页。",
+    "enSentence": "This book has one hundred pages.",
+    "sentenceAudio": "assets/sounds/sentence/bai.mp3"
+  },
+  {
+    "char": "车",
+    "pinyin": "chē",
+    "enMeaning": "car; vehicle",
+    "audio": "assets/sounds/hanzi/che.mp3",
+    "cnSentence": "他的车很大。",
+    "enSentence": "His car is very big.",
+    "sentenceAudio": "assets/sounds/sentence/che.mp3"
+  },
+  {
+    "char": "马",
+    "pinyin": "mǎ",
+    "enMeaning": "horse",
+    "audio": "assets/sounds/hanzi/ma.mp3",
+    "cnSentence": "马跑得很快。",
+    "enSentence": "The horse runs very fast.",
+    "sentenceAudio": "assets/sounds/sentence/ma.mp3"
+  },
+  {
+    "char": "鸟",
+    "pinyin": "niǎo",
+    "enMeaning": "bird",
+    "audio": "assets/sounds/hanzi/niao.mp3",
+    "cnSentence": "鸟在天上飞。",
+    "enSentence": "The bird is flying in the sky.",
+    "sentenceAudio": "assets/sounds/sentence/niao.mp3"
+  },
+  {
+    "char": "鱼",
+    "pinyin": "yú",
+    "enMeaning": "fish",
+    "audio": "assets/sounds/hanzi/yu.mp3",
+    "cnSentence": "鱼在水里游。",
+    "enSentence": "The fish swims in the water.",
+    "sentenceAudio": "assets/sounds/sentence/yu.mp3"
+  },
+  {
+    "char": "花",
+    "pinyin": "huā",
+    "enMeaning": "flower",
+    "audio": "assets/sounds/hanzi/hua.mp3",
+    "cnSentence": "这朵花很美。",
+    "enSentence": "This flower is very beautiful.",
+    "sentenceAudio": "assets/sounds/sentence/hua.mp3"
+  },
+  {
+    "char": "草",
+    "pinyin": "cǎo",
+    "enMeaning": "grass",
+    "audio": "assets/sounds/hanzi/cao.mp3",
+    "cnSentence": "草是绿色的。",
+    "enSentence": "The grass is green.",
+    "sentenceAudio": "assets/sounds/sentence/cao.mp3"
+  },
+  {
+    "char": "树",
+    "pinyin": "shù",
+    "enMeaning": "tree",
+    "audio": "assets/sounds/hanzi/shu.mp3",
+    "cnSentence": "山上有很多树。",
+    "enSentence": "There are many trees on the mountain.",
+    "sentenceAudio": "assets/sounds/sentence/shu.mp3"
+  },
+  {
+    "char": "书",
+    "pinyin": "shū",
+    "enMeaning": "book",
+    "audio": "assets/sounds/hanzi/shu2.mp3",
+    "cnSentence": "我在看书。",
+    "enSentence": "I am reading a book.",
+    "sentenceAudio": "assets/sounds/sentence/shu2.mp3"
+  },
+  {
+    "char": "门",
+    "pinyin": "mén",
+    "enMeaning": "door; gate",
+    "audio": "assets/sounds/hanzi/men.mp3",
+    "cnSentence": "请关门。",
+    "enSentence": "Please close the door.",
+    "sentenceAudio": "assets/sounds/sentence/men.mp3"
+  },
+  {
+    "char": "家",
+    "pinyin": "jiā",
+    "enMeaning": "home; family",
+    "audio": "assets/sounds/hanzi/jia.mp3",
+    "cnSentence": "我家有三口人。",
+    "enSentence": "There are three people in my family.",
+    "sentenceAudio": "assets/sounds/sentence/jia.mp3"
+  },
+  {
+    "char": "学",
+    "pinyin": "xué",
+    "enMeaning": "to study; to learn",
+    "audio": "assets/sounds/hanzi/xue.mp3",
+    "cnSentence": "我学中文。",
+    "enSentence": "I study Chinese.",
+    "sentenceAudio": "assets/sounds/sentence/xue.mp3"
+  },
+  {
+    "char": "吃",
+    "pinyin": "chī",
+    "enMeaning": "to eat",
+    "audio": "assets/sounds/hanzi/chi.mp3",
+    "cnSentence": "我想吃米饭。",
+    "enSentence": "I want to eat rice.",
+    "sentenceAudio": "assets/sounds/sentence/chi.mp3"
+  },
+  {
+    "char": "喝",
+    "pinyin": "hē",
+    "enMeaning": "to drink",
+    "audio": "assets/sounds/hanzi/he.mp3",
+    "cnSentence": "请喝水。",
+    "enSentence": "Please drink water.",
+    "sentenceAudio": "assets/sounds/sentence/he.mp3"
+  },
+  {
+    "char": "看",
+    "pinyin": "kàn",
+    "enMeaning": "to look; to see",
+    "audio": "assets/sounds/hanzi/kan.mp3",
+    "cnSentence": "我看书。",
+    "enSentence": "I read a book.",
+    "sentenceAudio": "assets/sounds/sentence/kan.mp3"
+  },
+  {
+    "char": "听",
+    "pinyin": "tīng",
+    "enMeaning": "to listen; to hear",
+    "audio": "assets/sounds/hanzi/ting.mp3",
+    "cnSentence": "我喜欢听音乐。",
+    "enSentence": "I like listening to music.",
+    "sentenceAudio": "assets/sounds/sentence/ting.mp3"
+  },
+  {
+    "char": "说",
+    "pinyin": "shuō",
+    "enMeaning": "to speak; to say",
+    "audio": "assets/sounds/hanzi/shuo.mp3",
+    "cnSentence": "他会说中文。",
+    "enSentence": "He can speak Chinese.",
+    "sentenceAudio": "assets/sounds/sentence/shuo.mp3"
+  },
+  {
+    "char": "朋",
+    "pinyin": "péng",
+    "enMeaning": "friend",
+    "audio": "assets/sounds/hanzi/peng.mp3",
+    "cnSentence": "他是我的朋友。",
+    "enSentence": "He is my friend.",
+    "sentenceAudio": "assets/sounds/sentence/peng.mp3"
+  },
+  {
+    "char": "爱",
+    "pinyin": "ài",
+    "enMeaning": "to love",
+    "audio": "assets/sounds/hanzi/ai.mp3",
+    "cnSentence": "我爱我的家。",
+    "enSentence": "I love my family.",
+    "sentenceAudio": "assets/sounds/sentence/ai.mp3"
+  }
+]
