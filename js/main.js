@@ -63,6 +63,21 @@ function renderRelatedTools(containerId, currentToolId) {
   `).join("");
 }
 
+// 渲染首页小游戏区块（只取游戏类入口）
+function renderGamesGrid(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const gameIds = ["fruit-merge", "cnquest-hanzi"];
+  const games = TOOLS.filter(t => gameIds.includes(t.id));
+  container.innerHTML = games.map(tool => `
+    <a href="${tool.path}" class="tool-card">
+      <div class="tool-card-icon">${tool.icon}</div>
+      <h3>${tool.name}</h3>
+      <p>${tool.desc}</p>
+    </a>
+  `).join("");
+}
+
 // Toast 提示
 function showToast(message) {
   let toast = document.querySelector(".toast");
@@ -104,4 +119,5 @@ function copyToClipboard(text, button) {
 // 页面加载完成后初始化
 document.addEventListener("DOMContentLoaded", () => {
   renderToolGrid("tool-grid");
+  renderGamesGrid("game-grid");
 });
