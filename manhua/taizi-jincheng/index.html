@@ -32,8 +32,11 @@ body{background:#141414;color:#e8e2d5;font-family:"Noto Sans SC","Microsoft YaHe
 .toc .ch-list a:hover{color:#ffd97a}
 .toc .ch-list span{color:#6f6a5c}
 .reader{max-width:900px;margin:0 auto;padding:10px 8px 40px}
-.pg{margin:0 0 6px}
-.pg img{width:100%;height:auto;display:block;background:#000}
+.pg{margin:0 0 6px;position:relative}
+.pg img{width:100%;height:auto;display:block;background:#000;min-height:120px}
+.pg.loading::after{content:"";position:absolute;left:50%;top:90px;width:34px;height:34px;margin-left:-17px;
+ border:3px solid #3a3630;border-top-color:#d4b96a;border-radius:50%;animation:tjcspin .8s linear infinite;z-index:2}
+@keyframes tjcspin{to{transform:rotate(360deg)}}
 .pg figcaption{text-align:center;color:#5c574b;font-size:12px;padding:2px 0 10px}
 .backtop{position:fixed;right:14px;bottom:18px;background:#d4b96a;color:#141414;text-decoration:none;
  padding:8px 12px;border-radius:20px;font-size:13px;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,.5)}
@@ -320,5 +323,39 @@ body{background:#141414;color:#e8e2d5;font-family:"Noto Sans SC","Microsoft YaHe
 <footer class="footer">
   《太子烬城》 · <a href="../novel/index.html">返回小说专栏</a> · <a href="https://toolshe.cn/">工具书箱 toolshe.cn</a>
 </footer>
+<script>
+(function(){
+  var figs = Array.prototype.slice.call(document.querySelectorAll('.pg'));
+  figs.forEach(function(f){
+    f.classList.add('loading');
+    var img = f.querySelector('img');
+    function done(){ f.classList.remove('loading'); }
+    img.addEventListener('load', done);
+    img.addEventListener('error', function(){
+      if(!img.dataset.retry){
+        img.dataset.retry = '1';
+        setTimeout(function(){ var s = img.src; img.src = s + (s.indexOf('?') > -1 ? '&' : '?') + 'r=1'; }, 2000);
+      } else { done(); }
+    });
+  });
+  function eager(f){
+    var img = f.querySelector('img');
+    if(img){ img.loading = 'eager'; }
+  }
+  function loadAround(el, n){
+    var i = figs.indexOf(el);
+    if(i < 0) return;
+    for(var k = Math.max(0, i - n); k <= Math.min(figs.length - 1, i + n); k++){ eager(figs[k]); }
+  }
+  function handleHash(){
+    var id = location.hash.replace('#', '');
+    if(!id) return;
+    var el = document.getElementById(id);
+    if(el && el.classList.contains('pg')){ loadAround(el, 5); }
+  }
+  window.addEventListener('hashchange', handleHash);
+  handleHash();
+})();
+</script>
 </body>
 </html>
