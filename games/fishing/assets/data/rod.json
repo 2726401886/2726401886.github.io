@@ -1,0 +1,23 @@
+[
+  {
+    "id": "basicRod",
+    "name": "Basic Rod",
+    "maxLoad": 1.5,
+    "price": 0,
+    "desc": "Starter rod, only for small fish."
+  },
+  {
+    "id": "mediumRod",
+    "name": "Medium Rod",
+    "maxLoad": 3,
+    "price": 120,
+    "desc": "All round rod for medium fish."
+  },
+  {
+    "id": "heavyRod",
+    "name": "Heavy Sea Rod",
+    "maxLoad": 8,
+    "price": 350,
+    "desc": "Strong rod for big sea fish."
+  }
+]

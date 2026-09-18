@@ -1,0 +1,198 @@
+[
+  {
+    "id": "crucian",
+    "name": "Crucian Carp",
+    "env": "pond",
+    "preferBait": [
+      "earthworm",
+      "grainBait"
+    ],
+    "suitableHook": [
+      "smallHook"
+    ],
+    "goodWeather": [
+      "cloudy",
+      "lightRain"
+    ],
+    "sellPrice": 15,
+    "weight": 0.8,
+    "sizeType": "small",
+    "desc": "Small freshwater fish, likes earthworm bait."
+  },
+  {
+    "id": "carp",
+    "name": "Common Carp",
+    "env": "pond",
+    "preferBait": [
+      "corn",
+      "grainBait"
+    ],
+    "suitableHook": [
+      "mediumHook"
+    ],
+    "goodWeather": [
+      "sunny",
+      "cloudy"
+    ],
+    "sellPrice": 40,
+    "weight": 2.2,
+    "sizeType": "medium",
+    "desc": "Strong freshwater carp, need medium-strength gear."
+  },
+  {
+    "id": "grassCarp",
+    "name": "Grass Carp",
+    "env": "pond",
+    "preferBait": [
+      "grassBait",
+      "grainBait"
+    ],
+    "suitableHook": [
+      "mediumHook",
+      "bigHook"
+    ],
+    "goodWeather": [
+      "sunny"
+    ],
+    "sellPrice": 55,
+    "weight": 3,
+    "sizeType": "large",
+    "desc": "Big herbivorous fish, requires solid rod and line."
+  },
+  {
+    "id": "snakehead",
+    "name": "Snakehead",
+    "env": "pond",
+    "preferBait": [
+      "smallFishBait"
+    ],
+    "suitableHook": [
+      "bigHook"
+    ],
+    "goodWeather": [
+      "cloudy",
+      "lightRain"
+    ],
+    "sellPrice": 65,
+    "weight": 3.8,
+    "sizeType": "large",
+    "desc": "Aggressive predator, needs big hook and strong gear."
+  },
+  {
+    "id": "minnow",
+    "name": "Small Minnow",
+    "env": "pond",
+    "preferBait": [
+      "earthworm",
+      "grainBait"
+    ],
+    "suitableHook": [
+      "smallHook"
+    ],
+    "goodWeather": [
+      "sunny",
+      "cloudy",
+      "lightRain"
+    ],
+    "sellPrice": 8,
+    "weight": 0.3,
+    "sizeType": "small",
+    "desc": "Tiny bait fish, easy to catch."
+  },
+  {
+    "id": "yellowCroaker",
+    "name": "Yellow Croaker",
+    "env": "sea",
+    "preferBait": [
+      "shrimpBait",
+      "wormBait"
+    ],
+    "suitableHook": [
+      "smallHook"
+    ],
+    "goodWeather": [
+      "cloudy",
+      "lightRain"
+    ],
+    "sellPrice": 22,
+    "weight": 0.9,
+    "sizeType": "small",
+    "desc": "Popular shallow-sea fish."
+  },
+  {
+    "id": "seaBream",
+    "name": "Sea Bream",
+    "env": "sea",
+    "preferBait": [
+      "shellBait",
+      "shrimpBait"
+    ],
+    "suitableHook": [
+      "mediumHook"
+    ],
+    "goodWeather": [
+      "cloudy"
+    ],
+    "sellPrice": 45,
+    "weight": 2.4,
+    "sizeType": "medium",
+    "desc": "Coastal sea bream, medium-size."
+  },
+  {
+    "id": "seaBass",
+    "name": "Sea Bass",
+    "env": "sea",
+    "preferBait": [
+      "smallFishBait",
+      "shrimpBait"
+    ],
+    "suitableHook": [
+      "bigHook"
+    ],
+    "goodWeather": [
+      "cloudy",
+      "strongWind"
+    ],
+    "sellPrice": 75,
+    "weight": 4.5,
+    "sizeType": "large",
+    "desc": "Powerful sea predator."
+  },
+  {
+    "id": "grouper",
+    "name": "Grouper",
+    "env": "sea",
+    "preferBait": [
+      "smallFishBait"
+    ],
+    "suitableHook": [
+      "bigHook"
+    ],
+    "goodWeather": [
+      "cloudy",
+      "lightRain"
+    ],
+    "sellPrice": 90,
+    "weight": 5.2,
+    "sizeType": "large",
+    "desc": "Big reef fish, high pulling power."
+  },
+  {
+    "id": "giantTuna",
+    "name": "Giant Tuna",
+    "env": "sea",
+    "preferBait": [
+      "smallFishBait"
+    ],
+    "suitableHook": [
+      "bigHook"
+    ],
+    "goodWeather": [
+      "strongWind"
+    ],
+    "sellPrice": 180,
+    "weight": 9.5,
+    "sizeType": "giant",
+    "desc": "Rare giant monster fish. Must have landing net to catch."
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "sunny",
+    "name": "Sunny",
+    "icon": "SUN",
+    "weight": 28,
+    "color": 16765286,
+    "desc": "Bright sky, grass carp and minnow are active."
+  },
+  {
+    "id": "cloudy",
+    "name": "Cloudy",
+    "icon": "CLD",
+    "weight": 30,
+    "color": 11123911,
+    "desc": "Cloud cover, most fish bite well."
+  },
+  {
+    "id": "lightRain",
+    "name": "Light Rain",
+    "icon": "LRA",
+    "weight": 20,
+    "color": 8369109,
+    "desc": "Light drizzle, crucian and snakehead love it."
+  },
+  {
+    "id": "heavyRain",
+    "name": "Heavy Rain",
+    "icon": "HRA",
+    "weight": 12,
+    "color": 4877708,
+    "desc": "Stormy shower, fish stay deep and quiet."
+  },
+  {
+    "id": "strongWind",
+    "name": "Strong Wind",
+    "icon": "WND",
+    "weight": 10,
+    "color": 9420703,
+    "desc": "Rough waves, only tuna and sea bass enjoy it."
+  }
+]

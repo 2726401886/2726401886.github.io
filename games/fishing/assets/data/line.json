@@ -1,0 +1,23 @@
+[
+  {
+    "id": "thinLine",
+    "name": "Thin Line",
+    "maxTension": 1.2,
+    "price": 0,
+    "desc": "Thin line, easy break on big fish."
+  },
+  {
+    "id": "normalLine",
+    "name": "Normal Line",
+    "maxTension": 2.8,
+    "price": 60,
+    "desc": "Balanced line for most fish."
+  },
+  {
+    "id": "strongLine",
+    "name": "Strong Line",
+    "maxTension": 7,
+    "price": 220,
+    "desc": "Heavy duty line for giant fish."
+  }
+]

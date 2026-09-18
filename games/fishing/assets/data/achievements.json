@@ -1,0 +1,56 @@
+[
+  {
+    "id": "firstCatch",
+    "name": "First Catch",
+    "desc": "Catch your very first fish.",
+    "icon": "1"
+  },
+  {
+    "id": "fiveSpecies",
+    "name": "Collector",
+    "desc": "Collect 5 different fish species.",
+    "icon": "5"
+  },
+  {
+    "id": "allSpecies",
+    "name": "Master Angler",
+    "desc": "Collect all 10 fish species.",
+    "icon": "10"
+  },
+  {
+    "id": "giantHunter",
+    "name": "Giant Hunter",
+    "desc": "Land a giant-size fish.",
+    "icon": "G"
+  },
+  {
+    "id": "richAngler",
+    "name": "Money Maker",
+    "desc": "Hold 500 gold at once.",
+    "icon": "$"
+  },
+  {
+    "id": "adFan",
+    "name": "Ad Supporter",
+    "desc": "Watch 5 rewarded ads.",
+    "icon": "A"
+  },
+  {
+    "id": "explorer",
+    "name": "Explorer",
+    "desc": "Unlock all 6 fishing spots.",
+    "icon": "M"
+  },
+  {
+    "id": "veteran",
+    "name": "Veteran",
+    "desc": "Catch 25 fish in total.",
+    "icon": "V"
+  },
+  {
+    "id": "topGear",
+    "name": "Well Equipped",
+    "desc": "Own the Premium Heavy Sea Rod.",
+    "icon": "*"
+  }
+]

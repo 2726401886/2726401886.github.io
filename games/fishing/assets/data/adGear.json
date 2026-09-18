@@ -1,0 +1,32 @@
+[
+  {
+    "id": "premiumHeavyRod",
+    "name": "Premium Heavy Sea Rod",
+    "type": "rod",
+    "maxLoad": 12,
+    "costAdTime": 240,
+    "desc": "Top-tier fishing rod for giant sea fish, only redeem by ad watch time."
+  },
+  {
+    "id": "superStrongLine",
+    "name": "Super Strong Line",
+    "type": "line",
+    "maxTension": 10,
+    "costAdTime": 180,
+    "desc": "Ultra strong fishing line for monster fish."
+  },
+  {
+    "id": "antiBreakHook",
+    "name": "Anti-Break Expert Hook",
+    "type": "hook",
+    "costAdTime": 120,
+    "desc": "Reduce escape rate after fish bite."
+  },
+  {
+    "id": "backupNet",
+    "name": "Portable Backup Net",
+    "type": "net",
+    "costAdTime": 90,
+    "desc": "Boost landing chance for giant fish, stack with regular landing net."
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "earthworm",
+    "name": "Earthworm",
+    "price": 0,
+    "desc": "Classic all-round bait for pond fish."
+  },
+  {
+    "id": "grainBait",
+    "name": "Grain Bait",
+    "price": 0,
+    "desc": "Cheap grain dough, good for crucian and carp."
+  },
+  {
+    "id": "corn",
+    "name": "Sweet Corn",
+    "price": 20,
+    "desc": "Sweet corn kernel, carp favourite."
+  },
+  {
+    "id": "grassBait",
+    "name": "Grass Bait",
+    "price": 20,
+    "desc": "Fresh grass bundle for grass carp."
+  },
+  {
+    "id": "wormBait",
+    "name": "Sea Worm",
+    "price": 25,
+    "desc": "Salty worm, attracts shallow-sea fish."
+  },
+  {
+    "id": "smallFishBait",
+    "name": "Live Small Fish",
+    "price": 40,
+    "desc": "Live bait for predators."
+  },
+  {
+    "id": "shrimpBait",
+    "name": "Fresh Shrimp",
+    "price": 40,
+    "desc": "Fresh shrimp, sea fish love it."
+  },
+  {
+    "id": "shellBait",
+    "name": "Shell Meat",
+    "price": 40,
+    "desc": "Shell meat, best for sea bream."
+  }
+]

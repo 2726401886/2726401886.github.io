@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="theme-color" content="#061e2b" />
+<title>Sea-Pond Fishing Simulator</title>
+
+<!--
+  ============================================================================
+  国内版（toolshe.cn）广告说明
+  ----------------------------------------------------------------------------
+  已移除 GameDistribution 海外 SDK（国内访问慢、且 html5.gamedistribution.com 常被墙）。
+  当前未接广告 SDK，玩家点「看广告」会直接发奖（无广告），游戏照常可玩。
+  需要国内广告联盟时：在此引入对应 SDK，并在 js/adManager.js 顶部配置网络。
+  调试广告流程：访问 index.html?debug=1 可看到模拟广告浮层（SIMULATED AD）。
+  ============================================================================
+-->
+
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #061e2b;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body { touch-action: none; }
+  #game-root { width: 100%; height: 100%; }
+  #game-root canvas { display: block; }
+
+  /* 启动遮罩：Boot 场景准备完毕后由 main.js 移除 */
+  #boot-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    background: radial-gradient(circle at 50% 35%, #10485f 0%, #061e2b 70%);
+    color: #cdeaf7;
+    font-family: "Trebuchet MS", Verdana, Arial, sans-serif;
+    z-index: 50;
+    transition: opacity .35s ease;
+  }
+  #boot-overlay.hidden { opacity: 0; pointer-events: none; }
+  #boot-overlay .title {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #ffd35c;
+  }
+  #boot-overlay .sub { font-size: 14px; opacity: .8; }
+  #boot-overlay .bar {
+    width: 220px; height: 6px; border-radius: 3px;
+    background: rgba(255,255,255,.18); overflow: hidden;
+  }
+  #boot-overlay .bar span {
+    display: block; height: 100%; width: 40%;
+    border-radius: 3px; background: #4fc3f7;
+    animation: slide 1.1s ease-in-out infinite;
+  }
+  @keyframes slide {
+    0%   { transform: translateX(-110%); }
+    100% { transform: translateX(320%); }
+  }
+</style>
+</head>
+<body>
+
+<div id="game-root"></div>
+
+<div id="boot-overlay">
+  <div class="title">Sea-Pond Fishing</div>
+  <div class="bar"><span></span></div>
+  <div class="sub">Loading game data…</div>
+</div>
+
+<!-- 第三方引擎：Phaser 3（本地内置，禁止使用绝对路径/CDN，方便打包投稿） -->
+<script src="vendor/phaser.min.js"></script>
+
+<!-- 多语言：必须在其它脚本之前，UI 控件与场景都要用它取文案 -->
+<script src="js/i18n.js"></script>
+
+<!-- 数据层：配置文件 + 存档读写 -->
+<script src="js/gameData.js"></script>
+<script src="js/storageUtil.js"></script>
+
+<!-- 基础工具：广告管理器 + UI 控件库 -->
+<script src="js/adManager.js"></script>
+<script src="js/uiUtil.js"></script>
+
+<!-- 场景层：按文档「二、游戏场景清单」顺序注册 -->
+<script src="js/Boot.js"></script>
+<script src="js/MainMenu.js"></script>
+<script src="js/MapSelect.js"></script>
+<script src="js/FishingScene.js"></script>
+<script src="js/FishCollection.js"></script>
+<script src="js/Achievements.js"></script>
+<script src="js/KeepnetScene.js"></script>
+<script src="js/ShopScene.js"></script>
+<script src="js/Tutorial.js"></script>
+
+<!-- 入口 -->
+<script src="js/main.js"></script>
+
+  <a href="../games/index.html" style="position:fixed;left:10px;top:10px;z-index:60;font-size:13px;color:#cdeaf7;background:rgba(6,30,43,.6);padding:6px 10px;border-radius:8px;text-decoration:none;">← 游戏专栏</a>
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>
