@@ -1,2 +1,8 @@
 /specs/*
   Cache-Control: no-cache
+
+/manhua/taizi-jincheng/*.html
+  Cache-Control: no-cache
+
+/manhua/taizi-jincheng/*
+  Cache-Control: max-age=600
