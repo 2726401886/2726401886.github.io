@@ -1,0 +1,91 @@
+/* 数算星 · 网页刷题 专属样式（依赖 ../css/style.css 的站点框架） */
+.sx-hero{padding:34px 0 18px;text-align:center}
+.sx-hero h1{font-size:28px;font-weight:800;margin-bottom:10px;letter-spacing:1px;background:linear-gradient(90deg,#2563eb,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sx-hero p{color:var(--text-light,#555);font-size:14px;max-width:720px;margin:0 auto;line-height:1.7}
+.sx-stats{margin-top:14px;font-size:13px;color:var(--primary-dark,#1d4ed8);font-weight:600}
+
+.sx-tabs{display:flex;gap:10px;justify-content:center;margin:26px 0 8px;flex-wrap:wrap}
+.sx-tab{padding:8px 22px;border:1px solid var(--border,#e5e7eb);background:var(--card-bg,#fff);border-radius:22px;font-size:14px;font-weight:600;color:var(--text-light,#555);cursor:pointer;transition:.18s}
+.sx-tab:hover{border-color:var(--primary-light,#93c5fd)}
+.sx-tab.active{background:var(--primary,#2563eb);color:#fff;border-color:var(--primary,#2563eb)}
+
+.sx-book{margin-top:26px}
+.sx-book-h{font-size:17px;font-weight:700;margin-bottom:12px;padding-left:10px;border-left:4px solid var(--primary,#2563eb)}
+.sx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.sx-chcard{background:var(--card-bg,#fff);border:1px solid var(--border,#e5e7eb);border-radius:var(--radius,12px);padding:16px 16px 14px;text-align:left;cursor:pointer;box-shadow:var(--shadow,0 1px 3px rgba(0,0,0,.06));transition:.18s;display:flex;flex-direction:column;gap:8px}
+.sx-chcard:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg,0 8px 20px rgba(0,0,0,.1));border-color:var(--primary-light,#93c5fd)}
+.sx-ch-no{font-size:12px;color:var(--primary-dark,#1d4ed8);font-weight:700}
+.sx-ch-name{font-size:15px;font-weight:700;line-height:1.4}
+.sx-ch-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-light,#777)}
+.sx-figbadge{background:#fef3c7;color:#92400e;padding:1px 8px;border-radius:12px;font-weight:600}
+.sx-empty{color:var(--text-light,#777);padding:30px 0;text-align:center}
+
+/* 刷题栏 */
+.sx-quiz-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 2px;flex-wrap:wrap}
+.sx-back{background:none;border:none;color:var(--primary,#2563eb);font-size:14px;font-weight:600;cursor:pointer;padding:6px 4px}
+.sx-back:hover{text-decoration:underline}
+.sx-progress{font-size:13px;color:var(--text-light,#555);flex:1;text-align:center}
+.sx-wrong-btn{background:#fff;border:1px solid var(--border,#e5e7eb);border-radius:20px;padding:5px 14px;font-size:12px;color:var(--text-light,#555);cursor:pointer}
+.sx-wrong-btn:hover{border-color:var(--primary-light,#93c5fd)}
+
+.sx-card{background:var(--card-bg,#fff);border:1px solid var(--border,#e5e7eb);border-radius:var(--radius,12px);padding:20px 18px;box-shadow:var(--shadow,0 1px 3px rgba(0,0,0,.06))}
+.sx-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.sx-tag{font-size:11px;padding:2px 9px;border-radius:12px;background:var(--primary-bg,#eff6ff);color:var(--primary-dark,#1d4ed8);font-weight:600}
+.sx-tag-multi{background:#ede9fe;color:#6d28d9}
+.sx-tag-sec{background:#f1f5f9;color:#475569}
+.sx-tag-know{background:#f1f5f9;color:#475569;font-weight:500}
+.sx-stem{font-size:16px;line-height:1.8;font-weight:600;margin-bottom:14px;white-space:pre-wrap}
+.sx-figure{text-align:center;margin:6px 0 16px}
+.sx-figure img{max-width:100%;border:1px solid var(--border,#e5e7eb);border-radius:8px;cursor:zoom-in}
+.sx-figure img.zoom{max-width:none;width:auto}
+.sx-figcap{font-size:12px;color:var(--text-light,#777);margin-top:6px}
+
+.sx-opts{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.sx-opt{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;background:#fff;border:1.5px solid var(--border,#e5e7eb);border-radius:10px;padding:13px 14px;cursor:pointer;font-size:15px;line-height:1.6;transition:.15s}
+.sx-opt:hover{border-color:var(--primary-light,#93c5fd);background:#f8fbff}
+.sx-opt-key{flex:0 0 24px;height:24px;line-height:24px;text-align:center;border-radius:50%;background:var(--primary-bg,#eff6ff);color:var(--primary-dark,#1d4ed8);font-weight:700;font-size:13px}
+.sx-opt-txt{flex:1}
+.sx-opt.sel{border-color:var(--primary,#2563eb);background:#eff6ff}
+.sx-opt.right{border-color:#16a34a;background:#f0fdf4}
+.sx-opt.right .sx-opt-key{background:#16a34a;color:#fff}
+.sx-opt.wrong{border-color:#dc2626;background:#fef2f2}
+.sx-opt.wrong .sx-opt-key{background:#dc2626;color:#fff}
+.sx-opt:disabled{cursor:default}
+
+.sx-action{margin-top:8px}
+.sx-btn{display:inline-flex;align-items:center;justify-content:center;padding:11px 22px;background:#fff;border:1px solid var(--primary,#2563eb);color:var(--primary,#2563eb);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s;margin:6px 6px 0 0}
+.sx-btn:hover{background:var(--primary,#2563eb);color:#fff}
+.sx-btn-primary{background:var(--primary,#2563eb);color:#fff;border-color:var(--primary,#2563eb)}
+.sx-btn-primary:hover{background:var(--primary-dark,#1d4ed8)}
+.sx-btn-danger{border-color:#dc2626;color:#dc2626}
+.sx-btn-danger:hover{background:#dc2626;color:#fff}
+.sx-hint{font-size:12px;color:var(--text-light,#777);margin-top:8px}
+.sx-warn{color:#dc2626}
+.sx-verdict{font-size:15px;font-weight:700;margin:6px 0 4px;padding:9px 12px;border-radius:8px}
+.sx-verdict.ok{background:#f0fdf4;color:#16a34a}
+.sx-verdict.mid{background:#fefce8;color:#a16207}
+.sx-verdict.bad{background:#fef2f2;color:#dc2626}
+.sx-answer{font-size:13px;color:var(--text-light,#555);margin-bottom:10px}
+.sx-analysis{background:#f8fafc;border:1px solid var(--border,#e5e7eb);border-radius:8px;padding:12px 14px;margin:8px 0}
+.sx-analy-h{font-size:13px;font-weight:700;color:var(--primary-dark,#1d4ed8);margin-bottom:6px}
+.sx-analy-steps{margin:0;padding-left:20px}
+.sx-analy-steps li{font-size:14px;line-height:1.8;color:#334155}
+.sx-related{margin-top:10px;font-size:13px;color:var(--text-light,#555)}
+.sx-rel-label{margin-right:6px}
+.sx-rel-chip{display:inline-block;margin:3px 5px 0 0;padding:3px 10px;border:1px solid var(--border,#e5e7eb);border-radius:14px;background:#fff;font-size:12px;color:var(--primary,#2563eb);cursor:pointer}
+.sx-rel-chip:hover{background:#eff6ff}
+
+/* 结果 / 错题本 */
+.sx-result-h{font-size:20px;font-weight:800;text-align:center;margin-bottom:6px}
+.sx-result-rate{text-align:center;font-size:46px;font-weight:800;color:var(--primary,#2563eb);margin:8px 0 18px}
+.sx-result-grid{display:flex;justify-content:center;gap:26px;margin-bottom:20px}
+.sx-rstat{text-align:center}
+.sx-rnum{font-size:30px;font-weight:800}
+.sx-rnum.ok{color:#16a34a}.sx-rnum.bad{color:#dc2626}
+.sx-rlabel{font-size:13px;color:var(--text-light,#777)}
+.sx-result-btns{text-align:center}
+.sx-wrong-list{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.sx-wrong-item{background:#fff;border:1px solid var(--border,#e5e7eb);border-radius:10px;padding:12px 14px}
+.sx-wi-id{font-size:12px;color:var(--primary-dark,#1d4ed8);font-weight:700;margin-bottom:4px}
+.sx-wi-stem{font-size:14px;line-height:1.6;color:#334155;margin-bottom:4px}
+.sx-wi-ans{font-size:12px;color:var(--text-light,#777)}

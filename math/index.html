@@ -41,6 +41,14 @@
     .zy-promo .zy-txt p{font-size:13px;color:#78350f;line-height:1.6}
     .zy-promo a.zy-go{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:#b45309;color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;transition:var(--transition)}
     .zy-promo a.zy-go:hover{background:#92400e}
+    /* 数算星刷题子专栏入口 */
+    .sx-promo{margin-top:20px;display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#eff6ff,#eef2ff);border:1px solid #bfdbfe;border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+    .sx-promo .sx-ico{font-size:30px;line-height:1}
+    .sx-promo .sx-txt{flex:1}
+    .sx-promo .sx-txt h3{font-size:16px;font-weight:800;color:#1e40af;margin-bottom:3px}
+    .sx-promo .sx-txt p{font-size:13px;color:#3730a3;line-height:1.6}
+    .sx-promo a.sx-go{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;background:#2563eb;color:#fff;border-radius:var(--radius-sm);font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;transition:var(--transition)}
+    .sx-promo a.sx-go:hover{background:#1d4ed8}
   </style>
 </head>
 <body>
@@ -55,7 +63,6 @@
           <li><a href="../index.html">首页</a></li>
           <li><a href="../specs/index.html">规范专栏</a></li>
           <li><a href="index.html" class="active">数学专栏</a></li>
-          <li><a href="../math-gaokao/index.html">高中数学题库</a></li>
         </ul>
       </nav>
       <div id="authBar" style="margin-left:auto"></div>
@@ -79,14 +86,14 @@
         <a class="zy-go" href="zhuangyuan/index.html">进入专栏 →</a>
       </div>
 
-      <!-- 高中数学题库子专栏入口 -->
-      <div class="zy-promo" style="background:linear-gradient(135deg,#f5f3ff,#ede9fe);border-color:#ddd6fe">
-        <div class="zy-ico">🧮</div>
-        <div class="zy-txt">
-          <h3>高中数学题库</h3>
-          <p>函数与导数专题题库：基础-巩固-提升三级分层，当前累计 425 题。每题含题干、答案、分步解析与易错提示，先作答后对照，高效刷题。</p>
+      <!-- 数算星刷题子专栏入口 -->
+      <div class="sx-promo">
+        <div class="sx-ico">🧮</div>
+        <div class="sx-txt">
+          <h3>数算星 · 网页刷题</h3>
+          <p>微信小程序同款题库，浏览器直接刷：初中（北师大版·深圳教材）、高中（人教A版·广东新高考）、奥数与高考专项，共 2916 题。单选多选即时判分、配图解析、错题自动入库。</p>
         </div>
-        <a class="zy-go" style="background:#7c3aed" href="../math-gaokao/index.html">进入题库 →</a>
+        <a class="sx-go" href="shuxing/index.html">开始刷题 →</a>
       </div>
 
       <!-- 列表由 specs.js 动态渲染（公开），详情需登录 -->
@@ -105,7 +112,6 @@
       <a href="../index.html">首页</a>
       <a href="../specs/index.html">规范专栏</a>
       <a href="index.html">数学专栏</a>
-      <a href="../math-gaokao/index.html">高中数学题库</a>
     </div>
     <p>&copy; 2026 效率盒子. 高中数学学习专栏</p>
   </footer>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>数算星刷题 - 效率盒子</title>
+  <meta name="description" content="数算星 · 人教版/北师大版同步题库网页版：按章节刷题，单选多选即时判分，配图解析，错题本。覆盖初中（北师大版·深圳教材）、高中（人教A版·广东新高考）、奥数与高考专项，共 2916 题。">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo">
+        <span class="logo-icon">E</span>
+        <span>效率盒子</span>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../index.html">首页</a></li>
+          <li><a href="../specs/index.html">规范专栏</a></li>
+          <li><a href="../math/index.html">数学专栏</a></li>
+          <li><a href="index.html" class="active">数算星刷题</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="container">
+
+      <!-- 首页：学段 + 章节 -->
+      <section id="view-home">
+        <div class="sx-hero">
+          <h1>数算星 · 网页刷题</h1>
+          <p>微信小程序同款题库，浏览器直接刷。覆盖初中（北师大版·深圳教材）、高中（人教A版·广东新高考）、奥数与高考专项。单选、多选即时判分，配图解析，错题自动入库。</p>
+          <div class="sx-stats" id="sxStats"></div>
+        </div>
+        <div class="sx-tabs" id="sxTabs"></div>
+        <div id="sxBooks"></div>
+      </section>
+
+      <!-- 刷题 -->
+      <section id="view-quiz" hidden>
+        <div class="sx-quiz-bar">
+          <button class="sx-back" id="btnBack">← 返回</button>
+          <div class="sx-progress"><span id="qTitle"></span> · 第 <span id="qIdx">1</span>/<span id="qTotal">0</span></div>
+          <button class="sx-wrong-btn" id="btnWrong">错题本 <span id="wrongCount">0</span></button>
+        </div>
+        <div class="sx-card" id="qCard"></div>
+      </section>
+
+      <!-- 成绩 -->
+      <section id="view-result" hidden>
+        <div class="sx-card" id="resultBox"></div>
+      </section>
+
+      <!-- 错题本 -->
+      <section id="view-wrong" hidden>
+        <div class="sx-card" id="wrongBox"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../specs/index.html">规范专栏</a>
+      <a href="../math/index.html">数学专栏</a>
+      <a href="index.html">数算星刷题</a>
+    </div>
+    <p>&copy; 2026 效率盒子. 数算星刷题</p>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
