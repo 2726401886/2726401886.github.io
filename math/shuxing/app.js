@@ -16,11 +16,11 @@
    * 新格式 { bases:{tag:url}, items:{qid:tag} } 或 旧格式 { base, qids }
    * 归一化为 VIDEO = { qid: 完整播放地址 }，未配置/无视频时不显示按钮 */
   var VIDEO = null;
-  /* GitHub 直链在国内常超时，构造多线路候选：直链 + 加速镜像，播放时自动切换 */
+  /* GitHub 直链在国内常超时，构造多线路候选：加速镜像优先 + 直链兜底，播放时自动切换 */
   var MIRRORS = [
-    function (u) { return u; },                        /* 0: 原始直链 */
-    function (u) { return 'https://ghproxy.net/' + u; },
-    function (u) { return 'https://ghfast.top/' + u; }
+    function (u) { return 'https://ghproxy.net/' + u; },  /* 0: 加速一（稳定） */
+    function (u) { return 'https://ghfast.top/' + u; },   /* 1: 加速二 */
+    function (u) { return u; }                            /* 2: 原始直链兜底 */
   ];
   function loadVideoManifest() {
     fetch('video-manifest.json', { cache: 'no-cache' })
@@ -382,10 +382,10 @@
       try { v.removeAttribute('src'); v.load(); } catch (e) {}
       v.src = urls[idx];
       timer = setTimeout(function () {
-        /* 15s 未就绪视为该线路超时，自动切换下一线路 */
+        /* 6s 未就绪视为该线路超时，自动切换下一线路 */
         idx++;
         tryLine();
-      }, 15000);
+      }, 6000);
     }
     v.addEventListener('loadeddata', function () { clearTimer(); setTip(''); });
     v.addEventListener('error', function () {
