@@ -89,3 +89,18 @@
 .sx-wi-id{font-size:12px;color:var(--primary-dark,#1d4ed8);font-weight:700;margin-bottom:4px}
 .sx-wi-stem{font-size:14px;line-height:1.6;color:#334155;margin-bottom:4px}
 .sx-wi-ans{font-size:12px;color:var(--text-light,#777)}
+
+/* 视频讲解 */
+.sx-video-btn{background:#fff;border-color:#7c3aed;color:#7c3aed}
+.sx-video-btn:hover{background:#7c3aed;color:#fff}
+.sx-video-ov{position:fixed;inset:0;background:rgba(15,23,42,.74);display:flex;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.sx-video-box{background:#0b1220;border-radius:12px;width:100%;max-width:min(900px,95vw);padding:12px 12px 10px;box-shadow:0 24px 64px rgba(0,0,0,.55)}
+.sx-video-head{display:flex;align-items:center;justify-content:space-between;color:#e5e7eb;font-size:13px;margin-bottom:8px}
+.sx-video-title{font-weight:600;letter-spacing:.3px}
+.sx-video-x{background:none;border:none;color:#94a3b8;font-size:18px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:6px}
+.sx-video-x:hover{color:#fff;background:rgba(255,255,255,.08)}
+.sx-video-el{width:100%;max-height:72vh;background:#000;border-radius:8px;display:block}
+.sx-video-tip{color:#f87171;font-size:12px;margin-top:6px;min-height:16px}
+.sx-video-dl{display:inline-block;margin-top:8px;color:#93c5fd;font-size:12px;text-decoration:none}
+.sx-video-dl:hover{text-decoration:underline}
+@media(max-width:520px){.sx-video-el{max-height:56vh}}

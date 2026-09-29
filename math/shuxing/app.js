@@ -12,6 +12,30 @@
   ];
   var WB_KEY = 'shuxing_wrong_v1';
 
+  /* 视频讲解：清单 video-manifest.json
+   * 新格式 { bases:{tag:url}, items:{qid:tag} } 或 旧格式 { base, qids }
+   * 归一化为 VIDEO = { qid: 完整播放地址 }，未配置/无视频时不显示按钮 */
+  var VIDEO = null;
+  function loadVideoManifest() {
+    fetch('video-manifest.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (m) {
+        if (!m) return;
+        var items = {};
+        if (m.items) {
+          var bases = m.bases || {};
+          for (var q in m.items) { if (!m.items.hasOwnProperty(q)) continue; var b = bases[m.items[q]] || ''; items[q] = b + q + '.mp4'; }
+        } else if (m.qids) {
+          var base = m.base || 'videos/'; if (base.charAt(base.length - 1) !== '/') base += '/';
+          m.qids.forEach(function (q) { items[q] = base + q + '.mp4'; });
+        }
+        if (Object.keys(items).length) VIDEO = items;
+      })
+      .catch(function () {});
+  }
+  function hasVideo(id) { return !!(VIDEO && VIDEO[id]); }
+  function videoUrl(id) { return VIDEO ? VIDEO[id] : null; }
+
   var S = {
     stage: 'chu', chapterId: null, chapterName: '', questions: [], idx: 0,
     correct: 0, wrong: 0, mode: 'chapter', picks: [], judged: false, status: null
@@ -252,6 +276,11 @@
       act.appendChild(al);
     }
 
+    // video explain
+    if (hasVideo(q.id)) {
+      act.appendChild(el('button', { class: 'sx-btn sx-video-btn', text: '\u25b6 视频讲解', onclick: function () { openVideo(q); } }));
+    }
+
     // related
     if (q.related && q.related.length) {
       var rl = el('div', { class: 'sx-related' });
@@ -321,10 +350,42 @@
     box.appendChild(btns);
   }
 
+  /* ---------- 视频讲解弹层 ---------- */
+  function openVideo(q) {
+    closeVideo();
+    var url = videoUrl(q.id);
+    var ov = el('div', { class: 'sx-video-ov', id: 'sxVideoOv', onclick: function (e) { if (e.target === ov) closeVideo(); } });
+    var head = el('div', { class: 'sx-video-head' }, [
+      el('span', { class: 'sx-video-title', text: '视频讲解 · ' + q.id }),
+      el('button', { class: 'sx-video-x', text: '\u2715', onclick: closeVideo })
+    ]);
+    var v = el('video', { class: 'sx-video-el', controls: '', playsinline: '', preload: 'metadata', src: url });
+    var tip = el('div', { class: 'sx-video-tip', text: '加载中…' });
+    v.addEventListener('loadeddata', function () { tip.textContent = ''; });
+    v.addEventListener('error', function () { tip.textContent = '视频加载失败，请检查网络后重试。'; });
+    var box = el('div', { class: 'sx-video-box' }, [head, v, tip,
+      el('a', { class: 'sx-video-dl', href: url, target: '_blank', rel: 'noopener', text: '在新窗口打开 ↗' })]);
+    ov.appendChild(box);
+    document.body.appendChild(ov);
+    document.body.style.overflow = 'hidden';
+    try { var p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (e) {}
+  }
+  function closeVideo() {
+    var ov = document.getElementById('sxVideoOv');
+    if (ov) {
+      var v = ov.querySelector('video');
+      if (v) { try { v.pause(); } catch (e) {} v.removeAttribute('src'); v.load(); }
+      ov.remove();
+    }
+    document.body.style.overflow = '';
+  }
+
   /* ---------- 绑定 ---------- */
   document.addEventListener('DOMContentLoaded', function () {
     $('#btnBack').addEventListener('click', renderHome);
     $('#btnWrong').addEventListener('click', openWrong);
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeVideo(); });
+    loadVideoManifest();
     renderHome();
   });
 })();
