@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>规范详情 - 价格鉴证评估技术专栏</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .detail-bar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:var(--bg-darker,#0f0e0d);color:#fff}
+    .detail-bar a.home{color:#fff;text-decoration:none;font-weight:600;font-size:14px}
+    .detail-bar .spacer{flex:1}
+    .detail-bar .auth-link{color:#fcd34d;text-decoration:none;font-size:13px;margin-left:10px}
+    .detail-bar .auth-user{font-size:13px;color:#e7e5e4}
+    #specFrame{width:100%;border:none;display:block;min-height:600px;background:#f8fafc}
+    .detail-loading{padding:60px 20px;text-align:center;color:var(--text-light)}
+    .detail-error{padding:40px 20px;text-align:center;color:#b91c1c;background:#fef2f2;border:1px solid #fecaca;border-radius:var(--radius);max-width:680px;margin:40px auto}
+    .detail-error a{color:var(--primary);text-decoration:underline}
+    .debug-info{max-width:680px;margin:20px auto;padding:12px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:var(--radius);font-size:12px;color:#64748b;font-family:monospace;white-space:pre-wrap;word-break:break-all}
+    .version-mark{position:fixed;bottom:4px;right:4px;font-size:10px;color:#94a3b8;opacity:.6;pointer-events:none;z-index:9999}
+    .fallback-panel{max-width:680px;margin:40px auto;padding:24px;background:#fff;border:1px solid #e2e8f0;border-radius:var(--radius);text-align:center}
+    .fallback-panel h3{margin:0 0 12px;font-size:18px;color:#1e293b}
+    .fallback-panel p{margin:0 0 16px;color:#64748b;font-size:14px;line-height:1.6}
+    .fallback-panel .btn{display:inline-block;padding:10px 20px;background:var(--primary);color:#fff;border-radius:var(--radius);text-decoration:none;font-size:14px;margin:4px}
+    .fallback-panel .btn.secondary{background:#f1f5f9;color:#334155;border:1px solid #cbd5e1}
+  </style>
+</head>
+<body>
+  <div class="version-mark" id="versionMark">v2026-08-18e</div>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links" id="detailNav"></ul></nav>
+      <div id="authBar" style="margin-left:auto"></div>
+    </div>
+  </header>
+
+  <main class="main-content" style="padding:0">
+    <div class="detail-loading" id="detailLoading">正在加载规范内容…</div>
+    <div class="detail-error" id="detailError" style="display:none"></div>
+    <div class="debug-info" id="debugInfo" style="display:none"></div>
+    <div class="fallback-panel" id="fallbackPanel" style="display:none">
+      <h3>规范正文加载失败</h3>
+      <p>当前浏览器无法在当前页面内渲染该规范。你可以选择在新标签页中打开，或者联系管理员。</p>
+      <a id="openNewTabBtn" class="btn" href="#" target="_blank">新标签页打开正文</a>
+      <a class="btn secondary" id="backListLink" href="index.html">返回规范列表</a>
+    </div>
+    <iframe id="specFrame" style="display:none"></iframe>
+  </main>
+
+    <footer class="site-footer">
+      <div class="footer-links" id="detailFooter"></div>
+      <p>&copy; 2026 效率盒子. 价格鉴证评估技术专栏</p>
+    </footer>
+
+  <script>window.EFFBOX_STATS_API="https://api.toolshe.cn";</script>
+  <script src="specs.js?v=6"></script>
+  <script>
+    const S = window.Specs;
+    const id = new URLSearchParams(location.search).get("id");
+    const from = new URLSearchParams(location.search).get("from") || "valuation";
+    const backHref = from === "math" ? "../math/index.html" : "index.html";
+    const colLabel = from === "math" ? "数学专栏" : "规范专栏";
+    const frame = document.getElementById("specFrame");
+    const loading = document.getElementById("detailLoading");
+    const errorBox = document.getElementById("detailError");
+    const debugBox = document.getElementById("debugInfo");
+    const fallbackPanel = document.getElementById("fallbackPanel");
+    const openNewTabBtn = document.getElementById("openNewTabBtn");
+    const VERSION = "2026-08-18e";
+    const API_BASE = window.EFFBOX_STATS_API || "https://api.toolshe.cn";
+
+    function showError(msg, withLogin) {
+      loading.style.display = "none";
+      errorBox.style.display = "block";
+      errorBox.innerHTML = msg + (withLogin
+        ? ' <a href="login.html?redirect=' + encodeURIComponent(location.pathname + location.search) + '">去登录</a>'
+        : "");
+    }
+    function showDebug(info) {
+      debugBox.style.display = "block";
+      debugBox.textContent = typeof info === "string" ? info : JSON.stringify(info, null, 2);
+      // 调试信息 6 秒后自动收起，避免长期遮挡正文
+      setTimeout(function () {
+        if (debugBox) debugBox.style.display = "none";
+      }, 6000);
+    }
+
+    // 登录态
+    try { S.renderAuthBar("authBar"); } catch (e) { console.error("[detail] renderAuthBar error", e); }
+
+    // 根据 from 参数设置导航/返回链接/标题
+    try {
+      const navUl = document.getElementById("detailNav");
+      if (navUl) navUl.innerHTML =
+        '<li><a href="../index.html">首页</a></li>' +
+        '<li><a href="' + backHref + '" class="active">' + colLabel + '</a></li>';
+      const foot = document.getElementById("detailFooter");
+      if (foot) foot.innerHTML =
+        '<a href="../index.html">首页</a><a href="' + backHref + '">' + colLabel + '</a>';
+      const backLink = document.getElementById("backListLink");
+      if (backLink) backLink.setAttribute("href", backHref);
+      if (from === "math") document.title = "详情 - 高中数学学习专栏";
+    } catch (e) { console.error("[detail] nav setup error", e); }
+
+    // 弹窗打开期间暂停按文档高度收缩，避免 fixed 定位的 modal 被裁掉
+    let modalOpen = false;
+    // TeachAny 课件：iframe 锁定为“一屏高度”，由课件内部容器滚动切页；
+    // 忽略跨域页 __specsH（否则会被整页总高撑成十几屏、播放按钮沉底）
+    let teachAnyMode = false;
+    function updateFrameHeightFromDoc() {
+      if (modalOpen) return;
+      try {
+        const d = frame.contentDocument;
+        const h = (d && (d.documentElement.scrollHeight || d.body.scrollHeight)) || 0;
+        if (h) frame.style.height = Math.max(600, h + 20) + "px";
+      } catch (e) {}
+    }
+
+    // 自适应 iframe 高度 + modal 弹窗全屏展开 + 调试错误
+    window.addEventListener("message", (e) => {
+      if (e.data && e.data.__specsH && !modalOpen && !teachAnyMode) {
+        frame.style.height = Math.max(600, e.data.__specsH + 20) + "px";
+      }
+      if (e.data && e.data.__specsModal) {
+        modalOpen = !!e.data.__specsModal;
+        if (modalOpen) {
+          // modal 是 fixed 全屏，需要把 iframe 扩展到接近视口高度
+          const h = Math.max(600, window.innerHeight - 120);
+          frame.style.height = h + "px";
+        } else {
+          updateFrameHeightFromDoc(); // 关闭 modal 后立即恢复自适应
+        }
+      }
+      if (e.data && e.data.__specsErr) {
+        console.error("[detail] iframe error:", e.data.__specsErr);
+        showDebug({ version: VERSION, iframe_error: e.data.__specsErr });
+      }
+    });
+
+    // ── 预转义脚本块内字面 <\/script 结束标签（下方注释均以反斜杠转义，避免本文件自身脚本被提前关闭）：
+    //    防止作者 HTML 的 JS 字符串里写了字面 <\/script>，被浏览器当作外层 <script> 的结束标签，
+    //    导致整段脚本提前关闭（表现：页面顶部泄露源码、菜单/函数未定义）。
+    //    转义为 <\/script> 后浏览器不再提前关闭，JS 运行时又会自动还原成 <\/script>，不影响 document.write 等正常使用。──
+    function escapeLastScriptClosers(html) {
+      // 只对“最后一个脚本块”（通常是作者主脚本）做转义：把块内 JS 字符串里的字面结束标签
+      // 转义，避免浏览器把它当成外层脚本的结束标签。更早的脚本块（通常已是平衡的）保持不变，避免误伤。
+      // 对没有内联结束标签的干净内容本函数是“无操作”。（注：本函数体内不写字面结束标签，均用拼接，避免本文件自身脚本被提前关闭）
+      const lastOpen = html.lastIndexOf("<" + "script");
+      if (lastOpen === -1) return html;
+      const go = html.indexOf(">", lastOpen) + 1;
+      if (go <= 0) return html;
+      const region = html.slice(go);
+      const parts = region.split("<" + "/script>");
+      if (parts.length <= 2) return html; // 仅含真实结束标签，无内联字面量，无需处理
+      // 前 parts.length-1 段之间的结束标签都是内联字面量，转义为 <\/script>；最后一段保留真实结束标签
+      const escaped = parts.slice(0, -1).join("<\\/script>") + ("<" + "/script>") + parts[parts.length - 1];
+      return html.slice(0, go) + escaped;
+    }
+
+    const SHIM_SRC = `(function(){if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();`;
+    const SHIM_COMPAT_SRC = `(function(){try{localStorage.getItem('__specs_test__');}catch(e){var mem={};try{Object.defineProperty(window,'localStorage',{value:{getItem:function(k){return mem.hasOwnProperty(k)?mem[k]:null;},setItem:function(k,v){mem[k]=String(v);},removeItem:function(k){delete mem[k];},clear:function(){mem={};}},configurable:true});}catch(x){}}if(!window.speechSynthesis){window.speechSynthesis={speak:function(){},cancel:function(){},pause:function(){},resume:function(){},getVoices:function(){return[];},pending:false,speaking:false,paused:false};}window.addEventListener('error',function(ev){try{window.parent.postMessage({__specsErr:{msg:ev.message,file:ev.filename,line:ev.lineno,col:ev.colno}},'*');}catch(x){}});})();`;
+    const AUTOHEIGHT_SRC = `(function(){function __h(){try{var h=document.documentElement.scrollHeight||document.body.scrollHeight||0;parent.postMessage({__specsH:h},'*');}catch(e){}}function __modalCheck(){try{var m=document.getElementById('modalResult');var shown=m && !!(m.style.display && m.style.display!=='none' && m.style.display!=='');parent.postMessage({__specsModal:shown},'*');}catch(e){}}try{window.addEventListener('load',function(){__h();__modalCheck();});window.addEventListener('resize',function(){__h();__modalCheck();});var mo=new MutationObserver(function(){__h();__modalCheck();});mo.observe(document.documentElement,{childList:true,subtree:true,attributes:true,characterData:true});}catch(e){}try{var ro=new ResizeObserver(function(){__h();__modalCheck();});ro.observe(document.documentElement);}catch(e){}setInterval(function(){__h();__modalCheck();},400);__h();__modalCheck();})();`;
+
+    function injectShim(html, shimSrc) {
+      const tag = "<" + "script>" + shimSrc + ("<" + "/script>");
+      const headEnd = html.search(/<\/head>/i);
+      if (headEnd !== -1) return html.slice(0, headEnd) + tag + html.slice(headEnd);
+      const m = html.match(/<body[^>]*>/i);
+      if (m) { const i = html.indexOf(m[0]) + m[0].length; return html.slice(0, i) + tag + html.slice(i); }
+      return tag + html;
+    }
+    function injectAutoHeightSafe(html) {
+      // 关键：注入到“最后一个” </body>（真正的文档结尾），避免落到脚本字符串里的 </body> 内部
+      const bodyRe = /<\/body>/gi;
+      let last = -1, mm;
+      while ((mm = bodyRe.exec(html)) !== null) last = mm.index;
+      const tag = "<" + "script>" + AUTOHEIGHT_SRC + ("<" + "/script>");
+      if (last !== -1) return html.slice(0, last) + tag + html.slice(last);
+      return html + tag;
+    }
+    function prepareHtml(html) {
+      html = escapeLastScriptClosers(html);
+      return injectAutoHeightSafe(injectShim(html, SHIM_COMPAT_SRC));
+    }
+
+    function renderByBlob(html) {
+      const blobUrl = URL.createObjectURL(
+        new Blob([prepareHtml(html)], { type: "text/html; charset=utf-8" })
+      );
+      frame.onload = function () {
+        try { frame.style.height = Math.max(600, (frame.contentDocument || frame.contentWindow.document).body.scrollHeight + 20) + "px"; } catch (e) {}
+      };
+      frame.src = blobUrl;
+      frame.style.display = "block";
+    }
+    function renderByWrite(html) {
+      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if (!doc || !doc.open) throw new Error("无法获取 iframe document");
+      frame.style.display = "block";
+      doc.open();
+      doc.write(prepareHtml(html));
+      doc.close();
+    }
+    function renderBySrcdoc(html) {
+      frame.onload = function () {
+        try { frame.style.height = Math.max(600, (frame.contentDocument || frame.contentWindow.document).body.scrollHeight + 20) + "px"; } catch (e) {}
+      };
+      frame.srcdoc = prepareHtml(html);
+      frame.style.display = "block";
+    }
+
+    // 同源渲染所需：仅注入语音/错误 shim（不再覆盖 localStorage，保留原生持久化）
+    function prepareHtmlNative(html) {
+      // 1) 预转义脚本块内字面 <\/script>，避免外层脚本被提前关闭
+      html = escapeLastScriptClosers(html);
+      // 2) 相对路径改写（blob URL 无基准路径，必须改写绝对地址）
+      html = html.replace(/\.\.\//g, "https://toolshe.cn/");
+      // 3) shim 注入到 </head> 前；autoHeight 注入到“最后一个 </body>”（真正的文档结尾）。
+      //    均不再使用“第一个 </body>”字符串注入，从根上避免把脚本注入到作者脚本字符串内部。
+      return injectAutoHeightSafe(injectShim(html, SHIM_SRC));
+    }
+    // 同源 srcdoc 渲染：iframe 与宿主页同属 toolshe.cn 源，游戏原生 localStorage 可持久化，
+    // 刷新 / 重开页面都能记住用户做题进度、段位、解锁关卡。
+    function renderBySrcdocNative(html) {
+      frame.onload = function () {
+        try { frame.style.height = Math.max(600, (frame.contentDocument || frame.contentWindow.document).body.scrollHeight + 20) + "px"; } catch (e) {}
+      };
+      frame.srcdoc = prepareHtmlNative(html);
+      frame.style.display = "block";
+      loading.style.display = "none";
+    }
+
+    // 同源 document.write 渲染：iframe 无 src => contentDocument 继承 toolshe.cn 源，
+    // 游戏原生 localStorage 真正可用且持久（srcdoc 是 opaque origin，localStorage 不可用 => 进度丢失）。
+    // 同源 => 父页可直接读 frame.contentDocument 高度，自适应比 postMessage 更可靠。
+    function renderByWriteNative(html) {
+      const doc = frame.contentDocument || (frame.contentWindow && frame.contentWindow.document);
+      if (!doc || !doc.open) throw new Error("无法获取同源 iframe document");
+      frame.style.display = "block";
+      doc.open();
+      doc.write(prepareHtmlNative(html));
+      doc.close();
+      loading.style.display = "none";
+      // 父页直接读同源 iframe 高度，持续自适应（modal 打开期间由 message 接管）
+      updateFrameHeightFromDoc();
+      const iv = setInterval(updateFrameHeightFromDoc, 400);
+      window.addEventListener("pagehide", function () { clearInterval(iv); });
+    }
+
+    // 同源 blob URL 渲染：Blob 创建的 URL 继承 toolshe.cn 源，localStorage 可用；
+    // 完整 HTML 文档经正常解析流程加载，绕开 document.write 对未闭合/嵌套 <\/script> 的敏感问题。
+    function renderByBlobNative(html) {
+      const blob = new Blob([prepareHtmlNative(html)], { type: "text/html; charset=utf-8" });
+      const blobUrl = URL.createObjectURL(blob);
+      frame.onload = function () {
+        loading.style.display = "none";
+        frame.style.display = "block";
+        updateFrameHeightFromDoc();
+        try { URL.revokeObjectURL(blobUrl); } catch (e) {}
+      };
+      frame.onerror = function () {
+        try { URL.revokeObjectURL(blobUrl); } catch (e) {}
+      };
+      frame.src = blobUrl;
+      frame.style.display = "block";
+      // 持续自适应高度
+      const iv = setInterval(updateFrameHeightFromDoc, 400);
+      window.addEventListener("pagehide", function () { clearInterval(iv); });
+    }
+
+    // 区分 TeachAny 课件（slide 交互式教案）与王者版闯关游戏：
+    // TeachAny 课件依赖正常页面加载事件与 <body> 末尾脚本初始化，document.write 会破坏其时序导致黑屏；
+    // 而它不需要 localStorage，因此使用 srcdoc 正常加载即可。
+    function isTeachAnyContent(html) {
+      return /teachany|class=["']slide|new\s+Slide|__teachany/i.test(html);
+    }
+
+    async function fallbackEmbed(token) {
+      let j, r;
+      try {
+        r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
+        j = await r.json();
+      } catch (e) {
+        showError("内容加载失败：" + (e && e.message ? e.message : "网络错误"));
+        showDebug({ version: VERSION, step: "fallback fetch", error: e && e.message });
+        showFallback();
+        return;
+      }
+      if (!r.ok || !j.ok) {
+        showError(j.msg || ("接口异常 (HTTP " + r.status + ")"), r.status === 401);
+        showDebug({ version: VERSION, step: "fallback api", status: r.status, response: j });
+        return;
+      }
+      const html = (j.spec && j.spec.content_html) || "";
+      if (!html.trim()) { showError("该规范暂无正文内容，请联系管理员。"); return; }
+      const methods = [
+        { name: "blob", fn: renderByBlob },
+        { name: "document.write", fn: renderByWrite },
+        { name: "srcdoc", fn: renderBySrcdoc }
+      ];
+      let lastErr = null;
+      for (const m of methods) {
+        try { m.fn(html); loading.style.display = "none"; return; } catch (e) { lastErr = e; console.error("[detail] fallback " + m.name + " failed", e); }
+      }
+      showError("内容渲染失败，请尝试刷新页面。");
+      showDebug({ version: VERSION, content_len: html.length, last_error: lastErr && lastErr.message });
+      showFallback();
+    }
+
+    function showFallback() {
+      loading.style.display = "none";
+      fallbackPanel.style.display = "block";
+    }
+
+    (async function () {
+      try {
+        const tk = S.getToken();
+        // 数学专栏公开访问，无需登录；其余栏目未登录则跳转登录
+        if (!tk && from !== "math") {
+          location.href = "login.html?redirect=" + encodeURIComponent(location.pathname + location.search);
+          return;
+        }
+        if (!id) { loading.textContent = "缺少规范 id"; return; }
+
+        // 主方案：先取正文，再选择正确的 iframe 渲染方式。
+        // 王者版闯关游戏 => 同源 document.write，localStorage 持久化保存做题进度。
+        // TeachAny 互动课件 => 跨域 iframe 直接加载完整 /specs/view 页面（正常页面流程，后端已注入
+        //   __specsH 高度脚本经 postMessage 回报），彻底绕开 document.write/srcdoc 的时序问题。
+        try {
+          const r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
+          if (r.ok) {
+            const j = await r.json();
+            if (j.ok && j.spec && j.spec.content_html && j.spec.content_html.trim()) {
+              const html = j.spec.content_html;
+              if (isTeachAnyContent(html)) {
+                // TeachAny 课件：竖向滚动幻灯片（.slide-container=100vh, overflow-y:auto 内部切页）。
+                // 必须锁定 iframe 为“一屏高度”，由课件内部容器滚动；若按整页总高撑开，
+                // 课件内 100vh 会同步变大、每页被拉长、播放按钮沉底（用户报“滚动条在顶、播放键在最底”）。
+                teachAnyMode = true;
+                const sizeTeachAny = function () {
+                  frame.style.height = Math.max(480, window.innerHeight - 110) + "px";
+                };
+                const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + (tk ? ("&token=" + encodeURIComponent(tk)) : "");
+                frame.onload = function () {
+                  loading.style.display = "none";
+                  frame.style.display = "block";
+                  sizeTeachAny();
+                };
+                frame.src = viewUrl;
+                frame.style.display = "block";
+                loading.style.display = "none";
+                window.addEventListener("resize", sizeTeachAny);
+                return;
+              } else {
+                // 主渲染优先使用 blob URL：同源 + 正常文档解析，规避 document.write 对
+                // 未闭合/嵌套 <\/script> 的 "Unexpected end of input" 报错。
+                try {
+                  renderByBlobNative(html);
+                } catch (e1) {
+                  console.warn("[detail] blob URL 同源渲染失败，回退 document.write", e1);
+                  try {
+                    renderByWriteNative(html);
+                  } catch (e2) {
+                    console.warn("[detail] document.write 同源渲染失败，回退 srcdoc", e2);
+                    renderBySrcdocNative(html); // srcdoc 兜底（不持久）
+                  }
+                }
+              }
+              return;
+            }
+          }
+        } catch (e) {
+          console.warn("[detail] 取正文失败，回退跨域 iframe", e);
+        }
+
+        // 兜底：跨域 /specs/view 直连 iframe（该场景 localStorage 可能不持久，仅作降级）
+        const viewUrl = API_BASE + "/specs/view?id=" + encodeURIComponent(id) + (tk ? ("&token=" + encodeURIComponent(tk)) : "");
+        let fallbackTimer = setTimeout(function () { fallbackEmbed(tk); }, 12000);
+        frame.onload = function () {
+          clearTimeout(fallbackTimer);
+          loading.style.display = "none";
+          frame.style.display = "block";
+        };
+        frame.onerror = function () {
+          clearTimeout(fallbackTimer);
+          console.warn("[detail] iframe 加载失败，回退本地嵌入");
+          fallbackEmbed(tk);
+        };
+        frame.src = viewUrl;
+        frame.style.display = "block";
+      } catch (e) {
+        console.error("[detail] unexpected error", e);
+        showError("页面初始化失败：" + (e && e.message ? e.message : "未知错误"));
+        showDebug({ version: VERSION, step: "top", error: e && e.message });
+      }
+    })();
+  </script>
+</body>
+</html>

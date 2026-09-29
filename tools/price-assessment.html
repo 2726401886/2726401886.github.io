@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>价格鉴证评估 - 价格鉴证报告辅助工具 | 效率盒子</title>
+  <meta name="description" content="免费在线价格鉴证评估辅助工具，支持市场法、成本法、收益法三种评估方法计算，提供鉴证项目信息录入、价值计算和价格鉴证报告要素清单。适用于涉诉讼资产、涉案财物、事故损失等价格鉴证场景。">
+  <meta name="keywords" content="价格鉴证,价格评估,资产评估,市场法,成本法,收益法,鉴证报告,涉诉资产,涉案财物,损失鉴定">
+  <meta property="og:title" content="价格鉴证评估工具">
+  <meta property="og:description" content="支持市场法/成本法/收益法三种评估方法，辅助生成价格鉴证报告。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .pa-tabs{display:flex;gap:0;margin-bottom:20px;border-radius:8px;overflow:hidden}
+    .pa-tabs button{flex:1;padding:12px;border:none;background:#e2e8f0;color:#64748b;font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+    .pa-tabs button.active{background:#4f46e5;color:#fff}
+    .pa-section{background:#f8fafc;border-radius:12px;padding:24px;margin-bottom:16px}
+    .pa-section h3{font-size:16px;color:#475569;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .pa-inputs{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .pa-inputs-full{margin-bottom:16px}
+    .pa-inputs label,.pa-inputs-full label{display:block;margin-bottom:6px;font-weight:600;color:#475569;font-size:14px}
+    .pa-inputs input,.pa-inputs select,.pa-inputs-full input,.pa-inputs-full textarea,.pa-inputs-full select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;font-size:16px}
+    .pa-inputs input:focus,.pa-inputs select:focus,.pa-inputs-full input:focus,.pa-inputs-full textarea:focus,.pa-inputs-full select:focus{border-color:#4f46e5;outline:none}
+    .pa-inputs-full textarea{resize:vertical;min-height:80px;font-family:inherit}
+    .pa-result{background:#4f46e5;border-radius:12px;padding:24px;text-align:center;margin-bottom:16px}
+    .pa-result .label{font-size:14px;color:rgba(255,255,255,.8)}
+    .pa-result .value{font-size:36px;font-weight:700;color:#fff;margin:8px 0}
+    .pa-result .unit{font-size:16px;color:rgba(255,255,255,.8)}
+    .pa-comp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+    .pa-comp-item{padding:12px;background:#fff;border-radius:8px;text-align:center}
+    .pa-comp-item input{border:2px solid #e2e8f0;border-radius:6px;padding:8px;width:100%;text-align:center;font-size:15px}
+    .pa-checklist{list-style:none;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .pa-checklist li{display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#475569;padding:8px;background:#fff;border-radius:8px}
+    .pa-checklist input{margin-top:2px;width:16px;height:16px}
+    .pa-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:12px;font-size:13px;color:#9a3412;line-height:1.6;margin-top:16px}
+    .pa-method-desc{font-size:13px;color:#64748b;line-height:1.6;margin-bottom:16px;padding:12px;background:#eef2ff;border-radius:8px}
+  </style>
+<style>
+.eff-mask{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;z-index:9999;padding:16px}
+.eff-mask.show{display:flex}
+.eff-modal{position:relative;width:340px;max-width:100%;background:#fff;border-radius:14px;padding:26px 22px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.25);font-family:'Noto Sans SC',system-ui,sans-serif;color:#1a202c}
+.eff-close{position:absolute;top:10px;right:14px;background:none;border:none;color:#718096;font-size:22px;cursor:pointer;line-height:1}
+.eff-title{font-size:16px;font-weight:700;margin-bottom:6px}
+.eff-sub{font-size:12px;color:#4a5568;line-height:1.6;margin-bottom:16px}
+.eff-qr{width:160px;height:160px;border-radius:8px;background:#fff;padding:8px;margin:0 auto 12px;display:block;box-shadow:0 2px 10px rgba(0,0,0,.15);cursor:pointer}
+.eff-tip{font-size:11px;color:#718096;margin-top:8px}
+.eff-phone{margin:14px 0;text-align:left}
+.eff-phone label{display:block;font-size:11px;color:#718096;margin-bottom:6px}
+.eff-phone input{width:100%;border:1px solid #d8dde6;border-radius:6px;padding:11px 12px;color:#1a202c;font-size:15px;outline:none;text-align:center;letter-spacing:2px;box-sizing:border-box}
+.eff-phone input:focus{border-color:#1976d2}
+.eff-phone input.err{border-color:#c62828}
+.eff-btns{display:flex;gap:10px}
+.eff-btns button{flex:1;padding:10px 0;border:none;border-radius:6px;font-size:12.5px;font-weight:600;cursor:pointer}
+.eff-btns .later{background:#eef1f6;color:#4a5568}
+.eff-btns .ok{background:#1976d2;color:#fff}
+.eff-note{font-size:9px;color:#718096;margin-top:14px;line-height:1.6}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links"><li><a href="../index.html">首页</a></li><li><a href="../index.html#tools">工具</a></li></ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="tool-header">
+      <h1>价格鉴证评估</h1>
+      <p>市场法 / 成本法 / 收益法 三种评估方法辅助计算，价格鉴证报告要素清单</p>
+    </div>
+
+    <div class="tool-box" style="max-width:680px;margin:0 auto">
+      <!-- 鉴证项目信息 -->
+      <div class="pa-section">
+        <h3>📋 鉴证项目信息</h3>
+        <div class="pa-inputs">
+          <div>
+            <label>委托方</label>
+            <input type="text" id="paClient" placeholder="如：XX人民法院">
+          </div>
+          <div>
+            <label>鉴证基准日</label>
+            <input type="date" id="paDate">
+          </div>
+        </div>
+        <div class="pa-inputs-full">
+          <label>鉴证标的</label>
+          <input type="text" id="paSubject" placeholder="如：二手轿车一辆（品牌型号）">
+        </div>
+        <div class="pa-inputs-full">
+          <label>鉴证目的</label>
+          <textarea id="paPurpose" placeholder="如：为法院审理机动车交通事故责任纠纷案提供价格参考依据"></textarea>
+        </div>
+      </div>
+
+      <!-- 评估方法选择 -->
+      <div class="pa-tabs">
+        <button class="active" id="btn-market" onclick="switchMethod('market')">市场法</button>
+        <button id="btn-cost" onclick="switchMethod('cost')">成本法</button>
+        <button id="btn-income" onclick="switchMethod('income')">收益法</button>
+      </div>
+
+      <!-- 市场法 -->
+      <div class="pa-section" id="panel-market">
+        <div class="pa-method-desc">市场法：选取与鉴证标的相同或类似的可比实例，调整差异后求取鉴证值。适用于市场活跃、交易案例丰富的标的。</div>
+        <div class="pa-comp-grid">
+          <div class="pa-comp-item"><div style="font-size:12px;color:#94a3b8;margin-bottom:6px">可比实例一（元）</div><input type="number" id="m1" placeholder="如：85000"></div>
+          <div class="pa-comp-item"><div style="font-size:12px;color:#94a3b8;margin-bottom:6px">可比实例二（元）</div><input type="number" id="m2" placeholder="如：82000"></div>
+          <div class="pa-comp-item"><div style="font-size:12px;color:#94a3b8;margin-bottom:6px">可比实例三（元）</div><input type="number" id="m3" placeholder="如：88000"></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="calcMarket()">计算鉴证值</button>
+        <div class="pa-result" id="marketResult" style="display:none">
+          <div class="label">鉴证值（算术平均）</div>
+          <div class="value" id="marketValue">--</div>
+          <div class="unit">元</div>
+        </div>
+      </div>
+
+      <!-- 成本法 -->
+      <div class="pa-section" id="panel-cost" style="display:none">
+        <div class="pa-method-desc">成本法：以重新构建标的所需的现时成本为基础，扣除损耗（成新率）确定鉴证值。适用于专用设备、在建工程等缺少交易案例的标的。</div>
+        <div class="pa-inputs">
+          <div>
+            <label>重置成本（元）</label>
+            <input type="number" id="cReset" placeholder="如：150000">
+          </div>
+          <div>
+            <label>成新率（%）</label>
+            <input type="number" id="cRate" placeholder="如：65" min="0" max="100">
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="calcCost()">计算鉴证值</button>
+        <div class="pa-result" id="costResult" style="display:none">
+          <div class="label">鉴证值</div>
+          <div class="value" id="costValue">--</div>
+          <div class="unit">元</div>
+        </div>
+      </div>
+
+      <!-- 收益法 -->
+      <div class="pa-section" id="panel-income" style="display:none">
+        <div class="pa-method-desc">收益法：将标的未来预期收益按适当折现率资本化或折现，求取鉴证值。适用于有稳定收益的不动产、无形资产等。</div>
+        <div class="pa-inputs">
+          <div>
+            <label>年净收益（元）</label>
+            <input type="number" id="iAnnual" placeholder="如：30000">
+          </div>
+          <div>
+            <label>折现率（%）</label>
+            <input type="number" id="iRate" placeholder="如：8" step="0.1">
+          </div>
+        </div>
+        <div class="pa-inputs-full">
+          <label>收益年限（年）</label>
+          <input type="number" id="iYears" placeholder="如：10">
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="calcIncome()">计算鉴证值</button>
+        <div class="pa-result" id="incomeResult" style="display:none">
+          <div class="label">鉴证值（收益现值）</div>
+          <div class="value" id="incomeValue">--</div>
+          <div class="unit">元</div>
+        </div>
+      </div>
+
+      <!-- 报告要素清单 -->
+      <div class="pa-section">
+        <h3>📑 价格鉴证报告要素清单</h3>
+        <ul class="pa-checklist">
+          <li><input type="checkbox"> 价格鉴证机构资质证书</li>
+          <li><input type="checkbox"> 鉴证人员执业资格证书</li>
+          <li><input type="checkbox"> 委托方基本情况</li>
+          <li><input type="checkbox"> 鉴证标的概况描述</li>
+          <li><input type="checkbox"> 价格鉴证目的</li>
+          <li><input type="checkbox"> 价格鉴证基准日</li>
+          <li><input type="checkbox"> 价格定义与假设条件</li>
+          <li><input type="checkbox"> 鉴证依据（法律法规）</li>
+          <li><input type="checkbox"> 选用的评估方法</li>
+          <li><input type="checkbox"> 鉴证过程与计算说明</li>
+          <li><input type="checkbox"> 鉴证结论（金额）</li>
+          <li><input type="checkbox"> 特别事项说明</li>
+          <li><input type="checkbox"> 报告有效期</li>
+          <li><input type="checkbox"> 机构签章与日期</li>
+        </ul>
+      </div>
+
+      <div class="pa-note">
+        <strong>免责声明：</strong>本工具仅提供计算辅助与要素参考，不能替代专业价格鉴证机构出具的正式《价格鉴证报告》。正式报告须由具备资质的价格鉴证机构及人员依法出具。
+      </div>
+    </div>
+
+    <div class="ad-zone"><span class="ad-zone-label">广告位</span></div>
+
+    <div class="related-tools">
+      <h2>其他工具</h2>
+      <div class="related-grid" id="related-tools"></div>
+    </div>
+  <section class="pa-section" style="border:2px solid #f59e0b;background:#fffbeb">
+  <h3>📄 专业报告下载</h3>
+  <p style="font-size:13px;color:#64748b;margin-bottom:14px">填写上方信息并计算后，可下载 Word 版《价格鉴证评估报告》（含项目信息、评估方法、鉴证值与报告要素清单）。</p>
+  <button class="btn btn-primary" style="width:100%" onclick="effGuardDownload()">📥 下载价格鉴证评估报告（Word）</button>
+</section>
+</main>
+
+  <footer class="site-footer">
+    <div class="footer-links"><a href="../index.html">首页</a><a href="../index.html#tools">全部工具</a></div>
+    <p>&copy; 2026 效率盒子. 中国传说</p>
+    <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+    renderRelatedTools("related-tools", "price-assessment");
+
+    // 设置默认日期为今天
+    document.getElementById('paDate').value = new Date().toISOString().split('T')[0];
+
+    let currentMethod = 'market';
+    function switchMethod(m) {
+      currentMethod = m;
+      document.getElementById('btn-market').classList.toggle('active', m === 'market');
+      document.getElementById('btn-cost').classList.toggle('active', m === 'cost');
+      document.getElementById('btn-income').classList.toggle('active', m === 'income');
+      document.getElementById('panel-market').style.display = m === 'market' ? 'block' : 'none';
+      document.getElementById('panel-cost').style.display = m === 'cost' ? 'block' : 'none';
+      document.getElementById('panel-income').style.display = m === 'income' ? 'block' : 'none';
+    }
+
+    function calcMarket() {
+      const v1 = parseFloat(document.getElementById('m1').value);
+      const v2 = parseFloat(document.getElementById('m2').value);
+      const v3 = parseFloat(document.getElementById('m3').value);
+      const vals = [v1, v2, v3].filter(v => !isNaN(v) && v > 0);
+      if (vals.length === 0) { alert('请输入至少一个有效的可比实例价格'); return; }
+      const avg = vals.reduce((a, b) => a + b, 0) / vals.length;
+      document.getElementById('marketValue').textContent = avg.toLocaleString('zh-CN', {maximumFractionDigits: 2});
+      document.getElementById('marketResult').style.display = 'block';
+    }
+
+    function calcCost() {
+      const reset = parseFloat(document.getElementById('cReset').value);
+      const rate = parseFloat(document.getElementById('cRate').value);
+      if (!reset || !rate || reset <= 0 || rate < 0 || rate > 100) { alert('请输入有效的重置成本和成新率（0-100）'); return; }
+      const value = reset * rate / 100;
+      document.getElementById('costValue').textContent = value.toLocaleString('zh-CN', {maximumFractionDigits: 2});
+      document.getElementById('costResult').style.display = 'block';
+    }
+
+    function calcIncome() {
+      const annual = parseFloat(document.getElementById('iAnnual').value);
+      const rate = parseFloat(document.getElementById('iRate').value);
+      const years = parseInt(document.getElementById('iYears').value);
+      if (!annual || !rate || !years || annual <= 0 || rate <= 0 || years <= 0) { alert('请输入有效的年净收益、折现率和收益年限'); return; }
+      const r = rate / 100;
+      let pv = 0;
+      for (let t = 1; t <= years; t++) {
+        pv += annual / Math.pow(1 + r, t);
+      }
+      document.getElementById('incomeValue').textContent = pv.toLocaleString('zh-CN', {maximumFractionDigits: 2});
+      document.getElementById('incomeResult').style.display = 'block';
+    }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>window.EFFBOX_STATS_API="https://api.toolshe.cn";</script>
+  <script src="/stats.js"></script>
+<div class="eff-mask" id="effRewardModal">
+  <div class="eff-modal">
+    <button class="eff-close" onclick="effCloseReward()" aria-label="关闭">×</button>
+    <div class="eff-title">💛 解锁专业报告下载</div>
+    <div class="eff-sub">本项目独立开发维护，持续更新不易。<br>打赏后可获取解锁码，凭码在本机永久下载 Word 报告。</div>
+    <img src="../images/reward-qrcode.png" class="eff-qr" alt="微信赞赏码" onclick="window.open('../images/reward-qrcode.png','_blank')" title="点击放大赞赏码">
+    <div class="eff-tip">微信扫码打赏 · 加 QQ：2726401886 获取解锁码</div>
+    <div class="eff-phone">
+      <label>请输入解锁码（格式：手机号-8位验证码）</label>
+      <input type="text" id="effUnlockCode" placeholder="如 13800138000-A1B2C3D4" maxlength="24" autocomplete="off">
+    </div>
+    <div class="eff-btns">
+      <button class="later" onclick="effCloseReward()">暂不需要</button>
+      <button class="ok" onclick="effConfirmUnlock()">验证并解锁</button>
+    </div>
+    <div class="eff-note" id="effUnlockMsg"></div>
+    <div class="eff-note">解锁码仅保存在你本机浏览器，不会上传任何服务器。</div>
+  </div>
+</div>
+<script>
+
+const EFF_SECRET=atob('ZWZmYm94LXVubG9jay0yMDI2LXhxcg=='); // 与 used-car-eval.html / unlock-code-generator.html 共用
+const EFF_UNLOCK_KEY='effbox_unlock'; // 与 used-car-eval 同一键 => 一把解锁码通用全部付费工具
+function effIsUnlocked(){try{return localStorage.getItem(EFF_UNLOCK_KEY)==='1'}catch(e){return false}}
+async function effSha256hex(str){
+  const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+async function effVerifyUnlockCode(input){
+  const m=input.trim().toUpperCase().replace(/\s/g,'');
+  const idx=m.lastIndexOf('-');
+  if(idx<0)return false;
+  const phone=m.slice(0,idx),check=m.slice(idx+1);
+  if(!/^1\d{10}$/.test(phone))return false;
+  if(check.length<8)return false;
+  const raw=await effSha256hex(phone+'|'+EFF_SECRET);
+  return check===raw.slice(0,8).toUpperCase();
+}
+function effOpenUnlock(){
+  const m=document.getElementById('effRewardModal');
+  const c=document.getElementById('effUnlockCode');
+  c.value='';c.classList.remove('err');
+  const msg=document.getElementById('effUnlockMsg');
+  if(msg){msg.textContent='';msg.style.color=''}
+  m.classList.add('show');
+  setTimeout(()=>c.focus(),50);
+}
+function effCloseReward(){document.getElementById('effRewardModal').classList.remove('show');}
+async function effConfirmUnlock(){
+  const c=document.getElementById('effUnlockCode');
+  const msg=document.getElementById('effUnlockMsg');
+  const code=c.value.trim();
+  if(!code){c.classList.add('err');c.focus();return;}
+  let ok=false;try{ok=await effVerifyUnlockCode(code);}catch(e){}
+  if(!ok){c.classList.add('err');if(msg){msg.style.color='#c62828';msg.textContent='解锁码无效，请确认手机号与验证码是否正确，或联系开发者。'};return;}
+  try{localStorage.setItem(EFF_UNLOCK_KEY,'1')}catch(e){}
+  c.classList.remove('err');
+  if(msg){msg.style.color='#2e7d32';msg.textContent='✅ 解锁成功！现在可以下载 Word 报告了。'}
+  setTimeout(()=>{effCloseReward();},1200);
+}
+function effGuardDownload(){if(effIsUnlocked()){effGenReport();return;}effOpenUnlock();}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')effCloseReward();});
+
+
+function effGenReport(){
+  const g=id=>document.getElementById(id);
+  const client=(g('paClient').value||'____');
+  const date=(g('paDate').value||'____');
+  const subject=(g('paSubject').value||'____');
+  const purpose=(g('paPurpose').value||'____');
+  const fmt=n=>{const v=parseFloat(n);return isNaN(v)?'—':v.toLocaleString('zh-CN',{maximumFractionDigits:2});};
+  let method='market',detail='',val='—';
+  if(g('costResult').style.display!=='none'){method='cost';
+    detail='重置成本='+g('cReset').value+'元；成新率='+g('cRate').value+'%';
+    const r=parseFloat(g('cReset').value),rt=parseFloat(g('cRate').value);
+    if(r&&!isNaN(rt))val=fmt(r*rt/100);
+  }else if(g('incomeResult').style.display!=='none'){method='income';
+    detail='年净收益='+g('iAnnual').value+'元；折现率='+g('iRate').value+'%；收益年限='+g('iYears').value+'年';
+    const a=parseFloat(g('iAnnual').value),rr=parseFloat(g('iRate').value),y=parseInt(g('iYears').value);
+    if(a&&rr&&y){let pv=0;for(let t=1;t<=y;t++)pv+=a/Math.pow(1+rr/100,t);val=fmt(pv);}
+  }else{method='market';
+    const raw=[g('m1').value,g('m2').value,g('m3').value];
+    detail='可比实例：'+raw.map((x,i)=>'实例'+(i+1)+'='+x).join('；');
+    const v=raw.map(Number).filter(x=>!isNaN(x)&&x>0);
+    if(v.length)val=fmt(v.reduce((a,b)=>a+b,0)/v.length);
+  }
+  const mname={market:'市场法',cost:'成本法',income:'收益法'}[method];
+  if(val==='—'){alert('请先在上方选择评估方法并点击「计算鉴证值」后再下载报告');return;}
+  const html='<h1>价格鉴证评估报告（辅助）</h1>'+
+    '<h2>一、鉴证项目信息</h2><table>'+
+    '<tr><td>委托方</td><td>'+client+'</td></tr>'+
+    '<tr><td>鉴证基准日</td><td>'+date+'</td></tr>'+
+    '<tr><td>鉴证标的</td><td>'+subject+'</td></tr>'+
+    '<tr><td>鉴证目的</td><td>'+purpose+'</td></tr></table>'+
+    '<h2>二、评估方法与结果</h2>'+
+    '<p><strong>选用方法：</strong>'+mname+'</p>'+
+    '<p><strong>计算参数：</strong>'+detail+'</p>'+
+    '<p><strong>鉴证值：</strong>'+val+' 元</p>'+
+    '<h2>三、价格鉴证报告要素清单</h2>'+
+    '<p>价格鉴证机构资质证书 / 鉴证人员执业资格证书 / 委托方基本情况 / 鉴证标的概况描述 / 价格鉴证目的 / 价格鉴证基准日 / 价格定义与假设条件 / 鉴证依据（法律法规）/ 选用的评估方法 / 鉴证过程与计算说明 / 鉴证结论（金额）/ 特别事项说明 / 报告有效期 / 机构签章与日期</p>'+
+    '<p class="note">免责声明：本工具仅提供计算辅助与要素参考，不能替代专业价格鉴证机构出具的正式《价格鉴证报告》。</p>';
+  effDownloadWord('价格鉴证评估报告_'+date+'.doc', html);
+}
+
+
+function effDownloadWord(filename, htmlBody){
+  const wordHtml='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>body{font-family:"宋体",SimSun,serif;font-size:10.5pt;line-height:1.6;color:#000}h1{font-size:18pt;text-align:center;font-family:"黑体",SimHei;margin-bottom:6pt}h2{font-size:14pt;font-family:"黑体",SimHei;margin-top:14pt;margin-bottom:4pt;border-bottom:1pt solid #000;padding-bottom:3pt}p{margin:3pt 0}table{width:100%;border-collapse:collapse;margin:4pt 0}td,th{border:0.5pt solid #000;padding:3pt 5pt;font-size:9pt;vertical-align:middle}th{background:#f0f0f0;font-weight:bold;text-align:center}.note{font-size:8pt;color:#666;margin-top:4pt}</style></head><body>'+htmlBody+'</body></html>';
+  const blob=new Blob(['\ufeff'+wordHtml],{type:'application/msword'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;document.body.appendChild(a);a.click();setTimeout(()=>{document.body.removeChild(a);URL.revokeObjectURL(a.href)},200);
+}
+
+</script>
+</body>
+</html>

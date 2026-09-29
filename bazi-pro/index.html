@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>知命八字馆 - 免费八字排盘、学业解析、流年运程</title>
+  <meta name="description" content="知命八字馆：免费在线八字排盘，完整解析四柱格局、学业天赋、大运流年运势、性格事业感情。新中式国风设计，通俗白话与专业典籍双模式。">
+  <meta name="keywords" content="八字排盘,八字详批,学业解析,流年运程,大运,十神,用神,格局,命理,八字学堂,知命八字馆">
+  <meta property="og:title" content="知命八字馆 - 免费八字排盘、学业解析、流年运程">
+  <meta property="og:description" content="免费在线八字排盘，完整解析格局、学业、流年、事业感情。">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ===== 顶部导航 ===== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="logo">知命八字馆</a>
+      <nav class="nav-links">
+        <a href="index.html" class="active">免费排盘</a>
+        <a href="result.html">流年运程</a>
+        <a href="result.html">学业解析</a>
+        <a href="xuetang.html">八字学堂</a>
+        <a href="../tools/zeri.html">红白择日</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== 首屏：卷轴背景 + 录入表单 ===== -->
+  <section class="scroll-bg">
+    <div class="container">
+      <div style="text-align:center;margin-bottom:24px">
+        <h1 style="font-size:28px;font-weight:700;color:var(--qindai);letter-spacing:3px;margin-bottom:8px">
+          输入生辰，完整解析八字格局
+        </h1>
+        <p style="font-size:16px;color:var(--text-light);letter-spacing:1px">
+          学业天赋 · 终身流年运势 · 性格事业感情 · 用神化解方案
+        </p>
+      </div>
+
+      <!-- 快捷录入卡片 -->
+      <div class="card" style="max-width:560px;margin:0 auto">
+        <div class="card-title"><span class="icon">🔮</span> 生辰录入</div>
+
+        <div class="form-row" style="margin-bottom:12px">
+          <div class="form-group">
+            <label class="form-label">性别</label>
+            <div class="radio-group" id="genderGroup">
+              <input type="radio" name="gender" id="genderM" value="male" checked>
+              <label for="genderM" class="active" onclick="switchRadio('genderGroup',this)">男</label>
+              <input type="radio" name="gender" id="genderF" value="female">
+              <label for="genderF" onclick="switchRadio('genderGroup',this)">女</label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">历法</label>
+            <div class="radio-group" id="calGroup">
+              <input type="radio" name="cal" id="calSolar" value="solar" checked>
+              <label for="calSolar" class="active" onclick="switchRadio('calGroup',this)">公历</label>
+              <input type="radio" name="cal" id="calLunar" value="lunar">
+              <label for="calLunar" onclick="switchRadio('calGroup',this)">农历</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-bottom:12px">
+          <div class="form-group">
+            <label class="form-label">出生日期</label>
+            <input type="date" class="form-input" id="birthDate" value="1990-01-01">
+          </div>
+          <div class="form-group">
+            <label class="form-label">出生时辰</label>
+            <select class="form-select" id="birthHour">
+              <option value="-1">不确定时辰</option>
+              <option value="0">子时 (23:00-01:00)</option>
+              <option value="1">丑时 (01:00-03:00)</option>
+              <option value="2">寅时 (03:00-05:00)</option>
+              <option value="3">卯时 (05:00-07:00)</option>
+              <option value="4">辰时 (07:00-09:00)</option>
+              <option value="5">巳时 (09:00-11:00)</option>
+              <option value="6" selected>午时 (11:00-13:00)</option>
+              <option value="7">未时 (13:00-15:00)</option>
+              <option value="8">申时 (15:00-17:00)</option>
+              <option value="9">酉时 (17:00-19:00)</option>
+              <option value="10">戌时 (19:00-21:00)</option>
+              <option value="11">亥时 (21:00-23:00)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">出生地（用于真太阳时校正，选填）</label>
+          <input type="text" class="form-input" id="birthPlace" placeholder="如：北京 / 上海 / 广州">
+        </div>
+
+        <div style="margin:12px 0">
+          <label style="display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text-light);cursor:pointer">
+            <input type="checkbox" id="focusStudy" checked> 重点解析学业学问运势
+          </label>
+        </div>
+
+        <button class="btn-primary" onclick="doCalc()">立 即 排 盘</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 功能分区卡片 ===== -->
+  <section class="container" style="padding:40px 16px">
+    <h2 style="text-align:center;font-size:20px;font-weight:700;color:var(--qindai);margin-bottom:24px;letter-spacing:2px">
+      功 能 导 航
+    </h2>
+    <div class="feature-grid">
+      <div class="feature-card" onclick="location.href='result.html'">
+        <div class="icon">📚</div>
+        <h3>学业天赋解析</h3>
+        <p>专门看文凭、学习悟性、升学考运、考研考证时机</p>
+      </div>
+      <div class="feature-card" onclick="location.href='result.html'">
+        <div class="icon">📅</div>
+        <h3>流年逐年运势</h3>
+        <p>未来15-30年吉凶、破财升职升学节点、犯太岁预警</p>
+      </div>
+      <div class="feature-card" onclick="location.href='result.html'">
+        <div class="icon">💑</div>
+        <h3>婚姻事业详解</h3>
+        <p>正缘年份、配偶特征、适合行业、创业打工适配度</p>
+      </div>
+      <div class="feature-card" onclick="location.href='xuetang.html'">
+        <div class="icon">📖</div>
+        <h3>八字学堂</h3>
+        <p>零基础自学八字全套教程，边测算边学命理学问</p>
+      </div>
+      <div class="feature-card" onclick="location.href='../tools/zeri.html'">
+        <div class="icon">🧧</div>
+        <h3>红白喜事择日</h3>
+        <p>婚嫁安葬吉日查询、十二建星、三娘煞重丧日检测</p>
+      </div>
+      <div class="feature-card" onclick="location.href='../tools/bazi.html'">
+        <div class="icon">☯</div>
+        <h3>基础排盘工具</h3>
+        <p>快速八字排盘，四柱干支、藏干十神、五行统计</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 免责声明 ===== -->
+  <section class="container" style="padding:0 16px 40px">
+    <div class="disclaimer">
+      <strong>⚠️ 免责声明：</strong>
+      本八字测算基于传统民俗国学文化，仅作娱乐参考与传统文化研究。人生发展取决于个人选择、努力与现实环境，请勿过度迷信，以此作为重大人生决策唯一依据。
+    </div>
+  </section>
+
+  <!-- ===== 页脚 ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>&copy; 2026 知命八字馆 · 中国传说</p>
+      <p style="margin-top:4px;font-size:12px;opacity:0.7;">联系邮箱：<a href="mailto:2726401886@qq.com" style="color:inherit;text-decoration:none;">2726401886@qq.com</a></p>
+    <p style="margin-top:6px;font-size:12px;opacity:0.7;"><span id="busuanzi_container_site_pv" style="display:none;">总访问 <span id="busuanzi_value_site_pv"></span> 次</span><span id="busuanzi_container_site_uv" style="display:none;"> · 访客 <span id="busuanzi_value_site_uv"></span> 人</span></p>
+      <p style="margin-top:4px;font-size:12px;color:var(--text-lighter)">基于传统子平命理 · 仅供文化研究参考</p>
+    </div>
+  </footer>
+
+  <script src="js/bazi-engine.js"></script>
+  <script>
+  function switchRadio(groupId, label){
+    var group = document.getElementById(groupId);
+    group.querySelectorAll('label').forEach(function(l){l.classList.remove('active');});
+    label.classList.add('active');
+  }
+
+  function doCalc(){
+    var dateStr = document.getElementById('birthDate').value;
+    if(!dateStr){ alert('请选择出生日期'); return; }
+    var parts = dateStr.split('-');
+    var year = parseInt(parts[0]);
+    var month = parseInt(parts[1]);
+    var day = parseInt(parts[2]);
+    var hour = parseInt(document.getElementById('birthHour').value);
+    var gender = document.querySelector('input[name="gender"]:checked').value;
+    var isLunar = document.querySelector('input[name="cal"]:checked').value === 'lunar';
+    var focusStudy = document.getElementById('focusStudy').checked;
+
+    // 存到 sessionStorage 传给结果页
+    var params = {
+      year: year, month: month, day: day,
+      hour: hour, gender: gender, isLunar: isLunar,
+      focusStudy: focusStudy
+    };
+    sessionStorage.setItem('baziParams', JSON.stringify(params));
+    location.href = 'result.html';
+  }
+  </script>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</body>
+</html>

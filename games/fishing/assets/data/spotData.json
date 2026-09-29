@@ -1,0 +1,75 @@
+[
+  {
+    "spotId": "villagePond",
+    "name": "Small Village Pond",
+    "env": "pond",
+    "fishPool": [
+      "crucian",
+      "minnow"
+    ],
+    "unlockType": "default",
+    "unlockCost": 0,
+    "desc": "A quiet small pond for beginners. Crucian and small fish live here."
+  },
+  {
+    "spotId": "lakeBay",
+    "name": "Lake Bay",
+    "env": "pond",
+    "fishPool": [
+      "carp",
+      "grassCarp"
+    ],
+    "unlockType": "gold",
+    "unlockCost": 50,
+    "desc": "Wide lake bay, carps love cloudy days."
+  },
+  {
+    "spotId": "reedyMarsh",
+    "name": "Reedy Marsh",
+    "env": "pond",
+    "fishPool": [
+      "snakehead"
+    ],
+    "unlockType": "gold",
+    "unlockCost": 120,
+    "desc": "Reedy swamp, snakehead is active on light rain days."
+  },
+  {
+    "spotId": "rockyShore",
+    "name": "Rocky Shore",
+    "env": "sea",
+    "fishPool": [
+      "seaBass",
+      "grouper"
+    ],
+    "unlockType": "ad",
+    "unlockCost": 0,
+    "desc": "Rocky coast. Big sea bass may bite in windy weather."
+  },
+  {
+    "spotId": "sandyBeach",
+    "name": "Sandy Beach",
+    "env": "sea",
+    "fishPool": [
+      "yellowCroaker",
+      "seaBream"
+    ],
+    "unlockType": "gold",
+    "unlockCost": 150,
+    "desc": "Shallow sandy sea, good for yellow croaker."
+  },
+  {
+    "spotId": "deepPier",
+    "name": "Deep Sea Pier",
+    "env": "sea",
+    "fishPool": [
+      "seaBass",
+      "grouper",
+      "giantTuna"
+    ],
+    "unlockType": "collection",
+    "collectCount": 10,
+    "castX": 150,
+    "desc": "Deep sea pier, rare big fish, hard to hook but high reward."
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "city": "河源市",
+  "year": 2026,
+  "month": 3,
+  "title": "河源市2026年3月建设工程材料信息价（除税价）",
+  "source": "QQ ima 聚合「广东省各地市建设工程造价信息（信息价）2026年3月」，玮德工程造价整理",
+  "sourceNote": "标注数据源自各地市造价管理机构官方发布",
+  "priceType": "除税价",
+  "scope": "钢材、水泥、砂",
+  "disclaimer": "非官方原始文件，不可直接作为工程计价依据。正式计价请以当地造价管理机构正式发布文件为准。",
+  "items": [
+    {"cat":"钢材", "name":"螺纹钢", "spec":"HRB400 Φ10以内（抗震同规格+50元/t）", "unit":"t", "price":3215},
+    {"cat":"钢材", "name":"螺纹钢", "spec":"HRB400 Φ10~25（抗震同规格+50元/t）", "unit":"t", "price":3250},
+    {"cat":"钢材", "name":"螺纹钢", "spec":"HRB400 Φ25外（抗震同规格+50元/t）", "unit":"t", "price":3265},
+    {"cat":"钢材", "name":"圆钢", "spec":"HPB300 Φ10以内（抗震同规格+50元/t）", "unit":"t", "price":3160},
+    {"cat":"钢材", "name":"圆钢", "spec":"HPB300 Φ12~25（抗震同规格+50元/t）", "unit":"t", "price":3180},
+    {"cat":"钢材", "name":"方钢", "spec":"Q235 综合", "unit":"t", "price":3280},
+    {"cat":"钢材", "name":"扁钢", "spec":"Q235 综合", "unit":"t", "price":3245},
+    {"cat":"钢材", "name":"工字钢", "spec":"Q235 综合", "unit":"t", "price":3235},
+    {"cat":"钢材", "name":"槽钢", "spec":"Q235 综合", "unit":"t", "price":3265},
+    {"cat":"钢材", "name":"角钢", "spec":"Q235 综合", "unit":"t", "price":3260},
+    {"cat":"钢材", "name":"H型钢", "spec":"Q235 综合", "unit":"t", "price":3165},
+    {"cat":"钢材", "name":"热轧钢板", "spec":"Q235 综合", "unit":"t", "price":3380},
+    {"cat":"水泥", "name":"砌筑水泥", "spec":"M 32.5", "unit":"t", "price":290},
+    {"cat":"水泥", "name":"普通硅酸盐水泥", "spec":"P.O 42.5R", "unit":"t", "price":306},
+    {"cat":"砂", "name":"中砂", "spec":"3.0~2.3", "unit":"m³", "price":188},
+    {"cat":"砂", "name":"机制砂", "spec":"综合", "unit":"m³", "price":122}
+  ]
+}

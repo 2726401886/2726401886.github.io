@@ -1,0 +1,20 @@
+[
+  {
+    "id": "smallHook",
+    "name": "Small Hook",
+    "price": 0,
+    "desc": "For small fish only."
+  },
+  {
+    "id": "mediumHook",
+    "name": "Medium Hook",
+    "price": 0,
+    "desc": "All round hook."
+  },
+  {
+    "id": "bigHook",
+    "name": "Big Hook",
+    "price": 80,
+    "desc": "For large / giant fish."
+  }
+]
