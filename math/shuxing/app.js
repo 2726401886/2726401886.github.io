@@ -370,7 +370,7 @@
     var v = el('video', { class: 'sx-video-el', controls: '', playsinline: '', preload: 'metadata' });
     var tip = el('div', { class: 'sx-video-tip', text: '加载中…' });
     var timer = null;
-    var lineName = function (i) { return i === 0 ? '直链' : (i === 1 ? '加速一' : '加速二'); };
+    var lineName = function (i) { return i === 0 ? '加速一' : (i === 1 ? '加速二' : '直链'); };
     function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
     function setTip(t) { tip.textContent = t; }
     function tryLine() {
