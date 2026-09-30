@@ -18,9 +18,10 @@
   var VIDEO = null;
   /* GitHub 直链在国内常超时，构造多线路候选：加速镜像优先 + 直链兜底，播放时自动切换 */
   var MIRRORS = [
-    function (u) { return 'https://ghproxy.net/' + u; },  /* 0: 加速一（稳定） */
-    function (u) { return 'https://ghfast.top/' + u; },   /* 1: 加速二 */
-    function (u) { return u; }                            /* 2: 原始直链兜底 */
+    function (u) { return 'https://toolshe.cn/vp/' + u.replace('https://github.com/2726401886/2726401886.github.io/releases/download/', ''); },  /* 0: CF反代（同域，推荐） */
+    function (u) { return 'https://ghproxy.net/' + u; },  /* 1: 加速一（稳定） */
+    function (u) { return 'https://ghfast.top/' + u; },   /* 2: 加速二 */
+    function (u) { return u; }                            /* 3: 原始直链兜底 */
   ];
   function loadVideoManifest() {
     fetch('video-manifest.json', { cache: 'no-cache' })
@@ -370,7 +371,7 @@
     var v = el('video', { class: 'sx-video-el', controls: '', playsinline: '', preload: 'metadata' });
     var tip = el('div', { class: 'sx-video-tip', text: '加载中…' });
     var timer = null;
-    var lineName = function (i) { return i === 0 ? '加速一' : (i === 1 ? '加速二' : '直链'); };
+    var lineName = function (i) { return i === 0 ? 'CF反代' : (i === 1 ? '加速一' : (i === 2 ? '加速二' : '直链')); };
     function clearTimer() { if (timer) { clearTimeout(timer); timer = null; } }
     function setTip(t) { tip.textContent = t; }
     function tryLine() {
