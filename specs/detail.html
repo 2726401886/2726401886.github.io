@@ -173,7 +173,16 @@
       return tag + html;
     }
     function injectAutoHeightSafe(html) {
-      // 关键：注入到“最后一个” </body>（真正的文档结尾），避免落到脚本字符串里的 </body> 内部
+      // 关键：注入到“最后一个” <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1d4f3948522ee2949abceed48aba1b7f";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+</body>（真正的文档结尾），避免落到脚本字符串里的 </body> 内部
       const bodyRe = /<\/body>/gi;
       let last = -1, mm;
       while ((mm = bodyRe.exec(html)) !== null) last = mm.index;
