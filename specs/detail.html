@@ -325,6 +325,14 @@
         }
         if (!id) { loading.textContent = "缺少规范 id"; return; }
 
+        // 全局兜底：18 秒后若还在 loading，强制报错并展示回退面板，避免任何路径挂死一直转圈
+        const globalTimeout = setTimeout(function () {
+          if (loading && loading.style.display !== "none") {
+            showError("内容加载超时，请检查网络或尝试重新登录", true);
+            showFallback();
+          }
+        }, 18000);
+
         // 主方案：先取正文，再选择正确的 iframe 渲染方式。
         // 王者版闯关游戏 => 同源 document.write，localStorage 持久化保存做题进度。
         // TeachAny 互动课件 => 跨域 iframe 直接加载完整 /specs/view 页面（正常页面流程，后端已注入
@@ -333,7 +341,15 @@
           const r = await S.authFetch("/specs/get?id=" + encodeURIComponent(id));
           if (r.ok) {
             const j = await r.json();
-            if (j.ok && j.spec && j.spec.content_html && j.spec.content_html.trim()) {
+            if (!j.ok) {
+              // 业务错误：无权限/未购买/内容下架等，直接提示，不再走 iframe 兜底
+              const isAuthErr = j.code === 401 || j.status === 401 || (j.msg && /登录|凭证|token|无权|未购买|已下架/i.test(j.msg));
+              showError(j.msg || "无法加载该规范内容", isAuthErr);
+              showDebug({ version: VERSION, step: "main api business", response: j });
+              clearTimeout(globalTimeout);
+              return;
+            }
+            if (j.spec && j.spec.content_html && j.spec.content_html.trim()) {
               const html = j.spec.content_html;
               if (isTeachAnyContent(html)) {
                 // TeachAny 课件：竖向滚动幻灯片（.slide-container=100vh, overflow-y:auto 内部切页）。
@@ -371,6 +387,16 @@
               }
               return;
             }
+          } else {
+            // HTTP 错误：401 直接提示登录，其它状态继续走 iframe 兜底
+            if (r.status === 401) {
+              showError("访问凭证失效，请重新登录", true);
+              showDebug({ version: VERSION, step: "main http", status: r.status });
+              clearTimeout(globalTimeout);
+              return;
+            }
+            console.warn("[detail] /specs/get HTTP " + r.status + "，回退跨域 iframe");
+            showDebug({ version: VERSION, step: "main http fallback", status: r.status });
           }
         } catch (e) {
           console.warn("[detail] 取正文失败，回退跨域 iframe", e);
