@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://toolshe.cn/sitemap.xml
+Sitemap: https://toolshe.cn/sitemap-articles.xml
