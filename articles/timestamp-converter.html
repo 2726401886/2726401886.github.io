@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>时间戳转换在线：Unix 时间戳与日期互转（秒/毫秒） - 效率盒子</title>
+  <meta name="description" content="Unix 时间戳怎么转日期？本文讲清秒/毫秒时间戳区别、时区坑，推荐效率盒子时间戳转换在线工具。">
+  <meta name="keywords" content="时间戳转换,Unix时间戳,时间戳转日期,毫秒时间戳,在线时间戳">
+  <meta name="author" content="效率盒子">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content { max-width: 720px; margin: 0 auto; }
+    .article-content h2 { font-size: 20px; font-weight: 700; margin: 28px 0 12px; color: var(--text); }
+    .article-content h3 { font-size: 16px; font-weight: 600; margin: 18px 0 8px; color: var(--primary-dark); }
+    .article-content p { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 14px; }
+    .article-content ul, .article-content ol { padding-left: 22px; margin-bottom: 14px; }
+    .article-content li { font-size: 15px; line-height: 1.8; margin-bottom: 6px; }
+    .article-content strong { color: var(--primary-dark); }
+    .breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 8px; }
+    .breadcrumb a { color: var(--text-light); }
+    .cta-box { margin: 32px 0; padding: 24px; background: linear-gradient(135deg,#eef2ff,#f5f3ff); border: 1px solid var(--border); border-radius: 12px; text-align: center; }
+    .cta-box h3 { margin: 0 0 8px; color: var(--primary-dark); }
+    .cta-box p { color: var(--text-light); font-size: 14px; margin-bottom: 14px; }
+    .cta-box a { display: inline-block; padding: 11px 28px; background: var(--primary); color: #fff; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-read { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-read h3 { font-size: 16px; margin-bottom: 10px; }
+    .related-read a { display: inline-block; margin: 0 10px 8px 0; color: var(--primary); font-size: 14px; }
+    .article-meta { font-size: 13px; color: var(--text-lighter); margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="../tools/index.html">工具</a></li>
+        <li><a href="../math-gaokao/index.html">高中数学</a></li>
+        <li><a href="../novel/index.html">小说</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="article-content">
+      <div class="breadcrumb"><a href="../index.html">首页</a> / <a href="index.html">文章</a> / 开发工具</div>
+      <h1>时间戳转换在线：Unix 时间戳与日期互转（秒/毫秒）</h1>
+      <div class="article-meta">更新于 2026-10-18 · 效率盒子编辑部</div>
+      
+<p>日志、接口、数据库里常见一串数字，那就是 Unix 时间戳。换算成人类可读日期，几乎天天用。</p>
+<h2>一、秒 vs 毫秒</h2>
+<p>10 位是<strong>秒</strong>（如 1760000000），13 位是<strong>毫秒</strong>（如 1760000000000）。搞混会算出几十年后的日期。</p>
+<h2>二、时区是最大的坑</h2>
+<p>时间戳本身是<strong>UTC</strong> 无时区的，转成日期时按哪个时区显示，结果差 8 小时。北京时间选 UTC+8。</p>
+<h2>三、常见换算</h2>
+<ul>
+  <li>当前时间 → 时间戳</li>
+  <li>时间戳 → 日期（YYYY-MM-DD HH:mm:ss）</li>
+  <li>日期字符串 → 时间戳</li>
+</ul>
+<h2>四、在线一键转换</h2>
+<p>效率盒子时间戳工具支持秒/毫秒自动识别、时区切换、获取当前时间戳，实时双向转换。</p>
+        
+      <div class="cta-box">
+        <h3>时间戳转换工具</h3>
+        <p>秒/毫秒自动识别，时区可切，实时双向转换。</p>
+        <a href="../tools/timestamp-converter.html">立即使用工具 →</a>
+      </div>
+      <div class="related-read">
+        <h3>相关阅读</h3>
+        <a href="uuid-generator-tool.html">UUID 怎么批量生成</a><a href="json-formatter-tool.html">JSON 格式化工具</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../tools/index.html">全部工具</a>
+      <a href="index.html">文章</a>
+    </div>
+    <p>&copy; 2026 效率盒子</p>
+  </footer>
+</body>
+</html>

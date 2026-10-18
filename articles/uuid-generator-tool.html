@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID 是什么？怎么批量生成唯一标识符 - 效率盒子</title>
+  <meta name="description" content="UUID 是什么、有几种版本、怎么批量生成？本文讲清 GUID 在数据库与分布式系统里的用法，推荐效率盒子 UUID 生成器。">
+  <meta name="keywords" content="UUID,UUID生成器,GUID,唯一标识符,UUID批量生成">
+  <meta name="author" content="效率盒子">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content { max-width: 720px; margin: 0 auto; }
+    .article-content h2 { font-size: 20px; font-weight: 700; margin: 28px 0 12px; color: var(--text); }
+    .article-content h3 { font-size: 16px; font-weight: 600; margin: 18px 0 8px; color: var(--primary-dark); }
+    .article-content p { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 14px; }
+    .article-content ul, .article-content ol { padding-left: 22px; margin-bottom: 14px; }
+    .article-content li { font-size: 15px; line-height: 1.8; margin-bottom: 6px; }
+    .article-content strong { color: var(--primary-dark); }
+    .breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 8px; }
+    .breadcrumb a { color: var(--text-light); }
+    .cta-box { margin: 32px 0; padding: 24px; background: linear-gradient(135deg,#eef2ff,#f5f3ff); border: 1px solid var(--border); border-radius: 12px; text-align: center; }
+    .cta-box h3 { margin: 0 0 8px; color: var(--primary-dark); }
+    .cta-box p { color: var(--text-light); font-size: 14px; margin-bottom: 14px; }
+    .cta-box a { display: inline-block; padding: 11px 28px; background: var(--primary); color: #fff; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-read { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-read h3 { font-size: 16px; margin-bottom: 10px; }
+    .related-read a { display: inline-block; margin: 0 10px 8px 0; color: var(--primary); font-size: 14px; }
+    .article-meta { font-size: 13px; color: var(--text-lighter); margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="../tools/index.html">工具</a></li>
+        <li><a href="../math-gaokao/index.html">高中数学</a></li>
+        <li><a href="../novel/index.html">小说</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="article-content">
+      <div class="breadcrumb"><a href="../index.html">首页</a> / <a href="index.html">文章</a> / 开发工具</div>
+      <h1>UUID 是什么？怎么批量生成唯一标识符</h1>
+      <div class="article-meta">更新于 2026-10-18 · 效率盒子编辑部</div>
+      
+<p>UUID（Universally Unique Identifier）是全局唯一标识符，常用于数据库主键、追踪 ID、API Key。</p>
+<h2>一、为什么用它</h2>
+<p>比起自增 ID，UUID 不需中心协调就能保证唯一，适合<strong>分布式系统</strong>、多库合并、离线生成场景。</p>
+<h2>二、常见版本</h2>
+<ul>
+  <li><strong>V4（随机）：</strong>最常用，由随机数生成，如 550e8400-e29b-41d4-a716-446655440000。</li>
+  <li><strong>V1（时间戳+MAC）：</strong>按时间和网卡生成，会泄露机器信息。</li>
+</ul>
+<h2>三、注意点</h2>
+<p>UUID 是 36 个字符（32 个十六进制 + 4 个连字符），比自增 ID 占空间大，海量表要考虑存储与索引影响。</p>
+<h2>四、批量生成</h2>
+<p>效率盒子 UUID 生成器可一次生成多个 V4 UUID，带/不带连字符可选，一键复制。</p>
+        
+      <div class="cta-box">
+        <h3>UUID 生成器</h3>
+        <p>批量生成 V4 UUID，带/不带连字符可选，一键复制。</p>
+        <a href="../tools/uuid-generator.html">立即使用工具 →</a>
+      </div>
+      <div class="related-read">
+        <h3>相关阅读</h3>
+        <a href="timestamp-converter.html">时间戳转换</a><a href="json-formatter-tool.html">JSON 格式化工具</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../tools/index.html">全部工具</a>
+      <a href="index.html">文章</a>
+    </div>
+    <p>&copy; 2026 效率盒子</p>
+  </footer>
+</body>
+</html>
