@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTTP 状态码大全：200/301/404/500 各代表什么 - 效率盒子</title>
+  <meta name="description" content="HTTP 状态码完整速查表，讲清 1xx~5xx 含义，重点解析 301/302/304/404/500/502/503 及其对 SEO 的影响。">
+  <meta name="keywords" content="HTTP状态码,404,301,500,302,状态码大全,HTTP 200">
+  <meta name="author" content="效率盒子">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content { max-width: 720px; margin: 0 auto; }
+    .article-content h2 { font-size: 20px; font-weight: 700; margin: 28px 0 12px; color: var(--text); }
+    .article-content h3 { font-size: 16px; font-weight: 600; margin: 18px 0 8px; color: var(--primary-dark); }
+    .article-content p { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 14px; }
+    .article-content ul, .article-content ol { padding-left: 22px; margin-bottom: 14px; }
+    .article-content li { font-size: 15px; line-height: 1.8; margin-bottom: 6px; }
+    .article-content code { background: var(--primary-bg); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--primary-dark); }
+    .article-content strong { color: var(--primary-dark); }
+    .breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 8px; }
+    .breadcrumb a { color: var(--text-light); }
+    .cta-box { margin: 32px 0; padding: 24px; background: linear-gradient(135deg,#eef2ff,#f5f3ff); border: 1px solid var(--border); border-radius: 12px; text-align: center; }
+    .cta-box h3 { margin: 0 0 8px; color: var(--primary-dark); }
+    .cta-box p { color: var(--text-light); font-size: 14px; margin-bottom: 14px; }
+    .cta-box a { display: inline-block; padding: 11px 28px; background: var(--primary); color: #fff; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-read { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-read h3 { font-size: 16px; margin-bottom: 10px; }
+    .related-read a { display: inline-block; margin: 0 10px 8px 0; color: var(--primary); font-size: 14px; }
+    .article-meta { font-size: 13px; color: var(--text-lighter); margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="../tools/index.html">工具</a></li>
+        <li><a href="../math-gaokao/index.html">高中数学</a></li>
+        <li><a href="../novel/index.html">小说</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="article-content">
+      <div class="breadcrumb"><a href="../index.html">首页</a> / <a href="index.html">文章</a> / 开发工具</div>
+      <h1>HTTP 状态码大全：200/301/404/500 各代表什么</h1>
+      <div class="article-meta">更新于 2026-10-19 · 效率盒子编辑部</div>
+      
+<p>调试接口、看日志、排查网站故障，都要看懂 HTTP 状态码。</p>
+<h2>一、状态码五大类</h2>
+<ul>
+  <li><strong>1xx：</strong> informational，请求进行中，如 101 切换协议。</li>
+  <li><strong>2xx：</strong> 成功，200 正常、201 已创建、204 无内容。</li>
+  <li><strong>3xx：</strong> 重定向，301 永久、302 临时、304 未修改（走缓存）。</li>
+  <li><strong>4xx：</strong> 客户端错误，400 参数错、401 未登录、403 无权限、404 找不到。</li>
+  <li><strong>5xx：</strong> 服务端错误，500 内部错误、502 网关错、503 服务不可用。</li>
+</ul>
+<h2>二、与 SEO 强相关</h2>
+<p><strong>301</strong> 永久重定向会把权重传递到新地址，换域名/改网址必用；<strong>404</strong> 过多伤收录；<strong>503</strong> 临时维护要带 Retry-After，避免被降权。</p>
+<h2>三、排查思路</h2>
+<p>502/504 多为网关或上游超时；500 看服务日志；403 查权限或防火墙。</p>
+<h2>四、速查工具</h2>
+<p>效率盒子 HTTP 状态码表，按类别分组，输入码数立即查含义与处理建议。</p>
+        
+      <div class="cta-box">
+        <h3>HTTP 状态码速查表</h3>
+        <p>按 1xx~5xx 分组，输入状态码立即查含义与处理建议。</p>
+        <a href="../tools/http-status.html">立即使用工具 →</a>
+      </div>
+      <div class="related-read">
+        <h3>相关阅读</h3>
+        <a href="json-formatter-tool.html">JSON 格式化工具</a><a href="url-encode.html">URL 编码解码</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../tools/index.html">全部工具</a>
+      <a href="index.html">文章</a>
+    </div>
+    <p>&copy; 2026 效率盒子</p>
+  </footer>
+</body>
+</html>

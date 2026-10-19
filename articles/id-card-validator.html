@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>身份证校验在线：号码真伪、出生日期与性别提取 - 效率盒子</title>
+  <meta name="description" content="在线身份证校验工具，验证 18 位号码是否合法，提取出生日期、性别、年龄。本文讲清校验码算法与隐私安全。">
+  <meta name="keywords" content="身份证校验,身份证验证,身份证号查询,身份证号提取,身份证校验码">
+  <meta name="author" content="效率盒子">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content { max-width: 720px; margin: 0 auto; }
+    .article-content h2 { font-size: 20px; font-weight: 700; margin: 28px 0 12px; color: var(--text); }
+    .article-content h3 { font-size: 16px; font-weight: 600; margin: 18px 0 8px; color: var(--primary-dark); }
+    .article-content p { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 14px; }
+    .article-content ul, .article-content ol { padding-left: 22px; margin-bottom: 14px; }
+    .article-content li { font-size: 15px; line-height: 1.8; margin-bottom: 6px; }
+    .article-content code { background: var(--primary-bg); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--primary-dark); }
+    .article-content strong { color: var(--primary-dark); }
+    .breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 8px; }
+    .breadcrumb a { color: var(--text-light); }
+    .cta-box { margin: 32px 0; padding: 24px; background: linear-gradient(135deg,#eef2ff,#f5f3ff); border: 1px solid var(--border); border-radius: 12px; text-align: center; }
+    .cta-box h3 { margin: 0 0 8px; color: var(--primary-dark); }
+    .cta-box p { color: var(--text-light); font-size: 14px; margin-bottom: 14px; }
+    .cta-box a { display: inline-block; padding: 11px 28px; background: var(--primary); color: #fff; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-read { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-read h3 { font-size: 16px; margin-bottom: 10px; }
+    .related-read a { display: inline-block; margin: 0 10px 8px 0; color: var(--primary); font-size: 14px; }
+    .article-meta { font-size: 13px; color: var(--text-lighter); margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="../tools/index.html">工具</a></li>
+        <li><a href="../math-gaokao/index.html">高中数学</a></li>
+        <li><a href="../novel/index.html">小说</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="article-content">
+      <div class="breadcrumb"><a href="../index.html">首页</a> / <a href="index.html">文章</a> / 开发工具</div>
+      <h1>身份证校验在线：号码真伪、出生日期与性别提取</h1>
+      <div class="article-meta">更新于 2026-10-19 · 效率盒子编辑部</div>
+      
+<p>录入表单、核验身份，常需判断身份证号是否合法。用工具一秒校验，还能顺带提取信息。</p>
+<h2>一、18 位身份证结构</h2>
+<ul>
+  <li>前 6 位：地址码（省市区）</li>
+  <li>第 7~14 位：出生日期（YYYYMMDD）</li>
+  <li>第 15~17 位：顺序码，<strong>第 17 位奇数为男、偶数为女</strong></li>
+  <li>第 18 位：校验码（0-9 或 X）</li>
+</ul>
+<h2>二、最后一位怎么校验</h2>
+<p>用前 17 位按固定系数加权求和，再对 11 取模，映射到 0-10 对应字符（10 记为 X）。对不上就是假号。</p>
+<h2>三、隐私提醒</h2>
+<p>身份证是敏感信息，务必用<strong>本地校验、不上传服务器</strong>的工具。效率盒子的校验在浏览器本地完成，安全放心。</p>
+<h2>四、一键校验</h2>
+<p>打开工具输入号码，立即判定是否合法，并提取出生日期、性别、年龄。</p>
+        
+      <div class="cta-box">
+        <h3>身份证校验工具</h3>
+        <p>本地校验不上传，验证号码合法性，提取出生日期/性别/年龄。</p>
+        <a href="../tools/id-card-validator.html">立即使用工具 →</a>
+      </div>
+      <div class="related-read">
+        <h3>相关阅读</h3>
+        <a href="age-calculator.html">年龄计算器</a><a href="date-calculator.html">日期计算器</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../tools/index.html">全部工具</a>
+      <a href="index.html">文章</a>
+    </div>
+    <p>&copy; 2026 效率盒子</p>
+  </footer>
+</body>
+</html>

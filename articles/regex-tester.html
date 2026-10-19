@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正则表达式在线测试：常用 regex 速查与匹配高亮 - 效率盒子</title>
+  <meta name="description" content="在线正则表达式测试工具，实时高亮匹配结果。本文讲清正则元字符速查表与邮箱/手机号/URL 实战写法。">
+  <meta name="keywords" content="正则表达式,正则测试,regex,正则表达式在线测试,正则匹配">
+  <meta name="author" content="效率盒子">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .article-content { max-width: 720px; margin: 0 auto; }
+    .article-content h2 { font-size: 20px; font-weight: 700; margin: 28px 0 12px; color: var(--text); }
+    .article-content h3 { font-size: 16px; font-weight: 600; margin: 18px 0 8px; color: var(--primary-dark); }
+    .article-content p { font-size: 15px; color: var(--text); line-height: 1.85; margin-bottom: 14px; }
+    .article-content ul, .article-content ol { padding-left: 22px; margin-bottom: 14px; }
+    .article-content li { font-size: 15px; line-height: 1.8; margin-bottom: 6px; }
+    .article-content code { background: var(--primary-bg); padding: 2px 6px; border-radius: 4px; font-size: 13px; color: var(--primary-dark); }
+    .article-content strong { color: var(--primary-dark); }
+    .breadcrumb { font-size: 13px; color: var(--text-light); margin-bottom: 8px; }
+    .breadcrumb a { color: var(--text-light); }
+    .cta-box { margin: 32px 0; padding: 24px; background: linear-gradient(135deg,#eef2ff,#f5f3ff); border: 1px solid var(--border); border-radius: 12px; text-align: center; }
+    .cta-box h3 { margin: 0 0 8px; color: var(--primary-dark); }
+    .cta-box p { color: var(--text-light); font-size: 14px; margin-bottom: 14px; }
+    .cta-box a { display: inline-block; padding: 11px 28px; background: var(--primary); color: #fff; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+    .related-read { margin-top: 36px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .related-read h3 { font-size: 16px; margin-bottom: 10px; }
+    .related-read a { display: inline-block; margin: 0 10px 8px 0; color: var(--primary); font-size: 14px; }
+    .article-meta { font-size: 13px; color: var(--text-lighter); margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="../index.html" class="logo"><span class="logo-icon">E</span><span>效率盒子</span></a>
+      <nav><ul class="nav-links">
+        <li><a href="../index.html">首页</a></li>
+        <li><a href="../tools/index.html">工具</a></li>
+        <li><a href="../math-gaokao/index.html">高中数学</a></li>
+        <li><a href="../novel/index.html">小说</a></li>
+        <li><a href="index.html" class="active">文章</a></li>
+      </ul></nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <div class="article-content">
+      <div class="breadcrumb"><a href="../index.html">首页</a> / <a href="index.html">文章</a> / 开发工具</div>
+      <h1>正则表达式在线测试：常用 regex 速查与匹配高亮</h1>
+      <div class="article-meta">更新于 2026-10-19 · 效率盒子编辑部</div>
+      
+<p>正则（Regex）是文本匹配利器，但写完对不对，得测。在线测试工具实时高亮，边改边看。</p>
+<h2>一、常用元字符速查</h2>
+<ul>
+  <li><code>.</code> 任意字符，<code>\d</code> 数字，<code>\w</code> 单词字符</li>
+  <li><code>*</code> 零或多次，<code>+</code> 一或多次，<code>?</code> 零或一次</li>
+  <li><code>[]</code> 字符集合，<code>{n,m}</code> 重复次数</li>
+  <li><code>^</code> 开头，<code>$</code> 结尾，<code>|</code> 或</li>
+</ul>
+<h2>二、实战写法</h2>
+<p>手机号：<code>^1[3-9]\d{9}$</code>；简单邮箱：<code>^\S+@\S+\.\S+$</code>。注意转义与边界。</p>
+<h2>三、贪婪与懒惰</h2>
+<p><code>.*</code> 是贪婪匹配，<code>.*?</code> 是懒惰匹配。抓取 HTML 内容时加 <code>?</code> 更稳。</p>
+<h2>四、在线测试</h2>
+<p>效率盒子正则测试工具输入 pattern 和文本，实时高亮所有匹配，支持常用标志位。</p>
+        
+      <div class="cta-box">
+        <h3>在线正则测试工具</h3>
+        <p>输入正则和文本，实时高亮匹配，支持标志位。</p>
+        <a href="../tools/regex-tester.html">立即使用工具 →</a>
+      </div>
+      <div class="related-read">
+        <h3>相关阅读</h3>
+        <a href="json-formatter-tool.html">JSON 格式化工具</a><a href="url-encode.html">URL 编码解码</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-links">
+      <a href="../index.html">首页</a>
+      <a href="../tools/index.html">全部工具</a>
+      <a href="index.html">文章</a>
+    </div>
+    <p>&copy; 2026 效率盒子</p>
+  </footer>
+</body>
+</html>
