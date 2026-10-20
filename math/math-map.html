@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>高中数学全景知识地图</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .nav-tabs {
+      display: flex;
+      justify-content: space-around;
+      background: #ecf0f1;
+      padding: 15px 0;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+
+    .nav-tab {
+      padding: 12px 20px;
+      font-size: 16px;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: #2c3e50;
+      text-decoration: none;
+    }
+
+    .nav-tab.active {
+      background: #3498db;
+      color: white;
+      font-weight: bold;
+    }
+
+    .section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      transition: all 0.3s ease;
+    }
+
+    .section h2 {
+      color: #27ae60;
+      margin-bottom: 15px;
+      font-size: 24px;
+    }
+
+    .subsection {
+      margin-top: 15px;
+      padding-left: 20px;
+      border-left: 3px solid #3498db;
+      background: #f8f9fa;
+      border-radius: 5px;
+    }
+
+    .subsection h3 {
+      color: #2c3e50;
+      font-size: 18px;
+      margin-bottom: 5px;
+    }
+
+    .example-box {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff9f0;
+      border-radius: 6px;
+      border-left: 4px solid #e74c3c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .example-box:hover {
+      background: #ffe6cc;
+    }
+
+    .example-content {
+      margin-top: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      background: white;
+      display: none;
+    }
+
+    .example-content p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .warning {
+      color: #e74c3c;
+      font-weight: bold;
+      margin-top: 20px;
+      padding: 15px;
+      background: #f8d7da;
+      border-radius: 5px;
+    }
+
+    /* 高亮当前章节 */
+    .active-section {
+      background: #e6f7ff !important;
+      color: #3498db !important;
+    }
+
+    /* 滚动时高亮 */
+    .section.active {
+      background: #ecf0f1;
+      border-radius: 8px;
+      padding: 25px;
+    }
+
+    /* 高亮导航按钮 */
+    .nav-tab:hover {
+      background: #3498db;
+      color: white;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .nav-tabs {
+        flex-direction: column;
+        align-items: center;
+      }
+      .nav-tab {
+        width: 100%;
+        padding: 15px;
+      }
+    }
+
+    /* 高亮当前章节 */
+    .active-section h2 {
+      color: #3498db !important;
+    }
+
+    /* 点击展开例题 */
+    .example-box:hover .example-content {
+      display: block;
+    }
+
+    /* 滚动时高亮 */
+    .section.active {
+      background: #ecf0f1;
+      border-radius: 8px;
+      padding: 25px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div style="margin-bottom:16px;"><a href="index.html" style="display:inline-block;padding:8px 16px;background:#3498db;color:#fff;text-decoration:none;border-radius:6px;font-size:13px;font-weight:600;">← 返回数学专栏</a></div>
+    <h1>高中数学全景知识地图 · 新高考适配版</h1>
+
+    <!-- 导航栏 -->
+    <div class="nav-tabs" id="tabNav">
+      <button class="nav-tab active" onclick="jumpToSection('chapter0')">第一章：函数总纲</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter1')">第二章：高考底层逻辑</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter2')">第三章：二次函数</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter3')">第四章：指数与对数</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter4')">第五章：三角函数</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter5')">第六章：直线与圆</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter6')">第七章：圆锥曲线</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter7')">第八章：空间几何体</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter8')">第九章：空间向量</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter9')">第十章：数列全景</button>
+      <button class="nav-tab" onclick="jumpToSection('chapter10')">第十一章：不等式</button>
+    </div>
+
+    <!-- 内容区域 -->
+    <div id="content">
+      <!-- 第一章 -->
+      <div id="chapter0" class="section active-section" data-id="chapter0">
+        <h2>第一章：函数总纲 · 一切函数的通用逻辑</h2>
+        <div class="subsection">
+          <h3>概念溯源</h3>
+          <p><strong>函数的本质只有一个：</strong> 对于定义域内的每一个 x，都有唯一确定的 y 与之对应。</p>
+          <p>📌 关键词：“唯一” —— 一个 x 不可对应两个 y（但两个 x 可以对应同一个 y）</p>
+        </div>
+
+        <div class="subsection">
+          <h3>核心考点</h3>
+          <ul style="padding-left: 20px;">
+            <li><strong>三要素：</strong>定义域、值域、对应法则 f(x)</li>
+            <li><strong>四大性质：</strong>单调性、奇偶性、周期性、定义域与值域关系</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3>万能解题模型</h3>
+          <p>✅ 求范围问题 → 先求定义域（分母≠0、偶次根号内≥0、真数>0）</p>
+          <p>✅ 最值问题 → 优先用单调性 → 先证单调，再代端点或极值点</p>
+        </div>
+
+        <div class="subsection">
+          <h3>高频陷阱警示</h3>
+          <ul style="padding-left: 20px;">
+            <li>⚠️ 忽略定义域 → 求值域前不先求定义域，结果区间全错</li>
+            <li>⚠️ 混淆“单调”与“递增区间” → 单调区间必须写定义域内的子区间</li>
+          </ul>
+        </div>
+
+        <!-- 例题 -->
+        <div class="example-box" onclick="toggleExample('ex01')">
+          【例题】判断函数奇偶性<br>已知 f(x) = x³ - x，判断奇偶并说明。
+        </div>
+        <div id="ex01" class="example-content">
+          ✅ **解：**  
+          定义域 R 关于原点对称 → 满足前提  
+          f(-x) = (-x)³ - (-x) = -x³ + x = -(x³ - x) = -f(x) → 奇函数<br>
+          📌 **复盘：第一步永远先验证定义域对称，再代 -x 比较 f(-x) 与 ±f(x)**<br><br>
+        </div>
+
+      </div>
+
+      <!-- 第二章 -->
+      <div id="chapter1" class="section">
+        <h2>第二章：高考底层逻辑</h2>
+        <p>📌 高考数学不是“做题”，而是“结构化思维”。</p>
+        <ul style="padding-left: 20px;">
+          <li><strong>概念溯源：</strong>从本源理解，而非死记结论</li>
+          <li><strong>核心考点：</strong>只列高考真正必考的3–5个点</li>
+          <li><strong>万能模型：</strong>把同类题归纳成固定步骤 → 考场上“无脑套”</li>
+        </ul>
+
+      </div>
+
+      <!-- 第三章 -->
+      <div id="chapter2" class="section">
+        <h2>第三章：二次函数（高中函数地基）</h2>
+        <p>📌 核心价值不在“会算”，而在三种表达式能根据题型自由切换：</p>
+        <ul style="padding-left: 20px;">
+          <li><strong>一般式：</strong>给系数时用</li>
+          <li><strong>顶点式：</strong>最值/顶点题万能</li>
+          <li><strong>零点式：</strong>方程/根题万能</li>
+        </ul>
+
+      </div>
+
+      <!-- 第四章 -->
+      <div id="chapter3" class="section">
+        <h2>第四章：指数与对数函数</h2>
+        <p>📌 核心公式可现场推导：</p>
+        <code>logₐ(MN) = logₐM + logₐN —— 本质是“指数相加对应底数相乘”的对数翻译！</code>
+
+      </div>
+
+      <!-- 第五章 -->
+      <div id="chapter4" class="section">
+        <h2>第五章：三角函数体系（完整全景）</h2>
+        <p>📌 本质不是“公式堆”，而是“圆周运动”！</p>
+        <ul style="padding-left: 20px;">
+          <li><strong>单位圆上点：</strong>(cosθ, sinθ)</li>
+          <li><strong>图像记忆：</strong>不用背图，用“周期 + 奇偶 + 特殊点”现场画出</li>
+        </ul>
+
+      </div>
+
+      <!-- 第六章 -->
+      <div id="chapter5" class="section">
+        <h2>第六章：直线与圆</h2>
+        <p>📌 解析几何的核心思想是“几何问题代数化”！</p>
+        <ul style="padding-left: 20px;">
+          <li><strong>距离公式：</strong>d = |Ax₀+By₀+C|/√(A²+B²)</li>
+          <li><strong>位置关系：</strong>平行斜率相等，垂直斜率积为 -1</li>
+        </ul>
+
+      </div>
+
+      <!-- 第七章 -->
+      <div id="chapter6" class="section">
+        <h2>第七章：圆锥曲线总纲（椭圆、双曲线、抛物线）</h2>
+        <p>📌 统一定义：到定点（焦点）与定直线（准线）距离成固定比 e 的点的轨迹！</p>
+
+      </div>
+
+      <!-- 第八章 -->
+      <div id="chapter7" class="section">
+        <h2>第八章：空间几何体</h2>
+        <p>📌 新高考对体积表面积考查常以“割补法”出现：</p>
+        <ul style="padding-left: 20px;">
+          <li><strong>三视图还原原则：</strong>由图想体，关键是从俯视图定底面、从正侧视图定高和遮挡</li>
+        </ul>
+
+      </div>
+
+      <!-- 第九章 -->
+      <div id="chapter8" class="section">
+        <h2>第九章：空间向量（大题万能）</h2>
+        <p>📌 立体几何大题最稳的方法是空间向量法：</p>
+        <ul style="padding-left: 20px;">
+          <li><strong>建系 → 写坐标 → 法向量做“无脑计算”</strong></li>
+        </ul>
+
+      </div>
+
+      <!-- 第十章 -->
+      <div id="chapter9" class="section">
+        <h2>第十章：数列全景</h2>
+        <p>📌 所有复杂数列题，都是把通项或前 n 项和通过“化归”变回等差/等比来处理！</p>
+
+      </div>
+
+      <!-- 第十一章 -->
+      <div id="chapter10" class="section">
+        <h2>第十一章：不等式</h2>
+        <p>📌 核心是“基本不等式”：</p>
+        <code>a,b > 0 → (a+b)/2 ≥ √(ab)，当且仅当 a=b 取等</code>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function jumpToSection(id) {
+      const sections = document.querySelectorAll('.section');
+      const navTabs = document.querySelectorAll('.nav-tab');
+
+      // 高亮当前章节
+      sections.forEach(sec => sec.classList.remove('active'));
+      sections[id].classList.add('active');
+
+      // 高亮导航按钮
+      navTabs.forEach(tab => tab.classList.remove('active'));
+      document.querySelector(`.nav-tab[onclick="jumpToSection('${id}')"]`).classList.add('active');
+    }
+
+    function toggleExample(id) {
+      const el = document.getElementById(id);
+      if (el.style.display === 'block') {
+        el.style.display = 'none';
+      } else {
+        el.style.display = 'block';
+      }
+    }
+
+    // 初始化：加载时高亮第一章
+    window.onload = () => {
+      jumpToSection('chapter0');
+    };
+  </script>
+</body>
+</html>
